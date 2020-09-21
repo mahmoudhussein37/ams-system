@@ -1,17 +1,23 @@
 package koreatech.cse.controller;
 
+import koreatech.cse.domain.User;
+import koreatech.cse.domain.constant.Role;
+import koreatech.cse.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.inject.Inject;
+import java.util.*;
 
 @Controller
 @RequestMapping("/")
 public class HomeController {
+    @Inject
+    private UserService userService;
+
+
     @ModelAttribute("name")
     private String getName() {
         return "IamHomeControllerModelAttribute";
@@ -51,6 +57,30 @@ public class HomeController {
         model.addAttribute("stringMap", stringMap);
 
         return "jstlTest";
+    }
+
+    @RequestMapping("/signin")
+    public String signin(Model model, @RequestParam(required=false) String msg) {
+        model.addAttribute("msg", msg);
+        return "signin";
+    }
+
+    @RequestMapping(value = "/signup", method = RequestMethod.GET)
+    public String signup(Model model) {
+        User signupUser = new User();
+        model.addAttribute("signupUser", signupUser);
+
+        return "signup";
+    }
+
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public String signup(@ModelAttribute User signupUser, @RequestParam(defaultValue = "") String[] favorite, SessionStatus status) {
+
+
+        userService.signup(signupUser);
+        status.setComplete();
+
+        return "redirect:/signin?msg=signupSuccess";
     }
 
 
