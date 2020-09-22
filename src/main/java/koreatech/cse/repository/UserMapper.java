@@ -11,11 +11,11 @@ import java.util.List;
 
 @Repository
 public interface UserMapper {
-    @Insert("INSERT INTO USERS (USERNAME, PASSWORD) VALUES (#{username}, #{password})")
+    @Insert("INSERT INTO USER (USERNAME, PASSWORD) VALUES (#{username}, #{password})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(User user);
 
-    @Update("UPDATE USERS SET USERNAME = #{username}, PASSWORD = #{password} WHERE ID = #{id}")
+    @Update("UPDATE USER SET USERNAME = #{username}, PASSWORD = #{password} WHERE ID = #{id}")
     void update(User user);
 
     @Select("SELECT * FROM USER WHERE ID = #{id}")
