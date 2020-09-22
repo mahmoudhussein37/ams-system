@@ -84,7 +84,7 @@
 
                         <!--begin::Form group-->
                         <div class="form-group">
-                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="학원명" name="name" autocomplete="off"/>
+                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="<spring:message code="college.campus.main"/>" name="name" autocomplete="off"/>
                         </div>
                         <!--end::Form group-->
 

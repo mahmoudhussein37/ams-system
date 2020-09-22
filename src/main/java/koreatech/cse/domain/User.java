@@ -1,18 +1,20 @@
 package koreatech.cse.domain;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-
 public class User implements UserDetails {
     private int id;
     private String name;
     private String email;   //이메일을 로그인 아이디로
     private String password;    //비밀번호
-    private int age;
+    private boolean confirm;
+    private boolean enabled;
+
 
     private List<Authority> authorities;
 
@@ -68,6 +70,17 @@ public class User implements UserDetails {
         return true;
     }
 
+    public boolean isConfirm() {
+        return confirm;
+    }
+
+    public void setConfirm(boolean confirm) {
+        this.confirm = confirm;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public void setAuthorities(List<Authority> authorities) {
         this.authorities = authorities;
@@ -77,13 +90,6 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
 
     public static User current() {
         try {
@@ -96,13 +102,6 @@ public class User implements UserDetails {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", age=" + age +
-                ", authorities=" + authorities +
-                '}';
+        return ToStringBuilder.reflectionToString(this);
     }
 }

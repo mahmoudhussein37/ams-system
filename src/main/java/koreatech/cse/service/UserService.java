@@ -48,7 +48,7 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userMapper.findByEmail(username);
+        User user = userMapper.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("Invalid username/password.");
         }

@@ -14,14 +14,55 @@
     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
 
     <mvc:annotation-driven />
-    <mvc:resources location="/WEB-INF/resources/" mapping="/resources/**" />
+
 
     <context:component-scan base-package="koreatech.cse" />
     <context:property-placeholder location="classpath:config.properties" />
     <util:properties id="config" location="classpath:config.properties" />
+
     <mvc:annotation-driven conversion-service="conversionService" />
+    <tx:annotation-driven proxy-target-class="true" />
+    <mvc:resources location="/WEB-INF/resources/" mapping="/resources/**" />
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+                <property name="paramName" value="lang" />
+            </bean>
+
+        </mvc:interceptor>
+    </mvc:interceptors>
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+        <property name="defaultLocale" value="#{T(java.util.Locale).ENGLISH}" />
+    </bean>
+
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>classpath:/i18n/message</value>
+            </list>
+        </property>
+        <property name="defaultEncoding" value="UTF-8" />
+        <property name="cacheSeconds" value="10" />
+        <property name="fallbackToSystemLocale" value="false" />
+    </bean>
 
     <bean id="contentNegotiatingViewResolver" class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="contentNegotiationManager">
+            <bean class="org.springframework.web.accept.ContentNegotiationManager">
+                <constructor-arg>
+                    <bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
+                        <constructor-arg>
+                            <map>
+                                <entry key="xlsx" value="application/vnd.ms-excel" />
+                                <entry key="xls" value="application/vnd.ms-excel" />
+                            </map>
+                        </constructor-arg>
+                    </bean>
+                </constructor-arg>
+            </bean>
+        </property>
         <property name="viewResolvers">
             <list>
                 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -45,6 +86,14 @@
         <property name="url" value="${jdbc.url}" />
         <property name="username" value="${jdbc.username}" />
         <property name="password" value="${jdbc.password}" />
+        <property name="initialSize" value="20" />
+        <property name="maxActive" value="60" />
+        <property name="minIdle" value="20" />
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        <property name="testWhileIdle" value="true" />
+        <property name="validationQuery" value="SELECT 1" />
+        <property name="minEvictableIdleTimeMillis" value="60000" />
+        <property name="testOnBorrow" value="true" />
     </bean>
 
     <!-- MyBatis -->
