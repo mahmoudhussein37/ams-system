@@ -1,8 +1,10 @@
 package koreatech.cse.service;
 
 import koreatech.cse.domain.Authority;
+import koreatech.cse.domain.Contact;
 import koreatech.cse.domain.User;
 import koreatech.cse.repository.AuthorityMapper;
+import koreatech.cse.repository.ContactMapper;
 import koreatech.cse.repository.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,36 +19,47 @@ import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
-    @Autowired
+    @Inject
     private UserMapper userMapper;
-    @Autowired
+    @Inject
     private AuthorityMapper authorityMapper;
-    @Autowired
+    @Inject
     private PasswordEncoder passwordEncoder;
+    @Inject
+    private ContactMapper contactMapper;
 
 
     public Boolean signup(User user) {
+
         if(user.getUsername() == null || user.getPassword() ==  null)
             return false;
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setEnabled(true);
-        userMapper.insert(user);
+        if(isUniqueUsername(user.getUsername().trim())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setEnabled(true);
+            userMapper.insert(user);
+            user.getContact().setUserId(user.getId());
+            Contact contact = user.getContact();
+            contactMapper.insert(contact);
 
-        Authority authority = new Authority();
-        authority.setUserId(user.getId());
-        authority.setRole("ROLE_USER");
-        authorityMapper.insert(authority);
+            Authority authority = new Authority();
+            authority.setUserId(user.getId());
+            authority.setRole("ROLE_USER");
+            authorityMapper.insert(authority);
 
-        if(user.getUsername().contains("admin")) {
-            Authority adminAuthority = new Authority();
-            adminAuthority.setUserId(user.getId());
-            adminAuthority.setRole("ROLE_ADMIN");
-            authorityMapper.insert(adminAuthority);
+            if(user.getUsername().contains("admin")) {
+                Authority adminAuthority = new Authority();
+                adminAuthority.setUserId(user.getId());
+                adminAuthority.setRole("ROLE_ADMIN");
+                authorityMapper.insert(adminAuthority);
+            }
+
+            System.out.println("user created :" + new Date());
+            return true;
         }
+        return false;
 
-        System.out.println("user created :" + new Date());
-        return true;
+
     }
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -58,6 +71,10 @@ public class UserService implements UserDetailsService {
         user.setAuthorities(authorities);
         System.out.println("user = " + user);
         return user;
+    }
+
+    public boolean isUniqueUsername(String username) {
+        return userMapper.findByUsername(username) == null;
     }
 
 }

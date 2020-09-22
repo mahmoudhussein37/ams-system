@@ -6,6 +6,7 @@ import koreatech.cse.repository.UserMapper;
 import koreatech.cse.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
@@ -14,11 +15,12 @@ import javax.inject.Inject;
 import java.util.*;
 
 @Controller
+@Transactional
 @RequestMapping("/")
 public class HomeController {
-    @Autowired
+    @Inject
     private UserService userService;
-    @Autowired
+    @Inject
     private UserMapper userMapper;
 
 

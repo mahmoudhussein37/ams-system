@@ -17,9 +17,9 @@ import javax.inject.Inject;
 
 @RequestMapping("/user")
 public class UserController {
-    @Autowired
+    @Inject
     private UserMapper userMapper;
-    @Autowired
+    @Inject
     private UserService userService;
 
 

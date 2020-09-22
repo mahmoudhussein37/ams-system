@@ -100,11 +100,17 @@
 
                         <!--begin::Form group-->
                         <div class="form-group">
-                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="<spring:message code="common.firstName"/>" name="firstName" autocomplete="off"/>
+                            <c:set var="labelFirstName">
+                                <spring:message code="common.firstName"/>
+                            </c:set>
+                            <form:input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="${labelFirstName}" path="contact.firstName" autocomplete="off"/>
                         </div>
                         <!--end::Form group-->
                         <div class="form-group">
-                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="<spring:message code="common.lastName"/>" name="lastName" autocomplete="off"/>
+                            <c:set var="labelLastName">
+                                <spring:message code="common.lastName"/>
+                            </c:set>
+                            <form:input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="${labelLastName}" path="contact.lastName" autocomplete="off"/>
                         </div>
 
 

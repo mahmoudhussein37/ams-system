@@ -18,9 +18,21 @@ public interface UserMapper {
     @Update("UPDATE USER SET USERNAME = #{username}, PASSWORD = #{password} WHERE ID = #{id}")
     void update(User user);
 
+
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "id", property = "contact", one = @One(select = "koreatech.cse.repository.ContactMapper.findByUserId")),
+            @Result(column = "id", property = "authorities", many = @Many(select = "koreatech.cse.repository.AuthorityMapper.findByUserId")),
+    })
     @Select("SELECT * FROM USER WHERE ID = #{id}")
     User findOne(@Param("id") int id);
 
+
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "id", property = "contact", one = @One(select = "koreatech.cse.repository.ContactMapper.findByUserId")),
+            @Result(column = "id", property = "authorities", many = @Many(select = "koreatech.cse.repository.AuthorityMapper.findByUserId")),
+    })
     @Select("select * from user where username = #{username}")
     User findByUsername(@Param("username") String username);
 

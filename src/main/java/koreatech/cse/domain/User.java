@@ -14,7 +14,7 @@ public class User implements UserDetails {
     private String password;    //비밀번호
     private boolean confirm;
     private boolean enabled;
-
+    private Contact contact;
 
     private List<Authority> authorities;
 
@@ -86,6 +86,14 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     public static User current() {
