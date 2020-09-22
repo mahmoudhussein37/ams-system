@@ -4,8 +4,8 @@
     <div class=" container  d-flex flex-column flex-md-row align-items-center justify-content-between">
         <!--begin::Copyright-->
         <div class="text-dark order-2 order-md-1">
-            <span class="text-muted font-weight-bold mr-2">2020&copy;</span>
-            <a href="http://keenthemes.com/metronic" target="_blank" class="text-dark-75 text-hover-primary">Keenthemes</a>
+            <span class="text-muted font-weight-bold mr-2"><span id="current-year">2020</span>&copy;</span>
+            <a href="http://www.btu.edu.eg/" target="_blank" class="text-dark-75 text-hover-primary">Beni Seuf Technological University</a>
         </div>
         <!--end::Copyright-->
 

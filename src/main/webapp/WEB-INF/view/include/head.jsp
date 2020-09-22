@@ -1,44 +1,35 @@
 <!--end::Head-->
 
 <!DOCTYPE html>
-<!--
-Template Name: Metronic - Bootstrap 4 HTML, React, Angular 9 & VueJS Admin Dashboard Theme
-Author: KeenThemes
-Website: http://www.keenthemes.com/
-Contact: support@keenthemes.com
-Follow: www.twitter.com/keenthemes
-Dribbble: www.dribbble.com/keenthemes
-Like: www.facebook.com/keenthemes
-Purchase: https://1.envato.market/EA4JP
-Renew Support: https://1.envato.market/EA4JP
-License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
--->
 <html lang="en" >
 <!--begin::Head-->
-<head><base href="">
+<head>
     <meta charset="utf-8"/>
-    <title>Metronic Live preview | Keenthemes</title>
-    <meta name="description" content="Updates and statistics"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <link rel="canonical" href="https://keenthemes.com/metronic"/>
-
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta http-equiv="Expires" content="Mon, 06 Jan 1990 00:00:01 GMT">
+    <meta http-equiv='Expires' content='-1'>
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='pragma' content='no-cache'>
+    <%
+        response.setHeader("Cache-Control","no-cache");
+        response.setHeader("Pragma","no-cache");
+        response.setDateHeader("Expires",-1);
+    %>
+    <base href="">
+    <title>Beni Seuf Technological University</title>
+    <meta name="description" content="Beni Seuf Technological University"/>
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>        <!--end::Fonts-->
-
     <!--begin::Page Vendors Styles(used by this page)-->
     <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css"/>
     <!--end::Page Vendors Styles-->
-
-
     <!--begin::Global Theme Styles(used by all pages)-->
     <link href="${resources}/vendor/metronic_assets_7/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
     <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css"/>
     <link href="${resources}/vendor/metronic_assets_7/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
     <!--end::Global Theme Styles-->
-
     <!--begin::Layout Themes(used by all pages)-->
     <!--end::Layout Themes-->
-
     <link rel="shortcut icon" href="${resources}/vendor/metronic_assets_7/assets/media/logos/favicon.ico"/>
-
 </head>

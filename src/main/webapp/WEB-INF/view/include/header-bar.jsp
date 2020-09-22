@@ -5,8 +5,8 @@
 <!--begin::Header Mobile-->
 <div id="kt_header_mobile" class="header-mobile bg-primary  header-mobile-fixed " >
     <!--begin::Logo-->
-    <a href="index.html">
-        <img alt="Logo" src="${resources}/vendor/metronic_assets_7/assets/media/logos/logo-letter-9.png" class="max-h-30px"/>
+    <a href="/">
+        <img alt="Logo" src="${resources}/images/bst_logo.png" class="max-h-30px" />
     </a>
     <!--end::Logo-->
 
@@ -50,7 +50,7 @@
                         <div class="d-none d-lg-flex align-items-center mr-3">
                             <!--begin::Logo-->
                             <a href="index.html" class="mr-20">
-                                <img alt="Logo" src="${resources}/vendor/metronic_assets_7/assets/media/logos/logo-letter-9.png" class="max-h-35px"/>
+                                <img alt="Logo" src="${resources}/images/bst_logo.png" class="max-h-50px" style="border-radius:5px;"/>
                             </a>
                             <!--end::Logo-->
 
