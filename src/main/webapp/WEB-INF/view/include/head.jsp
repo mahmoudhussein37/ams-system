@@ -1,7 +1,8 @@
 <!--end::Head-->
 
 <!DOCTYPE html>
-<html lang="en" >
+<%--<html lang="en" direction="rtl" style="direction: rtl;">--%>
+<html lang="en">
 <!--begin::Head-->
 <head>
     <meta charset="utf-8"/>
