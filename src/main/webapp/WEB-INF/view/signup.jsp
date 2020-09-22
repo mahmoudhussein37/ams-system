@@ -74,27 +74,37 @@
                 <!--begin::Signup-->
                 <div class="login-form login-signup">
                     <!--begin::Form-->
-                    <form:form id="signup-form" commandName="eduInstitute" method="post">
+                    <form:form id="signup-form" action="${baseUrl}/signup" commandName="signupUser" method="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <!--begin::Title-->
                         <div class="pb-13 pt-lg-0 pt-5">
-                            <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">Sign Up</h3>
-                            <p class="text-muted font-weight-bold font-size-h4">Enter your details to create your account</p>
+                            <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg"><spring:message code="common.signup"/></h3>
+                            <p class="text-muted font-weight-bold font-size-h4"><spring:message code="common.signup.desc"/></p>
                         </div>
                         <!--end::Title-->
 
                         <!--begin::Form group-->
                         <div class="form-group">
-                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="<spring:message code="college.campus.main"/>" name="name" autocomplete="off"/>
+                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="<spring:message code="common.username"/>" name="username" autocomplete="off"/>
+                        </div>
+                        <!--end::Form group-->
+                        <!--begin::Form group-->
+                        <div class="form-group">
+                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="password" placeholder="<spring:message code="common.password"/>" name="password" autocomplete="off"/>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="password" placeholder="<spring:message code="common.passwordAgain"/>" name="signupUser.passwordConform" id="signupUser.passwordConform" autocomplete="off"/>
                         </div>
                         <!--end::Form group-->
 
+
                         <!--begin::Form group-->
                         <div class="form-group">
-                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="Name ID" name="nameId" autocomplete="off"/>
+                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="<spring:message code="common.firstName"/>" name="firstName" autocomplete="off"/>
                         </div>
                         <!--end::Form group-->
                         <div class="form-group">
-                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="Homepage URL" name="homepageUrl" autocomplete="off"/>
+                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="<spring:message code="common.lastName"/>" name="lastName" autocomplete="off"/>
                         </div>
 
 

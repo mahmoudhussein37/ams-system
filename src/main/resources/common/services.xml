@@ -91,18 +91,18 @@
         <property name="minIdle" value="20" />
         <property name="timeBetweenEvictionRunsMillis" value="60000" />
         <property name="testWhileIdle" value="true" />
-        <property name="validationQuery" value="SELECT 1" />
+        <property name="validationQuery" value="select 1" />
         <property name="minEvictableIdleTimeMillis" value="60000" />
         <property name="testOnBorrow" value="true" />
     </bean>
 
     <!-- MyBatis -->
-    <mybatis:scan base-package="koreatech.cse.repository" />
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="configLocation" value="classpath:mybatis.xml" />
+        <property name="typeHandlersPackage" value="koreatech.cse.util.mybatis" />
     </bean>
-
+    <mybatis:scan base-package="koreatech.cse.repository" factory-ref="sqlSessionFactory" />
     <tx:annotation-driven proxy-target-class="true" />
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />

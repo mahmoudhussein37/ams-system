@@ -10,7 +10,7 @@ import java.util.List;
 public class User implements UserDetails {
     private int id;
     private String name;
-    private String email;   //이메일을 로그인 아이디로
+    private String username;   //이메일을 로그인 아이디로
     private String password;    //비밀번호
     private boolean confirm;
     private boolean enabled;
@@ -34,12 +34,13 @@ public class User implements UserDetails {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public String getUsername() {
+        return username;
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -50,9 +51,6 @@ public class User implements UserDetails {
         return password;
     }
 
-    public String getUsername() {
-        return email;
-    }
 
     public boolean isAccountNonExpired() {
         return true;
@@ -67,7 +65,7 @@ public class User implements UserDetails {
     }
 
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     public boolean isConfirm() {
@@ -89,7 +87,6 @@ public class User implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
     public static User current() {
         try {

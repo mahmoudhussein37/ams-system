@@ -4,6 +4,7 @@ import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
 import koreatech.cse.repository.UserMapper;
 import koreatech.cse.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +17,9 @@ import javax.inject.Inject;
 
 @RequestMapping("/user")
 public class UserController {
-    @Inject
+    @Autowired
     private UserMapper userMapper;
-    @Inject
+    @Autowired
     private UserService userService;
 
 

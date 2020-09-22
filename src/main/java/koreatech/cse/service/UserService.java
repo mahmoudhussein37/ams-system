@@ -4,6 +4,7 @@ import koreatech.cse.domain.Authority;
 import koreatech.cse.domain.User;
 import koreatech.cse.repository.AuthorityMapper;
 import koreatech.cse.repository.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,19 +17,20 @@ import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
-    @Inject
+    @Autowired
     private UserMapper userMapper;
-    @Inject
+    @Autowired
     private AuthorityMapper authorityMapper;
-    @Inject
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
 
     public Boolean signup(User user) {
-        if(user.getEmail() == null || user.getPassword() ==  null)
+        if(user.getUsername() == null || user.getPassword() ==  null)
             return false;
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setEnabled(true);
         userMapper.insert(user);
 
         Authority authority = new Authority();
@@ -36,7 +38,7 @@ public class UserService implements UserDetailsService {
         authority.setRole("ROLE_USER");
         authorityMapper.insert(authority);
 
-        if(user.getEmail().contains("admin")) {
+        if(user.getUsername().contains("admin")) {
             Authority adminAuthority = new Authority();
             adminAuthority.setUserId(user.getId());
             adminAuthority.setRole("ROLE_ADMIN");

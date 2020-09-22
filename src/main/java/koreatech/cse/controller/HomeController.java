@@ -2,7 +2,9 @@ package koreatech.cse.controller;
 
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.Role;
+import koreatech.cse.repository.UserMapper;
 import koreatech.cse.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +16,10 @@ import java.util.*;
 @Controller
 @RequestMapping("/")
 public class HomeController {
-    @Inject
+    @Autowired
     private UserService userService;
+    @Autowired
+    private UserMapper userMapper;
 
 
     @ModelAttribute("name")
@@ -25,6 +29,10 @@ public class HomeController {
 
     @RequestMapping
     public String home() {
+
+        User user = userMapper.findByUsername("test@test.net");
+
+
         return "index";
     }
 
@@ -74,9 +82,9 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signup(@ModelAttribute User signupUser, @RequestParam(defaultValue = "") String[] favorite, SessionStatus status) {
+    public String signup(@ModelAttribute User signupUser, SessionStatus status) {
 
-
+        System.out.println("signupUser = " + signupUser);
         userService.signup(signupUser);
         status.setComplete();
 
