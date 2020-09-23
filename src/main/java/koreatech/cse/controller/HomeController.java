@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Controller
@@ -30,10 +31,10 @@ public class HomeController {
     }
 
     @RequestMapping
-    public String home() {
+    public String home(HttpSession session) {
 
         User user = userMapper.findByUsername("test@test.net");
-
+        //session.setAttribute("currentRole", "student");
 
         return "index";
     }

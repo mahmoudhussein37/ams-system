@@ -26,3 +26,6 @@
 </c:choose>
 <c:set var="current_path" value="${requestScope['javax.servlet.forward.servlet_path']}" />
 <c:set var="current_url" value="${root}${current_path}" />
+
+<c:set var="isRTL" value="false"/>
+<c:set var="currentRole" value="admin"/>

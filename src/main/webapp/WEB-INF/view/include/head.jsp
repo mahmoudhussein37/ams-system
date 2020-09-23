@@ -1,8 +1,15 @@
 <!--end::Head-->
 
 <!DOCTYPE html>
-<html lang="en" direction="rtl" style="direction: rtl;">
-<%--<html lang="en">--%>
+<c:choose>
+    <c:when test="${isRTL}">
+        <html lang="en" direction="rtl" style="direction: rtl;">
+    </c:when>
+    <c:otherwise>
+        <html lang="en">
+    </c:otherwise>
+</c:choose>
+
 <!--begin::Head-->
 <head>
     <meta charset="utf-8"/>
@@ -23,16 +30,23 @@
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>        <!--end::Fonts-->
 
-
-
+    <c:choose>
+    <c:when test="${isRTL}">
     <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/fullcalendar/fullcalendar.bundle.rtl.css" rel="stylesheet" type="text/css"/>
     <link href="${resources}/vendor/metronic_assets_7/assets/plugins/global/plugins.bundle.rtl.css" rel="stylesheet" type="text/css"/>
     <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/prismjs/prismjs.bundle.rtl.css" rel="stylesheet" type="text/css"/>
     <link href="${resources}/vendor/metronic_assets_7/assets/css/style.bundle.rtl.css" rel="stylesheet" type="text/css"/>
+    </c:when>
+    <c:otherwise>
+        <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css"/>
+        <link href="${resources}/vendor/metronic_assets_7/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
+        <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css"/>
+        <link href="${resources}/vendor/metronic_assets_7/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
+    </c:otherwise>
+    </c:choose>
 
-    <%--<link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css"/>
-    <link href="${resources}/vendor/metronic_assets_7/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
-    <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css"/>
-    <link href="${resources}/vendor/metronic_assets_7/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>--%>
+
+
+
     <link rel="shortcut icon" href="${resources}/vendor/metronic_assets_7/assets/media/logos/favicon.ico"/>
 </head>
