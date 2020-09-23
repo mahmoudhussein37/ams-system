@@ -113,13 +113,12 @@
                                         <!--begin::Item-->
                                         <li class="nav-item">
                                             <a href="#" class="nav-link py-4 px-6 active" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
-                                                Student user management
+                                                Home
                                             </a>
                                         </li>
                                         <!--end::Item-->
 
-                                        <!--begin::Item-->
-                                        <li class="nav-item mr-3">
+                                        <%--<li class="nav-item mr-3">
                                             <a href="#" class="nav-link py-4 px-6" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
                                                 Prof. user management
                                             </a>
@@ -138,8 +137,7 @@
                                             <a href="#" class="nav-link py-4 px-6" data-toggle="tab" data-target="#kt_header_tab_5" role="tab">
                                                 System management
                                             </a>
-                                        </li>
-                                        <!--end::Item-->
+                                        </li>--%>
                                     </ul>
                                 </c:when>
                             </c:choose>
@@ -241,12 +239,12 @@
                                         <!--begin::Item-->
                                         <li class="nav-item mr-2">
                                             <a href="#" class="nav-link btn btn-clean active" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
-                                                Student user management
+                                                Home
                                             </a>
                                         </li>
                                         <!--end::Item-->
 
-                                        <!--begin::Item-->
+                                        <%--!--begin::Item-->
                                         <li class="nav-item mr-2">
                                             <a href="#" class="nav-link btn btn-clean" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
                                                 Prof. user management
@@ -267,7 +265,7 @@
                                             <a href="#" class="nav-link btn btn-clean" data-toggle="tab" data-target="#kt_header_tab_5" role="tab">
                                                 System management
                                             </a>
-                                        </li>
+                                        </li>--%>
                                     </ul>
                                 </c:when>
                             </c:choose>
@@ -464,10 +462,9 @@
                                         <div class="tab-pane py-5 p-lg-0 show active" id="kt_header_tab_1">
                                             <!--begin::Menu-->
                                             <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default ">
-
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
-                                                    <li class="menu-item  menu-item-active "  aria-haspopup="true">
+<%--                                                    <li class="menu-item  menu-item-active "  aria-haspopup="true">
                                                         <a  href="index.html" class="menu-link "><span class="menu-text">Student registration</span></a>
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
@@ -478,9 +475,80 @@
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
                                                         <a  href="index.html" class="menu-link "><span class="menu-text">Student Counseling Synthesis</span></a>
+                                                    </li>--%>
+
+                                                    <li class="menu-item  menu-item-submenu menu-item-rel menu-item-active"  data-menu-toggle="click" aria-haspopup="true">
+                                                        <a  href="javascript:;" class="menu-link menu-toggle">
+                                                            <span class="menu-text">Admin</span><span class="menu-desc"></span><i class="menu-arrow"></i>
+                                                        </a>
+                                                        <div class="menu-submenu menu-submenu-classic menu-submenu-left" >
+                                                            <ul class="menu-subnav">
+                                                                <li class="menu-item  menu-item-submenu"  data-menu-toggle="hover" aria-haspopup="true"><a  href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"></span><span class="menu-text">Student user management</span><i class="menu-arrow"></i></a>
+                                                                    <div class="menu-submenu menu-submenu-classic menu-submenu-right" >
+                                                                        <ul class="menu-subnav">
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/typography.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Student registration</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/buttons.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Stuent information Management</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/button-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Student Profile Synthesis</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Student Counseling Synthesis</span></a></li>
+
+                                                                        </ul>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="menu-item  menu-item-submenu"  data-menu-toggle="hover" aria-haspopup="true"><a  href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"></span><span class="menu-text">Prof. user management</span><i class="menu-arrow"></i></a>
+                                                                    <div class="menu-submenu menu-submenu-classic menu-submenu-right" >
+                                                                        <ul class="menu-subnav">
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/typography.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Professor registration</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/buttons.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Professor Information Management</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/button-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Graduation Research Plan Synthesis</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Student Enrolment Counseling Synthesis</span></a></li>
+
+                                                                        </ul>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="menu-item  menu-item-submenu"  data-menu-toggle="hover" aria-haspopup="true"><a  href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"></span><span class="menu-text">Course management</span><i class="menu-arrow"></i></a>
+                                                                    <div class="menu-submenu menu-submenu-classic menu-submenu-right" >
+                                                                        <ul class="menu-subnav">
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/typography.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Curriculum Management</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/buttons.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Course Management</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/button-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Alternative and Prerequisite Course Management</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Course Open Management</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Attendence Synthesis</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Syllabus Synthesis</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Makeup Class List Synthesis</span></a></li>
+
+                                                                        </ul>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="menu-item  menu-item-submenu"  data-menu-toggle="hover" aria-haspopup="true"><a  href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"></span><span class="menu-text">Academic management</span><i class="menu-arrow"></i></a>
+                                                                    <div class="menu-submenu menu-submenu-classic menu-submenu-right" >
+                                                                        <ul class="menu-subnav">
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/typography.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Student's Grade Synthesis</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/buttons.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Graduation Criteria Management</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/button-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Course Assessment Factor Management</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Course Assessment Result Synthesis</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">CQI-Report Synthesis</span></a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="menu-item  menu-item-submenu"  data-menu-toggle="hover" aria-haspopup="true"><a  href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"></span><span class="menu-text">Systen management</span><i class="menu-arrow"></i></a>
+                                                                    <div class="menu-submenu menu-submenu-classic menu-submenu-right" >
+                                                                        <ul class="menu-subnav">
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/typography.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Year-Semester Registration</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/buttons.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Department(division) / Major Hierarchy Registration</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/button-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Lecture Method Setting</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Evaluation Method Setting</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Type of Educational Medium Management</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Equipment and Tools Management</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Class room Management</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Menu access period setting</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Add Administrator ID</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Error Report</span></a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
                                                     </li>
-
-
 
                                                 </ul>
                                                 <!--end::Nav-->
@@ -488,7 +556,7 @@
                                             <!--end::Menu-->
                                         </div>
                                         <!--begin::Tab Pane-->
-                                        <div class="tab-pane py-5 p-lg-0" id="kt_header_tab_2">
+                                        <%--<div class="tab-pane py-5 p-lg-0" id="kt_header_tab_2">
                                             <!--begin::Menu-->
                                             <div id="kt_header_menu2" class="header-menu header-menu-mobile  header-menu-layout-default " >
 
@@ -609,7 +677,7 @@
                                                 <!--end::Nav-->
                                             </div>
                                             <!--end::Menu-->
-                                        </div>
+                                        </div>--%>
                                     </c:when>
                                 </c:choose>
                                 <!--begin::Tab Pane-->
