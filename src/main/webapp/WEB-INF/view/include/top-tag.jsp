@@ -28,4 +28,4 @@
 <c:set var="current_url" value="${root}${current_path}" />
 
 <c:set var="isRTL" value="false"/>
-<c:set var="currentRole" value="admin"/>
+<c:set var="currentRole" value="student"/>

@@ -60,7 +60,7 @@
                                         <!--begin::Item-->
                                         <li class="nav-item">
                                             <a href="#" class="nav-link py-4 px-6 active" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
-                                                Student guidance
+                                                <spring:message code="menu.professor.main1"/>
                                             </a>
                                         </li>
                                         <!--end::Item-->
@@ -68,7 +68,7 @@
                                         <!--begin::Item-->
                                         <li class="nav-item mr-3">
                                             <a href="#" class="nav-link py-4 px-6" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
-                                                Class progress
+                                                <spring:message code="menu.professor.main2"/>
                                             </a>
                                         </li>
                                         <!--end::Item-->
@@ -79,7 +79,7 @@
                                         <!--begin::Item-->
                                         <li class="nav-item">
                                             <a href="#" class="nav-link py-4 px-6 active" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
-                                                Course Guide
+                                                <spring:message code="menu.student.main1"/>
                                             </a>
                                         </li>
                                         <!--end::Item-->
@@ -87,22 +87,22 @@
                                         <!--begin::Item-->
                                         <li class="nav-item mr-3">
                                             <a href="#" class="nav-link py-4 px-6" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
-                                                Univ. Register
+                                                <spring:message code="menu.student.main2"/>
                                             </a>
                                         </li>
                                         <li class="nav-item mr-3">
                                             <a href="#" class="nav-link py-4 px-6" data-toggle="tab" data-target="#kt_header_tab_3" role="tab">
-                                                Class Information
+                                                <spring:message code="menu.student.main3"/>
                                             </a>
                                         </li>
                                         <li class="nav-item mr-3">
                                             <a href="#" class="nav-link py-4 px-6" data-toggle="tab" data-target="#kt_header_tab_4" role="tab">
-                                                Grades
+                                                <spring:message code="menu.student.main4"/>
                                             </a>
                                         </li>
                                         <li class="nav-item mr-3">
                                             <a href="#" class="nav-link py-4 px-6" data-toggle="tab" data-target="#kt_header_tab_5" role="tab">
-                                                Graduation
+                                                <spring:message code="menu.student.main5"/>
                                             </a>
                                         </li>
                                         <!--end::Item-->
@@ -113,7 +113,7 @@
                                         <!--begin::Item-->
                                         <li class="nav-item">
                                             <a href="#" class="nav-link py-4 px-6 active" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
-                                                Home
+                                                <spring:message code="menu.admin.home"/>
                                             </a>
                                         </li>
                                         <!--end::Item-->
@@ -150,8 +150,25 @@
                         <!--begin::Topbar-->
                         <div class="topbar bg-primary">
 
+                            <sec:authorize access="!isAuthenticated()">
+                                <div class="topbar-item">
+                                    <a href="/signin" class="btn btn-icon btn-hover-transparent-white w-lg-auto d-flex align-items-center btn-lg px-2">
+                                        <div class="d-flex flex-column text-right pr-lg-3">
+                                            <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline">Signup</span>
+                                        </div>
 
+                                    </a>
+                                </div>
+                                <div class="topbar-item">
+                                    <a  href="/signin" class="btn btn-icon btn-hover-transparent-white w-lg-auto d-flex align-items-center btn-lg px-2">
+                                        <div class="d-flex flex-column text-right pr-lg-3">
+                                            <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline">Login</span>
+                                        </div>
 
+                                    </a>
+                                </div>
+                            </sec:authorize>
+                            <sec:authorize access="isAuthenticated()">
                             <!--begin::User-->
                             <div class="topbar-item">
                                 <div class="btn btn-icon btn-hover-transparent-white w-lg-auto d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
@@ -164,6 +181,7 @@
 								</span>
                                 </div>
                             </div>
+                            </sec:authorize>
                             <!--end::User-->
                         </div>
                         <!--end::Topbar-->
@@ -186,7 +204,7 @@
                                         <!--begin::Item-->
                                         <li class="nav-item mr-2">
                                             <a href="#" class="nav-link btn btn-clean active" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
-                                                Student guidance
+                                                <spring:message code="menu.professor.main1"/>
                                             </a>
                                         </li>
                                         <!--end::Item-->
@@ -194,7 +212,7 @@
                                         <!--begin::Item-->
                                         <li class="nav-item mr-2">
                                             <a href="#" class="nav-link btn btn-clean" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
-                                                Class progress
+                                                <spring:message code="menu.professor.main2"/>
                                             </a>
                                         </li>
                                         <!--end::Item-->
@@ -205,7 +223,7 @@
                                         <!--begin::Item-->
                                         <li class="nav-item mr-2">
                                             <a href="#" class="nav-link btn btn-clean active" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
-                                                Course Guide
+                                                <spring:message code="menu.student.main1"/>
                                             </a>
                                         </li>
                                         <!--end::Item-->
@@ -213,23 +231,23 @@
                                         <!--begin::Item-->
                                         <li class="nav-item mr-2">
                                             <a href="#" class="nav-link btn btn-clean" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
-                                                Univ. Register
+                                                <spring:message code="menu.student.main2"/>
                                             </a>
                                         </li>
                                         <!--end::Item-->
                                         <li class="nav-item mr-2">
                                             <a href="#" class="nav-link btn btn-clean" data-toggle="tab" data-target="#kt_header_tab_3" role="tab">
-                                                Class Information
+                                                <spring:message code="menu.student.main3"/>
                                             </a>
                                         </li>
                                         <li class="nav-item mr-2">
                                             <a href="#" class="nav-link btn btn-clean" data-toggle="tab" data-target="#kt_header_tab_4" role="tab">
-                                                Grades
+                                                <spring:message code="menu.student.main4"/>
                                             </a>
                                         </li>
                                         <li class="nav-item mr-2">
                                             <a href="#" class="nav-link btn btn-clean" data-toggle="tab" data-target="#kt_header_tab_5" role="tab">
-                                                Graduation
+                                                <spring:message code="menu.student.main5"/>
                                             </a>
                                         </li>
                                     </ul>
@@ -239,7 +257,7 @@
                                         <!--begin::Item-->
                                         <li class="nav-item mr-2">
                                             <a href="#" class="nav-link btn btn-clean active" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
-                                                Home
+                                                <spring:message code="menu.admin.home"/>
                                             </a>
                                         </li>
                                         <!--end::Item-->
@@ -283,13 +301,13 @@
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
                                                     <li class="menu-item  menu-item-active "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Student Lookup</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_1"/></span></a>
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Counseling</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_2"/></span></a>
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Counseling Course Enrolment</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_3"/></span></a>
                                                     </li>
 
 
@@ -333,28 +351,28 @@
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
                                                     <li class="menu-item  menu-item-active "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Attendance</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_1"/></span></a>
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Inquiry Course</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_2"/></span></a>
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Syllabus</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_3"/></span></a>
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Makeup Class</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_4"/></span></a>
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Class assessment</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_5"/></span></a>
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Register grade</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_6"/></span></a>
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">CQI-Report</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_7"/></span></a>
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Graduation Research Plan</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_8"/></span></a>
                                                     </li>
                                                 </ul>
                                                 <!--end::Nav-->
@@ -370,13 +388,13 @@
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
                                                     <li class="menu-item  menu-item-active "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Yearly Curriculum</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub1_1"/></span></a>
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Course Info</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub1_2"/></span></a>
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Alternative and Prerequisite Course</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub1_3"/></span></a>
                                                     </li>
 
 
@@ -394,7 +412,7 @@
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
                                                     <li class="menu-item  menu-item-active "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Basic of Univ. Register</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub2_1"/></span></a>
                                                     </li>
                                                 </ul>
                                                 <!--end::Nav-->
@@ -408,16 +426,16 @@
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
                                                     <li class="menu-item  menu-item-active "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Syllabus inquiry</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub3_1"/></span></a>
                                                     </li>
                                                     <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Enrolment(Class Registration)</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub3_2"/></span></a>
                                                     </li>
                                                     <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Counseling Course Enrolment</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub3_3"/></span></a>
                                                     </li>
                                                     <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Class assessment</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub3_4"/></span></a>
                                                     </li>
                                                 </ul>
                                                 <!--end::Nav-->
@@ -431,7 +449,7 @@
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
                                                     <li class="menu-item  menu-item-active "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Grade inquiry</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub4_1"/></span></a>
                                                     </li>
 
                                                 </ul>
@@ -446,10 +464,10 @@
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
                                                     <li class="menu-item  menu-item-active "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Graduation Requirements</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub5_1"/></span></a>
                                                     </li>
                                                     <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Graduation Research Plan</span></a>
+                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub5_2"/></span></a>
                                                     </li>
 
                                                 </ul>
@@ -483,66 +501,66 @@
                                                         </a>
                                                         <div class="menu-submenu menu-submenu-classic menu-submenu-left" >
                                                             <ul class="menu-subnav">
-                                                                <li class="menu-item  menu-item-submenu"  data-menu-toggle="hover" aria-haspopup="true"><a  href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"></span><span class="menu-text">Student user management</span><i class="menu-arrow"></i></a>
+                                                                <li class="menu-item  menu-item-submenu"  data-menu-toggle="hover" aria-haspopup="true"><a  href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"></span><span class="menu-text"><spring:message code="menu.admin.main1"/></span><i class="menu-arrow"></i></a>
                                                                     <div class="menu-submenu menu-submenu-classic menu-submenu-right" >
                                                                         <ul class="menu-subnav">
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/typography.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Student registration</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/buttons.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Student information Management</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/button-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Student Profile Synthesis</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Student Counseling Synthesis</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/typography.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub1_1"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/buttons.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub1_2"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/button-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub1_3"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub1_4"/></span></a></li>
 
                                                                         </ul>
                                                                     </div>
                                                                 </li>
-                                                                <li class="menu-item  menu-item-submenu"  data-menu-toggle="hover" aria-haspopup="true"><a  href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"></span><span class="menu-text">Prof. user management</span><i class="menu-arrow"></i></a>
+                                                                <li class="menu-item  menu-item-submenu"  data-menu-toggle="hover" aria-haspopup="true"><a  href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"></span><span class="menu-text"><spring:message code="menu.admin.main2"/></span><i class="menu-arrow"></i></a>
                                                                     <div class="menu-submenu menu-submenu-classic menu-submenu-right" >
                                                                         <ul class="menu-subnav">
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/typography.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Professor registration</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/buttons.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Professor Information Management</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/button-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Graduation Research Plan Synthesis</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Student Enrolment Counseling Synthesis</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/typography.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub2_1"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/buttons.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub2_2"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/button-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub2_3"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub2_4"/></span></a></li>
 
                                                                         </ul>
                                                                     </div>
                                                                 </li>
-                                                                <li class="menu-item  menu-item-submenu"  data-menu-toggle="hover" aria-haspopup="true"><a  href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"></span><span class="menu-text">Course management</span><i class="menu-arrow"></i></a>
+                                                                <li class="menu-item  menu-item-submenu"  data-menu-toggle="hover" aria-haspopup="true"><a  href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"></span><span class="menu-text"><spring:message code="menu.admin.main3"/></span><i class="menu-arrow"></i></a>
                                                                     <div class="menu-submenu menu-submenu-classic menu-submenu-right" >
                                                                         <ul class="menu-subnav">
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/typography.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Curriculum Management</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/buttons.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Course Management</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/button-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Alternative and Prerequisite Course Management</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Course Open Management</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Attendance Synthesis</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Syllabus Synthesis</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Makeup Class List Synthesis</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/typography.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub3_1"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/buttons.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub3_2"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/button-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub3_3"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub3_4"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub3_5"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub3_6"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub3_7"/></span></a></li>
 
                                                                         </ul>
                                                                     </div>
                                                                 </li>
-                                                                <li class="menu-item  menu-item-submenu"  data-menu-toggle="hover" aria-haspopup="true"><a  href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"></span><span class="menu-text">Academic management</span><i class="menu-arrow"></i></a>
+                                                                <li class="menu-item  menu-item-submenu"  data-menu-toggle="hover" aria-haspopup="true"><a  href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"></span><span class="menu-text"><spring:message code="menu.admin.main4"/></span><i class="menu-arrow"></i></a>
                                                                     <div class="menu-submenu menu-submenu-classic menu-submenu-right" >
                                                                         <ul class="menu-subnav">
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/typography.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Student's Grade Synthesis</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/buttons.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Graduation Criteria Management</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/button-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Course Assessment Factor Management</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Course Assessment Result Synthesis</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">CQI-Report Synthesis</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/typography.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub4_1"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/buttons.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub4_2"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/button-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub4_3"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub4_4"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub4_5"/></span></a></li>
                                                                         </ul>
                                                                     </div>
                                                                 </li>
-                                                                <li class="menu-item  menu-item-submenu"  data-menu-toggle="hover" aria-haspopup="true"><a  href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"></span><span class="menu-text">System management</span><i class="menu-arrow"></i></a>
+                                                                <li class="menu-item  menu-item-submenu"  data-menu-toggle="hover" aria-haspopup="true"><a  href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"></span><span class="menu-text"><spring:message code="menu.admin.main5"/></span><i class="menu-arrow"></i></a>
                                                                     <div class="menu-submenu menu-submenu-classic menu-submenu-right" >
                                                                         <ul class="menu-subnav">
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/typography.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Year-Semester Registration</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/buttons.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Department(division) / Major Hierarchy Registration</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/button-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Lecture Method Setting</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Evaluation Method Setting</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Type of Educational Medium Management</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Equipment and Tools Management</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Class room Management</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Menu access period setting</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Add Administrator ID</span></a></li>
-                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Error Report</span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/typography.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_1"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/buttons.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_2"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/button-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_3"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_4"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_5"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_6"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_7"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_8"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_9"/></span></a></li>
+                                                                            <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_10"/></span></a></li>
                                                                         </ul>
                                                                     </div>
                                                                 </li>
