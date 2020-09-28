@@ -9,7 +9,7 @@ public enum Role {
     student("ROLE_STUDENT"), //parent list
     professor("ROLE_PROFESSOR"), //student list
 
-    superManager("ROLE_SUPER_MANAGER");
+    admin("ROLE_ADMIN");
 
 
 

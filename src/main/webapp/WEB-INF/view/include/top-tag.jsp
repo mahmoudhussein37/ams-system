@@ -28,4 +28,7 @@
 <c:set var="current_url" value="${root}${current_path}" />
 
 <c:set var="isRTL" value="false"/>
-<c:set var="currentRole" value="student"/>
+<c:set var="currentRole" value=""/>
+<sec:authorize access="isAuthenticated()">
+    <c:set var="currentRole" value="${user.getCurrentRole()}"/>
+</sec:authorize>

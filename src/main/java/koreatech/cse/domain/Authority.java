@@ -1,12 +1,16 @@
 package koreatech.cse.domain;
 
+import koreatech.cse.domain.constant.Role;
 import org.springframework.security.core.GrantedAuthority;
 
-public class Authority implements GrantedAuthority {
+import java.io.Serializable;
+
+public class Authority implements GrantedAuthority, Serializable {
+    private static final long serialVersionUID = 44496570353849L;
 
     private int id;
     private int userId;
-    private String role;
+    private Role role;
 
     public int getId() {
         return id;
@@ -24,16 +28,16 @@ public class Authority implements GrantedAuthority {
         this.userId = userId;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
     public String getAuthority() {
-        return role;
+        return role.toCode();
     }
 
     @Override

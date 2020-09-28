@@ -25,16 +25,8 @@ public class HomeController {
     private UserMapper userMapper;
 
 
-    @ModelAttribute("name")
-    private String getName() {
-        return "IamHomeControllerModelAttribute";
-    }
-
     @RequestMapping
     public String home(HttpSession session) {
-
-        User user = userMapper.findByUsername("test@test.net");
-        //session.setAttribute("currentRole", "student");
 
         return "index";
     }

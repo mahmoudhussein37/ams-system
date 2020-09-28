@@ -1,5 +1,7 @@
 package koreatech.cse.domain;
 
+import com.neovisionaries.i18n.LanguageCode;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -45,6 +47,14 @@ public class Contact implements Serializable  {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getFullName() {
+        try {
+            return firstName + " " + lastName;
+        } catch(Exception e) {
+            return "";
+        }
     }
 
     @Override

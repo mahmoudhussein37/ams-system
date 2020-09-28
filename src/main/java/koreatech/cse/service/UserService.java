@@ -3,6 +3,7 @@ package koreatech.cse.service;
 import koreatech.cse.domain.Authority;
 import koreatech.cse.domain.Contact;
 import koreatech.cse.domain.User;
+import koreatech.cse.domain.constant.Role;
 import koreatech.cse.repository.AuthorityMapper;
 import koreatech.cse.repository.ContactMapper;
 import koreatech.cse.repository.UserMapper;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -37,6 +39,12 @@ public class UserService implements UserDetailsService {
         if(isUniqueUsername(user.getUsername().trim())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setEnabled(true);
+            user.setConfirm(true);
+            user.setDivisionId(1);
+            user.setNumber(UUID.randomUUID().toString().substring(9, 28));
+            user.setMajorId(1);
+
+
             userMapper.insert(user);
             user.getContact().setUserId(user.getId());
             Contact contact = user.getContact();
@@ -44,13 +52,24 @@ public class UserService implements UserDetailsService {
 
             Authority authority = new Authority();
             authority.setUserId(user.getId());
-            authority.setRole("ROLE_USER");
+            authority.setRole(Role.user);
             authorityMapper.insert(authority);
 
+            //TODO: remove
             if(user.getUsername().contains("admin")) {
                 Authority adminAuthority = new Authority();
                 adminAuthority.setUserId(user.getId());
-                adminAuthority.setRole("ROLE_ADMIN");
+                adminAuthority.setRole(Role.admin);
+                authorityMapper.insert(adminAuthority);
+            } else if(user.getUsername().contains("student")) {
+                Authority adminAuthority = new Authority();
+                adminAuthority.setUserId(user.getId());
+                adminAuthority.setRole(Role.student);
+                authorityMapper.insert(adminAuthority);
+            } else if(user.getUsername().contains("professor")) {
+                Authority adminAuthority = new Authority();
+                adminAuthority.setUserId(user.getId());
+                adminAuthority.setRole(Role.professor);
                 authorityMapper.insert(adminAuthority);
             }
 

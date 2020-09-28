@@ -152,7 +152,7 @@
 
                             <sec:authorize access="!isAuthenticated()">
                                 <div class="topbar-item">
-                                    <a href="/signin" class="btn btn-icon btn-hover-transparent-white w-lg-auto d-flex align-items-center btn-lg px-2">
+                                    <a href="/signup" class="btn btn-icon btn-hover-transparent-white w-lg-auto d-flex align-items-center btn-lg px-2">
                                         <div class="d-flex flex-column text-right pr-lg-3">
                                             <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline">Signup</span>
                                         </div>
@@ -162,7 +162,7 @@
                                 <div class="topbar-item">
                                     <a  href="/signin" class="btn btn-icon btn-hover-transparent-white w-lg-auto d-flex align-items-center btn-lg px-2">
                                         <div class="d-flex flex-column text-right pr-lg-3">
-                                            <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline">Login</span>
+                                            <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline">Signin</span>
                                         </div>
 
                                     </a>
@@ -173,11 +173,11 @@
                             <div class="topbar-item">
                                 <div class="btn btn-icon btn-hover-transparent-white w-lg-auto d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
                                     <div class="d-flex flex-column text-right pr-lg-3">
-                                        <span class="text-white opacity-50 font-weight-bold font-size-sm d-none d-md-inline">Sean</span>
-                                        <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline">UX Designer</span>
+                                        <span class="text-white opacity-50 font-weight-bold font-size-sm d-none d-md-inline">${user.number}</span>
+                                        <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline">${user.getFullName()}</span>
                                     </div>
                                     <span class="symbol symbol-35">
-									<span class="symbol-label font-size-h5 font-weight-bold text-white bg-white-o-30">S</span>
+									<span class="symbol-label font-size-h5 font-weight-bold text-white bg-white-o-30"><i class="fa fa-user"></i></span>
 								</span>
                                 </div>
                             </div>
@@ -301,7 +301,7 @@
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
                                                     <li class="menu-item  menu-item-active "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_1"/></span></a>
+                                                        <a  href="/professor/studentLookup" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_1"/></span></a>
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
                                                         <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_2"/></span></a>
