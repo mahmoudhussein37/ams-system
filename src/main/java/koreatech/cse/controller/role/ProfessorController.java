@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.inject.Inject;
+import java.util.List;
 
 @Controller
 @PreAuthorize("hasRole('ROLE_PROFESSOR')")
@@ -20,10 +21,11 @@ public class ProfessorController {
     private UserService userService;
 
 
+
     @RequestMapping("/studentLookup")
     public String studentLookup(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
+        List<User> userList = userMapper.findAll();
+        model.addAttribute("userList", userList);
         return "role/professor/studentLookup";
     }
 

@@ -27,6 +27,9 @@ public interface UserMapper {
     @Select("SELECT * FROM USER WHERE ID = #{id}")
     User findOne(@Param("id") int id);
 
+    @ResultMap("findOne-int")
+    @Select("SELECT * FROM USER")
+    List<User> findAll();
 
     @Results({
             @Result(column = "id", property = "id"),

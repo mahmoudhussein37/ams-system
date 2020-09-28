@@ -35,12 +35,14 @@
     <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/fullcalendar/fullcalendar.bundle.rtl.css" rel="stylesheet" type="text/css"/>
     <link href="${resources}/vendor/metronic_assets_7/assets/plugins/global/plugins.bundle.rtl.css" rel="stylesheet" type="text/css"/>
     <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/prismjs/prismjs.bundle.rtl.css" rel="stylesheet" type="text/css"/>
+        <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/datatables/datatables.bundle.rtl.css" rel="stylesheet" type="text/css"/>
     <link href="${resources}/vendor/metronic_assets_7/assets/css/style.bundle.rtl.css" rel="stylesheet" type="text/css"/>
     </c:when>
     <c:otherwise>
         <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="${resources}/vendor/metronic_assets_7/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css"/>
+        <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="${resources}/vendor/metronic_assets_7/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
     </c:otherwise>
     </c:choose>
