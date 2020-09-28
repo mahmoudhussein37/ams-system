@@ -14,9 +14,9 @@
             <div class="row">
                 <div class="col-md-12">
                     <!--begin::Card-->
-                    <div class="card card-custom gutter-b">
-                        <div class="card-header border-0 bg-primary py-5">
-                            <h3 class="card-title font-weight-bolder text-white">Student Lookup</h3>
+                    <div class="card card-custom">
+                        <div class="card-header">
+                            <h3 class="card-title font-weight-bolder">Student Lookup</h3>
                             <%--<div class="card-toolbar">
                                 <div class="dropdown dropdown-inline">
                                     <a href="#" class="btn btn-transparent-white btn-sm font-weight-bolder dropdown-toggle px-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -65,7 +65,7 @@
                             </div>--%>
                         </div>
                         <div class="card-body">
-                            <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_2">
+                            <table class="table table-head-custom table-vertical-center" id="student-list">
                                 <thead>
                                 <tr class="text-uppercase">
 
@@ -84,7 +84,9 @@
                                             ${varStatus.count}
                                         </td>
                                         <td>
+                                            <a href="#" class="student-detail" data-student-id="${studentUser.id}">
                             ${studentUser.number}
+                                            </a>
                                         </td>
                                         <td>
                                                 ${studentUser.getFullName()}
@@ -123,6 +125,11 @@
                                 </tbody>
                             </table>
 
+                            <br/><br/>
+                            <div class="student-detail-div">
+
+                            </div>
+
                         </div>
                     </div>
                     <!--end::Card-->
@@ -138,12 +145,7 @@
 <!--end::Content-->
 
 <%@include file="/WEB-INF/view/include/footer-bar.jsp" %>
-</div>
-<!--end::Wrapper-->
-</div>
-<!--end::Page-->
-</div>
-<!--end::Main-->
+
 
 <%@include file="/WEB-INF/view/include/user-panel.jsp" %>
 
@@ -151,7 +153,18 @@
 <%@include file="/WEB-INF/view/include/footer-script.jsp" %>
 <script>
 
-    $("#kt_advance_table_widget_2").DataTable();
+    $("#student-list").DataTable();
+
+    $("body").on('click', '.student-detail', function (e) {
+        e.preventDefault();
+        var studentId = $(this).attr("data-student-id");
+
+        $(".student-detail-div").load("/professor/studentDetail?studentId=" + studentId, function() {
+
+        });
+
+    });
+
 </script>
 </body>
 </html>

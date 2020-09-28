@@ -3,6 +3,7 @@ package koreatech.cse.repository;
 
 import koreatech.cse.domain.univ.Major;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.springframework.stereotype.Repository;
@@ -17,6 +18,9 @@ public interface MajorMapper {
 
     @Select("SELECT * FROM major")
     List<Major> findAll();
+
+    @Select("SELECT * FROM major where id=#{id}")
+    Major findOne(@Param("id") int id);
 
 
 

@@ -3,6 +3,7 @@ package koreatech.cse.repository;
 
 import koreatech.cse.domain.univ.Division;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.springframework.stereotype.Repository;
@@ -17,6 +18,9 @@ public interface DivisionMapper {
 
     @Select("SELECT * FROM division")
     List<Division> findAll();
+
+    @Select("SELECT * FROM division where id=#{id}")
+    Division findOne(@Param("id") int id);
 
 
 

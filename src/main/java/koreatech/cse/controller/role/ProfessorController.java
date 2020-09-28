@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -24,11 +25,16 @@ public class ProfessorController {
 
     @RequestMapping("/studentLookup")
     public String studentLookup(Model model) {
-        List<User> userList = userMapper.findAll();
+        List<User> userList = userMapper.findAllStudents();
         model.addAttribute("userList", userList);
-        return "role/professor/studentLookup";
+        return "role/professor/student-lookup";
     }
 
-
+    @RequestMapping("/studentDetail")
+    public String studentDetail(Model model, @RequestParam int studentId) {
+        User studentUser = userMapper.findOne(studentId);
+        model.addAttribute("studentUser", studentUser);
+        return "role/professor/student-detail";
+    }
 
 }

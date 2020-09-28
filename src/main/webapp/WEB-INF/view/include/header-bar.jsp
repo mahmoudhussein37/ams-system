@@ -35,7 +35,7 @@
 
 
 
-<div class="d-flex flex-column flex-root">
+<div class="d-flex flex-column">
     <!--begin::Page-->
     <div class="d-flex flex-row flex-column-fluid page">
         <!--begin::Wrapper-->

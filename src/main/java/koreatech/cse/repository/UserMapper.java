@@ -21,8 +21,12 @@ public interface UserMapper {
 
     @Results({
             @Result(column = "id", property = "id"),
+            @Result(column = "division_id", property = "divisionId"),
+            @Result(column = "major_id", property = "majorId"),
             @Result(column = "id", property = "contact", one = @One(select = "koreatech.cse.repository.ContactMapper.findByUserId")),
             @Result(column = "id", property = "authorities", many = @Many(select = "koreatech.cse.repository.AuthorityMapper.findByUserId")),
+            @Result(column = "division_id", property = "division", one = @One(select = "koreatech.cse.repository.DivisionMapper.findOne")),
+            @Result(column = "major_id", property = "major", one = @One(select = "koreatech.cse.repository.MajorMapper.findOne")),
     })
     @Select("SELECT * FROM USER WHERE ID = #{id}")
     User findOne(@Param("id") int id);
@@ -31,11 +35,11 @@ public interface UserMapper {
     @Select("SELECT * FROM USER")
     List<User> findAll();
 
-    @Results({
-            @Result(column = "id", property = "id"),
-            @Result(column = "id", property = "contact", one = @One(select = "koreatech.cse.repository.ContactMapper.findByUserId")),
-            @Result(column = "id", property = "authorities", many = @Many(select = "koreatech.cse.repository.AuthorityMapper.findByUserId")),
-    })
+    @ResultMap("findOne-int")
+    @Select("SELECT * FROM USER u join authority a on u.id = a.user_id where a.role = 'ROLE_STUDENT'")
+    List<User> findAllStudents();
+
+    @ResultMap("findOne-int")
     @Select("select * from user where username = #{username}")
     User findByUsername(@Param("username") String username);
 
