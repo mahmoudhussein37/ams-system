@@ -26,7 +26,18 @@ public class ProfessorController {
     @RequestMapping("/studentLookup")
     public String studentLookup(Model model) {
         List<User> userList = userMapper.findAllStudents();
+
+
         model.addAttribute("userList", userList);
+        User firstUser = null;
+        for(User user: userList) {
+            firstUser = user;
+            break;
+        }
+
+        model.addAttribute("firstUser", firstUser);
+
+
         return "role/professor/student-lookup";
     }
 

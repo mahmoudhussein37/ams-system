@@ -16,7 +16,7 @@
                     <!--begin::Card-->
                     <div class="card card-custom">
                         <div class="card-header">
-                            <h3 class="card-title font-weight-bolder">Student Lookup</h3>
+                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.professor.sub1_1"/></h3>
                             <%--<div class="card-toolbar">
                                 <div class="dropdown dropdown-inline">
                                     <a href="#" class="btn btn-transparent-white btn-sm font-weight-bolder dropdown-toggle px-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -69,9 +69,9 @@
                                 <thead>
                                 <tr class="text-uppercase">
 
-                                    <th class="pl-0" style="min-width: 100px">No.</th>
-                                    <th style="min-width: 120px"><span class="text-primary">Student Number</span></th>
-                                    <th style="min-width: 150px"><span class="text-primary">Name</span>
+                                    <th class="pl-0" style="min-width: 100px"><spring:message code="common.no"/></th>
+                                    <th style="min-width: 120px"><span class="text-primary"><spring:message code="common.studentNumber"/></span></th>
+                                    <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.name"/></span>
 
                                     <th class="pr-0" style="min-width: 160px"><span class="text-primary">action</span></th>
                                 </tr>
@@ -81,11 +81,11 @@
                                     <tr>
 
                                         <td class="pl-0">
-                                            ${varStatus.count}
+                                                ${varStatus.count}
                                         </td>
                                         <td>
                                             <a href="#" class="student-detail" data-student-id="${studentUser.id}">
-                            ${studentUser.number}
+                                                    ${studentUser.number}
                                             </a>
                                         </td>
                                         <td>
@@ -126,6 +126,8 @@
                             </table>
 
                             <br/><br/>
+                            <div class="separator separator-solid my-5"></div>
+                            <br/><br/>
                             <div class="student-detail-div">
 
                             </div>
@@ -151,17 +153,18 @@
 
 
 <%@include file="/WEB-INF/view/include/footer-script.jsp" %>
+
 <script>
 
     $("#student-list").DataTable();
 
+    <c:if test="${not empty firstUser}">
+    $(".student-detail-div").load("/professor/studentDetail?studentId=${firstUser.id}");
+    </c:if>
     $("body").on('click', '.student-detail', function (e) {
         e.preventDefault();
         var studentId = $(this).attr("data-student-id");
-
-        $(".student-detail-div").load("/professor/studentDetail?studentId=" + studentId, function() {
-
-        });
+        $(".student-detail-div").load("/professor/studentDetail?studentId=" + studentId);
 
     });
 

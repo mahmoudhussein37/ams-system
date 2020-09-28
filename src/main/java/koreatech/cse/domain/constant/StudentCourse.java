@@ -1,5 +1,6 @@
 package koreatech.cse.domain.constant;
 
+import koreatech.cse.domain.univ.Course;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
@@ -10,6 +11,7 @@ public class StudentCourse implements Serializable {
     private int id;
     private int userId;
     private int courseId;
+    private Course course;
     private int acquire; //TODO: 수강중, 수강완료
     private boolean retake;
 
@@ -51,6 +53,14 @@ public class StudentCourse implements Serializable {
 
     public void setRetake(boolean retake) {
         this.retake = retake;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     @Override
