@@ -9,17 +9,17 @@ public class UserSqlProvider {
         return new SQL() {
             {
                 SELECT("*");
-                FROM("USERS");
+                FROM("USER");
                 if(searchable.getName() != null) {
                     WHERE("NAME = #{name}");
-                    if(searchable.getEmail() != null) {
+                    if(searchable.getNumber() != null) {
                         OR();
-                        WHERE("EMAIL = #{email}");
+                        WHERE("number = #{number}");
                     }
                 }
-                if(searchable.getOrderParam() != null) {
+                if(searchable.getOrderParam() != null && searchable.getOrderDir() != null) {
 
-                    ORDER_BY(searchable.getOrderParam() + " DESC");
+                    ORDER_BY(searchable.getOrderParam() + " " + searchable.getOrderDir());
                 }
             }
         }.toString();

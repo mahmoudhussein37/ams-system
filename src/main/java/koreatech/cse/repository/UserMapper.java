@@ -49,6 +49,19 @@ public interface UserMapper {
     @SelectProvider(type = UserSqlProvider.class, method = "findAllByProvider")
     List<User> findByProvider(Searchable searchable);
 
+    @ResultMap("findOne-int")
+    //@formatter off
+    @Select("<script>"
+            + "SELECT * FROM USER u join contact c on u.id=c.user_id join authority a on u.id = a.user_id where a.role = 'ROLE_STUDENT' "
+            + "<if test='name != null'> and (c.last_name LIKE CONCAT('%', #{name}, '%') or c.first_name LIKE CONCAT('%', #{name}, '%'))</if>"
+            + "<if test='number != null'> and u.number LIKE CONCAT('%', #{number}, '%')</if>"
+            + "<if test='division != 0'> and u.division_id = #{division}</if>"
+            + "<if test='major != 0'> and u.major_id = #{major}</if>"
+            + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
+            + "</script>")
+    //@formatter on
+    List<User> findByStudentLookup(Searchable searchable);
+
     //@formatter off
     @Select("<script>"
             + "SELECT * FROM USER"

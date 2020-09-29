@@ -19,6 +19,9 @@ public interface DivisionMapper {
     @Select("SELECT * FROM division")
     List<Division> findAll();
 
+    @Select("SELECT * FROM division where enabled = 1")
+    List<Division> findAllEnabled();
+
     @Select("SELECT * FROM division where id=#{id}")
     Division findOne(@Param("id") int id);
 

@@ -38,16 +38,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String list(Model model, @RequestParam(required=false) String name, @RequestParam(required=false) String email, @RequestParam(required=false) String order) {
-        Searchable searchable = new Searchable();
-        searchable.setName(name);
-        searchable.setEmail(email);
-        searchable.setOrderParam(order);
-        //model.addAttribute("users", userMapper.findByProvider(searchable));
-        model.addAttribute("users", userMapper.findByScript(searchable));
-        return "list";
-    }
+
 
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)

@@ -19,6 +19,9 @@ public interface MajorMapper {
     @Select("SELECT * FROM major")
     List<Major> findAll();
 
+    @Select("SELECT * FROM major where enabled = 1")
+    List<Major> findAllEnabled();
+
     @Select("SELECT * FROM major where id=#{id}")
     Major findOne(@Param("id") int id);
 

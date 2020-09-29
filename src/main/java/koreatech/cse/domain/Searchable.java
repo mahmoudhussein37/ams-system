@@ -3,8 +3,11 @@ package koreatech.cse.domain;
 
 public class Searchable {
     private String name;
-    private String email;
+    private String number;
+    private int division;
+    private int major;
     private String orderParam;
+    private String orderDir;
 
     public String getName() {
         return name;
@@ -14,12 +17,28 @@ public class Searchable {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getNumber() {
+        return number;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public int getDivision() {
+        return division;
+    }
+
+    public void setDivision(int division) {
+        this.division = division;
+    }
+
+    public int getMajor() {
+        return major;
+    }
+
+    public void setMajor(int major) {
+        this.major = major;
     }
 
     public String getOrderParam() {
@@ -28,5 +47,13 @@ public class Searchable {
 
     public void setOrderParam(String orderParam) {
         this.orderParam = orderParam;
+    }
+
+    public String getOrderDir() {
+        return orderDir;
+    }
+
+    public void setOrderDir(String orderDir) {
+        this.orderDir = orderDir;
     }
 }
