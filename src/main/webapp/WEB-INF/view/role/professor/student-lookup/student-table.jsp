@@ -8,7 +8,7 @@
         <th style="min-width: 120px"><span class="text-primary"><spring:message code="common.studentNumber"/></span></th>
         <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.name"/></span>
 
-        <th class="pr-0" style="min-width: 160px"><span class="text-primary">action</span></th>
+        <th class="pr-0" style="min-width: 160px"><span class="text-primary"></span></th>
     </tr>
     </thead>
     <tbody>

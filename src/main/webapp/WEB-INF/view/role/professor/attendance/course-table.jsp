@@ -15,7 +15,7 @@
         <th><span class="text-primary"><spring:message code="professor.course.absence"/></span>
 
 
-        <th class="pr-0" style="min-width: 160px"><span class="text-primary">action</span></th>
+        <th class="pr-0" style="min-width: 160px"><span class="text-primary"></span></th>
     </tr>
     </thead>
     <tbody>

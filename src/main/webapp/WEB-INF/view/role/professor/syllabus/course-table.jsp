@@ -9,7 +9,7 @@
         <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.courseTitle"/></span>
         <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.category"/></span>
         <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.dateTime"/></span>
-        <th class="pr-0" style="min-width: 160px"><span class="text-primary">action</span></th>
+        <th class="pr-0" style="min-width: 160px"><span class="text-primary"></span></th>
     </tr>
     </thead>
     <tbody>

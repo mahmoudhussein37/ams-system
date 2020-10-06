@@ -16,10 +16,10 @@
         <%@include file="/WEB-INF/view/role/professor/syllabus/course-detail-fundamentals.jsp" %>
     </div>
     <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
-        2
+        <%@include file="/WEB-INF/view/role/professor/syllabus/course-detail-method.jsp" %>
     </div>
     <div class="tab-pane fade" id="kt_tab_pane_3" role="tabpanel" aria-labelledby="kt_tab_pane_3">
-        3
+        <%@include file="/WEB-INF/view/role/professor/syllabus/course-detail-contents.jsp" %>
     </div>
 
 </div>
