@@ -80,4 +80,15 @@ public class ProfessorController {
         return "role/professor/student-detail";
     }
 
+    @RequestMapping("/counseling")
+    public String counseling(Model model) {
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+
+        return "role/professor/counseling";
+    }
+
 }

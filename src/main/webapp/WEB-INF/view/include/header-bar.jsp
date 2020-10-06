@@ -300,11 +300,11 @@
 
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
-                                                    <li class="menu-item  menu-item-active "  aria-haspopup="true">
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/professor/studentLookup') ? 'menu-item-active' : ''} "  aria-haspopup="true">
                                                         <a  href="/professor/studentLookup" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_1"/></span></a>
                                                     </li>
-                                                    <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_2"/></span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/professor/counseling') ? 'menu-item-active' : ''} "  aria-haspopup="true">
+                                                        <a  href="/professor/counseling" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_2"/></span></a>
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
                                                         <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_3"/></span></a>

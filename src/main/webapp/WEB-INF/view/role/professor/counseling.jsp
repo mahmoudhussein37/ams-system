@@ -16,7 +16,7 @@
                     <!--begin::Card-->
                     <div class="card card-custom">
                         <div class="card-header">
-                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.professor.sub1_1"/></h3>
+                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.professor.sub1_2"/></h3>
                             <%--<div class="card-toolbar">
                                 <div class="dropdown dropdown-inline">
                                     <a href="#" class="btn btn-transparent-white btn-sm font-weight-bolder dropdown-toggle px-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
