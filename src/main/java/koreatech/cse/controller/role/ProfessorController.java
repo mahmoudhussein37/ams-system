@@ -46,7 +46,7 @@ public class ProfessorController {
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("majors", majors);
-        return "role/professor/student-lookup/student-lookup";
+        return "role/professor/studentLookup/studentLookup";
     }
 
     @RequestMapping("/studentGuidance/studentLookup/studentTable")
@@ -69,14 +69,14 @@ public class ProfessorController {
         }
 
         model.addAttribute("firstUser", firstUser);
-        return "role/professor/student-lookup/student-table";
+        return "role/professor/studentLookup/studentTable";
     }
 
     @RequestMapping("/studentGuidance/studentLookup/studentDetail")
     public String studentDetail(Model model, @RequestParam int studentId) {
         User studentUser = userMapper.findOne(studentId);
         model.addAttribute("studentUser", studentUser);
-        return "role/professor/student-lookup/student-detail";
+        return "role/professor/studentLookup/studentDetail";
     }
 
     @RequestMapping("/studentGuidance/counseling")
@@ -90,20 +90,18 @@ public class ProfessorController {
         return "role/professor/counseling/counseling";
     }
 
+    @RequestMapping("/studentGuidance/coCourseEnrolment")
+    public String counselingEnrolment(Model model) {
 
+        model.addAttribute("yearList", getYearList());
+
+        return "role/professor/counselingEnrolment/counselingEnrolment";
+    }
 
     @RequestMapping("/classProgress/attendance")
     public String attendance(Model model) {
 
-        DateTime dt = new DateTime();
-        int currentYear = dt.getYear();
-        List<Integer> yearList = new ArrayList<>();
-        for(int i=currentYear; i>=(currentYear - 10); i--) {
-            yearList.add(i);
-        }
-
-        model.addAttribute("currentYear", currentYear);
-        model.addAttribute("yearList", yearList);
+        model.addAttribute("yearList", getYearList());
 
         return "role/professor/attendance/attendance";
     }
@@ -126,25 +124,17 @@ public class ProfessorController {
 
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);
-        return "role/professor/attendance/course-table";
+        return "role/professor/attendance/courseTable";
     }
 
     @RequestMapping("/classProgress/inquiryCourse")
     public String inquiryCourse(Model model) {
 
-        DateTime dt = new DateTime();
-        int currentYear = dt.getYear();
-        List<Integer> yearList = new ArrayList<>();
-        for(int i=currentYear; i>=(currentYear - 10); i--) {
-            yearList.add(i);
-        }
-
-        model.addAttribute("currentYear", currentYear);
-        model.addAttribute("yearList", yearList);
+        model.addAttribute("yearList", getYearList());
         List<Division> divisions = divisionMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        return "role/professor/inquiry-course/inquiry-course";
+        return "role/professor/inquiryCourse/inquiryCourse";
     }
 
     @RequestMapping("/classProgress/inquiryCourse/courseTable")
@@ -167,21 +157,13 @@ public class ProfessorController {
 
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);
-        return "role/professor/inquiry-course/course-table";
+        return "role/professor/inquiryCourse/courseTable";
     }
 
     @RequestMapping("/classProgress/syllabus")
     public String syllabus(Model model) {
 
-        DateTime dt = new DateTime();
-        int currentYear = dt.getYear();
-        List<Integer> yearList = new ArrayList<>();
-        for(int i=currentYear; i>=(currentYear - 10); i--) {
-            yearList.add(i);
-        }
-
-        model.addAttribute("currentYear", currentYear);
-        model.addAttribute("yearList", yearList);
+        model.addAttribute("yearList", getYearList());
 
         return "role/professor/syllabus/syllabus";
     }
@@ -190,7 +172,7 @@ public class ProfessorController {
     public String courseDetail(Model model, @RequestParam int courseId) {
         Course course = courseMapper.findOne(courseId);
         model.addAttribute("course", course);
-        return "role/professor/syllabus/course-detail";
+        return "role/professor/syllabus/courseDetail";
     }
 
     @RequestMapping("/classProgress/syllabus/courseTable")
@@ -211,24 +193,48 @@ public class ProfessorController {
 
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);
-        return "role/professor/syllabus/course-table";
+        return "role/professor/syllabus/courseTable";
+    }
+
+    @RequestMapping("/classProgress/classAssessment")
+    public String classAssessment(Model model) {
+
+        model.addAttribute("yearList", getYearList());
+
+        return "role/professor/classAssessment/classAssessment";
+    }
+
+    @RequestMapping("/classProgress/registerGrade")
+    public String registerGrade(Model model) {
+
+        model.addAttribute("yearList", getYearList());
+
+        return "role/professor/registerGrade/registerGrade";
+    }
+
+    @RequestMapping("/classProgress/cqiReport")
+    public String cqiReport(Model model) {
+
+        model.addAttribute("yearList", getYearList());
+
+        return "role/professor/cqiReport/cqiReport";
+    }
+
+    @RequestMapping("/classProgress/graduationResearchPlan")
+    public String graduationResearchPlan(Model model) {
+
+        model.addAttribute("yearList", getYearList());
+
+        return "role/professor/graduationResearchPlan/graduationResearchPlan";
     }
 
 
     @RequestMapping("/classProgress/makeupClass")
     public String makeupClass(Model model) {
 
-        DateTime dt = new DateTime();
-        int currentYear = dt.getYear();
-        List<Integer> yearList = new ArrayList<>();
-        for(int i=currentYear; i>=(currentYear - 10); i--) {
-            yearList.add(i);
-        }
+        model.addAttribute("yearList", getYearList());
 
-        model.addAttribute("currentYear", currentYear);
-        model.addAttribute("yearList", yearList);
-
-        return "role/professor/makeup-class/makeup-class";
+        return "role/professor/makeupClass/makeupClass";
     }
 
     @RequestMapping("/classProgress/makeupClass/courseTable")
@@ -249,7 +255,17 @@ public class ProfessorController {
 
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);
-        return "role/professor/makeup-class/course-table";
+        return "role/professor/makeupClass/courseTable";
+    }
+    
+    private List<Integer> getYearList() {
+        DateTime dt = new DateTime();
+        int currentYear = dt.getYear();
+        List<Integer> yearList = new ArrayList<>();
+        for(int i=currentYear; i>=(currentYear - 10); i--) {
+            yearList.add(i);
+        }
+        return yearList;
     }
 
 }
