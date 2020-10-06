@@ -17,7 +17,15 @@ public class Course implements Serializable {
     private boolean retake;
     private String retakeCode;
     private String retakeTitle;
-    private String division; //course division
+    private int divisionId;
+
+    private int majorId;
+    private int schoolYear;
+    private String lang;
+    private String lectureTime;
+    private String compCategory;
+    private String subjCategory;
+
 
     private boolean enabled;
 
@@ -102,12 +110,12 @@ public class Course implements Serializable {
         this.retakeTitle = retakeTitle;
     }
 
-    public String getDivision() {
-        return division;
+    public int getDivisionId() {
+        return divisionId;
     }
 
-    public void setDivision(String division) {
-        this.division = division;
+    public void setDivisionId(int divisionId) {
+        this.divisionId = divisionId;
     }
 
     public boolean isEnabled() {
@@ -116,6 +124,55 @@ public class Course implements Serializable {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+
+    public int getMajorId() {
+        return majorId;
+    }
+
+    public void setMajorId(int majorId) {
+        this.majorId = majorId;
+    }
+
+    public int getSchoolYear() {
+        return schoolYear;
+    }
+
+    public void setSchoolYear(int schoolYear) {
+        this.schoolYear = schoolYear;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
+    public String getLectureTime() {
+        return lectureTime;
+    }
+
+    public void setLectureTime(String lectureTime) {
+        this.lectureTime = lectureTime;
+    }
+
+    public String getCompCategory() {
+        return compCategory;
+    }
+
+    public void setCompCategory(String compCategory) {
+        this.compCategory = compCategory;
+    }
+
+    public String getSubjCategory() {
+        return subjCategory;
+    }
+
+    public void setSubjCategory(String subjCategory) {
+        this.subjCategory = subjCategory;
     }
 
     @Override

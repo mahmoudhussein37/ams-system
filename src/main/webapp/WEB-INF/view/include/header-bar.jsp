@@ -350,14 +350,14 @@
 
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
-                                                    <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_1"/></span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/professor/classProgress/attendance') ? 'menu-item-active' : ''} "  aria-haspopup="true">
+                                                        <a  href="/professor/classProgress/attendance" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_1"/></span></a>
                                                     </li>
-                                                    <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_2"/></span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/professor/classProgress/inquiryCourse') ? 'menu-item-active' : ''} "  aria-haspopup="true">
+                                                        <a  href="/professor/classProgress/inquiryCourse" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_2"/></span></a>
                                                     </li>
-                                                    <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_3"/></span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/professor/classProgress/syllabus') ? 'menu-item-active' : ''} "  aria-haspopup="true">
+                                                        <a  href="/professor/classProgress/syllabus" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_3"/></span></a>
                                                     </li>
                                                     <li class="menu-item ${fn:contains(requestUri, '/professor/classProgress/makeupClass') ? 'menu-item-active' : ''} "  aria-haspopup="true">
                                                         <a  href="/professor/classProgress/makeupClass" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_4"/></span></a>

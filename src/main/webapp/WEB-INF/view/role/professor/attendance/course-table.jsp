@@ -5,15 +5,21 @@
     <tr class="text-uppercase">
 
         <th class="pl-0" style="min-width: 100px"><spring:message code="common.no"/></th>
-        <th style="min-width: 120px"><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
-        <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.courseTitle"/></span>
-        <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.category"/></span>
-        <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.dateTime"/></span>
+        <th><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
+        <th><span class="text-primary"><spring:message code="common.courseTitle"/></span>
+        <th><span class="text-primary"><spring:message code="common.category"/></span>
+        <th><span class="text-primary"><spring:message code="professor.course.limitStudent"/></span>
+        <th><span class="text-primary"><spring:message code="professor.course.numStudent"/></span>
+        <th><span class="text-primary"><spring:message code="professor.course.attendance"/></span>
+        <th><span class="text-primary"><spring:message code="professor.course.lateness"/></span>
+        <th><span class="text-primary"><spring:message code="professor.course.absence"/></span>
+
+
         <th class="pr-0" style="min-width: 160px"><span class="text-primary">action</span></th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="course" items="${courseList}" varStatus="varStatus">
+    <c:forEach var="professorCourse" items="${courseList}" varStatus="varStatus">
         <tr>
 
             <td class="pl-0">
@@ -21,17 +27,29 @@
             </td>
             <td>
                 <a href="#" class="course-detail" data-course-id="${course.id}">
-                        ${course.code}
+                        ${professorCourse.course.code}
                 </a>
             </td>
             <td>
-                    ${course.title}
+                    ${professorCourse.course.title}
             </td>
             <td>
-                    ${course.category}
+                    ${professorCourse.course.category}
             </td>
             <td>
-
+                    ${professorCourse.limitStudent}
+            </td>
+            <td>
+                    ${professorCourse.numStudent}
+            </td>
+            <td>
+                    ${professorCourse.attendance}
+            </td>
+            <td>
+                    ${professorCourse.lateness}
+            </td>
+            <td>
+                    ${professorCourse.absence}
             </td>
             <td class="pr-0 text-right">
                 <a href="#" class="btn btn-icon btn-light btn-hover-primary btn-sm">
@@ -78,7 +96,7 @@
     $("body").on('click', '.course-detail', function (e) {
         e.preventDefault();
         var courseId = $(this).attr("data-course-id");
-        $(".course-detail-div").load("/professor/classProgress/makeupClass/courseDetail?courseId=" + courseId);
+        $(".course-detail-div").load("/professor/courseDetail?courseId=" + courseId);
 
     });
 </script>

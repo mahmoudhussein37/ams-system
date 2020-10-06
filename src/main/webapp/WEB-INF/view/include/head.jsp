@@ -46,9 +46,11 @@
         <link href="${resources}/vendor/metronic_assets_7/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
     </c:otherwise>
     </c:choose>
-
-
-
-
     <link rel="shortcut icon" href="${resources}/vendor/metronic_assets_7/assets/media/logos/favicon.ico"/>
+    <style>
+
+        .table.table-head-custom thead tr, .table.table-head-custom thead th {
+            text-transform:none;
+        }
+    </style>
 </head>

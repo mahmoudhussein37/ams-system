@@ -1,4 +1,4 @@
-package koreatech.cse.domain;
+package koreatech.cse.domain.role.student;
 
 import koreatech.cse.domain.univ.Course;
 import org.apache.commons.lang.builder.ToStringBuilder;

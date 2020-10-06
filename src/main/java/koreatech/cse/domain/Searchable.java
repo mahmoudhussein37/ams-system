@@ -8,6 +8,7 @@ public class Searchable {
     private int major;
     private int year;
     private int semester;
+    private int userId;
 
 
     private String orderParam;
@@ -75,5 +76,13 @@ public class Searchable {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

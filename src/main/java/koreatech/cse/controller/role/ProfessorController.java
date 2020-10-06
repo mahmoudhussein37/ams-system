@@ -2,13 +2,11 @@ package koreatech.cse.controller.role;
 
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
+import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
 import koreatech.cse.domain.univ.Major;
-import koreatech.cse.repository.CourseMapper;
-import koreatech.cse.repository.DivisionMapper;
-import koreatech.cse.repository.MajorMapper;
-import koreatech.cse.repository.UserMapper;
+import koreatech.cse.repository.*;
 import koreatech.cse.service.UserService;
 import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,6 +33,8 @@ public class ProfessorController {
     private UserService userService;
     @Inject
     private CourseMapper courseMapper;
+    @Inject
+    private ProfessorCourseMapper professorCourseMapper;
 
 
 
@@ -89,6 +89,131 @@ public class ProfessorController {
 
         return "role/professor/counseling/counseling";
     }
+
+
+
+    @RequestMapping("/classProgress/attendance")
+    public String attendance(Model model) {
+
+        DateTime dt = new DateTime();
+        int currentYear = dt.getYear();
+        List<Integer> yearList = new ArrayList<>();
+        for(int i=currentYear; i>=(currentYear - 10); i--) {
+            yearList.add(i);
+        }
+
+        model.addAttribute("currentYear", currentYear);
+        model.addAttribute("yearList", yearList);
+
+        return "role/professor/attendance/attendance";
+    }
+
+    @RequestMapping("/classProgress/attendance/courseTable")
+    public String professorCourseTable(Model model,
+                              @RequestParam(defaultValue = "0", required=false) int year,
+                              @RequestParam(defaultValue = "0", required=false) int semester) {
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+
+        List<ProfessorCourse> courseList = professorCourseMapper.findByAttendance(searchable);
+        ProfessorCourse firstCourse = null;
+        for(ProfessorCourse course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/professor/attendance/course-table";
+    }
+
+    @RequestMapping("/classProgress/inquiryCourse")
+    public String inquiryCourse(Model model) {
+
+        DateTime dt = new DateTime();
+        int currentYear = dt.getYear();
+        List<Integer> yearList = new ArrayList<>();
+        for(int i=currentYear; i>=(currentYear - 10); i--) {
+            yearList.add(i);
+        }
+
+        model.addAttribute("currentYear", currentYear);
+        model.addAttribute("yearList", yearList);
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        return "role/professor/inquiry-course/inquiry-course";
+    }
+
+    @RequestMapping("/classProgress/inquiryCourse/courseTable")
+    public String inquiryCourseTable(Model model,
+                              @RequestParam(defaultValue = "0", required=false) int year,
+                              @RequestParam(defaultValue = "0", required=false) int semester,
+                                     @RequestParam(defaultValue = "0", required=false) int division) {
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+        searchable.setDivision(division);
+
+        List<Course> courseList = courseMapper.findByInquiryCourse(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/professor/inquiry-course/course-table";
+    }
+
+    @RequestMapping("/classProgress/syllabus")
+    public String syllabus(Model model) {
+
+        DateTime dt = new DateTime();
+        int currentYear = dt.getYear();
+        List<Integer> yearList = new ArrayList<>();
+        for(int i=currentYear; i>=(currentYear - 10); i--) {
+            yearList.add(i);
+        }
+
+        model.addAttribute("currentYear", currentYear);
+        model.addAttribute("yearList", yearList);
+
+        return "role/professor/syllabus/syllabus";
+    }
+
+    @RequestMapping("/classProgress/syllabus/courseDetail")
+    public String courseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+        return "role/professor/syllabus/course-detail";
+    }
+
+    @RequestMapping("/classProgress/syllabus/courseTable")
+    public String syllabusCourseTable(Model model,
+                                     @RequestParam(defaultValue = "0", required=false) int year,
+                                     @RequestParam(defaultValue = "0", required=false) int semester) {
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+
+        List<Course> courseList = courseMapper.findByMakeupClass(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/professor/syllabus/course-table";
+    }
+
 
     @RequestMapping("/classProgress/makeupClass")
     public String makeupClass(Model model) {
