@@ -1,4 +1,4 @@
-<%@include file="/WEB-INF/view/include/top-tag.jsp" %>
+<%@include file="/WEB-INF/view/include/topTag.jsp" %>
 
 <ul class="nav nav-tabs nav-tabs-line">
     <li class="nav-item">
@@ -26,7 +26,7 @@
 
 
 
-<%@include file="/WEB-INF/view/include/footer-script.jsp" %>
+<%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
 
 </script>

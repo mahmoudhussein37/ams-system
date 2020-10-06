@@ -78,7 +78,7 @@
                                     <ul class="header-tabs nav align-self-end font-size-lg" role="tablist">
                                         <!--begin::Item-->
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link py-4 px-6 active" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
+                                            <a href="#" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/student/courseGuide') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
                                                 <spring:message code="menu.student.main1"/>
                                             </a>
                                         </li>
@@ -86,12 +86,12 @@
 
                                         <!--begin::Item-->
                                         <li class="nav-item mr-3">
-                                            <a href="#" class="nav-link py-4 px-6" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
+                                            <a href="#" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/student/register') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
                                                 <spring:message code="menu.student.main2"/>
                                             </a>
                                         </li>
                                         <li class="nav-item mr-3">
-                                            <a href="#" class="nav-link py-4 px-6" data-toggle="tab" data-target="#kt_header_tab_3" role="tab">
+                                            <a href="#" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/student/classInformation') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_3" role="tab">
                                                 <spring:message code="menu.student.main3"/>
                                             </a>
                                         </li>
@@ -222,7 +222,7 @@
                                     <ul class="header-tabs p-5 p-lg-0 d-flex d-lg-none nav nav-bold nav-tabs" role="tablist">
                                         <!--begin::Item-->
                                         <li class="nav-item mr-2">
-                                            <a href="#" class="nav-link btn btn-clean active" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
+                                            <a href="#" class="nav-link btn btn-clean ${fn:contains(requestUri, '/student/courseGuide') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
                                                 <spring:message code="menu.student.main1"/>
                                             </a>
                                         </li>
@@ -230,13 +230,13 @@
 
                                         <!--begin::Item-->
                                         <li class="nav-item mr-2">
-                                            <a href="#" class="nav-link btn btn-clean" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
+                                            <a href="#" class="nav-link btn btn-clean ${fn:contains(requestUri, '/student/register') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
                                                 <spring:message code="menu.student.main2"/>
                                             </a>
                                         </li>
                                         <!--end::Item-->
                                         <li class="nav-item mr-2">
-                                            <a href="#" class="nav-link btn btn-clean" data-toggle="tab" data-target="#kt_header_tab_3" role="tab">
+                                            <a href="#" class="nav-link btn btn-clean ${fn:contains(requestUri, '/student/classInformation') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_3" role="tab">
                                                 <spring:message code="menu.student.main3"/>
                                             </a>
                                         </li>
@@ -381,20 +381,20 @@
                                         </div>
                                     </c:when>
                                     <c:when test="${currentRole eq 'student'}">
-                                        <div class="tab-pane py-5 p-lg-0 show active" id="kt_header_tab_1">
+                                        <div class="tab-pane py-5 p-lg-0  ${fn:contains(requestUri, '/student/courseGuide') ? 'show active' : ''}" id="kt_header_tab_1">
                                             <!--begin::Menu-->
                                             <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default ">
 
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
-                                                    <li class="menu-item  menu-item-active "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub1_1"/></span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/student/courseGuide/yearlyCurriculum') ? 'menu-item-active' : ''} "  aria-haspopup="true">
+                                                        <a  href="/student/courseGuide/yearlyCurriculum" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub1_1"/></span></a>
                                                     </li>
-                                                    <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub1_2"/></span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/student/courseGuide/courseInfo') ? 'menu-item-active' : ''} "  aria-haspopup="true">
+                                                        <a  href="/student/courseGuide/courseInfo" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub1_2"/></span></a>
                                                     </li>
-                                                    <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub1_3"/></span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/student/courseGuide/alternative') ? 'menu-item-active' : ''} "  aria-haspopup="true">
+                                                        <a  href="/student/courseGuide/alternative" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub1_3"/></span></a>
                                                     </li>
 
 
@@ -405,28 +405,28 @@
                                             <!--end::Menu-->
                                         </div>
                                         <!--begin::Tab Pane-->
-                                        <div class="tab-pane py-5 p-lg-0" id="kt_header_tab_2">
+                                        <div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/student/register') ? 'show active' : ''}" id="kt_header_tab_2">
                                             <!--begin::Menu-->
                                             <div id="kt_header_menu2" class="header-menu header-menu-mobile  header-menu-layout-default " >
 
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
-                                                    <li class="menu-item  menu-item-active "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub2_1"/></span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/student/register/basic') ? 'menu-item-active' : ''} "  aria-haspopup="true">
+                                                        <a  href="/student/register/basic" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub2_1"/></span></a>
                                                     </li>
                                                 </ul>
                                                 <!--end::Nav-->
                                             </div>
                                             <!--end::Menu-->
                                         </div>
-                                        <div class="tab-pane py-5 p-lg-0" id="kt_header_tab_3">
+                                        <div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/student/classInformation') ? 'show active' : ''}" id="kt_header_tab_3">
                                             <!--begin::Menu-->
                                             <div id="kt_header_menu3" class="header-menu header-menu-mobile  header-menu-layout-default " >
 
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
-                                                    <li class="menu-item  menu-item-active "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub3_1"/></span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/student/classInformation/syllabus') ? 'menu-item-active' : ''} "  aria-haspopup="true">
+                                                        <a  href="/student/classInformation/syllabus" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub3_1"/></span></a>
                                                     </li>
                                                     <li class="menu-item  "  aria-haspopup="true">
                                                         <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub3_2"/></span></a>

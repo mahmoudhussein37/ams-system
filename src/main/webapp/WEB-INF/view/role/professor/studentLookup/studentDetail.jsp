@@ -1,4 +1,4 @@
-<%@include file="/WEB-INF/view/include/top-tag.jsp" %>
+<%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.information"/></h3>
 <div class="row">
     <div class="col-md-6">
@@ -55,22 +55,22 @@
 </ul>
 <div class="tab-content mt-5" id="myTabContent">
     <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_1">
-        <%@include file="/WEB-INF/view/role/professor/student-lookup/student-detail-profile.jsp" %>
+        <%@include file="/WEB-INF/view/role/professor/studentLookup/studentDetailProfile.jsp" %>
     </div>
     <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
-        <%@include file="/WEB-INF/view/role/professor/student-lookup/student-detail-course-history.jsp" %>
+        <%@include file="/WEB-INF/view/role/professor/studentLookup/studentDetailCourseHistory.jsp" %>
     </div>
     <div class="tab-pane fade" id="kt_tab_pane_3" role="tabpanel" aria-labelledby="kt_tab_pane_3">
-        <%@include file="/WEB-INF/view/role/professor/student-lookup/student-detail-language.jsp" %>
+        <%@include file="/WEB-INF/view/role/professor/studentLookup/studentDetailLanguage.jsp" %>
     </div>
     <div class="tab-pane fade" id="kt_tab_pane_4" role="tabpanel" aria-labelledby="kt_tab_pane_4">
-        <%@include file="/WEB-INF/view/role/professor/student-lookup/student-detail-certificate.jsp" %>
+        <%@include file="/WEB-INF/view/role/professor/studentLookup/studentDetailCertificate.jsp" %>
     </div>
 </div>
 
 
 
-<%@include file="/WEB-INF/view/include/footer-script.jsp" %>
+<%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
 
 </script>

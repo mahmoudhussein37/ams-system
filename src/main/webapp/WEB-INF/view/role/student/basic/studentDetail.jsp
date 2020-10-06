@@ -42,9 +42,7 @@
     <li class="nav-item">
         <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1"><spring:message code="common.profile"/></a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2"><spring:message code="common.courseHistory"/></a>
-    </li>
+
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_3"><spring:message code="common.language"/></a>
     </li>
@@ -55,9 +53,15 @@
 </ul>
 <div class="tab-content mt-5" id="myTabContent">
     <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_1">
-
+        <%@include file="/WEB-INF/view/role/professor/studentLookup/studentDetailProfile.jsp" %>
     </div>
 
+    <div class="tab-pane fade" id="kt_tab_pane_3" role="tabpanel" aria-labelledby="kt_tab_pane_3">
+        <%@include file="/WEB-INF/view/role/professor/studentLookup/studentDetailLanguage.jsp" %>
+    </div>
+    <div class="tab-pane fade" id="kt_tab_pane_4" role="tabpanel" aria-labelledby="kt_tab_pane_4">
+        <%@include file="/WEB-INF/view/role/professor/studentLookup/studentDetailCertificate.jsp" %>
+    </div>
 </div>
 
 

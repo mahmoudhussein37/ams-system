@@ -1,10 +1,10 @@
-<%@include file="/WEB-INF/view/include/top-tag.jsp" %>
+<%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <%@include file="/WEB-INF/view/include/head.jsp" %>
 <!--end::Head-->
 
 <!--begin::Body-->
 <body id="kt_body"  class="header-fixed header-mobile-fixed page-loading"  >
-<%@include file="/WEB-INF/view/include/header-bar.jsp" %>
+<%@include file="/WEB-INF/view/include/headerBar.jsp" %>
 <!--begin::Content-->
 <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
 
@@ -2362,7 +2362,7 @@
 </div>
 <!--end::Content-->
 
-<%@include file="/WEB-INF/view/include/footer-bar.jsp" %>
+<%@include file="/WEB-INF/view/include/footerBar.jsp" %>
 </div>
 <!--end::Wrapper-->
 </div>
@@ -2370,10 +2370,10 @@
 </div>
 <!--end::Main-->
 
-<%@include file="/WEB-INF/view/include/user-panel.jsp" %>
+<%@include file="/WEB-INF/view/include/userPanel.jsp" %>
 
 
 
-<%@include file="/WEB-INF/view/include/footer-script.jsp" %>
+<%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 </body>
 </html>

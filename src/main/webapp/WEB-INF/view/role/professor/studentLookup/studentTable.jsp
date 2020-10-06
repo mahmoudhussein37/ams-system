@@ -1,4 +1,4 @@
-<%@include file="/WEB-INF/view/include/top-tag.jsp" %>
+<%@include file="/WEB-INF/view/include/topTag.jsp" %>
 
 <table class="table table-head-custom table-vertical-center" id="student-list">
     <thead>
@@ -66,12 +66,12 @@
     $("#student-list").DataTable();
 
     <c:if test="${not empty firstUser}">
-        $(".student-detail-div").load("/professor/studentGuidance/studentLookup/studentDetail?studentId=${firstUser.id}");
+        $(".student-detail-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentDetail?studentId=${firstUser.id}");
     </c:if>
     $("body").on('click', '.student-detail', function (e) {
         e.preventDefault();
         var studentId = $(this).attr("data-student-id");
-        $(".student-detail-div").load("/professor/studentGuidance/studentLookup/studentDetail?studentId=" + studentId);
+        $(".student-detail-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentDetail?studentId=" + studentId);
 
     });
 </script>

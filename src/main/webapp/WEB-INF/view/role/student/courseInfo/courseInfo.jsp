@@ -16,29 +16,23 @@
                     <!--begin::Card-->
                     <div class="card card-custom">
                         <div class="card-header">
-                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.professor.sub2_4"/></h3>
+                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.student.sub1_2"/></h3>
+
                         </div>
                         <div class="card-body">
                                 <div class="row">
+                                    <div class="col-md-3">
+                                        <spring:message code="common.courseCode"/><br/>
+                                        <input type="text" id="search-code" class="form-control input-enter" value="" style="margin-top:10px;"/>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <spring:message code="common.courseTitle"/><br/>
+                                        <input type="text" id="search-title" class="form-control input-enter"  value="" style="margin-top:10px;"/>
+                                    </div>
 
                                     <div class="col-md-2">
-                                        <spring:message code="common.year"/><br/>
-                                        <select id="search-year" class="form-control" style="margin-top:10px;"/>
-                                        <c:forEach var="y" items="${yearList}">
-                                            <option value="${y}">${y}</option>
-                                        </c:forEach>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <spring:message code="common.semester"/><br/>
-                                        <select id="search-semester" class="form-control" style="margin-top:10px;"/>
-                                        <option value="1"><spring:message code="common.sem1"/></option>
-                                        <option value="2"><spring:message code="common.sem2"/></option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
                                         <br/>
-                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="searchCourse()">Search</button>
+                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="searchStudent()">Search</button>
                                     </div>
 
                                 </div>
@@ -46,7 +40,7 @@
 
 
 
-                            <div class="course-table-div">
+                            <div class="student-table-div">
 
 
                             </div>
@@ -58,7 +52,7 @@
                             <br/><br/>
                             <div class="separator separator-solid my-5"></div>
                             <br/><br/>
-                            <div class="course-detail-div">
+                            <div class="student-detail-div">
 
                             </div>
 
@@ -86,20 +80,24 @@
 
 <script>
 
-    function searchCourse() {
-        var year = $("#search-year").children("option:selected").val().trim();
-        var semester = $("#search-semester").children("option:selected").val().trim();
-        $(".course-table-div").load("${baseUrl}/professor/classProgress/makeupClass/courseTable?year=" + year + "&semester=" + semester);
+    function searchStudent() {
+        var number = $("#search-number").val().trim();
+        var name = $("#search-name").val().trim();
+        var division = $("#search-division").children("option:selected").val().trim();
+        var major = $("#search-major").children("option:selected").val().trim();
+
+        $(".student-table-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
     }
 
     $(".input-enter").keydown(function(key) {
         if (key.keyCode == 13) {
-            searchCourse();
+            searchStudent();
         }
     });
 
     $(document).ready(function() {
-        $(".course-table-div").load("${baseUrl}/professor/classProgress/makeupClass/courseTable");
+        $(".student-table-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentTable");
+
     });
 
 </script>
