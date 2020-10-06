@@ -16,7 +16,7 @@
                     <!--begin::Card-->
                     <div class="card card-custom">
                         <div class="card-header">
-                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.professor.sub1_2"/></h3>
+                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.professor.sub1_1"/></h3>
                             <%--<div class="card-toolbar">
                                 <div class="dropdown dropdown-inline">
                                     <a href="#" class="btn btn-transparent-white btn-sm font-weight-bolder dropdown-toggle px-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -147,7 +147,7 @@
         var division = $("#search-division").children("option:selected").val().trim();
         var major = $("#search-major").children("option:selected").val().trim();
 
-        $(".student-table-div").load("/professor/studentTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
+        $(".student-table-div").load("/professor/studentGuidance/studentLookup/studentTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
     }
 
     $(".input-enter").keydown(function(key) {
@@ -157,7 +157,7 @@
     });
 
     $(document).ready(function() {
-        $(".student-table-div").load("/professor/studentTable");
+        $(".student-table-div").load("/professor/studentGuidance/studentLookup/studentTable");
 
     });
 

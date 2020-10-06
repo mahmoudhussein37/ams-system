@@ -6,6 +6,10 @@ public class Searchable {
     private String number;
     private int division;
     private int major;
+    private int year;
+    private int semester;
+
+
     private String orderParam;
     private String orderDir;
 
@@ -55,5 +59,21 @@ public class Searchable {
 
     public void setOrderDir(String orderDir) {
         this.orderDir = orderDir;
+    }
+
+    public int getSemester() {
+        return semester;
+    }
+
+    public void setSemester(int semester) {
+        this.semester = semester;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 }

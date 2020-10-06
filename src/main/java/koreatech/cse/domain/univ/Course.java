@@ -17,6 +17,10 @@ public class Course implements Serializable {
     private boolean retake;
     private String retakeCode;
     private String retakeTitle;
+    private String division; //course division
+
+    private boolean enabled;
+
 
     public int getId() {
         return id;
@@ -96,6 +100,22 @@ public class Course implements Serializable {
 
     public void setRetakeTitle(String retakeTitle) {
         this.retakeTitle = retakeTitle;
+    }
+
+    public String getDivision() {
+        return division;
+    }
+
+    public void setDivision(String division) {
+        this.division = division;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package koreatech.cse.domain.constant;
+package koreatech.cse.domain;
 
 import koreatech.cse.domain.univ.Course;
 import org.apache.commons.lang.builder.ToStringBuilder;

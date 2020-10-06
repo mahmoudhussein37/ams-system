@@ -1,8 +1,7 @@
 package koreatech.cse.repository;
 
 
-import koreatech.cse.domain.constant.StudentCourse;
-import koreatech.cse.domain.univ.Course;
+import koreatech.cse.domain.StudentCourse;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 

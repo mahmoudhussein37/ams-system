@@ -59,7 +59,7 @@
                                     <ul class="header-tabs nav align-self-end font-size-lg" role="tablist">
                                         <!--begin::Item-->
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link py-4 px-6 active" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
+                                            <a href="#" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/professor/studentGuidance') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
                                                 <spring:message code="menu.professor.main1"/>
                                             </a>
                                         </li>
@@ -67,7 +67,7 @@
 
                                         <!--begin::Item-->
                                         <li class="nav-item mr-3">
-                                            <a href="#" class="nav-link py-4 px-6" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
+                                            <a href="#" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/professor/classProgress') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
                                                 <spring:message code="menu.professor.main2"/>
                                             </a>
                                         </li>
@@ -203,7 +203,7 @@
                                     <ul class="header-tabs p-5 p-lg-0 d-flex d-lg-none nav nav-bold nav-tabs" role="tablist">
                                         <!--begin::Item-->
                                         <li class="nav-item mr-2">
-                                            <a href="#" class="nav-link btn btn-clean active" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
+                                            <a href="#" class="nav-link btn btn-clean ${fn:contains(requestUri, '/professor/studentGuidance') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
                                                 <spring:message code="menu.professor.main1"/>
                                             </a>
                                         </li>
@@ -211,7 +211,7 @@
 
                                         <!--begin::Item-->
                                         <li class="nav-item mr-2">
-                                            <a href="#" class="nav-link btn btn-clean" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
+                                            <a href="#" class="nav-link btn btn-clean ${fn:contains(requestUri, '/professor/classProgress') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
                                                 <spring:message code="menu.professor.main2"/>
                                             </a>
                                         </li>
@@ -294,17 +294,17 @@
                                 <!--begin::Tab Pane-->
                                 <c:choose>
                                     <c:when test="${currentRole eq 'professor'}">
-                                        <div class="tab-pane py-5 p-lg-0 show active" id="kt_header_tab_1">
+                                        <div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/professor/studentGuidance') ? 'show active' : ''}" id="kt_header_tab_1">
                                             <!--begin::Menu-->
                                             <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default ">
 
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
-                                                    <li class="menu-item  ${fn:contains(requestUri, '/professor/studentLookup') ? 'menu-item-active' : ''} "  aria-haspopup="true">
-                                                        <a  href="/professor/studentLookup" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_1"/></span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/professor/studentGuidance/studentLookup') ? 'menu-item-active' : ''} "  aria-haspopup="true">
+                                                        <a  href="/professor/studentGuidance/studentLookup" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_1"/></span></a>
                                                     </li>
-                                                    <li class="menu-item ${fn:contains(requestUri, '/professor/counseling') ? 'menu-item-active' : ''} "  aria-haspopup="true">
-                                                        <a  href="/professor/counseling" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_2"/></span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/professor/studentGuidance/counseling') ? 'menu-item-active' : ''} "  aria-haspopup="true">
+                                                        <a  href="/professor/studentGuidance/counseling" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_2"/></span></a>
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
                                                         <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_3"/></span></a>
@@ -344,13 +344,13 @@
                                             <!--end::Menu-->
                                         </div>
                                         <!--begin::Tab Pane-->
-                                        <div class="tab-pane py-5 p-lg-0" id="kt_header_tab_2">
+                                        <div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/professor/classProgress') ? 'show active' : ''}" id="kt_header_tab_2">
                                             <!--begin::Menu-->
                                             <div id="kt_header_menu2" class="header-menu header-menu-mobile  header-menu-layout-default " >
 
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
-                                                    <li class="menu-item  menu-item-active "  aria-haspopup="true">
+                                                    <li class="menu-item "  aria-haspopup="true">
                                                         <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_1"/></span></a>
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
@@ -359,8 +359,8 @@
                                                     <li class="menu-item "  aria-haspopup="true">
                                                         <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_3"/></span></a>
                                                     </li>
-                                                    <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_4"/></span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/professor/classProgress/makeupClass') ? 'menu-item-active' : ''} "  aria-haspopup="true">
+                                                        <a  href="/professor/classProgress/makeupClass" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_4"/></span></a>
                                                     </li>
                                                     <li class="menu-item "  aria-haspopup="true">
                                                         <a  href="index.html" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_5"/></span></a>
