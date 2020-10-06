@@ -83,7 +83,64 @@ public class StudentController {
         return "role/student/syllabus/syllabus";
     }
 
+    @RequestMapping("/classInformation/enrolment")
+    public String enrolment(Model model) {
 
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("yearList", getYearList());
+        return "role/student/enrolment/enrolment";
+    }
+
+    @RequestMapping("/classInformation/counselingCourseEnrolment")
+    public String counselingCourseEnrolment(Model model) {
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("yearList", getYearList());
+        return "role/student/counselingCourseEnrolment/counselingCourseEnrolment";
+    }
+
+    @RequestMapping("/classInformation/assessment")
+    public String assessment(Model model) {
+
+        model.addAttribute("yearList", getYearList());
+        return "role/student/assessment/assessment";
+    }
+
+    @RequestMapping("/grades/inquiryGrade")
+    public String inquiryGrade(Model model) {
+
+        return "role/student/inquiryGrade/inquiryGrade";
+    }
+
+    @RequestMapping("/grades/inquiryGrade/gradeDetail")
+    public String gradeDetail(Model model) {
+        User studentUser = User.current();
+        model.addAttribute("studentUser", studentUser);
+        return "role/student/inquiryGrade/gradeDetail";
+    }
+
+    @RequestMapping("/graduation/graduationRequirements")
+    public String graduationRequirements(Model model) {
+
+        return "role/student/graduationRequirements/graduationRequirements";
+    }
+
+    @RequestMapping("/graduation/graduationRequirements/gradeDetail")
+    public String requiredGradeDetail(Model model) {
+        User studentUser = User.current();
+        model.addAttribute("studentUser", studentUser);
+        return "role/student/graduationRequirements/gradeDetail";
+    }
+
+    @RequestMapping("/graduation/graduationResearchPlan")
+    public String graduationResearchPlan(Model model) {
+        User studentUser = User.current();
+        model.addAttribute("studentUser", studentUser);
+        return "role/student/graduationResearchPlan/graduationResearchPlan";
+    }
 
 
 
