@@ -1,20 +1,27 @@
 package koreatech.cse.controller.role;
 
+import koreatech.cse.domain.Contact;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.univ.Division;
+import koreatech.cse.domain.univ.Major;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.UserService;
 import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@SessionAttributes("studentUser")
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
@@ -35,8 +42,30 @@ public class AdminController {
 
     @RequestMapping("/studentManagement/studentRegistration")
     public String studentRegistration(Model model) {
+
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+        User studentUser = new User();
+        Contact contact = new Contact();
+        studentUser.setContact(contact);
+        model.addAttribute("studentUser", studentUser);
         return "role/admin/studentRegistration/studentRegistration";
     }
+
+    @RequestMapping(value = "/studentManagement/studentRegistration", method = RequestMethod.POST)
+    public String basic(@ModelAttribute("studentUser") User studentUser, SessionStatus sessionStatus) {
+
+        studentUser.setEnabled(false);
+        studentUser.setConfirm(false);
+        userService.register(studentUser);
+        sessionStatus.setComplete();
+
+        return "redirect:/admin/studentManagement/studentRegistration";
+    }
+
 
     @RequestMapping("/studentManagement/studentInformation")
     public String studentInformation(Model model) {

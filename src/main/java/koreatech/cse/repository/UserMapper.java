@@ -20,7 +20,6 @@ public interface UserMapper {
             "`school_year`,"+
             "`confirm`,"+
             "`register_date`,"+
-            "`last_login`,"+
             "`advisor`,"+
             "`status`,"+
             "`enabled`"+
@@ -32,8 +31,7 @@ public interface UserMapper {
             "#{majorId},"+
             "#{schoolYear},"+
             "#{confirm},"+
-            "CURRENT_TIMESTAMP"+
-            "#{lastLogin},"+
+            "CURRENT_TIMESTAMP,"+
             "#{advisor},"+
             "#{status},"+
             "#{enabled}"+

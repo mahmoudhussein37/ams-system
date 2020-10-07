@@ -76,7 +76,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <spring:message code="common.division"/><br/>
-                                        <select id="search-division" class="form-control" style="margin-top:10px;"/>
+                                        <select id="search-division" class="form-control" style="margin-top:10px;">
                                         <c:forEach var="division" items="${divisions}">
                                             <option value="${division.id}">${division.name}</option>
                                         </c:forEach>
@@ -84,7 +84,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <spring:message code="common.major"/><br/>
-                                        <select id="search-major" class="form-control" style="margin-top:10px;"/>
+                                        <select id="search-major" class="form-control" style="margin-top:10px;">
                                         <c:forEach var="major" items="${majors}">
                                             <option value="${major.id}">${major.name}</option>
                                         </c:forEach>

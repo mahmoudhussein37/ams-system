@@ -23,7 +23,7 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <spring:message code="common.year"/><br/>
-                                        <select id="search-year" class="form-control" style="margin-top:10px;"/>
+                                        <select id="search-year" class="form-control" style="margin-top:10px;">
                                         <c:forEach var="y" items="${yearList}">
                                             <option value="${y}">${y}</option>
                                         </c:forEach>
@@ -31,7 +31,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <spring:message code="common.semester"/><br/>
-                                        <select id="search-semester" class="form-control" style="margin-top:10px;"/>
+                                        <select id="search-semester" class="form-control" style="margin-top:10px;">
                                         <option value="1"><spring:message code="common.sem1"/></option>
                                         <option value="2"><spring:message code="common.sem2"/></option>
                                         </select>
@@ -39,7 +39,7 @@
 
                                     <div class="col-md-3">
                                         <spring:message code="common.division"/><br/>
-                                        <select id="search-division" class="form-control" style="margin-top:10px;"/>
+                                        <select id="search-division" class="form-control" style="margin-top:10px;">
                                         <c:forEach var="division" items="${divisions}">
                                             <option value="${division.id}">${division.name}</option>
                                         </c:forEach>

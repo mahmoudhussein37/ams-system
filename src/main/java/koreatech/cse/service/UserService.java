@@ -62,23 +62,29 @@ public class UserService implements UserDetailsService {
                 adminAuthority.setRole(Role.admin);
                 authorityMapper.insert(adminAuthority);
             } else if(user.getUsername().contains("student")) {
-                Authority adminAuthority = new Authority();
-                adminAuthority.setUserId(user.getId());
-                adminAuthority.setRole(Role.student);
-                authorityMapper.insert(adminAuthority);
+                Authority studentAuthority = new Authority();
+                studentAuthority.setUserId(user.getId());
+                studentAuthority.setRole(Role.student);
+                authorityMapper.insert(studentAuthority);
             } else if(user.getUsername().contains("professor")) {
-                Authority adminAuthority = new Authority();
-                adminAuthority.setUserId(user.getId());
-                adminAuthority.setRole(Role.professor);
-                authorityMapper.insert(adminAuthority);
+                Authority profAuthority = new Authority();
+                profAuthority.setUserId(user.getId());
+                profAuthority.setRole(Role.professor);
+                authorityMapper.insert(profAuthority);
             }
 
             System.out.println("user created :" + new Date());
             return true;
         }
         return false;
+    }
 
-
+    public Boolean register(User user) {
+        userMapper.insert(user);
+        user.getContact().setUserId(user.getId());
+        Contact contact = user.getContact();
+        contactMapper.insert(contact);
+        return true;
     }
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
