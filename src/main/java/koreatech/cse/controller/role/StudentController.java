@@ -7,19 +7,21 @@ import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
 import koreatech.cse.domain.univ.Major;
 import koreatech.cse.repository.*;
+import koreatech.cse.service.AuthorityService;
 import koreatech.cse.service.UserService;
 import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@SessionAttributes("studentUser")
 @PreAuthorize("hasRole('ROLE_STUDENT')")
 @RequestMapping("/student")
 public class StudentController {
@@ -27,6 +29,10 @@ public class StudentController {
     private UserMapper userMapper;
     @Inject
     private DivisionMapper divisionMapper;
+    @Inject
+    private ContactMapper contactMapper;
+    @Inject
+    private AuthorityService authorityService;
     @Inject
     private MajorMapper majorMapper;
     @Inject
@@ -63,6 +69,19 @@ public class StudentController {
     @RequestMapping("/register/basic")
     public String basic(Model model) {
         return "role/student/basic/basic";
+    }
+
+    @RequestMapping(value = "/register/basic", method = RequestMethod.POST)
+    public String basic(@ModelAttribute("studentUser") User studentUser, SessionStatus sessionStatus) {
+        System.out.println("studentUser = " + studentUser);
+
+
+        userMapper.update(studentUser);
+        contactMapper.update(studentUser.getContact());
+        authorityService.authenticateUserAndSetSession(studentUser);
+        sessionStatus.setComplete();
+
+        return "redirect:/student/register/basic";
     }
 
     @RequestMapping("/register/basic/studentDetail")

@@ -8,12 +8,6 @@
             <input type="text" class="form-control" value="${studentUser.number}" disabled/>
             <%--<span class="form-text text-muted">Please enter your full name</span>--%>
         </div>
-
-
-
-
-
-
     </div>
     <div class="col-md-3">
         <div class="form-group">
@@ -48,12 +42,6 @@
             <input type="text" class="form-control" value="${studentUser.status}" disabled/>
             <%--<span class="form-text text-muted">Please enter your full name</span>--%>
         </div>
-
-
-
-
-
-
     </div>
     <div class="col-md-3">
         <div class="form-group">

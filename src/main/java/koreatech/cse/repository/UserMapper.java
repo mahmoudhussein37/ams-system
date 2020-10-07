@@ -42,18 +42,12 @@ public interface UserMapper {
     void insert(User user);
 
     @Update("UPDATE `user` SET"+
-            "`username` = #{username},"+
-            "`password` = #{password},"+
             "`number` = #{number},"+
             "`division_id` = #{divisionId},"+
             "`major_id` = #{majorId},"+
             "`school_year` = #{schoolYear},"+
-            "`confirm` = #{confirm},"+
-            "`register_date` = #{registerDate},"+
-            "`last_login` = #{lastLogin},"+
             "`advisor` = #{advisor},"+
-            "`status` = #{status},"+
-            "`enabled` = #{enabled} "+
+            "`status` = #{status} "+
             "WHERE `id` = #{id}")
     void update(User user);
 
