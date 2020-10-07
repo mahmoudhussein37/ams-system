@@ -18,7 +18,7 @@
 <c:set var="resources">/resources</c:set>
 <c:choose>
     <c:when test="${testMode eq true}">
-        <c:set var="baseUrl">http://localhost:8080</c:set>
+        <c:set var="baseUrl">http://localhost:8088</c:set>
     </c:when>
     <c:otherwise>
         <c:set var="baseUrl"></c:set>
