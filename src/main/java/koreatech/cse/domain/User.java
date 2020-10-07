@@ -25,8 +25,11 @@ public class User implements UserDetails {
     private Division division;
     private Major major;
 
-    private String number; //student number
+    private String number; //student/professor number
 
+    private String advisor;
+    private String status;
+    private int schoolYear;
     private List<Authority> authorities;
 
     public int getId() {
@@ -145,6 +148,30 @@ public class User implements UserDetails {
 
     public void setContact(Contact contact) {
         this.contact = contact;
+    }
+
+    public String getAdvisor() {
+        return advisor;
+    }
+
+    public void setAdvisor(String advisor) {
+        this.advisor = advisor;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getSchoolYear() {
+        return schoolYear;
+    }
+
+    public void setSchoolYear(int schoolYear) {
+        this.schoolYear = schoolYear;
     }
 
     public static User current() {

@@ -11,11 +11,50 @@ import java.util.List;
 
 @Repository
 public interface UserMapper {
-    @Insert("INSERT INTO USER (USERNAME, PASSWORD, number, division_id, major_id, register_date) VALUES (#{username}, #{password}, #{number}, #{divisionId}, #{majorId}, CURRENT_TIMESTAMP)")
+    @Insert("INSERT INTO `user`("+
+            "`username`,"+
+            "`password`,"+
+            "`number`,"+
+            "`division_id`,"+
+            "`major_id`,"+
+            "`school_year`,"+
+            "`confirm`,"+
+            "`register_date`,"+
+            "`last_login`,"+
+            "`advisor`,"+
+            "`status`,"+
+            "`enabled`"+
+            ")VALUES("+
+            "#{username},"+
+            "#{password},"+
+            "#{number},"+
+            "#{divisionId},"+
+            "#{majorId},"+
+            "#{schoolYear},"+
+            "#{confirm},"+
+            "CURRENT_TIMESTAMP"+
+            "#{lastLogin},"+
+            "#{advisor},"+
+            "#{status},"+
+            "#{enabled}"+
+            ")")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(User user);
 
-    @Update("UPDATE USER SET USERNAME = #{username}, PASSWORD = #{password}, division_id = #{divisionId}, major_id = #{majorId} WHERE ID = #{id}")
+    @Update("UPDATE `user` SET"+
+            "`username` = #{username},"+
+            "`password` = #{password},"+
+            "`number` = #{number},"+
+            "`division_id` = #{divisionId},"+
+            "`major_id` = #{majorId},"+
+            "`school_year` = #{schoolYear},"+
+            "`confirm` = #{confirm},"+
+            "`register_date` = #{registerDate},"+
+            "`last_login` = #{lastLogin},"+
+            "`advisor` = #{advisor},"+
+            "`status` = #{status},"+
+            "`enabled` = #{enabled} "+
+            "WHERE `id` = #{id}")
     void update(User user);
 
 

@@ -8,6 +8,7 @@ import koreatech.cse.domain.univ.Division;
 import koreatech.cse.domain.univ.Major;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -54,20 +55,28 @@ public class ProfessorController {
                                @RequestParam(required=false) String name,
                                @RequestParam(defaultValue = "0", required=false) int division,
                                @RequestParam(defaultValue = "0", required=false) int major) {
-
-        Searchable searchable = new Searchable();
-        searchable.setNumber(number);
-        searchable.setName(name);
-        searchable.setDivision(division);
-        searchable.setMajor(major);
-        List<User> userList = userMapper.findByStudentLookup(searchable);
-        model.addAttribute("userList", userList);
         User firstUser = null;
-        for(User user: userList) {
-            firstUser = user;
-            break;
+        List<User> userList;
+        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0 && major == 0) {
+            userList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setNumber(number);
+            searchable.setName(name);
+            searchable.setDivision(division);
+            searchable.setMajor(major);
+            userList = userMapper.findByStudentLookup(searchable);
+
+
+            for(User user: userList) {
+                firstUser = user;
+                break;
+            }
         }
 
+
+
+        model.addAttribute("userList", userList);
         model.addAttribute("firstUser", firstUser);
         return "role/professor/studentLookup/studentTable";
     }

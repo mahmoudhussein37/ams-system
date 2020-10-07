@@ -66,7 +66,7 @@
                         </div>
                         <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <spring:message code="common.studentsNumber"/><br/>
                                         <input type="text" id="search-number" class="form-control input-enter" value="" style="margin-top:10px;"/>
                                     </div>
@@ -74,7 +74,7 @@
                                         <spring:message code="common.studentsName"/><br/>
                                         <input type="text" id="search-name" class="form-control input-enter"  value="" style="margin-top:10px;"/>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <spring:message code="common.division"/><br/>
                                         <select id="search-division" class="form-control" style="margin-top:10px;"/>
                                         <c:forEach var="division" items="${divisions}">
@@ -91,9 +91,13 @@
 
                                         </select>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-1">
                                         <br/>
-                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="searchStudent()">Search</button>
+                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="searchStudent()"><spring:message code="common.search"/></button>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <br/>
+                                        <button class="btn btn-light" style="width:100%;margin-top:10px;" onclick="javascript:location.reload()"><spring:message code="common.reset"/></button>
                                     </div>
 
                                 </div>
@@ -150,14 +154,27 @@
         $(".student-table-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
     }
 
-    $(".input-enter").keydown(function(key) {
-        if (key.keyCode == 13) {
-            searchStudent();
-        }
-    });
+
 
     $(document).ready(function() {
         $(".student-table-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentTable");
+
+        $(".input-enter").keydown(function(key) {
+            if (key.keyCode == 13) {
+                searchStudent();
+            }
+
+
+        });
+        /*$(".input-enter").keyup(function(key) {
+            var k = $(this).val();
+            console.log(k);
+            if(k == '') {
+
+                location.reload();
+            }
+        });*/
+
 
     });
 
