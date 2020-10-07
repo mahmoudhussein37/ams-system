@@ -17,6 +17,33 @@ public class Contact implements Serializable  {
     private String firstName;
     private String lastName;
 
+    private String cellPhone;
+    private String phone;
+    private String postCode;
+    private String address;
+
+    private String parentName;
+    private String relation;
+    private String parentCellPhone;
+    private String parentPhone;
+    private String parentPostCode;
+    private String parentAddress;
+
+    private int admissionYear;
+    private String admissionDate;
+    private String highSchool;
+    private String hGradYear;
+
+
+    private String gradYear;
+    private String gradSemester;
+    private String gradDate;
+    private String gradDegree;
+    private String degreeNumber;
+    private String certNumber;
+
+
+
     public int getId() {
         return id;
     }
@@ -55,6 +82,166 @@ public class Contact implements Serializable  {
         } catch(Exception e) {
             return "";
         }
+    }
+
+    public String getCellPhone() {
+        return cellPhone;
+    }
+
+    public void setCellPhone(String cellPhone) {
+        this.cellPhone = cellPhone;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPostCode() {
+        return postCode;
+    }
+
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
+    }
+
+    public String getRelation() {
+        return relation;
+    }
+
+    public void setRelation(String relation) {
+        this.relation = relation;
+    }
+
+    public String getParentCellPhone() {
+        return parentCellPhone;
+    }
+
+    public void setParentCellPhone(String parentCellPhone) {
+        this.parentCellPhone = parentCellPhone;
+    }
+
+    public String getParentPhone() {
+        return parentPhone;
+    }
+
+    public void setParentPhone(String parentPhone) {
+        this.parentPhone = parentPhone;
+    }
+
+    public String getParentPostCode() {
+        return parentPostCode;
+    }
+
+    public void setParentPostCode(String parentPostCode) {
+        this.parentPostCode = parentPostCode;
+    }
+
+    public String getParentAddress() {
+        return parentAddress;
+    }
+
+    public void setParentAddress(String parentAddress) {
+        this.parentAddress = parentAddress;
+    }
+
+    public int getAdmissionYear() {
+        return admissionYear;
+    }
+
+    public void setAdmissionYear(int admissionYear) {
+        this.admissionYear = admissionYear;
+    }
+
+    public String getAdmissionDate() {
+        return admissionDate;
+    }
+
+    public void setAdmissionDate(String admissionDate) {
+        this.admissionDate = admissionDate;
+    }
+
+    public String getHighSchool() {
+        return highSchool;
+    }
+
+    public void setHighSchool(String highSchool) {
+        this.highSchool = highSchool;
+    }
+
+    public String gethGradYear() {
+        return hGradYear;
+    }
+
+    public void sethGradYear(String hGradYear) {
+        this.hGradYear = hGradYear;
+    }
+
+    public String getGradYear() {
+        return gradYear;
+    }
+
+    public void setGradYear(String gradYear) {
+        this.gradYear = gradYear;
+    }
+
+    public String getGradSemester() {
+        return gradSemester;
+    }
+
+    public void setGradSemester(String gradSemester) {
+        this.gradSemester = gradSemester;
+    }
+
+    public String getGradDate() {
+        return gradDate;
+    }
+
+    public void setGradDate(String gradDate) {
+        this.gradDate = gradDate;
+    }
+
+    public String getGradDegree() {
+        return gradDegree;
+    }
+
+    public void setGradDegree(String gradDegree) {
+        this.gradDegree = gradDegree;
+    }
+
+    public String getDegreeNumber() {
+        return degreeNumber;
+    }
+
+    public void setDegreeNumber(String degreeNumber) {
+        this.degreeNumber = degreeNumber;
+    }
+
+    public String getCertNumber() {
+        return certNumber;
+    }
+
+    public void setCertNumber(String certNumber) {
+        this.certNumber = certNumber;
     }
 
     @Override

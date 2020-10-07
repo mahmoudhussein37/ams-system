@@ -12,7 +12,7 @@
 
         <div class="form-group">
             <label><spring:message code="common.division"/></label>
-            <input type="text" class="form-control" value="${user.division.name}" disabled/>
+            <input type="text" class="form-control" value="${studentUser.division.name}" disabled/>
             <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
         </div>
 
@@ -28,7 +28,7 @@
         </div>
         <div class="form-group">
             <label><spring:message code="common.major"/></label>
-            <input type="text" class="form-control" value="${user.major.name}" disabled/>
+            <input type="text" class="form-control" value="${studentUser.major.name}" disabled/>
             <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
         </div>
     </div>
