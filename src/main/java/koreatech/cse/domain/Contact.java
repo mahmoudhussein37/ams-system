@@ -29,8 +29,8 @@ public class Contact implements Serializable  {
     private String parentPostCode;
     private String parentAddress;
 
-    private int admissionYear;
-    private String admissionDate;
+    private int admissionYear; //admission year, entering year
+    private String admissionDate; //admission date, entering date
     private String highSchool;
     private String hGradYear;
 

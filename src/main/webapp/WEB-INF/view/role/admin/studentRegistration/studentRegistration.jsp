@@ -103,7 +103,7 @@
                                     </div>
                                 </div>
                                 <br/>
-                                <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
+                                <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.register"/></button>
 
 
                             </form:form>
@@ -134,51 +134,51 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
+    var KTBootstrapDatepicker = function () {
+
+        var arrows;
+        if (KTUtil.isRTL()) {
+            arrows = {
+                leftArrow: '<i class="la la-angle-right"></i>',
+                rightArrow: '<i class="la la-angle-left"></i>'
+            }
+        } else {
+            arrows = {
+                leftArrow: '<i class="la la-angle-left"></i>',
+                rightArrow: '<i class="la la-angle-right"></i>'
+            }
+        }
+
+        // Private functions
+        var demos = function () {
+            // minimum setup
+            $('#kt_datepicker_1').datepicker({
+                rtl: KTUtil.isRTL(),
+                todayHighlight: true,
+                orientation: "bottom left",
+                templates: arrows,
+                format: 'yyyy-mm-dd',
+            }).on('changeDate', function(e){
+                $(this).datepicker('hide');
+            })
+
+
+        }
+
+        return {
+            // public functions
+            init: function() {
+                demos();
+            }
+        };
+    }();
     $(document).ready(function() {
-        // Class definition
+        KTBootstrapDatepicker.init();
+        <c:if test="${not empty result}">
+        alert("<spring:message code='common.success'/>");
+        location.href="${baseUrl}/admin/studentManagement/studentRegistration";
+        </c:if>
 
-        var KTBootstrapDatepicker = function () {
-
-            var arrows;
-            if (KTUtil.isRTL()) {
-                arrows = {
-                    leftArrow: '<i class="la la-angle-right"></i>',
-                    rightArrow: '<i class="la la-angle-left"></i>'
-                }
-            } else {
-                arrows = {
-                    leftArrow: '<i class="la la-angle-left"></i>',
-                    rightArrow: '<i class="la la-angle-right"></i>'
-                }
-            }
-
-            // Private functions
-            var demos = function () {
-                // minimum setup
-                $('#kt_datepicker_1').datepicker({
-                    rtl: KTUtil.isRTL(),
-                    todayHighlight: true,
-                    orientation: "bottom left",
-                    templates: arrows,
-                    format: 'yyyy-mm-dd',
-                }).on('changeDate', function(e){
-                    $(this).datepicker('hide');
-                })
-
-
-            }
-
-            return {
-                // public functions
-                init: function() {
-                    demos();
-                }
-            };
-        }();
-
-        jQuery(document).ready(function() {
-            KTBootstrapDatepicker.init();
-        });
     });
 </script>
 </body>

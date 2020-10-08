@@ -10,10 +10,7 @@ import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.inject.Inject;
@@ -21,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes("studentUser")
+@SessionAttributes({"studentUser", "profUser"})
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
@@ -41,7 +38,7 @@ public class AdminController {
 
 
     @RequestMapping("/studentManagement/studentRegistration")
-    public String studentRegistration(Model model) {
+    public String studentRegistration(Model model, @RequestParam(required=false) String result) {
 
         List<Division> divisions = divisionMapper.findAll();
         List<Major> majors = majorMapper.findAll();
@@ -52,6 +49,7 @@ public class AdminController {
         Contact contact = new Contact();
         studentUser.setContact(contact);
         model.addAttribute("studentUser", studentUser);
+        model.addAttribute("result", result);
         return "role/admin/studentRegistration/studentRegistration";
     }
 
@@ -63,7 +61,7 @@ public class AdminController {
         userService.register(studentUser);
         sessionStatus.setComplete();
 
-        return "redirect:/admin/studentManagement/studentRegistration";
+        return "redirect:/admin/studentManagement/studentRegistration?result=success";
     }
 
 
@@ -83,8 +81,26 @@ public class AdminController {
     }
 
     @RequestMapping("/profManagement/profRegistration")
-    public String profRegistration(Model model) {
+    public String profRegistration(Model model, @RequestParam(required=false) String result) {
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+        User profUser = new User();
+        Contact contact = new Contact();
+        profUser.setContact(contact);
+        model.addAttribute("profUser", profUser);
+        model.addAttribute("result", result);
         return "role/admin/profRegistration/profRegistration";
+    }
+
+    @RequestMapping(value = "/profManagement/profRegistration", method = RequestMethod.POST)
+    public String profRegistration(@ModelAttribute("profUser") User profUser, SessionStatus sessionStatus) {
+        profUser.setEnabled(false);
+        profUser.setConfirm(false);
+        userService.register(profUser);
+        sessionStatus.setComplete();
+        return "redirect:/admin/profManagement/profRegistration?result=success";
     }
 
     @RequestMapping("/profManagement/profInformation")
