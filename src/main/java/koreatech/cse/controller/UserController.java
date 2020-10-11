@@ -23,22 +23,6 @@ public class UserController {
     private UserService userService;
 
 
-    @RequestMapping("/signup")
-    public String signup(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        return "signup";
-    }
-
-    @Transactional
-    @RequestMapping(value="/signup", method= RequestMethod.POST)
-    public String signup(@ModelAttribute User user) {
-        userService.signup(user);
-        return "redirect:/user/list";
-    }
-
-
-
 
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)

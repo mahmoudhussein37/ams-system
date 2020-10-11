@@ -82,52 +82,67 @@
                             <p class="text-muted font-weight-bold font-size-h4"><spring:message code="common.signup.desc"/></p>
                         </div>
                         <!--end::Title-->
-
+                        <div class="form-group">
+                            <select name="role" id="search-division" class="form-control form-control-solid " style="margin-top:10px;">
+                                <option value=""><spring:message code="common.selectRole"/></option>
+                                <option value="student"><spring:message code="common.role.student"/></option>
+                                <option value="professor"><spring:message code="common.role.professor"/></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <c:set var="labelNumber">
+                                <spring:message code="common.number"/>
+                            </c:set>
+                            <form:input class="form-control form-control-solid h-auto rounded" type="text" placeholder="${labelNumber}" path="number" autocomplete="off"/>
+                        </div>
                         <!--begin::Form group-->
                         <div class="form-group">
-                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="<spring:message code="common.username"/>" name="username" autocomplete="off"/>
+                            <input class="form-control form-control-solid h-auto rounded" type="text" placeholder="<spring:message code="common.username"/>" name="username" autocomplete="off"/>
                         </div>
                         <!--end::Form group-->
                         <!--begin::Form group-->
                         <div class="form-group">
-                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="password" placeholder="<spring:message code="common.password"/>" name="password" autocomplete="off"/>
+                            <input class="form-control form-control-solid h-auto rounded" type="password" placeholder="<spring:message code="common.password"/>" name="password" autocomplete="off"/>
                         </div>
                         <div class="form-group">
-                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="password" placeholder="<spring:message code="common.passwordAgain"/>" name="signupUser.passwordConform" id="signupUser.passwordConform" autocomplete="off"/>
+                            <input class="form-control form-control-solid h-auto rounded" type="password" placeholder="<spring:message code="common.passwordAgain"/>" name="signupUser.passwordConform" id="signupUser.passwordConform" autocomplete="off"/>
                         </div>
                         <!--end::Form group-->
 
 
+
+
                         <!--begin::Form group-->
+
                         <div class="form-group">
                             <c:set var="labelFirstName">
                                 <spring:message code="common.firstName"/>
                             </c:set>
-                            <form:input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="${labelFirstName}" path="contact.firstName" autocomplete="off"/>
+                            <form:input class="form-control form-control-solid h-auto rounded" type="text" placeholder="${labelFirstName}" path="contact.firstName" autocomplete="off"/>
                         </div>
                         <!--end::Form group-->
                         <div class="form-group">
                             <c:set var="labelLastName">
                                 <spring:message code="common.lastName"/>
                             </c:set>
-                            <form:input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="${labelLastName}" path="contact.lastName" autocomplete="off"/>
+                            <form:input class="form-control form-control-solid h-auto rounded" type="text" placeholder="${labelLastName}" path="contact.lastName" autocomplete="off"/>
                         </div>
 
 
 
                         <!--begin::Form group-->
-                        <div class="form-group">
+                        <%--<div class="form-group">
                             <label class="checkbox mb-0">
                                 <input type="checkbox" name="agree"/>I Agree the <a href="#">terms and conditions</a>.
                                 <span></span>
                             </label>
-                        </div>
+                        </div>--%>
                         <!--end::Form group-->
 
                         <!--begin::Form group-->
                         <div class="form-group d-flex flex-wrap pb-lg-0 pb-3">
-                            <button type="submit" id="kt_login_signup_submit" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-4">Submit</button>
-                            <button type="button" id="kt_login_signup_cancel" class="btn btn-light-primary font-weight-bolder font-size-h6 px-8 py-4 my-3">Cancel</button>
+                            <button type="submit" id="kt_login_signup_submit" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-4"><spring:message code="common.signup"/></button>
+                            <%--<button type="button" id="kt_login_signup_cancel" class="btn btn-light-primary font-weight-bolder font-size-h6 px-8 py-4 my-3">Cancel</button>--%>
                         </div>
                         <!--end::Form group-->
                     </form:form>
@@ -148,7 +163,7 @@
 
                         <!--begin::Form group-->
                         <div class="form-group">
-                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="email" placeholder="Email" name="email" autocomplete="off"/>
+                            <input class="form-control form-control-solid h-auto rounded" type="email" placeholder="Email" name="email" autocomplete="off"/>
                         </div>
                         <!--end::Form group-->
 

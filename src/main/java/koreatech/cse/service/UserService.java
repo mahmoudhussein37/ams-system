@@ -31,44 +31,48 @@ public class UserService implements UserDetailsService {
     private ContactMapper contactMapper;
 
 
-    public Boolean signup(User user) {
+    public Boolean signup(User user, Role role) {
 
         if(user.getUsername() == null || user.getPassword() ==  null)
             return false;
 
         if(isUniqueUsername(user.getUsername().trim())) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setEnabled(true);
-            user.setConfirm(true);
-            user.setDivisionId(1);
-            user.setNumber(UUID.randomUUID().toString().substring(9, 28));
-            user.setMajorId(1);
+
+            User stored = userMapper.findByNumber(user.getNumber());
+            stored.setUsername(user.getUsername());
+            stored.setPassword(passwordEncoder.encode(user.getPassword()));
+            stored.setEnabled(true);
+            stored.setConfirm(true);
 
 
-            userMapper.insert(user);
-            user.getContact().setUserId(user.getId());
+            userMapper.updateFromSignup(stored);
             Contact contact = user.getContact();
-            contactMapper.insert(contact);
+            Contact storedContact = contactMapper.findByUserId(stored.getId());
+
+
+            storedContact.setFirstName(contact.getFirstName());
+            storedContact.setLastName(contact.getLastName());
+            contactMapper.update(storedContact);
 
             Authority authority = new Authority();
-            authority.setUserId(user.getId());
+            authority.setUserId(stored.getId());
             authority.setRole(Role.user);
             authorityMapper.insert(authority);
 
             //TODO: remove
             if(user.getUsername().contains("admin")) {
                 Authority adminAuthority = new Authority();
-                adminAuthority.setUserId(user.getId());
+                adminAuthority.setUserId(stored.getId());
                 adminAuthority.setRole(Role.admin);
                 authorityMapper.insert(adminAuthority);
-            } else if(user.getUsername().contains("student")) {
+            } else if(role == Role.student) {
                 Authority studentAuthority = new Authority();
-                studentAuthority.setUserId(user.getId());
+                studentAuthority.setUserId(stored.getId());
                 studentAuthority.setRole(Role.student);
                 authorityMapper.insert(studentAuthority);
-            } else if(user.getUsername().contains("professor")) {
+            } else if(role == Role.professor) {
                 Authority profAuthority = new Authority();
-                profAuthority.setUserId(user.getId());
+                profAuthority.setUserId(stored.getId());
                 profAuthority.setRole(Role.professor);
                 authorityMapper.insert(profAuthority);
             }

@@ -77,10 +77,11 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signup(@ModelAttribute User signupUser, SessionStatus status) {
+    public String signup(@ModelAttribute User signupUser, @RequestParam Role role, SessionStatus status) {
 
         System.out.println("signupUser = " + signupUser);
-        userService.signup(signupUser);
+        System.out.println("role = " + role);
+        userService.signup(signupUser, role);
         status.setComplete();
 
         return "redirect:/signin?msg=signupSuccess";

@@ -49,6 +49,14 @@ public interface UserMapper {
             "WHERE `id` = #{id}")
     void update(User user);
 
+    @Update("UPDATE `user` SET"+
+            "`username` = #{username},"+
+            "`password` = #{password},"+
+            "`enabled` = #{enabled},"+
+            "`confirm` = #{confirm} "+
+            "WHERE `id` = #{id}")
+    void updateFromSignup(User user);
+
 
     @Results({
             @Result(column = "id", property = "id"),
@@ -73,6 +81,10 @@ public interface UserMapper {
     @ResultMap("findOne-int")
     @Select("select * from user where username = #{username}")
     User findByUsername(@Param("username") String username);
+
+    @ResultMap("findOne-int")
+    @Select("select * from user where number = #{number}")
+    User findByNumber(@Param("number") String number);
 
     @Delete("DELETE FROM USER WHERE ID = #{id}")
     void delete(@Param("id") int id);
