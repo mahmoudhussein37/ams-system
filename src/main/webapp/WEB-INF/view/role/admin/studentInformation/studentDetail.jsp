@@ -1,0 +1,189 @@
+<%@include file="/WEB-INF/view/include/topTag.jsp" %>
+<form:form modelAttribute="studentUser" action="${baseUrl}/admin/studentManagement/studentInformation/studentDetail" method="post" class="form">
+    <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.information"/></h3>
+    <div class="row">
+        <div class="col-md-3">
+
+            <div class="form-group">
+                <label><spring:message code="common.studentNumber"/></label>
+                <input type="text" class="form-control" value="${studentUser.number}" disabled/>
+                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.name"/></label>
+                <input type="text" class="form-control"  value="${studentUser.getFullName()}" disabled/>
+                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.division"/></label>
+                <form:select path="divisionId" class="form-control" style="margin-top:10px;">
+                    <c:forEach var="division" items="${divisions}">
+                        <form:option value="${division.id}">${division.name}</form:option>
+                    </c:forEach>
+                </form:select>
+                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+
+            <div class="form-group">
+                <label><spring:message code="common.major"/></label>
+                <form:select path="majorId" class="form-control" style="margin-top:10px;">
+                    <c:forEach var="major" items="${majors}">
+                        <form:option value="${major.id}">${major.name}</form:option>
+                    </c:forEach>
+                </form:select>
+
+                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+
+            <div class="form-group">
+                <label><spring:message code="common.status"/></label>
+                <form:select path="status" class="form-control" >
+                    <c:forEach var="s" items="${statusList}">
+                        <form:option value="${s.name()}"><spring:message code="student.status.${s.name()}"/></form:option>
+                    </c:forEach>
+
+                </form:select>
+                    <%--<input type="text" class="form-control" value="${studentUser.status}" disabled/>--%>
+                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.advisor"/></label>
+                <form:input type="text" path="advisor" class="form-control" />
+                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.schoolYear"/></label>
+                <form:input type="number" path="schoolYear" class="form-control" />
+                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+
+
+        </div>
+    </div>
+    <br/>
+    <div class="separator separator-solid my-5"></div>
+    <br/>
+
+    <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.graduationInformation"/></h3>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.graduationYear"/></label>
+                <form:input path="contact.gradYear" type="text" class="form-control"/>
+                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+            </div>
+        </div>
+        <div class="col-md-3">
+
+            <div class="form-group">
+                <label><spring:message code="common.graduationSemester"/></label>
+                <form:input path="contact.gradSemester" type="text" class="form-control"/>
+                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.graduationDate"/></label>
+                <form:input path="contact.gradDate" type="text" class="form-control" id="grad-date-picker"  readonly="true"/>
+                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.graduationDegree"/></label>
+                <form:input path="contact.gradDegree" type="text" class="form-control"/>
+                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.degreeNumber"/></label>
+                <form:input path="contact.degreeNumber" type="text" class="form-control"/>
+                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+            </div>
+        </div>
+        <div class="col-md-3">
+
+            <div class="form-group">
+                <label><spring:message code="common.certificateNumber"/></label>
+                <form:input path="contact.certNumber" type="text" class="form-control"/>
+                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
+</form:form>
+
+
+
+<%@include file="/WEB-INF/view/include/footerScript.jsp" %>
+<script>
+    var KTBootstrapDatepicker = function () {
+
+        var arrows;
+        if (KTUtil.isRTL()) {
+            arrows = {
+                leftArrow: '<i class="la la-angle-right"></i>',
+                rightArrow: '<i class="la la-angle-left"></i>'
+            }
+        } else {
+            arrows = {
+                leftArrow: '<i class="la la-angle-left"></i>',
+                rightArrow: '<i class="la la-angle-right"></i>'
+            }
+        }
+
+        // Private functions
+        var demos = function () {
+            // minimum setup
+            $('#grad-date-picker').datepicker({
+                rtl: KTUtil.isRTL(),
+                todayHighlight: true,
+                orientation: "bottom left",
+                templates: arrows,
+                format: 'yyyy-mm-dd',
+            }).on('changeDate', function(e){
+                $(this).datepicker('hide');
+            })
+
+
+        }
+
+        return {
+            // public functions
+            init: function() {
+                demos();
+            }
+        };
+    }();
+    $(document).ready(function() {
+        KTBootstrapDatepicker.init();
+        <c:if test="${not empty result}">
+        alert("<spring:message code='common.success'/>");
+        location.href="${baseUrl}/admin/profManagement/profRegistration";
+        </c:if>
+    });
+</script>

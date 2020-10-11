@@ -1,11 +1,15 @@
 package koreatech.cse.controller.role;
 
 import koreatech.cse.domain.Contact;
+import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
+import koreatech.cse.domain.constant.StudentStatus;
 import koreatech.cse.domain.univ.Division;
 import koreatech.cse.domain.univ.Major;
 import koreatech.cse.repository.*;
+import koreatech.cse.service.AuthorityService;
 import koreatech.cse.service.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -34,6 +38,10 @@ public class AdminController {
     private CourseMapper courseMapper;
     @Inject
     private ProfessorCourseMapper professorCourseMapper;
+    @Inject
+    private ContactMapper contactMapper;
+    @Inject
+    private AuthorityService authorityService;
 
 
 
@@ -64,11 +72,74 @@ public class AdminController {
         return "redirect:/admin/studentManagement/studentRegistration?result=success";
     }
 
+    @RequestMapping("/studentManagement/studentInformation/studentTable")
+    public String studentTable(Model model, @RequestParam(required=false) String number,
+                               @RequestParam(required=false) String name,
+                               @RequestParam(defaultValue = "0", required=false) int division,
+                               @RequestParam(defaultValue = "0", required=false) int major) {
+        User firstUser = null;
+        List<User> userList;
+        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0 && major == 0) {
+            userList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setNumber(number);
+            searchable.setName(name);
+            searchable.setDivision(division);
+            searchable.setMajor(major);
+            userList = userMapper.findByStudentLookup(searchable);
+
+
+            for(User user: userList) {
+                firstUser = user;
+                break;
+            }
+        }
+
+        model.addAttribute("userList", userList);
+        model.addAttribute("firstUser", firstUser);
+        return "role/admin/studentInformation/studentTable";
+    }
+
+    @RequestMapping("/studentManagement/studentInformation/studentDetail")
+    public String studentDetail(Model model, @RequestParam int studentId) {
+        User studentUser = userMapper.findOne(studentId);
+        model.addAttribute("studentUser", studentUser);
+        model.addAttribute("statusList", StudentStatus.values());
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+
+        return "role/admin/studentInformation/studentDetail";
+    }
+
+    @RequestMapping(value = "/studentManagement/studentInformation/studentDetail", method = RequestMethod.POST)
+    public String studentDetail(@ModelAttribute("studentUser") User studentUser, SessionStatus sessionStatus) {
+        System.out.println("studentUser = " + studentUser);
+
+        userMapper.update(studentUser);
+        contactMapper.update(studentUser.getContact());
+        sessionStatus.setComplete();
+
+        return "redirect:/admin/studentManagement/studentInformation";
+    }
 
     @RequestMapping("/studentManagement/studentInformation")
     public String studentInformation(Model model) {
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+
         return "role/admin/studentInformation/studentInformation";
     }
+
+
+
+
 
     @RequestMapping("/studentManagement/studentProfile")
     public String studentProfile(Model model) {
