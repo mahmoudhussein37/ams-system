@@ -269,6 +269,106 @@
 <!--begin::Page Scripts(used by this page)-->
 <%--<script src="${resources}/vendor/metronic_assets_7/assets/js/pages/custom/login/login-general.js"></script>--%>
 <!--end::Page Scripts-->
+<script>
+    // Class definition
+    var KTFormControls = function () {
+        // Private functions
+        var _userValidation = function () {
+            FormValidation.formValidation(
+                document.getElementById('signup-form'),
+                {
+                    fields: {
+                        username: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Username is required'
+                                },
+                                emailAddress: {
+                                    message: 'The value is not a valid email address'
+                                }
+                            }
+                        },
+                        number: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Number is required'
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Password is required'
+                                }
+                            }
+                        },
+                        "signupUser.passwordConform": {
+                            validators: {
+                                identical: {
+                                    compare: function() {
+                                        var form = document.getElementById('signup-form');
+                                        return form.querySelector('[name="password"]').value;
+                                    },
+                                    message: 'The password and its confirm are not the same'
+                                }
+                            }
+                        },
+                        "contact.firstName": {
+                            validators: {
+                                notEmpty: {
+                                    message: 'First name is required'
+                                }
+                            }
+                        },
+                        "contact.lastName": {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Last name is required'
+                                }
+                            }
+                        },
+
+
+                        role: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Please select an option'
+                                }
+                            }
+                        },
+
+
+                    },
+
+                    plugins: { //Learn more: https://formvalidation.io/guide/plugins
+                        trigger: new FormValidation.plugins.Trigger(),
+                        // Bootstrap Framework Integration
+                        bootstrap: new FormValidation.plugins.Bootstrap(),
+                        // Validate fields when clicking the Submit button
+                        submitButton: new FormValidation.plugins.SubmitButton(),
+                        // Submit the form when all fields are valid
+                        defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+
+                    }
+                }
+            );
+        }
+
+
+
+        return {
+            // public functions
+            init: function() {
+                _userValidation();
+            }
+        };
+    }();
+
+    jQuery(document).ready(function() {
+        KTFormControls.init();
+    });
+
+</script>
 </body>
 <!--end::Body-->
 </html>
