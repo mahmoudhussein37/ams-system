@@ -183,7 +183,7 @@
         KTBootstrapDatepicker.init();
         <c:if test="${not empty result}">
         alert("<spring:message code='common.success'/>");
-        location.href="${baseUrl}/admin/profManagement/profRegistration";
+        location.href="${baseUrl}/admin/studentManagement/studentInformation";
         </c:if>
     });
 </script>

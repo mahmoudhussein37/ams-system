@@ -1,0 +1,63 @@
+<%@include file="/WEB-INF/view/include/topTag.jsp" %>
+<form:form modelAttribute="profUser" action="${baseUrl}/admin/profManagement/profInformation/profDetail" method="post" class="form">
+    <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.information"/></h3>
+    <div class="row">
+        <div class="col-md-3">
+
+            <div class="form-group">
+                <label><spring:message code="common.profNumber"/></label>
+                <input type="text" class="form-control" value="${profUser.number}" disabled/>
+                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.name"/></label>
+                <input type="text" class="form-control"  value="${profUser.getFullName()}" disabled/>
+                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.division"/></label>
+                <form:select path="divisionId" class="form-control">
+                    <c:forEach var="division" items="${divisions}">
+                        <form:option value="${division.id}">${division.name}</form:option>
+                    </c:forEach>
+                </form:select>
+                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+
+            <div class="form-group">
+                <label><spring:message code="common.major"/></label>
+                <form:select path="majorId" class="form-control">
+                    <c:forEach var="major" items="${majors}">
+                        <form:option value="${major.id}">${major.name}</form:option>
+                    </c:forEach>
+                </form:select>
+
+                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+            </div>
+        </div>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
+</form:form>
+
+
+
+<%@include file="/WEB-INF/view/include/footerScript.jsp" %>
+<script>
+
+    $(document).ready(function() {
+        <c:if test="${not empty result}">
+        alert("<spring:message code='common.success'/>");
+        location.href="${baseUrl}/admin/profManagement/profInformation";
+        </c:if>
+    });
+</script>

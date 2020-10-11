@@ -20,7 +20,7 @@
                         </div>
                         <div class="card-body">
 
-                            <div class="student-detail-div">
+                            <div class="detail-div">
 
                             </div>
 
@@ -48,7 +48,7 @@
 
 <script>
     $(document).ready(function() {
-        $(".student-detail-div").load("${baseUrl}/student/grades/inquiryGrade/gradeDetail");
+        $(".detail-div").load("${baseUrl}/student/grades/inquiryGrade/gradeDetail");
     });
 </script>
 </body>

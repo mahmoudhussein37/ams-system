@@ -82,7 +82,7 @@
 
 <script>
     $(document).ready(function() {
-        /*$(".student-detail-div").load("${baseUrl}/student/graduation/graduationRequirements/gradeDetail");*/
+        /*$(".detail-div").load("${baseUrl}/student/graduation/graduationRequirements/gradeDetail");*/
     });
 </script>
 </body>

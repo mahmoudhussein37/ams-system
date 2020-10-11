@@ -43,12 +43,12 @@
     $("#student-list").DataTable();
 
     <c:if test="${not empty firstUser}">
-        $(".student-detail-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentDetail?studentId=${firstUser.id}");
+        $(".detail-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentDetail?studentId=${firstUser.id}");
     </c:if>
     $("body").on('click', '.student-detail', function (e) {
         e.preventDefault();
         var studentId = $(this).attr("data-student-id");
-        $(".student-detail-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentDetail?studentId=" + studentId);
+        $(".detail-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentDetail?studentId=" + studentId);
 
     });
 </script>

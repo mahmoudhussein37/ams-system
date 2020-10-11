@@ -123,17 +123,17 @@ public class AdminController {
         contactMapper.update(studentUser.getContact());
         sessionStatus.setComplete();
 
-        return "redirect:/admin/studentManagement/studentInformation";
+        return "redirect:/admin/studentManagement/studentInformation?result=success";
     }
 
     @RequestMapping("/studentManagement/studentInformation")
-    public String studentInformation(Model model) {
+    public String studentInformation(Model model, @RequestParam(required=false) String result) {
         List<Division> divisions = divisionMapper.findAll();
         List<Major> majors = majorMapper.findAll();
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("majors", majors);
-
+        model.addAttribute("result", result);
         return "role/admin/studentInformation/studentInformation";
     }
 
@@ -175,8 +175,72 @@ public class AdminController {
     }
 
     @RequestMapping("/profManagement/profInformation")
-    public String profInformation(Model model) {
+    public String profInformation(Model model, @RequestParam(required=false) String result) {
+
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+        model.addAttribute("result", result);
         return "role/admin/profInformation/profInformation";
+    }
+
+    @RequestMapping("/profManagement/profInformation/profTable")
+    public String profTable(Model model, @RequestParam(required=false) String number,
+                               @RequestParam(required=false) String name,
+                               @RequestParam(defaultValue = "0", required=false) int division,
+                               @RequestParam(defaultValue = "0", required=false) int major) {
+        User firstUser = null;
+        List<User> userList;
+        System.out.println("division = " + division);
+        System.out.println("major = " + major);
+        System.out.println("number = " + number);
+        System.out.println("name = " + name);;
+        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0 && major == 0) {
+            userList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setNumber(number);
+            searchable.setName(name);
+            searchable.setDivision(division);
+            searchable.setMajor(major);
+            userList = userMapper.findByProfLookup(searchable);
+
+
+            for(User user: userList) {
+                firstUser = user;
+                break;
+            }
+        }
+
+        model.addAttribute("userList", userList);
+        model.addAttribute("firstUser", firstUser);
+        return "role/admin/profInformation/profTable";
+    }
+
+    @RequestMapping("/profManagement/profInformation/profDetail")
+    public String profDetail(Model model, @RequestParam int profId) {
+        User profUser = userMapper.findOne(profId);
+        model.addAttribute("profUser", profUser);
+        model.addAttribute("statusList", StudentStatus.values());
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+
+        return "role/admin/profInformation/profDetail";
+    }
+
+    @RequestMapping(value = "/profManagement/profInformation/profDetail", method = RequestMethod.POST)
+    public String profDetail(@ModelAttribute("profUser") User profUser, SessionStatus sessionStatus) {
+
+        userMapper.update(profUser);
+        contactMapper.update(profUser.getContact());
+        sessionStatus.setComplete();
+
+        return "redirect:/admin/profManagement/profInformation?result=success";
     }
 
     @RequestMapping("/profManagement/graduationResearch")

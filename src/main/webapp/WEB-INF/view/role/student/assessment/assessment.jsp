@@ -60,7 +60,7 @@
                             <br/><br/>
                             <div class="separator separator-solid my-5"></div>
                             <br/><br/>
-                            <div class="student-detail-div">
+                            <div class="detail-div">
 
                             </div>
 
