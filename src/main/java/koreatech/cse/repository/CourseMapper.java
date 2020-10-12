@@ -61,4 +61,18 @@ public interface CourseMapper {
             + "</script>")
         //@formatter on
     List<Course> findByInquiryCourse(Searchable searchable);
+
+    @ResultMap("findOne-int")
+    //@formatter off
+    @Select("<script>"
+            + "SELECT * FROM course where 1=1 "
+
+            + "<if test='year != 0'> and year = #{year}</if>"
+            + "<if test='semester != 0'> and semester = #{semester}</if>"
+            + "<if test='division != 0'> and division_id = #{division}</if>"
+            + "<if test='major != 0'> and major_id = #{major}</if>"
+            + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
+            + "</script>")
+        //@formatter on
+    List<Course> findByCourseManagement(Searchable searchable);
 }

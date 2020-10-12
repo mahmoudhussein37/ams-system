@@ -4,6 +4,8 @@ import koreatech.cse.domain.Contact;
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.StudentStatus;
+import koreatech.cse.domain.role.professor.ProfessorCourse;
+import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
 import koreatech.cse.domain.univ.Major;
 import koreatech.cse.repository.*;
@@ -22,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"studentUser", "profUser"})
+@SessionAttributes({"studentUser", "profUser", "course"})
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
@@ -42,6 +44,7 @@ public class AdminController {
     private ContactMapper contactMapper;
     @Inject
     private AuthorityService authorityService;
+
 
 
 
@@ -260,8 +263,54 @@ public class AdminController {
 
     @RequestMapping("/courseManagement/course")
     public String course(Model model) {
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+        model.addAttribute("yearList", getYearList());
+        model.addAttribute("course", new Course());
+
+
         return "role/admin/course/course";
     }
+
+    @RequestMapping("/courseManagement/courseTable")
+    public String courseTable(Model model,
+                                       @RequestParam(defaultValue = "0", required=false) int year,
+                                       @RequestParam(defaultValue = "0", required=false) int semester,
+                              @RequestParam(defaultValue = "0", required=false) int division,
+                              @RequestParam(defaultValue = "0", required=false) int major) {
+        System.out.println("course table");
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+        searchable.setDivision(division);
+        searchable.setMajor(major);
+
+        List<Course> courseList = courseMapper.findByCourseManagement(searchable);
+        System.out.println("courseList = " + courseList);
+
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        System.out.println("course table end");
+        return "role/admin/course/courseTable";
+    }
+
+    @RequestMapping("/courseManagement/courseDetail")
+    public String courseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+        return "role/admin/course/courseDetail";
+    }
+
 
     @RequestMapping("/courseManagement/alternative")
     public String alternative(Model model) {
