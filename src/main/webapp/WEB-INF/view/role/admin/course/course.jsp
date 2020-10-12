@@ -25,7 +25,7 @@
 
                                 <div class="col-md-2">
                                     <spring:message code="common.year"/><br/>
-                                    <select id="search-year" class="form-control" style="margin-top:10px;">
+                                    <select id="search-year" class="form-control" style="">
                                         <c:forEach var="y" items="${yearList}">
                                             <option value="${y}">${y}</option>
                                         </c:forEach>
@@ -33,14 +33,14 @@
                                 </div>
                                 <div class="col-md-2">
                                     <spring:message code="common.semester"/><br/>
-                                    <select id="search-semester" class="form-control" style="margin-top:10px;">
+                                    <select id="search-semester" class="form-control" style="">
                                         <option value="1"><spring:message code="common.sem1"/></option>
                                         <option value="2"><spring:message code="common.sem2"/></option>
                                     </select>
                                 </div>
                                 <div class="col-md-2">
                                     <spring:message code="common.major"/><br/>
-                                    <select id="search-major" class="form-control" style="margin-top:10px;">
+                                    <select id="search-major" class="form-control" style="">
                                         <c:forEach var="major" items="${majors}">
                                             <option value="${major.id}">${major.name}</option>
                                         </c:forEach>
@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <spring:message code="common.division"/><br/>
-                                    <select id="search-division" class="form-control" style="margin-top:10px;">
+                                    <select id="search-division" class="form-control" style="">
                                         <c:forEach var="division" items="${divisions}">
                                             <option value="${division.id}">${division.name}</option>
                                         </c:forEach>
@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <br/>
-                                    <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="searchCourse()"><spring:message code="common.search"/></button>
+                                    <button class="btn btn-primary" style="width:100%;" onclick="searchCourse()"><spring:message code="common.search"/></button>
                                 </div>
 
 
@@ -128,7 +128,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label><spring:message code="common.compCategory"/></label>
-                                                <form:select path="compCategory" class="form-control" style="margin-top:10px;">
+                                                <form:select path="compCategory" class="form-control" style="">
                                                     <c:forEach var="c" items="${compCategoryList}">
                                                         <form:option value="${c.name()}"><spring:message code="comp.category.${c.name()}"/></form:option>
                                                     </c:forEach>
@@ -139,15 +139,30 @@
 
                                             <div class="form-group">
                                                 <label><spring:message code="common.subjCategory"/></label>
-                                                <form:select path="subjCategory" class="form-control" style="margin-top:10px;">
+                                                <form:select path="subjCategory" class="form-control" style="">
                                                     <c:forEach var="c" items="${subjCategoryList}">
                                                         <form:option value="${c.name()}"><spring:message code="subj.category.${c.name()}"/></form:option>
                                                     </c:forEach>
                                                 </form:select>
                                             </div>
                                         </div>
-
-
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label><spring:message code="common.schoolYear"/></label>
+                                                <form:select path="schoolYear" class="form-control" style="">
+                                                    <c:forEach var="y" begin="1" end="4">
+                                                        <form:option value="${y}">${y}</form:option>
+                                                    </c:forEach>
+                                                </form:select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label><spring:message code="common.credit"/></label>
+                                                <form:input path="credit" type="number" class="form-control"/>
+                                                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                            </div>
+                                        </div>
                                     </div>
                                     <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.create"/></button>
                                 </form:form>
