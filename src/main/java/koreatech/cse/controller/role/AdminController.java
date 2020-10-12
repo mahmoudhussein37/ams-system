@@ -13,6 +13,7 @@ import koreatech.cse.domain.univ.Major;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.AuthorityService;
 import koreatech.cse.service.UserService;
+import koreatech.cse.util.SystemUtil;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -314,6 +315,21 @@ public class AdminController {
         model.addAttribute("courseList", courseList);
         System.out.println("course table end");
         return "role/admin/course/courseTable";
+    }
+
+    @RequestMapping(value = "/courseManagement/courseEditable", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean courseEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
+        Course course = courseMapper.findOne(pk);
+        System.out.println("name = " + name);
+        System.out.println("value = " + value);
+        switch (name) {
+            default:
+                SystemUtil.setObjectFieldValue(course, name, value);
+        }
+        courseMapper.update(course);
+
+        return true;
     }
 
     @RequestMapping("/courseManagement/courseDetail")

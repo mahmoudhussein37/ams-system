@@ -79,7 +79,7 @@
 <!--begin::Page Scripts(used by this page)-->
 <script src="${resources}/vendor/metronic_assets_7/assets/js/pages/widgets.js"></script>
 <!--end::Page Scripts-->
-
+<script src="${resources}/vendor/bootstrap3-editable/js/bootstrap-editable.js" type="text/javascript"></script>
 <script>
 
     var y = document.getElementById("current-year");

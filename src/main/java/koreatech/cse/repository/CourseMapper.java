@@ -1,6 +1,7 @@
 package koreatech.cse.repository;
 
 
+import koreatech.cse.domain.Contact;
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.univ.Course;
@@ -67,4 +68,23 @@ public interface CourseMapper {
             + "</script>")
         //@formatter on
     List<Course> findByCourseManagement(Searchable searchable);
+
+    @Update("UPDATE `course` SET"+
+            "`year` = #{year},"+
+            "`semester` = #{semester},"+
+            "`code` = #{code},"+
+            "`title` = #{title},"+
+            "`category` = #{category},"+
+            "`credit` = #{credit},"+
+            "`major_id` = #{majorId},"+
+            "`division_id` = #{divisionId},"+
+            "`school_year` = #{schoolYear},"+
+            "`lang` = #{lang},"+
+            "`lecture_time` = #{lectureTime},"+
+            "`comp_category` = #{compCategory},"+
+            "`subj_category` = #{subjCategory},"+
+            "`enabled` = #{enabled} "+
+            "WHERE `id` = #{id}")
+    @Options(flushCache = true)
+    void update(Course course);
 }

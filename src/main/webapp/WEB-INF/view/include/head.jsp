@@ -44,6 +44,7 @@
         <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="${resources}/vendor/metronic_assets_7/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
+        <link href="${resources}/vendor/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" type="text/css"/>
     </c:otherwise>
     </c:choose>
     <link rel="shortcut icon" href="${resources}/vendor/metronic_assets_7/assets/media/logos/favicon.ico"/>
