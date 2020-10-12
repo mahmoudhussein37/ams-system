@@ -189,7 +189,7 @@ public class StudentController {
     private List<Integer> getYearList() {
         DateTime dt = new DateTime();
         int currentYear = dt.getYear();
-        List<Integer> yearList = new ArrayList<Integer>();
+        List<Integer> yearList = new ArrayList<>();
         for(int i=currentYear; i>=(currentYear - 10); i--) {
             yearList.add(i);
         }
