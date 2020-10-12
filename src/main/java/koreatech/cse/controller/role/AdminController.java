@@ -83,7 +83,7 @@ public class AdminController {
         User firstUser = null;
         List<User> userList;
         if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0 && major == 0) {
-            userList = new ArrayList<>();
+            userList = new ArrayList<User>();
         } else {
             Searchable searchable = new Searchable();
             searchable.setNumber(number);
