@@ -13,7 +13,7 @@ public enum SupportedLanguage {
     ar(LanguageCode.ar);
     private LanguageCode code;
 
-    private static final Map<String, SupportedLanguage> lookup = new HashMap<>();
+    private static final Map<String, SupportedLanguage> lookup = new HashMap<String, SupportedLanguage>();
 
     static {
         for (SupportedLanguage enumType : SupportedLanguage.values()) {
