@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"studentUser", "profUser", "course"})
+@SessionAttributes({"studentUser", "profUser", "course", "division", "major"})
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
@@ -403,8 +403,28 @@ public class AdminController {
     }
 
     @RequestMapping("/systemManagement/divisionMajor")
-    public String divisionMajor(Model model) {
+    public String divisionMajor(Model model, @RequestParam(required=false) String result) {
+        Division division = new Division();
+        Major major = new Major();
+        List<Division> divisions = divisionMapper.findAll();
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("division", division);
+        model.addAttribute("major", major);
+        model.addAttribute("result", result);
+
         return "role/admin/divisionMajor/divisionMajor";
+    }
+
+    @RequestMapping(value = "/systemManagement/createDivision", method = RequestMethod.POST)
+    public String createDivision(@ModelAttribute Division division) {
+        divisionMapper.insert(division);
+        return "redirect:/admin/systemManagement/divisionMajor?result=success";
+    }
+
+    @RequestMapping(value = "/systemManagement/createMajor", method = RequestMethod.POST)
+    public String createDivision(@ModelAttribute Major major) {
+        majorMapper.insert(major);
+        return "redirect:/admin/systemManagement/divisionMajor?result=success";
     }
 
     @RequestMapping("/systemManagement/lectureMethod")

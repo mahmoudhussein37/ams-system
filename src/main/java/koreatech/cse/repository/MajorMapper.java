@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface MajorMapper {
-    @Insert("INSERT INTO major (name) VALUES (#{name})")
+    @Insert("INSERT INTO major (name, division_id) VALUES (#{name}, #{divisionId})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(Major major);
 
