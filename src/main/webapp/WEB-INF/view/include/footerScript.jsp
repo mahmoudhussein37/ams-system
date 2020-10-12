@@ -84,5 +84,18 @@
 
     var y = document.getElementById("current-year");
     if(y) y.innerHTML = String(new Date().getFullYear());
+
+    function changeMajor(divisionSelector, majorSelector, enabled) {
+        var divisionId = $(divisionSelector).children("option:selected").val();
+        $.get("${baseUrl}/majorList?enabled=" + enabled + "&divisionId=" + divisionId, function(html) {
+            $(majorSelector).html(html);
+        });
+        $(divisionSelector).change(function() {
+            divisionId = $(divisionSelector).children("option:selected").val();
+            $.get("${baseUrl}/majorList?enabled=" + enabled + "&divisionId=" + divisionId, function(html) {
+                $(majorSelector).html(html);
+            });
+        });
+    }
 </script>
 <!--end::Body-->

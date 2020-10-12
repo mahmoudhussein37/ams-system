@@ -2,6 +2,7 @@ package koreatech.cse.controller;
 
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.Role;
+import koreatech.cse.repository.MajorMapper;
 import koreatech.cse.repository.UserMapper;
 import koreatech.cse.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,33 @@ public class HomeController {
     private UserService userService;
     @Inject
     private UserMapper userMapper;
+    @Inject
+    private MajorMapper majorMapper;
 
 
     @RequestMapping
     public String home(HttpSession session) {
 
         return "index";
+    }
+
+    @RequestMapping("/majorList")
+    public String majorList(Model model, @RequestParam(required=false, defaultValue = "0") int divisionId, @RequestParam(required=false, defaultValue = "true") boolean enabled) {
+        if(enabled) {
+            if (divisionId == 0) {
+                model.addAttribute("majorList", majorMapper.findAllEnabled());
+            } else {
+                model.addAttribute("majorList", majorMapper.findAllEnabledByDivisionId(divisionId));
+            }
+        } else {
+            if (divisionId == 0) {
+                model.addAttribute("majorList", majorMapper.findAll());
+            } else {
+                model.addAttribute("majorList", majorMapper.findAllByDivisionId(divisionId));
+            }
+        }
+
+        return "include/majorOptions";
     }
 
     @RequestMapping("/jstlTest")

@@ -40,9 +40,9 @@
                                 <div class="col-md-2">
                                     <spring:message code="common.major"/><br/>
                                     <select id="search-major" class="form-control" style="margin-top:10px;">
-                                        <c:forEach var="major" items="${majors}">
+                                        <%--<c:forEach var="major" items="${majors}">
                                             <option value="${major.id}">${major.name}</option>
-                                        </c:forEach>
+                                        </c:forEach>--%>
 
                                     </select>
                                 </div>
@@ -123,6 +123,7 @@
         alert("<spring:message code='common.success'/>");
         location.href="${baseUrl}/admin/profManagement/profInformation";
         </c:if>
+        changeMajor("#search-division", "#search-major", true);
     });
 </script>
 </body>

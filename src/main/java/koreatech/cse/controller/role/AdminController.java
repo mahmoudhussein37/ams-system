@@ -64,6 +64,7 @@ public class AdminController {
         studentUser.setContact(contact);
         model.addAttribute("studentUser", studentUser);
         model.addAttribute("result", result);
+        model.addAttribute("statusList", StudentStatus.values());
         return "role/admin/studentRegistration/studentRegistration";
     }
 

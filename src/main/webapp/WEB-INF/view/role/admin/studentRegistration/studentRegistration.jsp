@@ -49,9 +49,6 @@
                                         <div class="form-group">
                                             <label><spring:message code="common.major"/></label>
                                             <form:select id="search-major" path="majorId" class="form-control" >
-                                                <c:forEach var="major" items="${majors}">
-                                                    <option value="${major.id}">${major.name}</option>
-                                                </c:forEach>
 
                                             </form:select>
                                             <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
@@ -77,7 +74,7 @@
 
                                         <div class="form-group">
                                             <label><spring:message code="common.admissionDate"/></label>
-                                            <form:input type="text" path="contact.admissionDate" class="form-control" id="kt_datepicker_1" readonly="true" />
+                                            <form:input type="text" path="contact.admissionDate" id="admission-date" class="form-control" readonly="true" />
                                             <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                         </div>
                                     </div>
@@ -92,7 +89,12 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label><spring:message code="common.status"/></label>
-                                            <form:input type="text" path="status" class="form-control"/>
+                                            <form:select path="status" class="form-control" >
+                                                <c:forEach var="s" items="${statusList}">
+                                                    <option value="${s.name()}"><spring:message code="student.status.${s.name()}"/></option>
+                                                </c:forEach>
+                                            </form:select>
+
                                             <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                                         </div>
 
@@ -152,7 +154,7 @@
         // Private functions
         var demos = function () {
             // minimum setup
-            $('#kt_datepicker_1').datepicker({
+            $('#admission-date').datepicker({
                 rtl: KTUtil.isRTL(),
                 todayHighlight: true,
                 orientation: "bottom left",
@@ -178,6 +180,9 @@
         alert("<spring:message code='common.success'/>");
         location.href="${baseUrl}/admin/studentManagement/studentRegistration";
         </c:if>
+
+
+        changeMajor("#search-division", "#search-major", true);
 
     });
 </script>

@@ -85,9 +85,7 @@
                                     <div class="col-md-2">
                                         <spring:message code="common.major"/><br/>
                                         <select id="search-major" class="form-control" style="margin-top:10px;">
-                                        <c:forEach var="major" items="${majors}">
-                                            <option value="${major.id}">${major.name}</option>
-                                        </c:forEach>
+
 
                                         </select>
                                     </div>
@@ -175,7 +173,7 @@
             }
         });*/
 
-
+        changeMajor("#search-division", "#search-major", true);
     });
 
 </script>
