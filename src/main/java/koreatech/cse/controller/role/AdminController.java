@@ -3,7 +3,9 @@ package koreatech.cse.controller.role;
 import koreatech.cse.domain.Contact;
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
+import koreatech.cse.domain.constant.CompCategory;
 import koreatech.cse.domain.constant.StudentStatus;
+import koreatech.cse.domain.constant.SubjCategory;
 import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
@@ -83,7 +85,7 @@ public class AdminController {
         User firstUser = null;
         List<User> userList;
         if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0 && major == 0) {
-            userList = new ArrayList<User>();
+            userList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
             searchable.setNumber(number);
@@ -262,7 +264,7 @@ public class AdminController {
     }
 
     @RequestMapping("/courseManagement/course")
-    public String course(Model model) {
+    public String course(Model model,  @RequestParam(required=false) String result) {
         List<Division> divisions = divisionMapper.findAll();
         List<Major> majors = majorMapper.findAll();
 
@@ -270,9 +272,19 @@ public class AdminController {
         model.addAttribute("majors", majors);
         model.addAttribute("yearList", getYearList());
         model.addAttribute("course", new Course());
-
-
+        model.addAttribute("compCategoryList", CompCategory.values());
+        model.addAttribute("subjCategoryList", SubjCategory.values());
+        model.addAttribute("result", result);
         return "role/admin/course/course";
+    }
+
+    @RequestMapping(value = "/courseManagement/course", method = RequestMethod.POST)
+    public String course(@ModelAttribute("course") Course course, SessionStatus sessionStatus) {
+
+        courseMapper.insert(course);
+        sessionStatus.setComplete();
+
+        return "redirect:/admin/courseManagement/course?result=success";
     }
 
     @RequestMapping("/courseManagement/courseTable")
@@ -308,6 +320,13 @@ public class AdminController {
     public String courseDetail(Model model, @RequestParam int courseId) {
         Course course = courseMapper.findOne(courseId);
         model.addAttribute("course", course);
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+        model.addAttribute("yearList", getYearList());
+        model.addAttribute("compCategoryList", CompCategory.values());
+        model.addAttribute("subjCategoryList", SubjCategory.values());
         return "role/admin/course/courseDetail";
     }
 

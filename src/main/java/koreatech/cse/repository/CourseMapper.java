@@ -14,16 +14,8 @@ import java.util.List;
 @Repository
 public interface CourseMapper {
 
-    /*private int majorId;
-    private int schoolYear;
-    private String lang;
-    private String lectureTime;
-    private String compCategory;
-    private String subjCategory;*/
-
-
-    @Insert("INSERT INTO course (year, semester, code, title, category, credit, major_id, division_id, school_year, lang, lecture_time, com_category, subj_category) VALUES " +
-            "(#{year}, #{semester}, #{code}, #{title}, #{category}, #{credit}, #{majorId}, #{divisionId}, #{schoolYear}, #{lang}, #{lectureTime}, #{comCategory}, #{subjCategory})")
+    @Insert("INSERT INTO course (year, semester, code, title, category, credit, major_id, division_id, school_year, lang, lecture_time, comp_category, subj_category) VALUES " +
+            "(#{year}, #{semester}, #{code}, #{title}, #{category}, #{credit}, #{majorId}, #{divisionId}, #{schoolYear}, #{lang}, #{lectureTime}, #{compCategory}, #{subjCategory})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(Course course);
 

@@ -4,31 +4,40 @@
     <thead>
     <tr class="text-uppercase">
 
-        <th class="pl-0" style="min-width: 100px"><spring:message code="common.no"/></th>
-        <th style="min-width: 120px"><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
-        <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.courseTitle"/></span>
-        <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.category"/></span>
-        <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.dateTime"/></span>
+        <th class="pl-0" style=""><spring:message code="common.no"/></th>
+        <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
+        <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.category"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.compCategory"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.dateTime"/></span>
         <th class="pr-0" style="min-width: 160px"><span class="text-primary"></span></th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="course" items="${courseList}" varStatus="varStatus">
+
+    <c:forEach var="courseElement" items="${courseList}" varStatus="varStatus">
         <tr>
 
             <td class="pl-0">
                     ${varStatus.count}
             </td>
             <td>
-                <a href="#" class="course-detail" data-course-id="${course.id}">
-                        ${course.code}
+                <a href="#" class="course-detail" data-course-id="${courseElement.id}">
+                        ${courseElement.code}
                 </a>
             </td>
             <td>
-                    ${course.title}
+                    ${courseElement.title}
             </td>
             <td>
-                    ${course.category}
+                    ${courseElement.category}
+            </td>
+            <td>
+                <spring:message code="comp.category.${courseElement.compCategory}"/>
+            </td>
+            <td>
+                <spring:message code="subj.category.${courseElement.subjCategory}"/>
             </td>
             <td>
 
@@ -72,7 +81,7 @@
 <script>
     $("#course-list").DataTable();
 
-    <c:if test="${not empty firstCourse}">
+    <%--<c:if test="${not empty firstCourse}">
         $(".course-detail-div").load("${baseUrl}/admin/courseManagement/courseDetail?courseId=${firstCourse.id}");
     </c:if>
     $("body").on('click', '.course-detail', function (e) {
@@ -80,5 +89,5 @@
         var courseId = $(this).attr("data-course-id");
         $(".course-detail-div").load("${baseUrl}/admin/courseManagement/courseDetail?courseId=" + courseId);
 
-    });
+    });--%>
 </script>

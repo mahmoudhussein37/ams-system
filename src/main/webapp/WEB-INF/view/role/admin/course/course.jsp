@@ -80,12 +80,6 @@
                             <br/><br/>
                             <div class="separator separator-solid my-5"></div>
                             <br/><br/>
-                            <div class="course-detail-div">
-
-                            </div>
-                            <br/><br/>
-                            <div class="separator separator-solid my-5"></div>
-                            <br/><br/>
                             <div>
 
 
@@ -111,17 +105,48 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label><spring:message code="common.division"/></label>
-                                                <form:input path="divisionId" type="text" class="form-control" id="grad-date-picker"  readonly="true"/>
-                                                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                                <form:select path="divisionId" class="form-control">
+                                                    <c:forEach var="division" items="${divisions}">
+                                                        <form:option value="${division.id}">${division.name}</form:option>
+                                                    </c:forEach>
+                                                </form:select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label><spring:message code="common.major"/></label>
-                                                <form:input path="majorId" type="text" class="form-control"/>
-                                                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+                                                <form:select path="majorId" class="form-control">
+                                                    <c:forEach var="major" items="${majors}">
+                                                        <form:option value="${major.id}">${major.name}</form:option>
+                                                    </c:forEach>
+                                                </form:select>
                                             </div>
                                         </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label><spring:message code="common.compCategory"/></label>
+                                                <form:select path="compCategory" class="form-control" style="margin-top:10px;">
+                                                    <c:forEach var="c" items="${compCategoryList}">
+                                                        <form:option value="${c.name()}"><spring:message code="comp.category.${c.name()}"/></form:option>
+                                                    </c:forEach>
+                                                </form:select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+
+                                            <div class="form-group">
+                                                <label><spring:message code="common.subjCategory"/></label>
+                                                <form:select path="subjCategory" class="form-control" style="margin-top:10px;">
+                                                    <c:forEach var="c" items="${subjCategoryList}">
+                                                        <form:option value="${c.name()}"><spring:message code="subj.category.${c.name()}"/></form:option>
+                                                    </c:forEach>
+                                                </form:select>
+                                            </div>
+                                        </div>
+
 
                                     </div>
                                     <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.create"/></button>
@@ -167,6 +192,11 @@
     });
 
     $(document).ready(function() {
+        <c:if test="${not empty result}">
+        alert("<spring:message code='common.success'/>");
+        location.href="${baseUrl}/admin/courseManagement/course";
+        </c:if>
+
         $(".course-table-div").load("${baseUrl}/admin/courseManagement/courseTable");
     });
 
