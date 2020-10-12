@@ -54,5 +54,19 @@
         .table.table-head-custom thead tr, .table.table-head-custom thead th {
             text-transform:none;
         }
+        <c:if test="${currentRole eq 'admin'}">
+
+        .header-menu .menu-nav > .menu-item {
+            padding-top:0;
+            padding-bottom:0;
+        }
+        .header-menu .menu-nav > .menu-item > .menu-link {
+            padding-top:0;
+            padding-bottom:0;
+        }
+        .header-menu .menu-nav > .menu-item > .menu-link .menu-text {
+            font-size:12px;
+        }
+        </c:if>
     </style>
 </head>
