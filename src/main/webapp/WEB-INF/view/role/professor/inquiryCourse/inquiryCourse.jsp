@@ -36,7 +36,7 @@
                                         <option value="2"><spring:message code="common.sem2"/></option>
                                         </select>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-4">
                                         <spring:message code="common.division"/><br/>
                                         <select id="search-division" class="form-control" style="margin-top:10px;">
                                         <c:forEach var="division" items="${divisions}">
