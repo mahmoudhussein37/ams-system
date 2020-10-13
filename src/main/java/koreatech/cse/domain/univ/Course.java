@@ -1,5 +1,6 @@
 package koreatech.cse.domain.univ;
 
+import koreatech.cse.domain.User;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
@@ -27,6 +28,10 @@ public class Course implements Serializable {
     private String subjCategory;
     private int profUserId;
     private int maxStudent;
+
+    private Division division;
+    private Major major;
+    private User profUser;
 
 
     private boolean enabled;
@@ -191,6 +196,30 @@ public class Course implements Serializable {
 
     public void setMaxStudent(int maxStudent) {
         this.maxStudent = maxStudent;
+    }
+
+    public User getProfUser() {
+        return profUser;
+    }
+
+    public void setProfUser(User profUser) {
+        this.profUser = profUser;
+    }
+
+    public Division getDivision() {
+        return division;
+    }
+
+    public void setDivision(Division division) {
+        this.division = division;
+    }
+
+    public Major getMajor() {
+        return major;
+    }
+
+    public void setMajor(Major major) {
+        this.major = major;
     }
 
     @Override

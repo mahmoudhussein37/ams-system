@@ -20,12 +20,24 @@ public interface CourseMapper {
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(Course course);
 
+    @ResultMap("findOne-int")
     @Select("SELECT * FROM course")
     List<Course> findAll();
 
+    @ResultMap("findOne-int")
     @Select("SELECT * FROM course where enabled = 1")
     List<Course> findAllEnabled();
 
+
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "prof_user_id", property = "profUserId"),
+            @Result(column = "division_id", property = "divisionId"),
+            @Result(column = "major_id", property = "majorId"),
+            @Result(column = "division_id", property = "division", one = @One(select = "koreatech.cse.repository.DivisionMapper.findOne")),
+            @Result(column = "major_id", property = "major", one = @One(select = "koreatech.cse.repository.MajorMapper.findOne")),
+            @Result(column = "prof_user_id", property = "profUser", one = @One(select = "koreatech.cse.repository.UserMapper.findOne")),
+    })
     @Select("SELECT * FROM course where id=#{id}")
     Course findOne(@Param("id") int id);
 
@@ -68,6 +80,21 @@ public interface CourseMapper {
             + "</script>")
         //@formatter on
     List<Course> findByCourseManagement(Searchable searchable);
+
+    @ResultMap("findOne-int")
+    //@formatter off
+    @Select("<script>"
+            + "SELECT * FROM course where 1=1 "
+
+            + "<if test='year != 0'> and year = #{year}</if>"
+            + "<if test='semester != 0'> and semester = #{semester}</if>"
+            + "<if test='division != 0'> and division_id = #{division}</if>"
+            + "<if test='userId != 0'> and prof_user_id = #{userId}</if>"
+            + "<if test='major != 0'> and major_id = #{major}</if>"
+            + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
+            + "</script>")
+        //@formatter on
+    List<Course> findBySyllabus(Searchable searchable);
 
     @Update("UPDATE `course` SET"+
             "`year` = #{year},"+

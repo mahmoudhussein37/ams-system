@@ -30,6 +30,10 @@ public class User implements UserDetails {
     private String advisor;
     private String status;
     private int schoolYear;
+
+
+
+
     private List<Authority> authorities;
 
     public int getId() {

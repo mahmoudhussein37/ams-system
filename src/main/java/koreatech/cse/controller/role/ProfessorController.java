@@ -169,6 +169,13 @@ public class ProfessorController {
         return "role/professor/inquiryCourse/courseTable";
     }
 
+    @RequestMapping("/classProgress/inquiryCourse/courseDetail")
+    public String inCourseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+        return "role/professor/inquiryCourse/courseDetail";
+    }
+
     @RequestMapping("/classProgress/syllabus")
     public String syllabus(Model model) {
 
@@ -189,11 +196,13 @@ public class ProfessorController {
                                      @RequestParam(defaultValue = "0", required=false) int year,
                                      @RequestParam(defaultValue = "0", required=false) int semester) {
 
+
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
+        searchable.setUserId(User.current().getId());
 
-        List<Course> courseList = courseMapper.findByMakeupClass(searchable);
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;

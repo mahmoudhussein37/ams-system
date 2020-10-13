@@ -21,6 +21,7 @@ public class Contact implements Serializable  {
     private String phone;
     private String postCode;
     private String address;
+    private String lab;
 
     private String parentName;
     private String relation;
@@ -242,6 +243,14 @@ public class Contact implements Serializable  {
 
     public void setCertNumber(String certNumber) {
         this.certNumber = certNumber;
+    }
+
+    public String getLab() {
+        return lab;
+    }
+
+    public void setLab(String lab) {
+        this.lab = lab;
     }
 
     @Override
