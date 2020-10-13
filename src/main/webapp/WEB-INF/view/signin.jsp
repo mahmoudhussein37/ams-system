@@ -22,7 +22,7 @@
 
                 <!--begin::Aside title-->
                 <h3 class="font-weight-bolder text-center font-size-h4 font-size-h1-lg" style="color: #986923;">
-                    Welcome to <br/>Beni Suef Technological University
+                    <spring:message code="common.signup.welcome"/>
                 </h3>
                 <!--end::Aside title-->
             </div>
@@ -44,14 +44,14 @@
                     <form class="form" novalidate="novalidate" id="kt_login_signin_form" action="j_spring_security_check" method="post">
                         <!--begin::Title-->
                         <div class="pb-13 pt-lg-0 pt-5">
-                            <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">Sign in</h3>
+                            <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg"><spring:message code="common.signin"/></h3>
                             <%--<span class="text-muted font-weight-bold font-size-h4">New Here? <a href="javascript:;" id="kt_login_signup" class="text-primary font-weight-bolder">Create an Account</a></span>--%>
                         </div>
                         <!--begin::Title-->
 
                         <!--begin::Form group-->
                         <div class="form-group">
-                            <label class="font-size-h6 font-weight-bolder text-dark">Email</label>
+                            <label class="font-size-h6 font-weight-bolder text-dark"><spring:message code="common.username"/></label>
                             <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg" type="text" name="j_username"/>
                         </div>
                         <!--end::Form group-->
@@ -59,25 +59,25 @@
                         <!--begin::Form group-->
                         <div class="form-group">
                             <div class="d-flex justify-content-between mt-n5">
-                                <label class="font-size-h6 font-weight-bolder text-dark pt-5">Password</label>
+                                <label class="font-size-h6 font-weight-bolder text-dark pt-5"><spring:message code="common.password"/></label>
 
 
                             </div>
 
                             <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg" type="password" name="j_password"/>
                             <br/>
-                            <a href="javascript:;" class="text-primary font-size-h6 font-weight-bolder text-hover-primary pt-5" id="kt_login_forgot">
+                            <%--<a href="javascript:;" class="text-primary font-size-h6 font-weight-bolder text-hover-primary pt-5" id="kt_login_forgot">
                                 Forgot Password ?
-                            </a>
+                            </a>--%>
                         </div>
                         <!--end::Form group-->
 
                         <!--begin::Action-->
                         <div class="pb-lg-0 pb-5">
-                            <button type="submit" <%--id="kt_login_signin_submit" --%>class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3">Sign In</button>
+                            <button type="submit" <%--id="kt_login_signin_submit" --%>class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3"><spring:message code="common.signin"/></button>
 
                             <a href="/signup" class="btn btn-light-primary font-weight-bolder px-8 py-4 my-3 font-size-lg">
-                            <span class="svg-icon svg-icon-md"><!--end::Svg Icon--></span>                            Signup
+                            <span class="svg-icon svg-icon-md"><!--end::Svg Icon--></span>                            <spring:message code="common.signup"/>
                             </a>
                         </div>
                         <!--end::Action-->
@@ -86,63 +86,9 @@
                 </div>
                 <!--end::Signin-->
 
-                <!--begin::Signup-->
-                <div class="login-form login-signup">
-                    <!--begin::Form-->
-                    <form class="form" novalidate="novalidate" id="kt_login_signup_form">
-                        <!--begin::Title-->
-                        <div class="pb-13 pt-lg-0 pt-5">
-                            <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">Sign Up</h3>
-                            <p class="text-muted font-weight-bold font-size-h4">Enter your details to create your account</p>
-                        </div>
-                        <!--end::Title-->
-
-                        <!--begin::Form group-->
-                        <div class="form-group">
-                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="Fullname" name="fullname" autocomplete="off"/>
-                        </div>
-                        <!--end::Form group-->
-
-                        <!--begin::Form group-->
-                        <div class="form-group">
-                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="email" placeholder="Email" name="email" autocomplete="off"/>
-                        </div>
-                        <!--end::Form group-->
-
-                        <!--begin::Form group-->
-                        <div class="form-group">
-                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="password" placeholder="Password" name="password" autocomplete="off"/>
-                        </div>
-                        <!--end::Form group-->
-
-                        <!--begin::Form group-->
-                        <div class="form-group">
-                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="password" placeholder="Confirm password" name="cpassword" autocomplete="off"/>
-                        </div>
-                        <!--end::Form group-->
-
-                        <!--begin::Form group-->
-                        <div class="form-group">
-                            <label class="checkbox mb-0">
-                                <input type="checkbox" name="agree"/>I Agree the <a href="#">terms and conditions</a>.
-                                <span></span>
-                            </label>
-                        </div>
-                        <!--end::Form group-->
-
-                        <!--begin::Form group-->
-                        <div class="form-group d-flex flex-wrap pb-lg-0 pb-3">
-                            <button type="button" id="kt_login_signup_submit" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-4">Submit</button>
-                            <button type="button" id="kt_login_signup_cancel" class="btn btn-light-primary font-weight-bolder font-size-h6 px-8 py-4 my-3">Cancel</button>
-                        </div>
-                        <!--end::Form group-->
-                    </form>
-                    <!--end::Form-->
-                </div>
-                <!--end::Signup-->
 
                 <!--begin::Forgot-->
-                <div class="login-form login-forgot">
+                <%--<div class="login-form login-forgot">
                     <!--begin::Form-->
                     <form class="form" novalidate="novalidate"  id="kt_login_forgot_form">
                         <!--begin::Title-->
@@ -166,7 +112,7 @@
                         <!--end::Form group-->
                     </form>
                     <!--end::Form-->
-                </div>
+                </div>--%>
                 <!--end::Forgot-->
             </div>
             <!--end::Content body-->
@@ -174,7 +120,7 @@
             <!--begin::Content footer-->
             <div class="d-flex justify-content-lg-start justify-content-center align-items-end py-7 py-lg-0">
                 <a href="#" class="text-primary font-weight-bolder font-size-h5">Terms</a>
-                <a href="#" class="text-primary ml-10 font-weight-bolder font-size-h5">Plans</a>
+                <%--<a href="#" class="text-primary ml-10 font-weight-bolder font-size-h5">Plans</a>--%>
                 <a href="#" class="text-primary ml-10 font-weight-bolder font-size-h5">Contact Us</a>
             </div>
             <!--end::Content footer-->
