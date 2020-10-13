@@ -26,6 +26,7 @@ public class Course implements Serializable {
     private String compCategory;
     private String subjCategory;
     private int profUserId;
+    private int maxStudent;
 
 
     private boolean enabled;
@@ -182,6 +183,14 @@ public class Course implements Serializable {
 
     public void setProfUserId(int profUserId) {
         this.profUserId = profUserId;
+    }
+
+    public int getMaxStudent() {
+        return maxStudent;
+    }
+
+    public void setMaxStudent(int maxStudent) {
+        this.maxStudent = maxStudent;
     }
 
     @Override

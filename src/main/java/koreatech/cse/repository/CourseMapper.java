@@ -15,8 +15,8 @@ import java.util.List;
 @Repository
 public interface CourseMapper {
 
-    @Insert("INSERT INTO course (year, semester, code, title, category, credit, major_id, division_id, prof_user_id, school_year, lang, lecture_time, comp_category, subj_category) VALUES " +
-            "(#{year}, #{semester}, #{code}, #{title}, #{category}, #{credit}, #{majorId}, #{divisionId}, #{profUserId}, #{schoolYear}, #{lang}, #{lectureTime}, #{compCategory}, #{subjCategory})")
+    @Insert("INSERT INTO course (year, semester, code, title, category, credit, major_id, division_id, prof_user_id, school_year, lang, lecture_time, max_student, comp_category, subj_category) VALUES " +
+            "(#{year}, #{semester}, #{code}, #{title}, #{category}, #{credit}, #{majorId}, #{divisionId}, #{profUserId}, #{schoolYear}, #{lang}, #{lectureTime}, #{maxStudent}, #{compCategory}, #{subjCategory})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(Course course);
 
@@ -82,6 +82,7 @@ public interface CourseMapper {
             "`school_year` = #{schoolYear},"+
             "`lang` = #{lang},"+
             "`lecture_time` = #{lectureTime},"+
+            "`max_student` = #{maxStudent},"+
             "`comp_category` = #{compCategory},"+
             "`subj_category` = #{subjCategory},"+
             "`enabled` = #{enabled} "+

@@ -20,6 +20,18 @@
         </div>
         <div class="col-md-3">
             <div class="form-group">
+                <label><spring:message code="common.status"/></label>
+                <form:select path="enabled" class="form-control">
+                    <option value="true"><spring:message code="common.opened"/></option>
+                    <option value="false"><spring:message code="common.closed"/></option>
+                </form:select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="form-group">
                 <label><spring:message code="common.division"/></label>
                 <form:select path="divisionId" class="form-control">
                     <c:forEach var="division" items="${divisions}">
@@ -38,8 +50,6 @@
                 </form:select>
             </div>
         </div>
-    </div>
-    <div class="row">
         <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.compCategory"/></label>
@@ -59,23 +69,6 @@
                         <form:option value="${c.name()}"><spring:message code="subj.category.${c.name()}"/></form:option>
                     </c:forEach>
                 </form:select>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group">
-                <label><spring:message code="common.schoolYear"/></label>
-                <form:select path="schoolYear" class="form-control" style="">
-                    <c:forEach var="y" begin="1" end="4">
-                        <form:option value="${y}">${y}</form:option>
-                    </c:forEach>
-                </form:select>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group">
-                <label><spring:message code="common.credit"/></label>
-                <form:input path="credit" type="number" class="form-control"/>
-                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
             </div>
         </div>
     </div>
@@ -101,12 +94,39 @@
             </div>
         </div>
         <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.schoolYear"/></label>
+                <form:select path="schoolYear" class="form-control" style="">
+                    <c:forEach var="y" begin="1" end="4">
+                        <form:option value="${y}">${y}</form:option>
+                    </c:forEach>
+                </form:select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.credit"/></label>
+                <form:input path="credit" type="number" class="form-control"/>
+                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-3">
 
             <div class="form-group">
                 <label><spring:message code="common.role.professor"/></label>
                 <form:select path="profUserId" class="form-control" style="">
 
                 </form:select>
+            </div>
+        </div>
+        <div class="col-md-3">
+
+            <div class="form-group">
+                <label><spring:message code="admin.maxStudent"/></label>
+                <form:input path="maxStudent" type="number" class="form-control"/>
             </div>
         </div>
     </div>
