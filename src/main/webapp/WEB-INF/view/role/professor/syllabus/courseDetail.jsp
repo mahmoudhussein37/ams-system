@@ -28,5 +28,12 @@
 
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
-
+$(document).ready(function() {
+   $("#lecture-fundamental-save").click(function(e) {
+     e.preventDefault();
+       $.post('${baseUrl}/professor/classProgress/syllabus/courseDetail?courseId=${course.id}', $('#lectureFundamentalsForm').serialize(), function() {
+         alert("<spring:message code="common.success"/>");
+       });
+   });
+});
 </script>

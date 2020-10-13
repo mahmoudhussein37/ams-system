@@ -37,6 +37,7 @@ public interface CourseMapper {
             @Result(column = "division_id", property = "division", one = @One(select = "koreatech.cse.repository.DivisionMapper.findOne")),
             @Result(column = "major_id", property = "major", one = @One(select = "koreatech.cse.repository.MajorMapper.findOne")),
             @Result(column = "prof_user_id", property = "profUser", one = @One(select = "koreatech.cse.repository.UserMapper.findOne")),
+            @Result(column = "id", property = "lectureFundamentals", one = @One(select = "koreatech.cse.repository.LectureFundamentalsMapper.findByCourseId")),
     })
     @Select("SELECT * FROM course where id=#{id}")
     Course findOne(@Param("id") int id);

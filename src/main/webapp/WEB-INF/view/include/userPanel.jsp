@@ -54,7 +54,7 @@
         <!--end::Separator-->
 
         <!--begin::Nav-->
-        <div class="navi navi-spacer-x-0 p-0">
+        <%--<div class="navi navi-spacer-x-0 p-0">
             <!--begin::Item-->
             <a href="custom/apps/user/profile-1/personal-information.html" class="navi-item">
                 <div class="navi-link">
@@ -158,7 +158,7 @@
             </a>
             <!--end:Item-->
         </div>
-        <!--end::Nav-->
+        <!--end::Nav-->--%>
 
 
         <%--${user.username}

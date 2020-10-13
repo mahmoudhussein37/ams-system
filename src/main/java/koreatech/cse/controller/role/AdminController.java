@@ -6,6 +6,7 @@ import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.CompCategory;
 import koreatech.cse.domain.constant.StudentStatus;
 import koreatech.cse.domain.constant.SubjCategory;
+import koreatech.cse.domain.role.professor.LectureFundamentals;
 import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
@@ -284,6 +285,7 @@ public class AdminController {
     public String course(@ModelAttribute("course") Course course, SessionStatus sessionStatus) {
 
         courseMapper.insert(course);
+
         sessionStatus.setComplete();
 
         return "redirect:/admin/courseManagement/course?result=success";

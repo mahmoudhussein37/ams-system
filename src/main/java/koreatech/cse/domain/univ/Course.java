@@ -1,6 +1,7 @@
 package koreatech.cse.domain.univ;
 
 import koreatech.cse.domain.User;
+import koreatech.cse.domain.role.professor.LectureFundamentals;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
@@ -32,6 +33,7 @@ public class Course implements Serializable {
     private Division division;
     private Major major;
     private User profUser;
+    private LectureFundamentals lectureFundamentals;
 
 
     private boolean enabled;
@@ -220,6 +222,14 @@ public class Course implements Serializable {
 
     public void setMajor(Major major) {
         this.major = major;
+    }
+
+    public LectureFundamentals getLectureFundamentals() {
+        return lectureFundamentals;
+    }
+
+    public void setLectureFundamentals(LectureFundamentals lectureFundamentals) {
+        this.lectureFundamentals = lectureFundamentals;
     }
 
     @Override
