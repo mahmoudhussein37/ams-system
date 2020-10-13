@@ -25,6 +25,7 @@ public class Course implements Serializable {
     private String lectureTime;
     private String compCategory;
     private String subjCategory;
+    private int profUserId;
 
 
     private boolean enabled;
@@ -173,6 +174,14 @@ public class Course implements Serializable {
 
     public void setSubjCategory(String subjCategory) {
         this.subjCategory = subjCategory;
+    }
+
+    public int getProfUserId() {
+        return profUserId;
+    }
+
+    public void setProfUserId(int profUserId) {
+        this.profUserId = profUserId;
     }
 
     @Override

@@ -21,8 +21,6 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-
-
                                 <div class="col-md-2">
                                     <spring:message code="common.year"/><br/>
                                     <select id="search-year" class="form-control" style="">
@@ -38,15 +36,7 @@
                                         <option value="2"><spring:message code="common.sem2"/></option>
                                     </select>
                                 </div>
-                                <div class="col-md-2">
-                                    <spring:message code="common.major"/><br/>
-                                    <select id="search-major" class="form-control" style="">
-                                        <c:forEach var="major" items="${majors}">
-                                            <option value="${major.id}">${major.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
+                                <div class="col-md-4">
                                     <spring:message code="common.division"/><br/>
                                     <select id="search-division" class="form-control" style="">
                                         <c:forEach var="division" items="${divisions}">
@@ -55,14 +45,18 @@
                                     </select>
                                 </div>
                                 <div class="col-md-2">
+                                    <spring:message code="common.major"/><br/>
+                                    <select id="search-major" class="form-control" style="">
+                                        <%--<c:forEach var="major" items="${majors}">
+                                            <option value="${major.id}">${major.name}</option>
+                                        </c:forEach>--%>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-2">
                                     <br/>
                                     <button class="btn btn-primary" style="width:100%;" onclick="searchCourse()"><spring:message code="common.search"/></button>
                                 </div>
-
-
-
-
-
                             </div>
                             <br/><br/>
 
@@ -116,9 +110,9 @@
                                             <div class="form-group">
                                                 <label><spring:message code="common.major"/></label>
                                                 <form:select path="majorId" class="form-control">
-                                                    <c:forEach var="major" items="${majors}">
+                                                    <%--<c:forEach var="major" items="${majors}">
                                                         <form:option value="${major.id}">${major.name}</form:option>
-                                                    </c:forEach>
+                                                    </c:forEach>--%>
                                                 </form:select>
                                             </div>
                                         </div>
@@ -164,6 +158,29 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label><spring:message code="common.year"/></label>
+                                                <form:select path="year" class="form-control" style="">
+                                                    <c:forEach var="y" items="${yearList}">
+                                                        <option value="${y}">${y}</option>
+                                                    </c:forEach>
+                                                </form:select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+
+                                            <div class="form-group">
+                                                <label><spring:message code="common.semester"/></label>
+                                                <form:select path="semester" class="form-control" style="">
+                                                    <option value="1"><spring:message code="common.sem1"/></option>
+                                                    <option value="2"><spring:message code="common.sem2"/></option>
+                                                </form:select>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                     <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.create"/></button>
                                 </form:form>
                             </div>
@@ -197,7 +214,7 @@
         var semester = $("#search-semester").children("option:selected").val().trim();
         var major = $("#search-major").children("option:selected").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
-        $(".course-table-div").load("${baseUrl}/admin/courseManagement/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&major=" + major);
+        $(".course-table-div").load("${baseUrl}/admin/courseManagement/course/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&major=" + major);
     }
 
     $(".input-enter").keydown(function(key) {
@@ -212,7 +229,9 @@
         location.href="${baseUrl}/admin/courseManagement/course";
         </c:if>
 
-        $(".course-table-div").load("${baseUrl}/admin/courseManagement/courseTable");
+        $(".course-table-div").load("${baseUrl}/admin/courseManagement/course/courseTable");
+        changeMajor("#search-division", "#search-major", true);
+        changeMajor("#divisionId", "#majorId", true);
     });
 
 </script>

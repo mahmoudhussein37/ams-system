@@ -20,7 +20,63 @@
 
                         </div>
                         <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <spring:message code="common.year"/><br/>
+                                    <select id="search-year" class="form-control" style="">
+                                        <c:forEach var="y" items="${yearList}">
+                                            <option value="${y}">${y}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <spring:message code="common.semester"/><br/>
+                                    <select id="search-semester" class="form-control" style="">
+                                        <option value="1"><spring:message code="common.sem1"/></option>
+                                        <option value="2"><spring:message code="common.sem2"/></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <spring:message code="common.division"/><br/>
+                                    <select id="search-division" class="form-control" style="">
+                                        <c:forEach var="division" items="${divisions}">
+                                            <option value="${division.id}">${division.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <spring:message code="common.major"/><br/>
+                                    <select id="search-major" class="form-control" style="">
+                                        <%--<c:forEach var="major" items="${majors}">
+                                            <option value="${major.id}">${major.name}</option>
+                                        </c:forEach>--%>
+                                    </select>
+                                </div>
 
+                                <div class="col-md-2">
+                                    <br/>
+                                    <button class="btn btn-primary" style="width:100%;" onclick="searchCourse()"><spring:message code="common.search"/></button>
+                                </div>
+                            </div>
+                            <br/><br/>
+
+
+
+                            <div class="course-table-div">
+
+
+                            </div>
+
+
+
+
+
+                            <br/><br/>
+                            <div class="separator separator-solid my-5"></div>
+                            <br/><br/>
+                            <div class="course-detail-div">
+
+                            </div>
 
                         </div>
                     </div>
@@ -45,7 +101,27 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
+    function searchCourse() {
+        var year = $("#search-year").children("option:selected").val().trim();
+        var semester = $("#search-semester").children("option:selected").val().trim();
+        var major = $("#search-major").children("option:selected").val().trim();
+        var division = $("#search-division").children("option:selected").val().trim();
+        $(".course-table-div").load("${baseUrl}/admin/courseManagement/cOpen/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&major=" + major);
+    }
+
+    $(".input-enter").keydown(function(key) {
+        if (key.keyCode == 13) {
+            searchCourse();
+        }
+    });
+
     $(document).ready(function() {
+        <c:if test="${not empty result}">
+        alert("<spring:message code='common.success'/>");
+        location.href="${baseUrl}/admin/courseManagement/cOpen";
+        </c:if>
+        $(".course-table-div").load("${baseUrl}/admin/courseManagement/cOpen/courseTable");
+        changeMajor("#search-division", "#search-major", true, 0);
     });
 </script>
 </body>
