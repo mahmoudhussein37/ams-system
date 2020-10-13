@@ -25,8 +25,8 @@
         response.setDateHeader("Expires",-1);
     %>
     <base href="">
-    <title>Beni Seuf Technological University</title>
-    <meta name="description" content="Beni Seuf Technological University"/>
+    <title>Beni Suef Technological University</title>
+    <meta name="description" content="Beni Suef Technological University"/>
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>        <!--end::Fonts-->
 
