@@ -13,16 +13,16 @@ public class LectureFundamentals implements Serializable {
     private int userId; //professor user id;
     private String intro;
 
-    private boolean achieve1;
-    private boolean achieve2;
-    private boolean achieve3;
-    private boolean achieve4;
-    private boolean achieve5;
-    private boolean achieve6;
-    private boolean achieve7;
-    private boolean achieve8;
-    private boolean achieve9;
-    private boolean achieve10;
+    private boolean achieve1; //basic
+    private boolean achieve2; //analysis confirmed
+    private boolean achieve3; //design ability
+    private boolean achieve4; //problem definition
+    private boolean achieve5; //practice skill
+    private boolean achieve6; //team skills
+    private boolean achieve7; //communication
+    private boolean achieve8; //life long learning
+    private boolean achieve9; //impact predictions
+    private boolean achieve10; //work ethics
 
     private int rateAttendance;
     private int rateAssignment;
