@@ -422,7 +422,37 @@ public class AdminController {
 
     @RequestMapping("/courseManagement/syllabus")
     public String syllabus(Model model) {
+        model.addAttribute("yearList", getYearList());
         return "role/admin/syllabus/syllabus";
+    }
+
+    @RequestMapping("/courseManagement/syllabus/courseDetail")
+    public String courseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+        return "role/admin/syllabus/courseDetail";
+    }
+
+    @RequestMapping("/courseManagement/syllabus/courseTable")
+    public String syllabusCourseTable(Model model,
+                                      @RequestParam(defaultValue = "0", required=false) int year,
+                                      @RequestParam(defaultValue = "0", required=false) int semester) {
+
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/admin/syllabus/courseTable";
     }
 
     @RequestMapping("/courseManagement/makeupClass")
@@ -545,7 +575,7 @@ public class AdminController {
         DateTime dt = new DateTime();
         int currentYear = dt.getYear();
         List<Integer> yearList = new ArrayList<>();
-        for(int i=currentYear+1; i>=(currentYear - 10); i--) {
+        for(int i=currentYear; i>=(currentYear - 10); i--) {
             yearList.add(i);
         }
         return yearList;
