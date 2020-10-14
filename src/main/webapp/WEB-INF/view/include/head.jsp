@@ -25,8 +25,8 @@
         response.setDateHeader("Expires",-1);
     %>
     <base href="">
-    <title>Beni Seuf Technological University</title>
-    <meta name="description" content="Beni Seuf Technological University"/>
+    <title>Beni Suef Technological University</title>
+    <meta name="description" content="Beni Suef Technological University"/>
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>        <!--end::Fonts-->
 
@@ -35,15 +35,17 @@
     <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/fullcalendar/fullcalendar.bundle.rtl.css" rel="stylesheet" type="text/css"/>
     <link href="${resources}/vendor/metronic_assets_7/assets/plugins/global/plugins.bundle.rtl.css" rel="stylesheet" type="text/css"/>
     <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/prismjs/prismjs.bundle.rtl.css" rel="stylesheet" type="text/css"/>
-        <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/datatables/datatables.bundle.rtl.css" rel="stylesheet" type="text/css"/>
+    <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/datatables/datatables.bundle.rtl.css" rel="stylesheet" type="text/css"/>
     <link href="${resources}/vendor/metronic_assets_7/assets/css/style.bundle.rtl.css" rel="stylesheet" type="text/css"/>
     </c:when>
     <c:otherwise>
+
         <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="${resources}/vendor/metronic_assets_7/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="${resources}/vendor/metronic_assets_7/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="${resources}/vendor/metronic_assets_7/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
+
     </c:otherwise>
     </c:choose>
     <link rel="shortcut icon" href="${resources}/vendor/metronic_assets_7/assets/media/logos/favicon.ico"/>
@@ -52,5 +54,19 @@
         .table.table-head-custom thead tr, .table.table-head-custom thead th {
             text-transform:none;
         }
+        <c:if test="${currentRole eq 'admin'}">
+
+        .header-menu .menu-nav > .menu-item {
+            padding-top:0;
+            padding-bottom:0;
+        }
+        .header-menu .menu-nav > .menu-item > .menu-link {
+            padding-top:0;
+            padding-bottom:0;
+        }
+        .header-menu .menu-nav > .menu-item > .menu-link .menu-text {
+            font-size:12px;
+        }
+        </c:if>
     </style>
 </head>

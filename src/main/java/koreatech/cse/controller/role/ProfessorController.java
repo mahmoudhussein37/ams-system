@@ -2,6 +2,7 @@ package koreatech.cse.controller.role;
 
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
+import koreatech.cse.domain.role.professor.LectureFundamentals;
 import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
@@ -13,14 +14,14 @@ import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@SessionAttributes({"lectureFundamentals"})
 @PreAuthorize("hasRole('ROLE_PROFESSOR')")
 @RequestMapping("/professor")
 public class ProfessorController {
@@ -36,6 +37,8 @@ public class ProfessorController {
     private CourseMapper courseMapper;
     @Inject
     private ProfessorCourseMapper professorCourseMapper;
+    @Inject
+    private LectureFundamentalsMapper lectureFundamentalsMapper;
 
 
 
@@ -169,11 +172,20 @@ public class ProfessorController {
         return "role/professor/inquiryCourse/courseTable";
     }
 
+    @RequestMapping("/classProgress/inquiryCourse/courseDetail")
+    public String inCourseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByCourseId(courseId);
+        model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
+        return "role/professor/inquiryCourse/courseDetail";
+    }
+
     @RequestMapping("/classProgress/syllabus")
-    public String syllabus(Model model) {
+    public String syllabus(Model model, @RequestParam(required=false) String result) {
 
         model.addAttribute("yearList", getYearList());
-
+        model.addAttribute("result", result);
         return "role/professor/syllabus/syllabus";
     }
 
@@ -181,7 +193,21 @@ public class ProfessorController {
     public String courseDetail(Model model, @RequestParam int courseId) {
         Course course = courseMapper.findOne(courseId);
         model.addAttribute("course", course);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByCourseId(courseId);
+        model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
         return "role/professor/syllabus/courseDetail";
+    }
+
+    @RequestMapping(value = "/classProgress/syllabus/courseDetail", method = RequestMethod.POST)
+    @ResponseBody
+    public String syllabusCourseDetail(@RequestParam int courseId, @ModelAttribute LectureFundamentals lectureFundamentals) {
+
+        if (lectureFundamentals.getId() == 0) {
+            lectureFundamentalsMapper.insert(lectureFundamentals);
+        } else {
+            lectureFundamentalsMapper.update(lectureFundamentals);
+        }
+        return "success";
     }
 
     @RequestMapping("/classProgress/syllabus/courseTable")
@@ -189,11 +215,13 @@ public class ProfessorController {
                                      @RequestParam(defaultValue = "0", required=false) int year,
                                      @RequestParam(defaultValue = "0", required=false) int semester) {
 
+
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
+        searchable.setUserId(User.current().getId());
 
-        List<Course> courseList = courseMapper.findByMakeupClass(searchable);
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;

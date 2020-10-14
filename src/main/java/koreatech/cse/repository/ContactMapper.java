@@ -71,6 +71,7 @@ public interface ContactMapper {
             "`phone` = #{phone},"+
             "`post_code` = #{postCode},"+
             "`address` = #{address},"+
+            "`lab` = #{lab},"+
             "`parent_name` = #{parentName},"+
             "`relation` = #{relation},"+
             "`parent_cell_phone` = #{parentCellPhone},"+

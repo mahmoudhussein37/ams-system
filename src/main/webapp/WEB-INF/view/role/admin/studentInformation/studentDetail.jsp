@@ -21,7 +21,7 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.division"/></label>
-                <form:select path="divisionId" class="form-control" style="margin-top:10px;">
+                <form:select path="divisionId" class="form-control" style="">
                     <c:forEach var="division" items="${divisions}">
                         <form:option value="${division.id}">${division.name}</form:option>
                     </c:forEach>
@@ -34,7 +34,7 @@
 
             <div class="form-group">
                 <label><spring:message code="common.major"/></label>
-                <form:select path="majorId" class="form-control" style="margin-top:10px;">
+                <form:select path="majorId" class="form-control" style="">
                     <c:forEach var="major" items="${majors}">
                         <form:option value="${major.id}">${major.name}</form:option>
                     </c:forEach>

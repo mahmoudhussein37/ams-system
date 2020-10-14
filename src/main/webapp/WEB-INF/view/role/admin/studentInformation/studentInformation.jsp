@@ -117,9 +117,12 @@
             if (key.keyCode == 13) {
                 searchStudent();
             }
-
-
         });
+
+        <c:if test="${not empty result}">
+        alert("<spring:message code='common.success'/>");
+        location.href="${baseUrl}/admin/studentManagement/studentInformation";
+        </c:if>
     });
 </script>
 </body>

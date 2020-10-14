@@ -109,35 +109,39 @@
                                     </ul>
                                 </c:when>
                                 <c:when test="${currentRole eq 'admin'}">
-                                    <ul class="header-tabs nav align-self-end font-size-lg" role="tablist">
+                                    <ul class="header-tabs nav align-self-end font-size" role="tablist">
                                         <!--begin::Item-->
-                                        <li class="nav-item">
+<%--                                        <li class="nav-item">
                                             <a href="#" class="nav-link py-4 px-6 active" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
                                                 <spring:message code="menu.admin.home"/>
                                             </a>
-                                        </li>
-                                        <!--end::Item-->
-
-                                        <%--<li class="nav-item mr-3">
-                                            <a href="#" class="nav-link py-4 px-6" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
-                                                Prof. user management
-                                            </a>
-                                        </li>
-                                        <li class="nav-item mr-3">
-                                            <a href="#" class="nav-link py-4 px-6" data-toggle="tab" data-target="#kt_header_tab_3" role="tab">
-                                                Course management
-                                            </a>
-                                        </li>
-                                        <li class="nav-item mr-3">
-                                            <a href="#" class="nav-link py-4 px-6" data-toggle="tab" data-target="#kt_header_tab_4" role="tab">
-                                                Academic management
-                                            </a>
-                                        </li>
-                                        <li class="nav-item mr-3">
-                                            <a href="#" class="nav-link py-4 px-6" data-toggle="tab" data-target="#kt_header_tab_5" role="tab">
-                                                System management
-                                            </a>
                                         </li>--%>
+                                        <!--end::Item-->
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/admin/studentManagement') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
+                                                <spring:message code="menu.admin.main1"/>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item mr-3">
+                                            <a href="#" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/admin/profManagement') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
+                                                <spring:message code="menu.admin.main2"/>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item mr-3">
+                                            <a href="#" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/admin/courseManagement') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_3" role="tab">
+                                                <spring:message code="menu.admin.main3"/>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item mr-3">
+                                            <a href="#" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/admin/academicManagement') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_4" role="tab">
+                                                <spring:message code="menu.admin.main4"/>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item mr-3">
+                                            <a href="#" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/admin/systemManagement') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_5" role="tab">
+                                                <spring:message code="menu.admin.main5"/>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </c:when>
                             </c:choose>
@@ -171,14 +175,21 @@
                             <sec:authorize access="isAuthenticated()">
                             <!--begin::User-->
                             <div class="topbar-item">
-                                <div class="btn btn-icon btn-hover-transparent-white w-lg-auto d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
+                                <div class="btn btn-icon btn-hover-transparent-white w-lg-auto d-flex align-items-center btn-lg px-2" >
                                     <div class="d-flex flex-column text-right pr-lg-3">
                                         <span class="text-white opacity-50 font-weight-bold font-size-sm d-none d-md-inline">${user.number}</span>
                                         <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline">${user.getFullName()}</span>
                                     </div>
                                     <span class="symbol symbol-35">
-									<span class="symbol-label font-size-h5 font-weight-bold text-white bg-white-o-30"><i class="fa fa-user"></i></span>
+									<%--<span class="symbol-label font-size-h5 font-weight-bold text-white bg-white-o-30"><i class="fa fa-user"></i></span>--%>
 								</span>
+                                </div>
+                                <div class="btn btn-icon btn-hover-transparent-white w-lg-auto d-flex align-items-center btn-lg px-2" >
+                                    <a href="/signout">
+                                    <span class="symbol symbol-sm-30">
+									<span class="symbol-label font-size-h5 font-weight-bold text-white bg-white-o-30"><i class="fa fa-sign-out-alt"></i></span>
+                                    </span>
+                                    </a>
                                 </div>
                             </div>
                             </sec:authorize>
@@ -256,34 +267,34 @@
                                     <ul class="header-tabs p-5 p-lg-0 d-flex d-lg-none nav nav-bold nav-tabs" role="tablist">
                                         <!--begin::Item-->
                                         <li class="nav-item mr-2">
-                                            <a href="#" class="nav-link btn btn-clean active" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
-                                                <spring:message code="menu.admin.home"/>
+                                            <a href="#" class="nav-link btn btn-clean ${fn:contains(requestUri, '/admin/studentManagement') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
+                                                <spring:message code="menu.admin.main1"/>
                                             </a>
                                         </li>
                                         <!--end::Item-->
 
-                                        <%--!--begin::Item-->
+
                                         <li class="nav-item mr-2">
-                                            <a href="#" class="nav-link btn btn-clean" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
-                                                Prof. user management
+                                            <a href="#" class="nav-link btn btn-clean ${fn:contains(requestUri, '/admin/profManagement') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
+                                                <spring:message code="menu.admin.main2"/>
                                             </a>
                                         </li>
                                         <!--end::Item-->
                                         <li class="nav-item mr-2">
-                                            <a href="#" class="nav-link btn btn-clean" data-toggle="tab" data-target="#kt_header_tab_3" role="tab">
-                                                Course management
+                                            <a href="#" class="nav-link btn btn-clean ${fn:contains(requestUri, '/admin/courseManagement') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_3" role="tab">
+                                                <spring:message code="menu.admin.main3"/>
                                             </a>
                                         </li>
                                         <li class="nav-item mr-2">
-                                            <a href="#" class="nav-link btn btn-clean" data-toggle="tab" data-target="#kt_header_tab_4" role="tab">
-                                                Academic management
+                                            <a href="#" class="nav-link btn btn-clean ${fn:contains(requestUri, '/admin/academicManagement') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_4" role="tab">
+                                                <spring:message code="menu.admin.main4"/>
                                             </a>
                                         </li>
                                         <li class="nav-item mr-2">
-                                            <a href="#" class="nav-link btn btn-clean" data-toggle="tab" data-target="#kt_header_tab_5" role="tab">
-                                                System management
+                                            <a href="#" class="nav-link btn btn-clean ${fn:contains(requestUri, '/admin/systemManagement') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_5" role="tab">
+                                                <spring:message code="menu.admin.main5"/>
                                             </a>
-                                        </li>--%>
+                                        </li>
                                     </ul>
                                 </c:when>
                             </c:choose>
@@ -309,34 +320,6 @@
                                                     <li class="menu-item ${fn:contains(requestUri, '/professor/studentGuidance/coCourseEnrolment') ? 'menu-item-active' : ''} "  aria-haspopup="true">
                                                         <a  href="/professor/studentGuidance/coCourseEnrolment" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_3"/></span></a>
                                                     </li>
-
-
-                                                        <%--<li class="menu-item  menu-item-submenu menu-item-rel menu-item-active"  data-menu-toggle="click" aria-haspopup="true">
-                                                            <a  href="javascript:;" class="menu-link menu-toggle">
-                                                                <span class="menu-text">Features</span><span class="menu-desc"></span><i class="menu-arrow"></i>
-                                                            </a>
-                                                            <div class="menu-submenu menu-submenu-classic menu-submenu-left" >
-                                                                <ul class="menu-subnav">
-                                                                    <li class="menu-item  menu-item-submenu"  data-menu-toggle="hover" aria-haspopup="true"><a  href="javascript:;" class="menu-link menu-toggle"><span class="svg-icon menu-icon"></span><span class="menu-text">Bootstrap</span><i class="menu-arrow"></i></a>
-                                                                        <div class="menu-submenu menu-submenu-classic menu-submenu-right" >
-                                                                            <ul class="menu-subnav">
-                                                                                <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/typography.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Typography</span></a></li>
-                                                                                <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/buttons.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Buttons</span></a></li>
-                                                                                <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/button-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Button Group</span></a></li>
-                                                                                <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/dropdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Dropdown</span></a></li>
-                                                                                <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/navs.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Navs</span></a></li>
-                                                                                <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/tables.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Tables</span></a></li>
-                                                                                <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/progress.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Progress</span></a></li>
-                                                                                <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/modal.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Modal</span></a></li>
-                                                                                <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/alerts.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Alerts</span></a></li>
-                                                                                <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/popover.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Popover</span></a></li>
-                                                                                <li class="menu-item "  aria-haspopup="true"><a  href="features/bootstrap/tooltip.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Tooltip</span></a></li>
-                                                                            </ul>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </li>--%>
 
                                                 </ul>
                                                 <!--end::Nav-->
@@ -478,25 +461,25 @@
                                         </div>
                                     </c:when>
                                     <c:when test="${currentRole eq 'admin'}">
-                                        <div class="tab-pane py-5 p-lg-0 show active" id="kt_header_tab_1">
+                                        <div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/admin/studentManagement') ? 'show active' : ''}" id="kt_header_tab_1">
                                             <!--begin::Menu-->
                                             <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default ">
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
-<%--                                                    <li class="menu-item  menu-item-active "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Student registration</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/studentManagement/studentRegistration') ? 'menu-item-active' : ''} "  aria-haspopup="true">
+                                                        <a  href="/admin/studentManagement/studentRegistration" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub1_1"/></span></a>
                                                     </li>
-                                                    <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Student information Management</span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/admin/studentManagement/studentInformation') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/studentManagement/studentInformation" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub1_2"/></span></a>
                                                     </li>
-                                                    <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Student Profile Synthesis</span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/admin/studentManagement/studentProfile') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/studentManagement/studentProfile" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub1_3"/></span></a>
                                                     </li>
-                                                    <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Student Counseling Synthesis</span></a>
-                                                    </li>--%>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/admin/studentManagement/studentCounseling') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/studentManagement/studentCounseling" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub1_4"/></span></a>
+                                                    </li>
 
-                                                    <li class="menu-item  menu-item-submenu menu-item-rel menu-item-active"  data-menu-toggle="click" aria-haspopup="true">
+                                                    <%--<li class="menu-item  menu-item-submenu menu-item-rel menu-item-active"  data-menu-toggle="click" aria-haspopup="true">
                                                         <a  href="javascript:;" class="menu-link menu-toggle">
                                                             <span class="menu-text">Admin</span><span class="menu-desc"></span><i class="menu-arrow"></i>
                                                         </a>
@@ -567,7 +550,7 @@
                                                                 </li>
                                                             </ul>
                                                         </div>
-                                                    </li>
+                                                    </li>--%>
 
                                                 </ul>
                                                 <!--end::Nav-->
@@ -575,128 +558,128 @@
                                             <!--end::Menu-->
                                         </div>
                                         <!--begin::Tab Pane-->
-                                        <%--<div class="tab-pane py-5 p-lg-0" id="kt_header_tab_2">
+                                        <div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/admin/profManagement') ? 'show active' : ''}" id="kt_header_tab_2">
                                             <!--begin::Menu-->
                                             <div id="kt_header_menu2" class="header-menu header-menu-mobile  header-menu-layout-default " >
 
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
-                                                    <li class="menu-item  menu-item-active "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Professor registration</span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/admin/profManagement/profRegistration') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/profManagement/profRegistration" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub2_1"/></span></a>
                                                     </li>
-                                                    <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Professor information Management</span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/admin/profManagement/profInformation') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/profManagement/profInformation" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub2_2"/></span></a>
                                                     </li>
-                                                    <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Graduation Research Plan Synthesis</span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/admin/profManagement/graduationResearch') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/profManagement/graduationResearch" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub2_3"/></span></a>
                                                     </li>
-                                                    <li class="menu-item "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Student Enrolment Counseling Synthesis</span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/admin/profManagement/studentEnrolment') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/profManagement/studentEnrolment" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub2_4"/></span></a>
                                                     </li>
                                                 </ul>
                                                 <!--end::Nav-->
                                             </div>
                                             <!--end::Menu-->
                                         </div>
-                                        <div class="tab-pane py-5 p-lg-0" id="kt_header_tab_3">
+                                        <div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/admin/courseManagement') ? 'show active' : ''}" id="kt_header_tab_3">
                                             <!--begin::Menu-->
                                             <div id="kt_header_menu3" class="header-menu header-menu-mobile  header-menu-layout-default " >
 
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
-                                                    <li class="menu-item  menu-item-active "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Curriculum Management</span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/admin/courseManagement/curriculum') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/courseManagement/curriculum" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub3_1"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Course Management</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/courseManagement/course') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/courseManagement/course" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub3_2"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Alternative and Prerequisite Course Management</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/courseManagement/alternative') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/courseManagement/alternative" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub3_3"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Course Open Management</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/courseManagement/cOpen') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/courseManagement/cOpen" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub3_4"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Attendance Synthesis</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/courseManagement/attendance') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/courseManagement/attendance" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub3_5"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Syllabus Synthesis</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/courseManagement/syllabus') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/courseManagement/syllabus" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub3_6"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Makeup Class List Synthesis</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/courseManagement/makeupClass') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/courseManagement/makeupClass" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub3_7"/></span></a>
                                                     </li>
                                                 </ul>
                                                 <!--end::Nav-->
                                             </div>
                                             <!--end::Menu-->
                                         </div>
-                                        <div class="tab-pane py-5 p-lg-0" id="kt_header_tab_4">
+                                        <div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/admin/academicManagement') ? 'show active' : ''}" id="kt_header_tab_4">
                                             <!--begin::Menu-->
                                             <div id="kt_header_menu4" class="header-menu header-menu-mobile  header-menu-layout-default " >
 
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
-                                                    <li class="menu-item  menu-item-active "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Student's Grade Synthesis</span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/admin/academicManagement/studentGrade') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/academicManagement/studentGrade" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub4_1"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Graduation Criteria Management</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/academicManagement/graduationCriteria') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/academicManagement/graduationCriteria" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub4_2"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Course Assessment Factor Management</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/academicManagement/assessmentFactor') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/academicManagement/assessmentFactor" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub4_3"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Course Assessment Result Synthesis</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/academicManagement/assessmentResult') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/academicManagement/assessmentResult" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub4_4"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">CQI-Report Synthesis</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/academicManagement/cqi') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/academicManagement/cqi" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub4_5"/></span></a>
                                                     </li>
                                                 </ul>
                                                 <!--end::Nav-->
                                             </div>
                                             <!--end::Menu-->
                                         </div>
-                                        <div class="tab-pane py-5 p-lg-0" id="kt_header_tab_5">
+                                        <div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/admin/systemManagement') ? 'show active' : ''}" id="kt_header_tab_5">
                                             <!--begin::Menu-->
                                             <div id="kt_header_menu5" class="header-menu header-menu-mobile  header-menu-layout-default " >
 
                                                 <!--begin::Nav-->
                                                 <ul class="menu-nav ">
-                                                    <li class="menu-item  menu-item-active "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Year-Semester Registration</span></a>
+                                                    <li class="menu-item ${fn:contains(requestUri, '/admin/systemManagement/yearSemester') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/systemManagement/yearSemester" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub5_1"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Department(division) / Major Hierarchy Registration</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '//admin/systemManagement/divisionMajor') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/systemManagement/divisionMajor" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub5_2"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Lecture Method Setting</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/systemManagement/lectureMethod') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/systemManagement/lectureMethod" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub5_3"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Evaluation Method Setting</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/systemManagement/evaluationMethod') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/systemManagement/evaluationMethod" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub5_4"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Type of Educational Medium Management</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/systemManagement/eduType') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/systemManagement/eduType" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub5_5"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Equipment and Tools Management</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/systemManagement/equipment') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/systemManagement/equipment" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub5_6"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Class room Management</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/systemManagement/classroom') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/systemManagement/classroom" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub5_7"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Menu access period setting</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/systemManagement/menu') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/systemManagement/menu" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub5_8"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Add Administrator ID</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/systemManagement/addAdmin') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/systemManagement/addAdmin" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub5_9"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  "  aria-haspopup="true">
-                                                        <a  href="index.html" class="menu-link "><span class="menu-text">Error Report</span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/admin/systemManagement/errorReport') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/admin/systemManagement/errorReport" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub5_10"/></span></a>
                                                     </li>
                                                 </ul>
                                                 <!--end::Nav-->
                                             </div>
                                             <!--end::Menu-->
-                                        </div>--%>
+                                        </div>
                                     </c:when>
                                 </c:choose>
                                 <!--begin::Tab Pane-->

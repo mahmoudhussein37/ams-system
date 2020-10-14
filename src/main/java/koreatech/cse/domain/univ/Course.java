@@ -1,5 +1,7 @@
 package koreatech.cse.domain.univ;
 
+import koreatech.cse.domain.User;
+import koreatech.cse.domain.role.professor.LectureFundamentals;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
@@ -25,6 +27,13 @@ public class Course implements Serializable {
     private String lectureTime;
     private String compCategory;
     private String subjCategory;
+    private int profUserId;
+    private int maxStudent;
+
+    private Division division;
+    private Major major;
+    private User profUser;
+    private LectureFundamentals lectureFundamentals;
 
 
     private boolean enabled;
@@ -173,6 +182,54 @@ public class Course implements Serializable {
 
     public void setSubjCategory(String subjCategory) {
         this.subjCategory = subjCategory;
+    }
+
+    public int getProfUserId() {
+        return profUserId;
+    }
+
+    public void setProfUserId(int profUserId) {
+        this.profUserId = profUserId;
+    }
+
+    public int getMaxStudent() {
+        return maxStudent;
+    }
+
+    public void setMaxStudent(int maxStudent) {
+        this.maxStudent = maxStudent;
+    }
+
+    public User getProfUser() {
+        return profUser;
+    }
+
+    public void setProfUser(User profUser) {
+        this.profUser = profUser;
+    }
+
+    public Division getDivision() {
+        return division;
+    }
+
+    public void setDivision(Division division) {
+        this.division = division;
+    }
+
+    public Major getMajor() {
+        return major;
+    }
+
+    public void setMajor(Major major) {
+        this.major = major;
+    }
+
+    public LectureFundamentals getLectureFundamentals() {
+        return lectureFundamentals;
+    }
+
+    public void setLectureFundamentals(LectureFundamentals lectureFundamentals) {
+        this.lectureFundamentals = lectureFundamentals;
     }
 
     @Override

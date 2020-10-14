@@ -3,7 +3,10 @@ package koreatech.cse.controller.role;
 import koreatech.cse.domain.Contact;
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
+import koreatech.cse.domain.constant.CompCategory;
 import koreatech.cse.domain.constant.StudentStatus;
+import koreatech.cse.domain.constant.SubjCategory;
+import koreatech.cse.domain.role.professor.LectureFundamentals;
 import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
@@ -11,6 +14,7 @@ import koreatech.cse.domain.univ.Major;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.AuthorityService;
 import koreatech.cse.service.UserService;
+import koreatech.cse.util.SystemUtil;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"studentUser", "profUser", "course"})
+@SessionAttributes({"studentUser", "profUser", "course", "division", "major"})
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
@@ -61,6 +65,7 @@ public class AdminController {
         studentUser.setContact(contact);
         model.addAttribute("studentUser", studentUser);
         model.addAttribute("result", result);
+        model.addAttribute("statusList", StudentStatus.values());
         return "role/admin/studentRegistration/studentRegistration";
     }
 
@@ -83,7 +88,7 @@ public class AdminController {
         User firstUser = null;
         List<User> userList;
         if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0 && major == 0) {
-            userList = new ArrayList<User>();
+            userList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
             searchable.setNumber(number);
@@ -262,7 +267,7 @@ public class AdminController {
     }
 
     @RequestMapping("/courseManagement/course")
-    public String course(Model model) {
+    public String course(Model model,  @RequestParam(required=false) String result) {
         List<Division> divisions = divisionMapper.findAll();
         List<Major> majors = majorMapper.findAll();
 
@@ -270,12 +275,23 @@ public class AdminController {
         model.addAttribute("majors", majors);
         model.addAttribute("yearList", getYearList());
         model.addAttribute("course", new Course());
-
-
+        model.addAttribute("compCategoryList", CompCategory.values());
+        model.addAttribute("subjCategoryList", SubjCategory.values());
+        model.addAttribute("result", result);
         return "role/admin/course/course";
     }
 
-    @RequestMapping("/courseManagement/courseTable")
+    @RequestMapping(value = "/courseManagement/course", method = RequestMethod.POST)
+    public String course(@ModelAttribute("course") Course course, SessionStatus sessionStatus) {
+
+        courseMapper.insert(course);
+
+        sessionStatus.setComplete();
+
+        return "redirect:/admin/courseManagement/course?result=success";
+    }
+
+    @RequestMapping("/courseManagement/course/courseTable")
     public String courseTable(Model model,
                                        @RequestParam(defaultValue = "0", required=false) int year,
                                        @RequestParam(defaultValue = "0", required=false) int semester,
@@ -290,7 +306,6 @@ public class AdminController {
         searchable.setMajor(major);
 
         List<Course> courseList = courseMapper.findByCourseManagement(searchable);
-        System.out.println("courseList = " + courseList);
 
         Course firstCourse = null;
         for(Course course: courseList) {
@@ -304,12 +319,34 @@ public class AdminController {
         return "role/admin/course/courseTable";
     }
 
-    @RequestMapping("/courseManagement/courseDetail")
+    @RequestMapping(value = "/courseManagement/courseEditable", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean courseEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
+        Course course = courseMapper.findOne(pk);
+        System.out.println("name = " + name);
+        System.out.println("value = " + value);
+        switch (name) {
+            default:
+                SystemUtil.setObjectFieldValue(course, name, value);
+        }
+        courseMapper.update(course);
+
+        return true;
+    }
+
+/*    @RequestMapping("/courseManagement/courseDetail")
     public String courseDetail(Model model, @RequestParam int courseId) {
         Course course = courseMapper.findOne(courseId);
         model.addAttribute("course", course);
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+        model.addAttribute("yearList", getYearList());
+        model.addAttribute("compCategoryList", CompCategory.values());
+        model.addAttribute("subjCategoryList", SubjCategory.values());
         return "role/admin/course/courseDetail";
-    }
+    }*/
 
 
     @RequestMapping("/courseManagement/alternative")
@@ -318,8 +355,66 @@ public class AdminController {
     }
 
     @RequestMapping("/courseManagement/cOpen")
-    public String cOpen(Model model) {
+    public String cOpen(Model model, @RequestParam(required=false) String result) {
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+        model.addAttribute("yearList", getYearList());
+        model.addAttribute("course", new Course());
+        model.addAttribute("compCategoryList", CompCategory.values());
+        model.addAttribute("subjCategoryList", SubjCategory.values());
+        model.addAttribute("result", result);
+
         return "role/admin/cOpen/cOpen";
+    }
+
+    @RequestMapping("/courseManagement/cOpen/courseTable")
+    public String cOpenCourseTable(Model model,
+                              @RequestParam(defaultValue = "0", required=false) int year,
+                              @RequestParam(defaultValue = "0", required=false) int semester,
+                              @RequestParam(defaultValue = "0", required=false) int division,
+                              @RequestParam(defaultValue = "0", required=false) int major) {
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+        searchable.setDivision(division);
+        searchable.setMajor(major);
+
+        List<Course> courseList = courseMapper.findByCourseManagement(searchable);
+
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        System.out.println("course table end");
+        return "role/admin/cOpen/courseTable";
+    }
+
+    @RequestMapping("/courseManagement/cOpen/courseDetail")
+    public String cOpenCourseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+        model.addAttribute("yearList", getYearList());
+        model.addAttribute("compCategoryList", CompCategory.values());
+        model.addAttribute("subjCategoryList", SubjCategory.values());
+        return "role/admin/cOpen/courseDetail";
+    }
+
+    @RequestMapping(value = "/courseManagement/cOpen/courseDetail", method = RequestMethod.POST)
+    public String cOpenCourseDetail(@RequestParam int courseId, @ModelAttribute Course course) {
+
+        courseMapper.update(course);
+        return "redirect:/admin/courseManagement/cOpen?result=success";
     }
 
     @RequestMapping("/courseManagement/attendance")
@@ -329,7 +424,37 @@ public class AdminController {
 
     @RequestMapping("/courseManagement/syllabus")
     public String syllabus(Model model) {
+        model.addAttribute("yearList", getYearList());
         return "role/admin/syllabus/syllabus";
+    }
+
+    @RequestMapping("/courseManagement/syllabus/courseDetail")
+    public String courseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+        return "role/admin/syllabus/courseDetail";
+    }
+
+    @RequestMapping("/courseManagement/syllabus/courseTable")
+    public String syllabusCourseTable(Model model,
+                                      @RequestParam(defaultValue = "0", required=false) int year,
+                                      @RequestParam(defaultValue = "0", required=false) int semester) {
+
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/admin/syllabus/courseTable";
     }
 
     @RequestMapping("/courseManagement/makeupClass")
@@ -368,8 +493,28 @@ public class AdminController {
     }
 
     @RequestMapping("/systemManagement/divisionMajor")
-    public String divisionMajor(Model model) {
+    public String divisionMajor(Model model, @RequestParam(required=false) String result) {
+        Division division = new Division();
+        Major major = new Major();
+        List<Division> divisions = divisionMapper.findAll();
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("division", division);
+        model.addAttribute("major", major);
+        model.addAttribute("result", result);
+
         return "role/admin/divisionMajor/divisionMajor";
+    }
+
+    @RequestMapping(value = "/systemManagement/createDivision", method = RequestMethod.POST)
+    public String createDivision(@ModelAttribute Division division) {
+        divisionMapper.insert(division);
+        return "redirect:/admin/systemManagement/divisionMajor?result=success";
+    }
+
+    @RequestMapping(value = "/systemManagement/createMajor", method = RequestMethod.POST)
+    public String createDivision(@ModelAttribute Major major) {
+        majorMapper.insert(major);
+        return "redirect:/admin/systemManagement/divisionMajor?result=success";
     }
 
     @RequestMapping("/systemManagement/lectureMethod")

@@ -79,10 +79,28 @@
 <!--begin::Page Scripts(used by this page)-->
 <script src="${resources}/vendor/metronic_assets_7/assets/js/pages/widgets.js"></script>
 <!--end::Page Scripts-->
-
+<script src="${resources}/vendor/bootstrap3-editable/js/bootstrap-editable.js" type="text/javascript"></script>
 <script>
 
     var y = document.getElementById("current-year");
     if(y) y.innerHTML = String(new Date().getFullYear());
+
+    function changeMajor(divisionSelector, majorSelector, enabled, defaultSelected) {
+        var selected = defaultSelected;
+        if(!defaultSelected) {
+            selected = 0;
+        }
+
+        var divisionId = $(divisionSelector).children("option:selected").val();
+        $.get("${baseUrl}/majorList?enabled=" + enabled + "&divisionId=" + divisionId + "&defaultSelected=" + selected, function(html) {
+            $(majorSelector).html(html);
+        });
+        $(divisionSelector).change(function() {
+            divisionId = $(divisionSelector).children("option:selected").val();
+            $.get("${baseUrl}/majorList?enabled=" + enabled + "&divisionId=" + divisionId + "&defaultSelected=" + selected, function(html) {
+                $(majorSelector).html(html);
+            });
+        });
+    }
 </script>
 <!--end::Body-->

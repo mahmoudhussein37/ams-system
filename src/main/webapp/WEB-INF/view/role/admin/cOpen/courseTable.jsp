@@ -28,7 +28,7 @@
                 </a>
             </td>
             <td>
-                <a href="#" class="course-editable" data-type="text" data-name="title" data-url="${baseUrl}/admin/courseManagement/courseEditable" data-pk="${courseElement.id}" data-original-title="<spring:message code="common.courseTitle"/>">${courseElement.title}</a>
+                    ${courseElement.title}
 
             </td>
             <td>
@@ -81,14 +81,14 @@
 </table>
 <script>
     $("#course-list").DataTable();
-    $('.course-editable').editable();
-    <%--<c:if test="${not empty firstCourse}">
-        $(".course-detail-div").load("${baseUrl}/admin/courseManagement/courseDetail?courseId=${firstCourse.id}");
+    /*$('.course-editable').editable();*/
+    <c:if test="${not empty firstCourse}">
+        $(".course-detail-div").load("${baseUrl}/admin/courseManagement/cOpen/courseDetail?courseId=${firstCourse.id}");
     </c:if>
     $("body").on('click', '.course-detail', function (e) {
         e.preventDefault();
         var courseId = $(this).attr("data-course-id");
-        $(".course-detail-div").load("${baseUrl}/admin/courseManagement/courseDetail?courseId=" + courseId);
+        $(".course-detail-div").load("${baseUrl}/admin/courseManagement/cOpen/courseDetail?courseId=" + courseId);
 
-    });--%>
+    });
 </script>

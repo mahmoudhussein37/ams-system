@@ -20,7 +20,57 @@
 
                         </div>
                         <div class="card-body">
+                            <form:form modelAttribute="division" action="${baseUrl}/admin/systemManagement/createDivision" method="post">
+                                <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.createDivision"/></h3>
+                                <div class="row">
+                                    <div class="col-md-3">
 
+                                        <div class="form-group">
+                                            <label><spring:message code="common.name"/></label>
+                                            <form:input type="text" path="name" class="form-control"/>
+                                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <br/>
+                                <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.register"/></button>
+
+
+                            </form:form>
+                            <br/>
+                            <div class="separator separator-solid my-5"></div>
+                            <br/>
+                            <form:form modelAttribute="major" action="${baseUrl}/admin/systemManagement/createMajor" method="post">
+                                <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.createMajor"/></h3>
+                                <div class="row">
+                                    <div class="col-md-3">
+
+                                        <div class="form-group">
+                                            <label><spring:message code="common.division"/></label>
+                                            <form:select path="divisionId" class="form-control">
+                                                <c:forEach var="d" items="${divisions}">
+                                                    <option value="${d.id}">${d.name}</option>
+                                                </c:forEach>
+                                            </form:select>
+                                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+
+                                        <div class="form-group">
+                                            <label><spring:message code="common.name"/></label>
+                                            <form:input type="text" path="name" class="form-control"/>
+                                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <br/>
+                                <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.register"/></button>
+
+
+                            </form:form>
 
                         </div>
                     </div>
@@ -46,6 +96,10 @@
 
 <script>
     $(document).ready(function() {
+        <c:if test="${not empty result}">
+        alert("<spring:message code='common.success'/>");
+        location.href="${baseUrl}/admin/systemManagement/divisionMajor";
+        </c:if>
     });
 </script>
 </body>

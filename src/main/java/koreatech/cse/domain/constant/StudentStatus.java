@@ -1,9 +1,5 @@
 package koreatech.cse.domain.constant;
 
-import java.util.EnumSet;
-import java.util.Map;
-import java.util.TreeMap;
-
 public enum StudentStatus {
 //    재학 Registered
 //

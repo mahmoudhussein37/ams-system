@@ -5,14 +5,14 @@
         <!--begin::Copyright-->
         <div class="text-dark order-2 order-md-1">
             <span class="text-muted font-weight-bold mr-2"><span id="current-year">2020</span>&copy;</span>
-            <a href="http://www.btu.edu.eg/" target="_blank" class="text-dark-75 text-hover-primary">Beni Seuf Technological University</a>
+            <a href="http://www.btu.edu.eg/" target="_blank" class="text-dark-75 text-hover-primary">Beni Suef Technological University</a>
         </div>
         <!--end::Copyright-->
 
         <!--begin::Nav-->
         <div class="nav nav-dark order-1 order-md-2">
             <a href="http://www.btu.edu.eg/" target="_blank" class="nav-link pr-3 pl-0">About</a>
-            <a href="http://www.btu.edu.eg/" target="_blank" class="nav-link px-3">Team</a>
+            <%--<a href="http://www.btu.edu.eg/" target="_blank" class="nav-link px-3">Team</a>--%>
             <a href="http://www.btu.edu.eg/" target="_blank" class="nav-link pl-3 pr-0">Contact</a>
         </div>
         <!--end::Nav-->
