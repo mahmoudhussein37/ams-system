@@ -26,8 +26,14 @@
 </c:choose>
 <c:set var="current_path" value="${requestScope['javax.servlet.forward.servlet_path']}" />
 <c:set var="current_url" value="${root}${current_path}" />
-
-<c:set var="isRTL" value="false"/>
+<c:choose>
+    <c:when test="${empty rtl or rtl eq false}">
+        <c:set var="isRTL" value="false"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="isRTL" value="true"/>
+    </c:otherwise>
+</c:choose>
 <c:set var="currentRole" value=""/>
 <sec:authorize access="isAuthenticated()">
     <c:set var="currentRole" value="${user.getCurrentRole()}"/>

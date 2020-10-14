@@ -30,7 +30,8 @@ public class HomeController {
 
 
     @RequestMapping
-    public String home(HttpSession session) {
+    public String home(HttpSession session, @RequestParam(required = false) String rtl) {
+        session.setAttribute("rtl", rtl);
 
         return "index";
     }
