@@ -138,7 +138,38 @@ public class ProfessorController {
 
         model.addAttribute("yearList", getYearList());
 
-        return "role/professor/counselingEnrolment/counselingEnrolment";
+        return "role/professor/coCourseEnrolment/coCourseEnrolment";
+    }
+
+    @RequestMapping("/studentGuidance/coCourseEnrolment/studentTable")
+    public String coCourseEnrolmentStudentTable(Model model, @RequestParam(required=false, defaultValue = "0") int year, @RequestParam(defaultValue = "0", required=false) int semester) {
+        User firstUser = null;
+        List<User> userList;
+        System.out.println("year = " + year);
+        if(year == 0) {
+            userList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+
+            searchable.setYear(year);
+            userList = userMapper.findByStudentLookup(searchable);
+
+
+            for(User user: userList) {
+                firstUser = user;
+                break;
+            }
+        }
+        model.addAttribute("userList", userList);
+        model.addAttribute("firstUser", firstUser);
+        return "role/professor/coCourseEnrolment/studentTable";
+    }
+
+    @RequestMapping("/studentGuidance/coCourseEnrolment/studentDetail")
+    public String coCourseEnrolmentStudentDetail(Model model, @RequestParam int studentId) {
+        User studentUser = userMapper.findOne(studentId);
+        model.addAttribute("studentUser", studentUser);
+        return "role/professor/coCourseEnrolment/studentDetail";
     }
 
     @RequestMapping("/classProgress/attendance")
