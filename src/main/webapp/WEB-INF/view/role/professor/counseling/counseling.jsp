@@ -17,86 +17,41 @@
                     <div class="card card-custom">
                         <div class="card-header">
                             <h3 class="card-title font-weight-bolder"><spring:message code="menu.professor.sub1_2"/></h3>
-                            <%--<div class="card-toolbar">
-                                <div class="dropdown dropdown-inline">
-                                    <a href="#" class="btn btn-transparent-white btn-sm font-weight-bolder dropdown-toggle px-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Export
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                        <!--begin::Navigation-->
-                                        <ul class="navi navi-hover">
-                                            <li class="navi-header pb-1">
-                                                <span class="text-primary text-uppercase font-weight-bold font-size-sm">Add new:</span>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="flaticon2-shopping-cart-1"></i></span>
-                                                    <span class="navi-text">Order</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="flaticon2-calendar-8"></i></span>
-                                                    <span class="navi-text">Event</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="flaticon2-graph-1"></i></span>
-                                                    <span class="navi-text">Report</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="flaticon2-rocket-1"></i></span>
-                                                    <span class="navi-text">Post</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="flaticon2-writing"></i></span>
-                                                    <span class="navi-text">File</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        <!--end::Navigation-->
-                                    </div>
-                                </div>
-                            </div>--%>
                         </div>
                         <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <spring:message code="common.studentsNumber"/><br/>
-                                        <input type="text" id="search-number" class="form-control input-enter" value="" style="margin-top:10px;"/>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <spring:message code="common.studentsName"/><br/>
-                                        <input type="text" id="search-name" class="form-control input-enter"  value="" style="margin-top:10px;"/>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <spring:message code="common.division"/><br/>
-                                        <select id="search-division" class="form-control" style="margin-top:10px;">
-                                        <c:forEach var="division" items="${divisions}">
-                                            <option value="${division.id}">${division.name}</option>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <button class="btn btn-secondary" style="width:100%;" onclick="searchCounseling()"><spring:message code="common.search"/></button>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-secondary" style="width:100%;" ><spring:message code="common.new"/></button>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-secondary" style="width:100%;" ><spring:message code="common.delete"/></button>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-secondary" style="width:100%;" ><spring:message code="common.save"/></button>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <spring:message code="common.year"/><br/>
+                                    <select id="search-year" class="form-control" style="margin-top:10px;">
+                                        <c:forEach var="y" items="${yearList}">
+                                            <option value="${y}">${y}</option>
                                         </c:forEach>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <spring:message code="common.major"/><br/>
-                                        <select id="search-major" class="form-control" style="margin-top:10px;">
-                                        <c:forEach var="major" items="${majors}">
-                                            <option value="${major.id}">${major.name}</option>
-                                        </c:forEach>
-
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <br/>
-                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="searchStudent()">Search</button>
-                                    </div>
+                                    </select>
 
                                 </div>
+                                <div class="col-md-3">
+                                    <spring:message code="common.studentsName"/><br/>
+                                    <input type="text" id="search-name" class="form-control input-enter"  value="" style="margin-top:10px;"/>
+                                </div>
+
+
+
+                            </div>
                             <br/><br/>
 
 
@@ -140,24 +95,21 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
-
-    function searchStudent() {
-        var number = $("#search-number").val().trim();
+    function searchCounseling() {
+        var year = $("#search-year").children("option:selected").val().trim();
         var name = $("#search-name").val().trim();
-        var division = $("#search-division").children("option:selected").val().trim();
-        var major = $("#search-major").children("option:selected").val().trim();
 
-        $(".student-table-div").load("${baseUrl}/professor/counseling/counselingTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
+        $(".student-table-div").load("${baseUrl}/professor/studentGuidance/counseling/counselingTable?year=" + year + "&name=" + name);
     }
 
     $(".input-enter").keydown(function(key) {
         if (key.keyCode == 13) {
-            searchStudent();
+            searchCounseling();
         }
     });
 
     $(document).ready(function() {
-        $(".student-table-div").load("${baseUrl}/professor/counseling/counselingTable");
+        $(".student-table-div").load("${baseUrl}/professor/studentGuidance/counseling/counselingTable");
 
     });
 

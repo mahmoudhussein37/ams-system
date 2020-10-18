@@ -2,6 +2,7 @@ package koreatech.cse.controller.role;
 
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
+import koreatech.cse.domain.role.professor.Counseling;
 import koreatech.cse.domain.role.professor.LectureFundamentals;
 import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.univ.Course;
@@ -39,6 +40,8 @@ public class ProfessorController {
     private ProfessorCourseMapper professorCourseMapper;
     @Inject
     private LectureFundamentalsMapper lectureFundamentalsMapper;
+    @Inject
+    private CounselingMapper counselingMapper;
 
 
 
@@ -61,7 +64,7 @@ public class ProfessorController {
         User firstUser = null;
         List<User> userList;
         if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0 && major == 0) {
-            userList = new ArrayList<User>();
+            userList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
             searchable.setNumber(number);
@@ -93,13 +96,41 @@ public class ProfessorController {
 
     @RequestMapping("/studentGuidance/counseling")
     public String counseling(Model model) {
-        List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
-
-        model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
+        model.addAttribute("yearList", getYearList());
 
         return "role/professor/counseling/counseling";
+    }
+
+    @RequestMapping("/studentGuidance/counseling/counselingTable")
+    public String counselingStudentTable(Model model, @RequestParam(required=false, defaultValue = "0") int year,
+                               @RequestParam(required=false) String name) {
+        Counseling firstCounseling = null;
+        List<Counseling> counselingList;
+        if(year == 0 && StringUtils.isBlank(name)) {
+            counselingList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setYear(year);
+            searchable.setName(name);
+            counselingList = counselingMapper.findByCounseling(searchable);
+
+            for(Counseling counseling: counselingList) {
+                System.out.println("counseling = " + counseling);
+                firstCounseling = counseling;
+                break;
+            }
+        }
+
+        model.addAttribute("counselingList", counselingList);
+        model.addAttribute("firstCounseling", firstCounseling);
+        return "role/professor/counseling/counselingTable";
+    }
+
+    @RequestMapping("/studentGuidance/counseling/counselingDetail")
+    public String counselingStudentDetail(Model model, @RequestParam int counselingId) {
+        Counseling counseling = counselingMapper.findOne(counselingId);
+        model.addAttribute("counseling", counseling);
+        return "role/professor/counseling/counselingDetail";
     }
 
     @RequestMapping("/studentGuidance/coCourseEnrolment")
