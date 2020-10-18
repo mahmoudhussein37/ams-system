@@ -303,6 +303,38 @@ public class ProfessorController {
         return "role/professor/classAssessment/classAssessment";
     }
 
+    @RequestMapping("/classProgress/classAssessment/courseTable")
+    public String classAssessmentCourseTable(Model model,
+                                      @RequestParam(defaultValue = "0", required=false) int year,
+                                      @RequestParam(defaultValue = "0", required=false) int semester) {
+
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+        searchable.setUserId(User.current().getId());
+
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/professor/classAssessment/courseTable";
+    }
+
+    @RequestMapping("/classProgress/classAssessment/courseDetail")
+    public String classAssessmentCourseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByCourseId(courseId);
+        model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
+        return "role/professor/classAssessment/courseDetail";
+    }
+
     @RequestMapping("/classProgress/registerGrade")
     public String registerGrade(Model model) {
 
