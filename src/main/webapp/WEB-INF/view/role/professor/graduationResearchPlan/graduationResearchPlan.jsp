@@ -65,7 +65,7 @@
                             <br/><br/>
                             <div class="separator separator-solid my-5"></div>
                             <br/><br/>
-                            <div class="course-detail-div">
+                            <div class="detail-div">
 
                             </div>
 
@@ -96,7 +96,7 @@
     function searchCourse() {
         var year = $("#search-year").children("option:selected").val().trim();
         var semester = $("#search-semester").children("option:selected").val().trim();
-        $(".course-table-div").load("${baseUrl}/professor/classProgress/syllabus/courseTable?year=" + year + "&semester=" + semester);
+        $(".course-table-div").load("${baseUrl}/professor/classProgress/graduationResearchPlan/studentTable?year=" + year + "&semester=" + semester);
     }
 
     $(".input-enter").keydown(function(key) {
@@ -106,7 +106,7 @@
     });
 
     $(document).ready(function() {
-        $(".course-table-div").load("${baseUrl}/professor/classProgress/syllabus/courseTable");
+        $(".course-table-div").load("${baseUrl}/professor/classProgress/graduationResearchPlan/studentTable");
     });
 
 </script>

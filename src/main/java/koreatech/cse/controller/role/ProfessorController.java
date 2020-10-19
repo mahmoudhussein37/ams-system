@@ -398,6 +398,36 @@ public class ProfessorController {
         return "role/professor/graduationResearchPlan/graduationResearchPlan";
     }
 
+    @RequestMapping("/classProgress/graduationResearchPlan/studentTable")
+    public String graduationResearchPlanStudentTable(Model model, @RequestParam(required=false, defaultValue = "0") int year, @RequestParam(defaultValue = "0", required=false) int semester) {
+        User firstUser = null;
+        List<User> userList;
+        System.out.println("year = " + year);
+        if(year == 0) {
+            userList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+
+            searchable.setYear(year);
+            userList = userMapper.findByStudentLookup(searchable);
+
+
+            for(User user: userList) {
+                firstUser = user;
+                break;
+            }
+        }
+        model.addAttribute("userList", userList);
+        model.addAttribute("firstUser", firstUser);
+        return "role/professor/graduationResearchPlan/studentTable";
+    }
+
+    @RequestMapping("/classProgress/graduationResearchPlan/studentDetail")
+    public String graduationResearchPlanStudentDetail(Model model, @RequestParam int studentId) {
+        User studentUser = userMapper.findOne(studentId);
+        model.addAttribute("studentUser", studentUser);
+        return "role/professor/graduationResearchPlan/studentDetail";
+    }
 
     @RequestMapping("/classProgress/makeupClass")
     public String makeupClass(Model model) {

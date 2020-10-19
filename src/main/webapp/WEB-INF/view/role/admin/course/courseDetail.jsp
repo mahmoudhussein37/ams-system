@@ -20,7 +20,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <label><spring:message code="common.division"/></label>
-            <form:input path="divisionId" type="text" class="form-control" id="grad-date-picker"  readonly="true"/>
+            <form:input path="divisionId" type="text" class="form-control" readonly="true"/>
             <%--<span class="form-text text-muted">Please enter your full name</span>--%>
         </div>
     </div>
