@@ -19,7 +19,7 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="professorCourse" items="${courseList}" varStatus="varStatus">
+    <c:forEach var="course" items="${courseList}" varStatus="varStatus">
         <tr>
 
             <td class="pl-0">
@@ -27,29 +27,29 @@
             </td>
             <td>
                 <a href="#" class="course-detail" data-course-id="${course.id}">
-                        ${professorCourse.course.code}
+                        ${course.code}
                 </a>
             </td>
             <td>
-                    ${professorCourse.course.title}
+                    ${course.title}
             </td>
             <td>
-                    ${professorCourse.course.category}
+                    ${course.category}
             </td>
             <td>
-                    ${professorCourse.limitStudent}
+
             </td>
             <td>
-                    ${professorCourse.numStudent}
+
             </td>
             <td>
-                    ${professorCourse.attendance}
+
             </td>
             <td>
-                    ${professorCourse.lateness}
+
             </td>
             <td>
-                    ${professorCourse.absence}
+
             </td>
             <td class="pr-0 text-right">
                 <a href="#" class="btn btn-icon btn-light btn-hover-primary btn-sm">
@@ -91,12 +91,12 @@
     $("#course-list").DataTable();
 
     <c:if test="${not empty firstCourse}">
-        $(".course-detail-div").load("${baseUrl}/professor/classProgress/makeupClass/courseDetail?courseId=${firstCourse.id}");
+        $(".course-detail-div").load("${baseUrl}/professor/classProgress/attendance/courseDetail?courseId=${firstCourse.id}");
     </c:if>
     $("body").on('click', '.course-detail', function (e) {
         e.preventDefault();
         var courseId = $(this).attr("data-course-id");
-        $(".course-detail-div").load("${baseUrl}/professor/courseDetail?courseId=" + courseId);
+        $(".course-detail-div").load("${baseUrl}/professor/classProgress/attendance/courseDetail?courseId=" + courseId);
 
     });
 </script>

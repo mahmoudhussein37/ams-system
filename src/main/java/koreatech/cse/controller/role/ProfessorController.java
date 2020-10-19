@@ -189,9 +189,9 @@ public class ProfessorController {
         searchable.setYear(year);
         searchable.setSemester(semester);
 
-        List<ProfessorCourse> courseList = professorCourseMapper.findByAttendance(searchable);
-        ProfessorCourse firstCourse = null;
-        for(ProfessorCourse course: courseList) {
+        List<Course> courseList = courseMapper.findByInquiryCourse(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
             firstCourse = course;
             break;
         }
@@ -199,6 +199,14 @@ public class ProfessorController {
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);
         return "role/professor/attendance/courseTable";
+    }
+
+    @RequestMapping("/classProgress/attendance/courseDetail")
+    public String attendanceCourseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+
+        return "role/professor/attendance/courseDetail";
     }
 
     @RequestMapping("/classProgress/inquiryCourse")
