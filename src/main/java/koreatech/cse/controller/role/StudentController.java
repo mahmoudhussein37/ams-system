@@ -116,6 +116,35 @@ public class StudentController {
         return "role/student/alternative/alternative";
     }
 
+    @RequestMapping("/courseGuide/alternative/courseTable")
+    public String alternativeCourseTable(Model model,
+                                        @RequestParam(required=false) String code,
+                                        @RequestParam(required=false) String title) {
+
+        Searchable searchable = new Searchable();
+        searchable.setCode(code);
+        searchable.setTitle(title);
+
+        List<Course> courseList = courseMapper.findByMakeupClass(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/student/alternative/courseTable";
+    }
+
+    @RequestMapping("/courseGuide/alternative/courseDetail")
+    public String alternativeCourseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+
+        return "role/student/alternative/courseDetail";
+    }
+
     @RequestMapping("/register/basic")
     public String basic(Model model) {
         return "role/student/basic/basic";
