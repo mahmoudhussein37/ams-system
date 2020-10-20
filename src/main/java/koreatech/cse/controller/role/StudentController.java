@@ -2,6 +2,7 @@ package koreatech.cse.controller.role;
 
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
+import koreatech.cse.domain.role.professor.LectureFundamentals;
 import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
@@ -41,6 +42,8 @@ public class StudentController {
     private CourseMapper courseMapper;
     @Inject
     private ProfessorCourseMapper professorCourseMapper;
+    @Inject
+    private LectureFundamentalsMapper lectureFundamentalsMapper;
 
 
 
@@ -179,6 +182,37 @@ public class StudentController {
         model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
         return "role/student/syllabus/syllabus";
+    }
+
+    @RequestMapping("/classInformation/syllabus/courseTable")
+    public String syllabusCourseTable(Model model,
+                                      @RequestParam(defaultValue = "0", required=false) int year,
+                                      @RequestParam(defaultValue = "0", required=false) int semester) {
+
+        System.out.println("ddd");
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/student/syllabus/courseTable";
+    }
+
+    @RequestMapping("/classInformation/syllabus/courseDetail")
+    public String courseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByCourseId(courseId);
+        model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
+        return "role/student/syllabus/courseDetail";
     }
 
     @RequestMapping("/classInformation/enrolment")

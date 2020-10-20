@@ -105,7 +105,7 @@
         var division = $("#search-division").children("option:selected").val().trim();
         var major = $("#search-major").children("option:selected").val().trim();
 
-        $(".table-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
+        $(".table-div").load("${baseUrl}/student/classInformation/syllabus/courseTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
     }
 
     $(".input-enter").keydown(function(key) {
@@ -115,7 +115,7 @@
     });
 
     $(document).ready(function() {
-        $(".table-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentTable");
+        $(".table-div").load("${baseUrl}/student/classInformation/syllabus/courseTable");
 
     });
 
