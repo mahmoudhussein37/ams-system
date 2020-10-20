@@ -53,7 +53,7 @@
 
 
 
-                            <div class="course-table-div">
+                            <div class="table-div">
 
 
                             </div>
@@ -96,7 +96,7 @@
     function searchCourse() {
         var year = $("#search-year").children("option:selected").val().trim();
         var semester = $("#search-semester").children("option:selected").val().trim();
-        $(".course-table-div").load("${baseUrl}/professor/classProgress/graduationResearchPlan/studentTable?year=" + year + "&semester=" + semester);
+        $(".table-div").load("${baseUrl}/professor/classProgress/graduationResearchPlan/studentTable?year=" + year + "&semester=" + semester);
     }
 
     $(".input-enter").keydown(function(key) {
@@ -106,7 +106,7 @@
     });
 
     $(document).ready(function() {
-        $(".course-table-div").load("${baseUrl}/professor/classProgress/graduationResearchPlan/studentTable");
+        $(".table-div").load("${baseUrl}/professor/classProgress/graduationResearchPlan/studentTable");
     });
 
 </script>

@@ -56,7 +56,7 @@
 
 
 
-                            <div class="student-table-div">
+                            <div class="table-div">
 
 
                             </div>
@@ -99,7 +99,7 @@
         var year = $("#search-year").children("option:selected").val().trim();
         var name = $("#search-name").val().trim();
 
-        $(".student-table-div").load("${baseUrl}/professor/studentGuidance/counseling/counselingTable?year=" + year + "&name=" + name);
+        $(".table-div").load("${baseUrl}/professor/studentGuidance/counseling/counselingTable?year=" + year + "&name=" + name);
     }
 
     $(".input-enter").keydown(function(key) {
@@ -109,7 +109,7 @@
     });
 
     $(document).ready(function() {
-        $(".student-table-div").load("${baseUrl}/professor/studentGuidance/counseling/counselingTable");
+        $(".table-div").load("${baseUrl}/professor/studentGuidance/counseling/counselingTable");
 
     });
 

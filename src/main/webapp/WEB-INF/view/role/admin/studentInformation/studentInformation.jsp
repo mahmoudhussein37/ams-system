@@ -60,7 +60,7 @@
 
 
 
-                            <div class="student-table-div">
+                            <div class="table-div">
 
 
                             </div>
@@ -105,13 +105,13 @@
         var division = $("#search-division").children("option:selected").val().trim();
         var major = $("#search-major").children("option:selected").val().trim();
 
-        $(".student-table-div").load("${baseUrl}/admin/studentManagement/studentInformation/studentTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
+        $(".table-div").load("${baseUrl}/admin/studentManagement/studentInformation/studentTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
     }
 
 
 
     $(document).ready(function() {
-        $(".student-table-div").load("${baseUrl}/admin/studentManagement/studentInformation/studentTable");
+        $(".table-div").load("${baseUrl}/admin/studentManagement/studentInformation/studentTable");
 
         $(".input-enter").keydown(function(key) {
             if (key.keyCode == 13) {

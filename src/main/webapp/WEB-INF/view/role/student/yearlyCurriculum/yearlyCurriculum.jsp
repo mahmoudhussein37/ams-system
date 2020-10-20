@@ -41,7 +41,7 @@
 
                                     <div class="col-md-2">
                                         <br/>
-                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="searchCurriculum()">Search</button>
+                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="searchCurriculum()"><spring:message code="common.search"/></button>
                                     </div>
 
                                 </div>
@@ -49,7 +49,7 @@
 
 
 
-                            <div class="student-table-div">
+                            <div class="table-div">
 
 
                             </div>
@@ -93,17 +93,17 @@
         var year = $("#search-year").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
 
-        $(".student-table-div").load("${baseUrl}/student/courseGuide/yearlyCurriculum/courseTable?year=" + year + "&division=" + division);
+        $(".table-div").load("${baseUrl}/student/courseGuide/yearlyCurriculum/courseTable?year=" + year + "&division=" + division);
     }
 
     $(".input-enter").keydown(function(key) {
         if (key.keyCode == 13) {
-            searchStudent();
+            search();
         }
     });
 
     $(document).ready(function() {
-        $(".student-table-div").load("${baseUrl}/student/courseGuide/yearlyCurriculum/courseTable");
+        $(".table-div").load("${baseUrl}/student/courseGuide/yearlyCurriculum/courseTable");
 
     });
 

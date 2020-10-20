@@ -62,7 +62,7 @@
 
 
 
-                            <div class="course-table-div">
+                            <div class="table-div">
 
 
                             </div>
@@ -214,7 +214,7 @@
         var semester = $("#search-semester").children("option:selected").val().trim();
         var major = $("#search-major").children("option:selected").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
-        $(".course-table-div").load("${baseUrl}/admin/courseManagement/course/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&major=" + major);
+        $(".table-div").load("${baseUrl}/admin/courseManagement/course/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&major=" + major);
     }
 
     $(".input-enter").keydown(function(key) {
@@ -229,7 +229,7 @@
         location.href="${baseUrl}/admin/courseManagement/course";
         </c:if>
 
-        $(".course-table-div").load("${baseUrl}/admin/courseManagement/course/courseTable");
+        $(".table-div").load("${baseUrl}/admin/courseManagement/course/courseTable");
         changeMajor("#search-division", "#search-major", true);
         changeMajor("#divisionId", "#majorId", true);
     });

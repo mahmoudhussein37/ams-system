@@ -91,12 +91,12 @@
     $("#course-list").DataTable();
 
     <c:if test="${not empty firstCourse}">
-        $(".course-detail-div").load("${baseUrl}/professor/classProgress/attendance/courseDetail?courseId=${firstCourse.id}");
+        $(".detail-div").load("${baseUrl}/professor/classProgress/attendance/courseDetail?courseId=${firstCourse.id}");
     </c:if>
     $("body").on('click', '.course-detail', function (e) {
         e.preventDefault();
         var courseId = $(this).attr("data-course-id");
-        $(".course-detail-div").load("${baseUrl}/professor/classProgress/attendance/courseDetail?courseId=" + courseId);
+        $(".detail-div").load("${baseUrl}/professor/classProgress/attendance/courseDetail?courseId=" + courseId);
 
     });
 </script>

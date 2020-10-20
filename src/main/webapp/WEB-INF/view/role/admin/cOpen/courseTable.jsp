@@ -83,12 +83,12 @@
     $("#course-list").DataTable();
     /*$('.course-editable').editable();*/
     <c:if test="${not empty firstCourse}">
-        $(".course-detail-div").load("${baseUrl}/admin/courseManagement/cOpen/courseDetail?courseId=${firstCourse.id}");
+        $(".detail-div").load("${baseUrl}/admin/courseManagement/cOpen/courseDetail?courseId=${firstCourse.id}");
     </c:if>
     $("body").on('click', '.course-detail', function (e) {
         e.preventDefault();
         var courseId = $(this).attr("data-course-id");
-        $(".course-detail-div").load("${baseUrl}/admin/courseManagement/cOpen/courseDetail?courseId=" + courseId);
+        $(".detail-div").load("${baseUrl}/admin/courseManagement/cOpen/courseDetail?courseId=" + courseId);
 
     });
 </script>

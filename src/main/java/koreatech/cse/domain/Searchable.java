@@ -9,6 +9,8 @@ public class Searchable {
     private int year;
     private int semester;
     private int userId;
+    private String code;
+    private String title;
 
 
     private String orderParam;
@@ -84,5 +86,22 @@ public class Searchable {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }
