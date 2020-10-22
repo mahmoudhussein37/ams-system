@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <div class="card-body">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-3">
 
             <div class="form-group">
                 <label><spring:message code="common.studentNumber"/></label>
@@ -9,27 +9,56 @@
                 <%--<span class="form-text text-muted">Please enter your full name</span>--%>
             </div>
 
-
+        </div>
+        <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.division"/></label>
-                <input type="text" class="form-control" value="${user.division.name}" disabled/>
+                <input type="text" class="form-control" value="${studentUser.division.name}" disabled/>
                 <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
             </div>
-
-
-
-
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.name"/></label>
                 <input type="text" class="form-control"  value="${studentUser.getFullName()}" disabled/>
                 <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
             </div>
+        </div>
+        <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.major"/></label>
-                <input type="text" class="form-control" value="${user.major.name}" disabled/>
+                <input type="text" class="form-control" value="${studentUser.major.name}" disabled/>
                 <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.status"/></label>
+                <input type="text" class="form-control" value="<spring:message code="student.status.${studentUser.status}"/>" disabled/>
+                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.advisor"/></label>
+                <input type="text" class="form-control" value="AAA" disabled/>
+                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.academicYear"/></label>
+                <input type="text" class="form-control" value="${studentUser.contact.admissionYear}" disabled/>
+                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.completeSemester"/></label>
+                <input type="text" class="form-control" value="" disabled/>
+                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
             </div>
         </div>
     </div>
