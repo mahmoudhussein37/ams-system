@@ -313,7 +313,8 @@ public class StudentController {
 
     @RequestMapping("/grades/inquiryGrade")
     public String inquiryGrade(Model model) {
-
+        User studentUser = User.current();
+        model.addAttribute("studentUser", studentUser);
         return "role/student/inquiryGrade/inquiryGrade";
     }
 
