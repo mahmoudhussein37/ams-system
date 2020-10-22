@@ -234,6 +234,29 @@ public class StudentController {
         return "role/student/counselingCourseEnrolment/counselingCourseEnrolment";
     }
 
+    @RequestMapping("/classInformation/counselingCourseEnrolment/courseTable")
+    public String counselingCourseEnrolmentCourseTable(Model model,
+                                      @RequestParam(defaultValue = "0", required=false) int year,
+                                      @RequestParam(defaultValue = "0", required=false) int semester) {
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/student/counselingCourseEnrolment/courseTable";
+    }
+
+
+
     @RequestMapping("/classInformation/assessment")
     public String assessment(Model model) {
 
