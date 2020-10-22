@@ -1,5 +1,11 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <link href="${resources}/vendor/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" type="text/css"/>
+<style>
+    #course-list th {
+        /*font-size:10px;*/
+        padding-right:0;
+    }
+</style>
 <table class="table table-head-custom table-vertical-center" id="course-list" style="width:100% !important;">
     <thead>
     <tr class="text-uppercase">

@@ -1,5 +1,12 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <%@include file="/WEB-INF/view/include/head.jsp" %>
+<style>
+/*    .container {
+        width:100% !important;
+        max-width:100% !important;
+    }*/
+
+</style>
 <!--end::Head-->
 
 <!--begin::Body-->

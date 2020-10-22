@@ -419,8 +419,8 @@
                                                     <li class="menu-item  ${fn:contains(requestUri, '/student/classInformation/counselingCourseEnrolment') ? 'menu-item-active' : ''}"  aria-haspopup="true">
                                                         <a  href="/student/classInformation/counselingCourseEnrolment" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub3_3"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  ${fn:contains(requestUri, '/student/classInformation/assessment') ? 'menu-item-active' : ''}"  aria-haspopup="true">
-                                                        <a  href="/student/classInformation/assessment" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub3_4"/></span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/student/classInformation/classAssessment') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/student/classInformation/classAssessment" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub3_4"/></span></a>
                                                     </li>
 
                                                 </ul>
