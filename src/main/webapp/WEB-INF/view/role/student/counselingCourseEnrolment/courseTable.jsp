@@ -86,13 +86,13 @@ B308
         autoWidth: true
     });
     /*$('.course-editable').editable();*/
-    <c:if test="${not empty firstCourse}">
-        $(".detail-div").load("${baseUrl}/student/courseGuide/courseInfo/courseDetail?courseId=${firstCourse.id}");
+    <%--<c:if test="${not empty firstCourse}">
+        $(".detail-div").load("${baseUrl}/student/classInformation/counselingCourseEnrolment/courseDetail?courseId=${firstCourse.id}");
     </c:if>
     $("body").on('click', '.course-detail', function (e) {
         e.preventDefault();
         var courseId = $(this).attr("data-course-id");
-        $(".detail-div").load("${baseUrl}/student/courseGuide/courseInfo/courseDetail?courseId=" + courseId);
+        $(".detail-div").load("${baseUrl}/student/classInformation/counselingCourseEnrolment/courseDetail?courseId=" + courseId);
 
-    });
+    });--%>
 </script>

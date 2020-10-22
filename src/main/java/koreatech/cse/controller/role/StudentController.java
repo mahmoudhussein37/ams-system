@@ -231,6 +231,16 @@ public class StudentController {
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
+        Searchable searchable = new Searchable();
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
         return "role/student/counselingCourseEnrolment/counselingCourseEnrolment";
     }
 
@@ -255,7 +265,13 @@ public class StudentController {
         return "role/student/counselingCourseEnrolment/courseTable";
     }
 
+    @RequestMapping("/classInformation/counselingCourseEnrolment/courseDetail")
+    public String counselingCourseEnrolmentCourseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
 
+        return "role/student/counselingCourseEnrolment/courseDetail";
+    }
 
     @RequestMapping("/classInformation/assessment")
     public String assessment(Model model) {
