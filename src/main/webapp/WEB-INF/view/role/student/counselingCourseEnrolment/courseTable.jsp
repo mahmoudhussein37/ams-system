@@ -82,7 +82,9 @@ B308
     </tbody>
 </table>
 <script>
-    $("#course-list").DataTable();
+    $("#course-list").DataTable({
+        autoWidth: true
+    });
     /*$('.course-editable').editable();*/
     <c:if test="${not empty firstCourse}">
         $(".detail-div").load("${baseUrl}/student/courseGuide/courseInfo/courseDetail?courseId=${firstCourse.id}");

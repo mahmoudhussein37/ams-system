@@ -68,5 +68,9 @@
             font-size:12px;
         }
         </c:if>
+        .container {
+            width:100% !important;
+            max-width:100% !important;
+        }
     </style>
 </head>
