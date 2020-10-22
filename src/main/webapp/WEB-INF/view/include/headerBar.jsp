@@ -7,6 +7,7 @@
     <!--begin::Logo-->
     <a href="/">
         <img alt="Logo" src="${resources}/images/bst_logo.png" class="max-h-30px" />
+        <img alt="Logo" src="${resources}/images/koika_logo.png" class="max-h-30px" />
     </a>
     <!--end::Logo-->
 
@@ -51,6 +52,7 @@
                             <!--begin::Logo-->
                             <a href="/" class="mr-20">
                                 <img alt="Logo" src="${resources}/images/bst_logo.png" class="max-h-50px" style="border-radius:5px;"/>
+                                <img alt="Logo" src="${resources}/images/koika_logo.png" class="max-h-50px" style="border-radius:5px;"/>
                             </a>
                             <!--end::Logo-->
                             <!--begin::Tab Navs(for desktop mode)-->

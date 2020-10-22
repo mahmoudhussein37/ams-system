@@ -4,8 +4,12 @@
     <div class=" container  d-flex flex-column flex-md-row align-items-center justify-content-between">
         <!--begin::Copyright-->
         <div class="text-dark order-2 order-md-1">
-            <span class="text-muted font-weight-bold mr-2"><span id="current-year">2020</span>&copy;</span>
-            <a href="http://www.btu.edu.eg/" target="_blank" class="text-dark-75 text-hover-primary">Beni Suef Technological University</a>
+            <span class="text-muted font-weight-bold mr-2"><span id="current-year">2020</span>&copy;</span> Beni Suef Technological University&nbsp;&nbsp;&nbsp;&nbsp;
+
+            <a href="http://www.btu.edu.eg/" target="_blank" class="text-dark-75 text-hover-primary"><img alt="Logo" src="${resources}/images/bst_logo.png" class="max-h-20px" style="border-radius:5px;"/></a>&nbsp;&nbsp;
+            <a href="https://www.koreatech.ac.kr" target="_blank" class="text-dark-75 text-hover-primary"><img alt="Logo" src="${resources}/images/koreatech_logo.png" class="max-h-20px" style="border-radius:5px;"/></a>&nbsp;&nbsp;
+            <a href="http://tti.koreatech.ac.kr" target="_blank" class="text-dark-75 text-hover-primary"><img alt="Logo" src="${resources}/images/tti_logo.png" class="max-h-15px" style="border-radius:5px;"/></a>
+
         </div>
         <!--end::Copyright-->
 
