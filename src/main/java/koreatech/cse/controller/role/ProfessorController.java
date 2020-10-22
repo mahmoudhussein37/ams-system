@@ -457,6 +457,14 @@ public class ProfessorController {
         model.addAttribute("courseList", courseList);
         return "role/professor/makeupClass/courseTable";
     }
+
+    @RequestMapping("/classProgress/makeupClass/courseDetail")
+    public String makeupClassCourseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+
+        return "role/professor/makeupClass/courseDetail";
+    }
     
     private List<Integer> getYearList() {
         DateTime dt = new DateTime();
