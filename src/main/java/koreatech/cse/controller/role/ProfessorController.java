@@ -390,6 +390,37 @@ public class ProfessorController {
         return "role/professor/cqiReport/cqiReport";
     }
 
+    @RequestMapping("/classProgress/cqiReport/courseTable")
+    public String cqiReportCourseTable(Model model,
+                                      @RequestParam(defaultValue = "0", required=false) int year,
+                                      @RequestParam(defaultValue = "0", required=false) int semester) {
+
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+        searchable.setUserId(User.current().getId());
+
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/professor/cqiReport/courseTable";
+    }
+
+    @RequestMapping("/classProgress/cqiReport/courseDetail")
+    public String cqiReportCourseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+
+        return "role/professor/cqiReport/courseDetail";
+    }
+
     @RequestMapping("/classProgress/graduationResearchPlan")
     public String graduationResearchPlan(Model model) {
 

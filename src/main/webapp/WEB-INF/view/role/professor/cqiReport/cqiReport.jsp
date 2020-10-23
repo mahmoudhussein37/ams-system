@@ -90,7 +90,8 @@
 
 
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
-
+<script src="${resources}/vendor/chartjs/chart.min.js"></script>
+<script src="${resources}/vendor/chartjs/util.js"></script>
 <script>
 
     function searchCourse() {
@@ -106,7 +107,7 @@
     });
 
     $(document).ready(function() {
-        $(".table-div").load("${baseUrl}/professor/classProgress/syllabus/courseTable");
+        $(".table-div").load("${baseUrl}/professor/classProgress/cqiReport/courseTable");
     });
 
 </script>
