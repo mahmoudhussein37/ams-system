@@ -331,7 +331,40 @@ public class AdminController {
 
     @RequestMapping("/profManagement/graduationResearch")
     public String graduationResearch(Model model) {
+
+        model.addAttribute("yearList", getYearList());
         return "role/admin/graduationResearch/graduationResearch";
+    }
+
+    @RequestMapping("/profManagement/graduationResearch/studentTable")
+    public String graduationResearchPlanStudentTable(Model model, @RequestParam(required=false, defaultValue = "0") int year, @RequestParam(defaultValue = "0", required=false) int semester) {
+        User firstUser = null;
+        List<User> userList;
+        System.out.println("year = " + year);
+        if(year == 0) {
+            userList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+
+            searchable.setYear(year);
+            userList = userMapper.findByStudentLookup(searchable);
+
+
+            for(User user: userList) {
+                firstUser = user;
+                break;
+            }
+        }
+        model.addAttribute("userList", userList);
+        model.addAttribute("firstUser", firstUser);
+        return "role/admin/graduationResearch/studentTable";
+    }
+
+    @RequestMapping("/profManagement/graduationResearch/studentDetail")
+    public String graduationResearchPlanStudentDetail(Model model, @RequestParam int studentId) {
+        User studentUser = userMapper.findOne(studentId);
+        model.addAttribute("studentUser", studentUser);
+        return "role/admin/graduationResearch/studentDetail";
     }
 
     @RequestMapping("/profManagement/studentEnrolment")
