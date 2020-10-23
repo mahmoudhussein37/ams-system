@@ -770,7 +770,55 @@ public class AdminController {
 
     @RequestMapping("/academicManagement/graduationCriteria")
     public String graduationCriteria(Model model) {
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
         return "role/admin/graduationCriteria/graduationCriteria";
+    }
+
+    @RequestMapping("/academicManagement/graduationCriteria/studentTable")
+    public String graduationCriteriaStudentTable(Model model, @RequestParam(required=false) String number,
+                               @RequestParam(required=false) String name,
+                               @RequestParam(defaultValue = "0", required=false) int division,
+                               @RequestParam(defaultValue = "0", required=false) int major) {
+        User firstUser = null;
+        List<User> userList;
+        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0 && major == 0) {
+            userList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setNumber(number);
+            searchable.setName(name);
+            searchable.setDivision(division);
+            searchable.setMajor(major);
+            userList = userMapper.findByStudentLookup(searchable);
+
+
+            for(User user: userList) {
+                firstUser = user;
+                break;
+            }
+        }
+
+        model.addAttribute("userList", userList);
+        model.addAttribute("firstUser", firstUser);
+        return "role/admin/graduationCriteria/studentTable";
+    }
+
+    @RequestMapping("/academicManagement/graduationCriteria/studentDetail")
+    public String graduationCriteriaStudentDetail(Model model, @RequestParam int studentId) {
+        User studentUser = userMapper.findOne(studentId);
+        model.addAttribute("studentUser", studentUser);
+        model.addAttribute("statusList", StudentStatus.values());
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+
+        return "role/admin/graduationCriteria/studentDetail";
     }
 
     @RequestMapping("/academicManagement/assessmentFactor")
