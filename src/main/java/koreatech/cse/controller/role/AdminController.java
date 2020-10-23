@@ -734,7 +734,38 @@ public class AdminController {
 
     @RequestMapping("/academicManagement/studentGrade")
     public String studentGrade(Model model) {
+        model.addAttribute("yearList", getYearList());
         return "role/admin/studentGrade/studentGrade";
+    }
+
+    @RequestMapping("/classProgress/registerGrade/courseTable")
+    public String academicManagementCourseTable(Model model,
+                                           @RequestParam(defaultValue = "0", required=false) int year,
+                                           @RequestParam(defaultValue = "0", required=false) int semester) {
+
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/admin/studentGrade/courseTable";
+    }
+
+    @RequestMapping("/classProgress/registerGrade/courseDetail")
+    public String academicManagementCourseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+
+        return "role/admin/studentGrade/courseDetail";
     }
 
     @RequestMapping("/academicManagement/graduationCriteria")

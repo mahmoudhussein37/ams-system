@@ -38,7 +38,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <br/>
-                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="searchCourse()">Search</button>
+                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()">Search</button>
                                     </div>
 
                                 </div>
@@ -86,7 +86,7 @@
 
 <script>
 
-    function searchCourse() {
+    function search() {
         var year = $("#search-year").children("option:selected").val().trim();
         var semester = $("#search-semester").children("option:selected").val().trim();
         $(".table-div").load("${baseUrl}/professor/classProgress/makeupClass/courseTable?year=" + year + "&semester=" + semester);
@@ -94,7 +94,7 @@
 
     $(".input-enter").keydown(function(key) {
         if (key.keyCode == 13) {
-            searchCourse();
+            search();
         }
     });
 
