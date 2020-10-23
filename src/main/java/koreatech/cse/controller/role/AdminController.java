@@ -151,7 +151,49 @@ public class AdminController {
 
     @RequestMapping("/studentManagement/studentProfile")
     public String studentProfile(Model model) {
+
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
         return "role/admin/studentProfile/studentProfile";
+    }
+
+    @RequestMapping("/studentManagement/studentProfile/studentTable")
+    public String studentProfileStudentTable(Model model, @RequestParam(required=false) String number,
+                               @RequestParam(required=false) String name,
+                               @RequestParam(defaultValue = "0", required=false) int division,
+                               @RequestParam(defaultValue = "0", required=false) int major) {
+        User firstUser = null;
+        List<User> userList;
+        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0 && major == 0) {
+            userList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setNumber(number);
+            searchable.setName(name);
+            searchable.setDivision(division);
+            searchable.setMajor(major);
+            userList = userMapper.findByStudentLookup(searchable);
+
+
+            for(User user: userList) {
+                firstUser = user;
+                break;
+            }
+        }
+
+        model.addAttribute("userList", userList);
+        model.addAttribute("firstUser", firstUser);
+        return "role/admin/studentProfile/studentTable";
+    }
+
+    @RequestMapping("/studentManagement/studentProfile/studentDetail")
+    public String studentProfileStudentDetail(Model model, @RequestParam int studentId) {
+        User studentUser = userMapper.findOne(studentId);
+        model.addAttribute("studentUser", studentUser);
+        return "role/admin/studentProfile/studentDetail";
     }
 
     @RequestMapping("/studentManagement/studentCounseling")
