@@ -41,7 +41,7 @@
 
                                     <div class="col-md-2">
                                         <br/>
-                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="searchCurriculum()"><spring:message code="common.search"/></button>
+                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
                                     </div>
 
                                 </div>
@@ -89,7 +89,7 @@
 
 <script>
 
-    function searchCurriculum() {
+    function search() {
         var year = $("#search-year").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
 
