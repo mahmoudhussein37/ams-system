@@ -6,6 +6,7 @@ import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.CompCategory;
 import koreatech.cse.domain.constant.StudentStatus;
 import koreatech.cse.domain.constant.SubjCategory;
+import koreatech.cse.domain.role.professor.Counseling;
 import koreatech.cse.domain.role.professor.LectureFundamentals;
 import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.univ.Course;
@@ -48,7 +49,8 @@ public class AdminController {
     private ContactMapper contactMapper;
     @Inject
     private AuthorityService authorityService;
-
+    @Inject
+    private CounselingMapper counselingMapper;
 
 
 
@@ -198,7 +200,41 @@ public class AdminController {
 
     @RequestMapping("/studentManagement/studentCounseling")
     public String studentCounseling(Model model) {
+
+        model.addAttribute("yearList", getYearList());
         return "role/admin/studentCounseling/studentCounseling";
+    }
+
+    @RequestMapping("/studentManagement/studentCounseling/counselingTable")
+    public String counselingStudentTable(Model model, @RequestParam(required=false, defaultValue = "0") int year,
+                                         @RequestParam(required=false) String name) {
+        Counseling firstCounseling = null;
+        List<Counseling> counselingList;
+        if(year == 0 && StringUtils.isBlank(name)) {
+            counselingList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setYear(year);
+            searchable.setName(name);
+            counselingList = counselingMapper.findByCounseling(searchable);
+
+            for(Counseling counseling: counselingList) {
+                System.out.println("counseling = " + counseling);
+                firstCounseling = counseling;
+                break;
+            }
+        }
+
+        model.addAttribute("counselingList", counselingList);
+        model.addAttribute("firstCounseling", firstCounseling);
+        return "role/admin/studentCounseling/counselingTable";
+    }
+
+    @RequestMapping("/studentManagement/studentCounseling/counselingDetail")
+    public String counselingStudentDetail(Model model, @RequestParam int counselingId) {
+        Counseling counseling = counselingMapper.findOne(counselingId);
+        model.addAttribute("counseling", counseling);
+        return "role/admin/studentCounseling/counselingDetail";
     }
 
     @RequestMapping("/profManagement/profRegistration")

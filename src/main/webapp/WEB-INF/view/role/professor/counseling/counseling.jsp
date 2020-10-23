@@ -21,7 +21,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <button class="btn btn-secondary" style="width:100%;" onclick="searchCounseling()"><spring:message code="common.search"/></button>
+                                    <button class="btn btn-secondary" style="width:100%;" onclick="search()"><spring:message code="common.search"/></button>
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-secondary" style="width:100%;" ><spring:message code="common.new"/></button>
@@ -95,7 +95,7 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
-    function searchCounseling() {
+    function search() {
         var year = $("#search-year").children("option:selected").val().trim();
         var name = $("#search-name").val().trim();
 
@@ -104,7 +104,7 @@
 
     $(".input-enter").keydown(function(key) {
         if (key.keyCode == 13) {
-            searchCounseling();
+            search();
         }
     });
 
