@@ -222,7 +222,39 @@ public class StudentController {
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
+
+        Searchable searchable = new Searchable();
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
         return "role/student/enrolment/enrolment";
+    }
+
+    @RequestMapping("/classInformation/enrolment/courseTable")
+    public String enrolmentCourseTable(Model model,
+                                                       @RequestParam(defaultValue = "0", required=false) int year,
+                                                       @RequestParam(defaultValue = "0", required=false) int semester) {
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/student/enrolment/courseTable";
     }
 
     @RequestMapping("/classInformation/counselingCourseEnrolment")
