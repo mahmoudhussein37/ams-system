@@ -55,7 +55,7 @@
 
                                 <div class="col-md-2">
                                     <br/>
-                                    <button class="btn btn-primary" style="width:100%;" onclick="searchCourse()"><spring:message code="common.search"/></button>
+                                    <button class="btn btn-primary" style="width:100%;" onclick="search()"><spring:message code="common.search"/></button>
                                 </div>
                             </div>
                             <br/><br/>
@@ -101,7 +101,7 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
-    function searchCourse() {
+    function search() {
         var year = $("#search-year").children("option:selected").val().trim();
         var semester = $("#search-semester").children("option:selected").val().trim();
         var major = $("#search-major").children("option:selected").val().trim();
@@ -111,7 +111,7 @@
 
     $(".input-enter").keydown(function(key) {
         if (key.keyCode == 13) {
-            searchCourse();
+            search();
         }
     });
 

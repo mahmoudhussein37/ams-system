@@ -508,24 +508,48 @@ public class AdminController {
         return true;
     }
 
-/*    @RequestMapping("/courseManagement/courseDetail")
-    public String courseDetail(Model model, @RequestParam int courseId) {
-        Course course = courseMapper.findOne(courseId);
-        model.addAttribute("course", course);
+    @RequestMapping("/courseManagement/alternative")
+    public String alternative(Model model, @RequestParam(required=false) String result) {
+
         List<Division> divisions = divisionMapper.findAll();
         List<Major> majors = majorMapper.findAll();
+
         model.addAttribute("divisions", divisions);
         model.addAttribute("majors", majors);
         model.addAttribute("yearList", getYearList());
+        model.addAttribute("course", new Course());
         model.addAttribute("compCategoryList", CompCategory.values());
         model.addAttribute("subjCategoryList", SubjCategory.values());
-        return "role/admin/course/courseDetail";
-    }*/
-
-
-    @RequestMapping("/courseManagement/alternative")
-    public String alternative(Model model) {
+        model.addAttribute("result", result);
         return "role/admin/alternative/alternative";
+    }
+
+    @RequestMapping("/courseManagement/alternative/courseTable")
+    public String alternativeCourseTable(Model model,
+                              @RequestParam(defaultValue = "0", required=false) int year,
+                              @RequestParam(defaultValue = "0", required=false) int semester,
+                              @RequestParam(defaultValue = "0", required=false) int division,
+                              @RequestParam(defaultValue = "0", required=false) int major) {
+        System.out.println("course table");
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+        searchable.setDivision(division);
+        searchable.setMajor(major);
+
+        List<Course> courseList = courseMapper.findByCourseManagement(searchable);
+
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        System.out.println("course table end");
+        return "role/admin/alternative/courseTable";
     }
 
     @RequestMapping("/courseManagement/cOpen")
