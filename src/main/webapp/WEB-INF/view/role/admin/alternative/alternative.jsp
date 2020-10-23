@@ -93,7 +93,7 @@
         var semester = $("#search-semester").children("option:selected").val().trim();
         var major = $("#search-major").children("option:selected").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/admin/courseManagement/course/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&major=" + major);
+        $(".table-div").load("${baseUrl}/admin/courseManagement/alternative/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&major=" + major);
     }
 
     $(".input-enter").keydown(function(key) {

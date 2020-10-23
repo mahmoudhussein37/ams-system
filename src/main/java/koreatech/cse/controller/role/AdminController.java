@@ -530,7 +530,6 @@ public class AdminController {
                               @RequestParam(defaultValue = "0", required=false) int semester,
                               @RequestParam(defaultValue = "0", required=false) int division,
                               @RequestParam(defaultValue = "0", required=false) int major) {
-        System.out.println("course table");
 
         Searchable searchable = new Searchable();
         searchable.setYear(year);
@@ -548,7 +547,6 @@ public class AdminController {
 
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);
-        System.out.println("course table end");
         return "role/admin/alternative/courseTable";
     }
 
@@ -616,8 +614,45 @@ public class AdminController {
     }
 
     @RequestMapping("/courseManagement/attendance")
-    public String attendance(Model model) {
+    public String attendance(Model model, @RequestParam(required=false) String result) {
+
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+        model.addAttribute("yearList", getYearList());
+        model.addAttribute("course", new Course());
+        model.addAttribute("compCategoryList", CompCategory.values());
+        model.addAttribute("subjCategoryList", SubjCategory.values());
+        model.addAttribute("result", result);
         return "role/admin/attendance/attendance";
+    }
+
+    @RequestMapping("/courseManagement/attendance/courseTable")
+    public String attendanceCourseTable(Model model,
+                                         @RequestParam(defaultValue = "0", required=false) int year,
+                                         @RequestParam(defaultValue = "0", required=false) int semester,
+                                         @RequestParam(defaultValue = "0", required=false) int division,
+                                         @RequestParam(defaultValue = "0", required=false) int major) {
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+        searchable.setDivision(division);
+        searchable.setMajor(major);
+
+        List<Course> courseList = courseMapper.findByCourseManagement(searchable);
+
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/admin/attendance/courseTable";
     }
 
     @RequestMapping("/courseManagement/syllabus")
@@ -625,6 +660,8 @@ public class AdminController {
         model.addAttribute("yearList", getYearList());
         return "role/admin/syllabus/syllabus";
     }
+
+
 
     @RequestMapping("/courseManagement/syllabus/courseDetail")
     public String courseDetail(Model model, @RequestParam int courseId) {
