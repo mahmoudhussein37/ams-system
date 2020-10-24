@@ -20,7 +20,7 @@
 
                         </div>
                         <div class="card-body">
-
+                            <%@include file="/WEB-INF/view/role/admin/include/courseTableSearchDiv.jsp" %>
 
                         </div>
                     </div>
@@ -45,8 +45,33 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
-    $(document).ready(function() {
+
+    function search() {
+        var year = $("#search-year").children("option:selected").val().trim();
+        var semester = $("#search-semester").children("" +
+            "option:selected").val().trim();
+        var major = $("#search-major").children("option:selected").val().trim();
+        var division = $("#search-division").children("option:selected").val().trim();
+        $(".table-div").load("${baseUrl}/admin/academicManagement/assessmentResult/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&major=" + major);
+    }
+
+    $(".input-enter").keydown(function(key) {
+        if (key.keyCode == 13) {
+            search();
+        }
     });
+
+    $(document).ready(function() {
+        <c:if test="${not empty result}">
+        alert("<spring:message code='common.success'/>");
+        location.href="${baseUrl}/admin/academicManagement/assessmentResult";
+        </c:if>
+
+        $(".table-div").load("${baseUrl}/admin/academicManagement/assessmentResult/courseTable");
+        changeMajor("#search-division", "#search-major", true);
+        changeMajor("#divisionId", "#majorId", true);
+    });
+
 </script>
 </body>
 </html>
