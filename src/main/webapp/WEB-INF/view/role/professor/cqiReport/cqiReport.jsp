@@ -97,7 +97,7 @@
     function search() {
         var year = $("#search-year").children("option:selected").val().trim();
         var semester = $("#search-semester").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/professor/classProgress/syllabus/courseTable?year=" + year + "&semester=" + semester);
+        $(".table-div").load("${baseUrl}/professor/classProgress/cqiReport/courseTable?year=" + year + "&semester=" + semester);
     }
 
     $(".input-enter").keydown(function(key) {
