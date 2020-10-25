@@ -20,6 +20,48 @@
 
                         </div>
                         <div class="card-body">
+                            <div class="table-div">
+                                <table class="table table-head-custom table-vertical-center" id="course-list">
+                                    <thead>
+                                    <tr class="table-secondary text-center">
+                                        <th class="pl-0" style=""><spring:message code="common.no"/></th>
+                                        <th style=""><spring:message code="admin.menu"/></th>
+                                        <th style=""><spring:message code="common.active"/></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="text-center">
+                                        <td class="pl-0">
+                                            1
+                                        </td>
+                                        <td class="pl-0">
+                                            Course enrolment
+                                        </td>
+                                        <td class="pl-0">
+                                            <select class="form-control">
+                                                <option value="true">Y</option>
+                                                <option value="true">N</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td class="pl-0">
+                                            2
+                                        </td>
+                                        <td class="pl-0">
+                                            Course assessment
+                                        </td>
+                                        <td class="pl-0">
+                                            <select class="form-control">
+                                                <option value="true">Y</option>
+                                                <option value="true">N</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
 
 
                         </div>
