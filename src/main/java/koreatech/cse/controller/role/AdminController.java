@@ -1000,6 +1000,11 @@ public class AdminController {
 
     @RequestMapping("/systemManagement/addAdmin")
     public String addAdmin(Model model) {
+
+        User adminUser = new User();
+        Contact contact = new Contact();
+        adminUser.setContact(contact);
+        model.addAttribute("adminUser", adminUser);
         return "role/admin/addAdmin/addAdmin";
     }
 
