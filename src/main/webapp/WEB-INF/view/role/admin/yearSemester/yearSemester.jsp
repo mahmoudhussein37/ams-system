@@ -87,9 +87,7 @@
                             <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.register"/></button>
 
 
-                            <br/>
-                            <div class="separator separator-solid my-5"></div>
-                            <br/>
+
                         </div>
                     </div>
                     <!--end::Card-->
