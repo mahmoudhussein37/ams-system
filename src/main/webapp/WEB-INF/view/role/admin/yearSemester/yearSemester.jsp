@@ -48,9 +48,7 @@
                                         </td>
 
                                         <td>
-                                            <a href="#" class="course-detail">
-                                                <i class="far fa-file-alt"></i>
-                                            </a>
+
                                         </td>
                                     </tr>
 
