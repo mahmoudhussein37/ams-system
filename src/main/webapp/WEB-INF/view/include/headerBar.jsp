@@ -160,7 +160,7 @@
                                 <div class="topbar-item">
                                     <a href="/signup" class="btn btn-icon btn-hover-transparent-white w-lg-auto d-flex align-items-center btn-lg px-2">
                                         <div class="d-flex flex-column text-right pr-lg-3">
-                                            <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline">Signup</span>
+                                            <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline"><spring:message code="common.signup"/></span>
                                         </div>
 
                                     </a>
@@ -168,7 +168,7 @@
                                 <div class="topbar-item">
                                     <a  href="/signin" class="btn btn-icon btn-hover-transparent-white w-lg-auto d-flex align-items-center btn-lg px-2">
                                         <div class="d-flex flex-column text-right pr-lg-3">
-                                            <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline">Signin</span>
+                                            <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline"><spring:message code="common.signin"/></span>
                                         </div>
 
                                     </a>
