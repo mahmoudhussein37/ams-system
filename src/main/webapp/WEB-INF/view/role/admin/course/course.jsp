@@ -179,6 +179,17 @@
                                                 </form:select>
                                             </div>
                                         </div>
+                                        <div class="col-md-3">
+
+                                            <div class="form-group">
+                                                <label><spring:message code="common.divide"/></label>
+                                                <form:select path="divide" class="form-control" style="">
+                                                    <c:forEach var="d" begin="1" end="10">
+                                                        <option value="${d}">${d}</option>
+                                                    </c:forEach>
+                                                </form:select>
+                                            </div>
+                                        </div>
 
                                     </div>
                                     <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.create"/></button>
