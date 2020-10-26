@@ -1,45 +1,65 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
-<div class="card-body">
-    <div class="row">
-        <div class="col-md-6">
+<br/>
+<div class="separator separator-solid my-5"></div>
+<br/>
+<h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="student.gradeDetail"/></h3>
 
-            <div class="form-group">
-                <label><spring:message code="common.studentNumber"/></label>
-                <input type="text" class="form-control" value="${studentUser.number}" disabled/>
-                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-            </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <table class="table rounded">
+                <thead>
+                <tr class="table-secondary text-center">
+
+                    <td><spring:message code="common.no"/></td>
+                    <td>
+                        <spring:message code="common.courseCode"/>
+                    </td>
+                    <td>
+                        <spring:message code="common.courseTitle"/>
+                    </td>
+                    <td>
+                        <spring:message code="common.category"/>
+                    </td>
+                    <td>
+                        <spring:message code="common.credit"/>
+                    </td>
+                    <td>
+                        <spring:message code="common.grade"/>
+                    </td>
 
 
-            <div class="form-group">
-                <label><spring:message code="common.division"/></label>
-                <input type="text" class="form-control" value="${user.division.name}" disabled/>
-                <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
-            </div>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="table-light text-center">
+                    <td>1</td>
+                    <td>
+                        ABC123
+                    </td>
+                    <td>
+                        Title
+                    </td>
+                    <td>
+                        Major-Require
+                    </td>
+                    <td>
+                        3
+                    </td>
+                    <td>
+                        A+
+                    </td>
+
+                </tr>
 
 
+                </tbody>
+            </table>
 
 
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label><spring:message code="common.name"/></label>
-                <input type="text" class="form-control"  value="${studentUser.getFullName()}" disabled/>
-                <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
-            </div>
-            <div class="form-group">
-                <label><spring:message code="common.major"/></label>
-                <input type="text" class="form-control" value="${user.major.name}" disabled/>
-                <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
-            </div>
         </div>
     </div>
-
-    <br/>
-    <div class="separator separator-solid my-5"></div>
-    <br/>
-
 </div>
-
 
 
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>

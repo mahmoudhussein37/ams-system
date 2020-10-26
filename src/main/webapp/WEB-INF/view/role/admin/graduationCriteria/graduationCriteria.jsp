@@ -20,7 +20,61 @@
 
                         </div>
                         <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <spring:message code="common.studentsNumber"/><br/>
+                                    <input type="text" id="search-number" class="form-control input-enter" value="" style="margin-top:10px;"/>
+                                </div>
+                                <div class="col-md-3">
+                                    <spring:message code="common.studentsName"/><br/>
+                                    <input type="text" id="search-name" class="form-control input-enter"  value="" style="margin-top:10px;"/>
+                                </div>
+                                <div class="col-md-3">
+                                    <spring:message code="common.division"/><br/>
+                                    <select id="search-division" class="form-control" style="margin-top:10px;">
+                                        <c:forEach var="division" items="${divisions}">
+                                            <option value="${division.id}">${division.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <spring:message code="common.major"/><br/>
+                                    <select id="search-major" class="form-control" style="margin-top:10px;">
+                                        <c:forEach var="major" items="${majors}">
+                                            <option value="${major.id}">${major.name}</option>
+                                        </c:forEach>
 
+                                    </select>
+                                </div>
+                                <div class="col-md-1">
+                                    <br/>
+                                    <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
+                                </div>
+                                <div class="col-md-1">
+                                    <br/>
+                                    <button class="btn btn-light" style="width:100%;margin-top:10px;" onclick="javascript:location.reload()"><spring:message code="common.reset"/></button>
+                                </div>
+
+                            </div>
+                            <br/><br/>
+
+
+
+                            <div class="table-div">
+
+
+                            </div>
+
+
+
+
+
+                            <br/><br/>
+                            <div class="separator separator-solid my-5"></div>
+                            <br/><br/>
+                            <div class="detail-div">
+
+                            </div>
 
                         </div>
                     </div>
@@ -45,7 +99,27 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
+    function search() {
+        var number = $("#search-number").val().trim();
+        var name = $("#search-name").val().trim();
+        var division = $("#search-division").children("option:selected").val().trim();
+        var major = $("#search-major").children("option:selected").val().trim();
+
+        $(".table-div").load("${baseUrl}/admin/academicManagement/graduationCriteria/studentTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
+    }
+
+
+
     $(document).ready(function() {
+        $(".table-div").load("${baseUrl}/admin/academicManagement/graduationCriteria/studentTable");
+
+        $(".input-enter").keydown(function(key) {
+            if (key.keyCode == 13) {
+                search();
+            }
+        });
+
+
     });
 </script>
 </body>

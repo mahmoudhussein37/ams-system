@@ -21,6 +21,72 @@
                         </div>
                         <div class="card-body">
 
+                            <div class="table-div">
+                                <table class="table table-head-custom table-vertical-center" id="course-list">
+                                    <thead>
+                                    <tr class="text-uppercase">
+
+                                        <th class="pl-0" style=""><spring:message code="common.no"/></th>
+                                        <th style=""><span class="text-primary"><spring:message code="common.year"/></span></th>
+                                        <th style=""><span class="text-primary"><spring:message code="common.semester"/></span></th>
+                                        <th style=""><span class="text-primary"></span>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+
+                                        <td class="pl-0">
+                                            1
+                                        </td>
+                                        <td class="pl-0">
+                                            2020
+                                        </td>
+                                        <td>
+
+                                            1
+
+                                        </td>
+
+                                        <td>
+                                            <a href="#" class="course-detail">
+                                                <i class="far fa-file-alt"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <br/><br/>
+                            <div class="separator separator-solid my-5"></div>
+                            <br/><br/>
+
+                            <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.createYearSemester"/></h3>
+                            <div class="row">
+                                <div class="col-md-3">
+
+                                    <div class="form-group">
+                                        <label><spring:message code="common.year"/></label>
+                                        <input type="number" name="year" class="form-control"/>
+                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+
+                                    <div class="form-group">
+                                        <label><spring:message code="common.semester"/></label>
+                                        <input type="number" name="semester" class="form-control"/>
+                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <br/>
+                            <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.register"/></button>
+
+
 
                         </div>
                     </div>

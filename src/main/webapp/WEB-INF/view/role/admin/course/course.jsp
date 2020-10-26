@@ -55,14 +55,14 @@
 
                                 <div class="col-md-2">
                                     <br/>
-                                    <button class="btn btn-primary" style="width:100%;" onclick="searchCourse()"><spring:message code="common.search"/></button>
+                                    <button class="btn btn-primary" style="width:100%;" onclick="search()"><spring:message code="common.search"/></button>
                                 </div>
                             </div>
                             <br/><br/>
 
 
 
-                            <div class="course-table-div">
+                            <div class="table-div">
 
 
                             </div>
@@ -179,6 +179,17 @@
                                                 </form:select>
                                             </div>
                                         </div>
+                                        <div class="col-md-3">
+
+                                            <div class="form-group">
+                                                <label><spring:message code="common.divide"/></label>
+                                                <form:select path="divide" class="form-control" style="">
+                                                    <c:forEach var="d" begin="1" end="10">
+                                                        <option value="${d}">${d}</option>
+                                                    </c:forEach>
+                                                </form:select>
+                                            </div>
+                                        </div>
 
                                     </div>
                                     <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.create"/></button>
@@ -209,17 +220,17 @@
 
 <script>
 
-    function searchCourse() {
+    function search() {
         var year = $("#search-year").children("option:selected").val().trim();
         var semester = $("#search-semester").children("option:selected").val().trim();
         var major = $("#search-major").children("option:selected").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
-        $(".course-table-div").load("${baseUrl}/admin/courseManagement/course/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&major=" + major);
+        $(".table-div").load("${baseUrl}/admin/courseManagement/course/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&major=" + major);
     }
 
     $(".input-enter").keydown(function(key) {
         if (key.keyCode == 13) {
-            searchCourse();
+            search();
         }
     });
 
@@ -229,7 +240,7 @@
         location.href="${baseUrl}/admin/courseManagement/course";
         </c:if>
 
-        $(".course-table-div").load("${baseUrl}/admin/courseManagement/course/courseTable");
+        $(".table-div").load("${baseUrl}/admin/courseManagement/course/courseTable");
         changeMajor("#search-division", "#search-major", true);
         changeMajor("#divisionId", "#majorId", true);
     });

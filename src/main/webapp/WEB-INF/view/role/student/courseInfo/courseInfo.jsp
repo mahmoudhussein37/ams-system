@@ -32,7 +32,7 @@
 
                                     <div class="col-md-2">
                                         <br/>
-                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="searchStudent()">Search</button>
+                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
                                     </div>
 
                                 </div>
@@ -40,7 +40,7 @@
 
 
 
-                            <div class="student-table-div">
+                            <div class="table-div">
 
 
                             </div>
@@ -80,23 +80,20 @@
 
 <script>
 
-    function searchStudent() {
-        var number = $("#search-number").val().trim();
-        var name = $("#search-name").val().trim();
-        var division = $("#search-division").children("option:selected").val().trim();
-        var major = $("#search-major").children("option:selected").val().trim();
-
-        $(".student-table-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
+    function search() {
+        var code = $("#search-code").val().trim();
+        var title = $("#search-title").val().trim();
+        $(".table-div").load("${baseUrl}/student/courseGuide/courseInfo/courseTable?code=" + code + "&title=" + title);
     }
 
     $(".input-enter").keydown(function(key) {
         if (key.keyCode == 13) {
-            searchStudent();
+            search();
         }
     });
 
     $(document).ready(function() {
-        $(".student-table-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentTable");
+        $(".table-div").load("${baseUrl}/student/courseGuide/courseInfo/courseTable");
 
     });
 

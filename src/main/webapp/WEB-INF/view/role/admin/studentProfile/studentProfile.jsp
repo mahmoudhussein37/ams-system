@@ -20,7 +20,7 @@
 
                         </div>
                         <div class="card-body">
-
+                            <%@include file="/WEB-INF/view/include/studentTableSearchDiv.jsp" %>
 
                         </div>
                     </div>
@@ -45,7 +45,29 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
+    function search() {
+        var number = $("#search-number").val().trim();
+        var name = $("#search-name").val().trim();
+        var division = $("#search-division").children("option:selected").val().trim();
+        var major = $("#search-major").children("option:selected").val().trim();
+
+        $(".table-div").load("${baseUrl}/admin/studentManagement/studentProfile/studentTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
+    }
+
+
+
     $(document).ready(function() {
+        $(".table-div").load("${baseUrl}/admin/studentManagement/studentProfile/studentTable");
+
+        $(".input-enter").keydown(function(key) {
+            if (key.keyCode == 13) {
+                search();
+            }
+
+
+        });
+
+        changeMajor("#search-division", "#search-major", true);
     });
 </script>
 </body>

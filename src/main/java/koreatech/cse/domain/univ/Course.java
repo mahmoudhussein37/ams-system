@@ -21,6 +21,8 @@ public class Course implements Serializable {
     private String retakeTitle;
     private int divisionId;
 
+    private int divide;
+
     private int majorId;
     private int schoolYear;
     private String lang;
@@ -230,6 +232,14 @@ public class Course implements Serializable {
 
     public void setLectureFundamentals(LectureFundamentals lectureFundamentals) {
         this.lectureFundamentals = lectureFundamentals;
+    }
+
+    public int getDivide() {
+        return divide;
+    }
+
+    public void setDivide(int divide) {
+        this.divide = divide;
     }
 
     @Override

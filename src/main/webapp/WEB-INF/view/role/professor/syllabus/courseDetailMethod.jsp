@@ -37,6 +37,190 @@
             </div>
 
         </div>
+        <br/><br/>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label><spring:message code="professor.course.lectureMethod"/></label>
+                    <table class="table table-head-custom table-vertical-center">
+                        <thead>
+                        <tr class="table-secondary text-center">
+                            <th class="pl-0" style=""></th>
+                            <th class="pl-0" style=""><spring:message code="common.no"/></th>
+                            <th style=""><spring:message code="professor.methods"/></th>
+                            <th style=""><spring:message code="professor.directInput"/></th>
+                            <th style=""><spring:message code="professor.inputAvailable"/></th>
+                            <th style=""></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="text-center">
+                            <td class="pl-0">
+                                <input type="checkbox" name=""/>
+                            </td>
+                            <td class="pl-0">
+                                1
+                            </td>
+                            <td class="pl-0">
+                                Theory Lecture
+                            </td>
+                            <td>
+
+                                Text Input
+
+                            </td>
+
+                            <td>
+                                Y
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <br/><br/>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label><spring:message code="professor.evaluationMethods"/></label>
+                    <table class="table table-head-custom table-vertical-center">
+                        <thead>
+                        <tr class="table-secondary text-center">
+                            <th class="pl-0" style=""></th>
+                            <th class="pl-0" style=""><spring:message code="common.no"/></th>
+                            <th style=""><spring:message code="professor.methods"/></th>
+                            <th style=""><spring:message code="professor.directInput"/></th>
+                            <th style=""><spring:message code="professor.inputAvailable"/></th>
+                            <th style=""></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="text-center">
+                            <td class="pl-0">
+                                <input type="checkbox" name=""/>
+                            </td>
+                            <td class="pl-0">
+                                1
+                            </td>
+                            <td class="pl-0">
+                                Portfolio
+                            </td>
+                            <td>
+
+                                Text Input
+
+                            </td>
+
+                            <td>
+                                Y
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <br/><br/>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label><spring:message code="professor.typeOfEducationalMedium"/></label>
+                    <table class="table table-head-custom table-vertical-center">
+                        <thead>
+                        <tr class="table-secondary text-center">
+                            <th class="pl-0" style=""></th>
+                            <th class="pl-0" style=""><spring:message code="common.no"/></th>
+                            <th style=""><spring:message code="professor.methods"/></th>
+                            <th style=""><spring:message code="professor.directInput"/></th>
+                            <th style=""><spring:message code="professor.inputAvailable"/></th>
+                            <th style=""></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="text-center">
+                            <td class="pl-0">
+                                <input type="checkbox" name=""/>
+                            </td>
+                            <td class="pl-0">
+                                1
+                            </td>
+                            <td class="pl-0">
+                                Board
+                            </td>
+                            <td>
+
+                                Text Input
+
+                            </td>
+
+                            <td>
+                                Y
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <br/><br/>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label><spring:message code="professor.equipmentAndTools"/></label>
+                    &nbsp;&nbsp;&nbsp;<button class="btn btn-light btn-sm">Find Eq</button>
+                    <button class="btn btn-light btn-sm">Delete</button>
+                    <button class="btn btn-light btn-sm">Save</button>
+                    <br/><br/>
+                    <table class="table table-head-custom table-vertical-center">
+                        <thead>
+                        <tr class="table-secondary text-center">
+                            <th class="pl-0" style=""></th>
+                            <th class="pl-0" style=""><spring:message code="common.no"/></th>
+                            <th style=""><spring:message code="professor.methods"/></th>
+                            <th style=""><spring:message code="professor.directInput"/></th>
+                            <th style=""><spring:message code="professor.inputAvailable"/></th>
+                            <th style=""></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="text-center">
+                            <td class="pl-0">
+                                <input type="checkbox" name=""/>
+                            </td>
+                            <td class="pl-0">
+                                1
+                            </td>
+                            <td class="pl-0">
+                                Board
+                            </td>
+                            <td>
+
+                                Text Input
+
+                            </td>
+
+                            <td>
+                                Y
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group" style="text-align:right">

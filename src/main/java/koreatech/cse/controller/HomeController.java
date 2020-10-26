@@ -12,8 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
@@ -30,8 +33,7 @@ public class HomeController {
 
 
     @RequestMapping
-    public String home(HttpSession session, @RequestParam(required = false) String rtl) {
-        session.setAttribute("rtl", rtl);
+    public String home(HttpSession session) {
 
         return "index";
     }
@@ -123,6 +125,5 @@ public class HomeController {
 
         return "redirect:/signin?msg=signupSuccess";
     }
-
 
 }

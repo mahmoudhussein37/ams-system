@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="col-md-1">
                                     <br/>
-                                    <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="searchStudent()"><spring:message code="common.search"/></button>
+                                    <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
                                 </div>
                                 <div class="col-md-1">
                                     <br/>
@@ -60,7 +60,7 @@
 
 
 
-                            <div class="student-table-div">
+                            <div class="table-div">
 
 
                             </div>
@@ -99,23 +99,23 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
-    function searchStudent() {
+    function search() {
         var number = $("#search-number").val().trim();
         var name = $("#search-name").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
         var major = $("#search-major").children("option:selected").val().trim();
 
-        $(".student-table-div").load("${baseUrl}/admin/studentManagement/studentInformation/studentTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
+        $(".table-div").load("${baseUrl}/admin/studentManagement/studentInformation/studentTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
     }
 
 
 
     $(document).ready(function() {
-        $(".student-table-div").load("${baseUrl}/admin/studentManagement/studentInformation/studentTable");
+        $(".table-div").load("${baseUrl}/admin/studentManagement/studentInformation/studentTable");
 
         $(".input-enter").keydown(function(key) {
             if (key.keyCode == 13) {
-                searchStudent();
+                search();
             }
         });
 

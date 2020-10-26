@@ -27,11 +27,11 @@
 <c:set var="current_path" value="${requestScope['javax.servlet.forward.servlet_path']}" />
 <c:set var="current_url" value="${root}${current_path}" />
 <c:choose>
-    <c:when test="${empty rtl or rtl eq false}">
-        <c:set var="isRTL" value="false"/>
+    <c:when test="${not empty locale and locale eq 'ar'}">
+        <c:set var="isRTL" value="true"/>
     </c:when>
     <c:otherwise>
-        <c:set var="isRTL" value="true"/>
+        <c:set var="isRTL" value="false"/>
     </c:otherwise>
 </c:choose>
 <c:set var="currentRole" value=""/>

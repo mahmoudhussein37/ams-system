@@ -3,6 +3,7 @@ package koreatech.cse.util;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
+import java.util.Locale;
 
 @Component
 public class SystemUtil {
@@ -28,5 +29,16 @@ public class SystemUtil {
             }
         }
         return false;
+    }
+
+    public Locale getLocaleByLang(String lang) {
+        switch (lang) {
+            case "en":
+                return Locale.ENGLISH;
+            case "ar":
+                return new Locale("ar");
+            default:
+                return Locale.ENGLISH;
+        }
     }
 }

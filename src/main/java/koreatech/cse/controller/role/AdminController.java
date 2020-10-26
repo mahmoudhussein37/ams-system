@@ -6,6 +6,7 @@ import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.CompCategory;
 import koreatech.cse.domain.constant.StudentStatus;
 import koreatech.cse.domain.constant.SubjCategory;
+import koreatech.cse.domain.role.professor.Counseling;
 import koreatech.cse.domain.role.professor.LectureFundamentals;
 import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.univ.Course;
@@ -48,7 +49,8 @@ public class AdminController {
     private ContactMapper contactMapper;
     @Inject
     private AuthorityService authorityService;
-
+    @Inject
+    private CounselingMapper counselingMapper;
 
 
 
@@ -151,12 +153,88 @@ public class AdminController {
 
     @RequestMapping("/studentManagement/studentProfile")
     public String studentProfile(Model model) {
+
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
         return "role/admin/studentProfile/studentProfile";
+    }
+
+    @RequestMapping("/studentManagement/studentProfile/studentTable")
+    public String studentProfileStudentTable(Model model, @RequestParam(required=false) String number,
+                               @RequestParam(required=false) String name,
+                               @RequestParam(defaultValue = "0", required=false) int division,
+                               @RequestParam(defaultValue = "0", required=false) int major) {
+        User firstUser = null;
+        List<User> userList;
+        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0 && major == 0) {
+            userList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setNumber(number);
+            searchable.setName(name);
+            searchable.setDivision(division);
+            searchable.setMajor(major);
+            userList = userMapper.findByStudentLookup(searchable);
+
+
+            for(User user: userList) {
+                firstUser = user;
+                break;
+            }
+        }
+
+        model.addAttribute("userList", userList);
+        model.addAttribute("firstUser", firstUser);
+        return "role/admin/studentProfile/studentTable";
+    }
+
+    @RequestMapping("/studentManagement/studentProfile/studentDetail")
+    public String studentProfileStudentDetail(Model model, @RequestParam int studentId) {
+        User studentUser = userMapper.findOne(studentId);
+        model.addAttribute("studentUser", studentUser);
+        return "role/admin/studentProfile/studentDetail";
     }
 
     @RequestMapping("/studentManagement/studentCounseling")
     public String studentCounseling(Model model) {
+
+        model.addAttribute("yearList", getYearList());
         return "role/admin/studentCounseling/studentCounseling";
+    }
+
+    @RequestMapping("/studentManagement/studentCounseling/counselingTable")
+    public String counselingStudentTable(Model model, @RequestParam(required=false, defaultValue = "0") int year,
+                                         @RequestParam(required=false) String name) {
+        Counseling firstCounseling = null;
+        List<Counseling> counselingList;
+        if(year == 0 && StringUtils.isBlank(name)) {
+            counselingList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setYear(year);
+            searchable.setName(name);
+            counselingList = counselingMapper.findByCounseling(searchable);
+
+            for(Counseling counseling: counselingList) {
+                System.out.println("counseling = " + counseling);
+                firstCounseling = counseling;
+                break;
+            }
+        }
+
+        model.addAttribute("counselingList", counselingList);
+        model.addAttribute("firstCounseling", firstCounseling);
+        return "role/admin/studentCounseling/counselingTable";
+    }
+
+    @RequestMapping("/studentManagement/studentCounseling/counselingDetail")
+    public String counselingStudentDetail(Model model, @RequestParam int counselingId) {
+        Counseling counseling = counselingMapper.findOne(counselingId);
+        model.addAttribute("counseling", counseling);
+        return "role/admin/studentCounseling/counselingDetail";
     }
 
     @RequestMapping("/profManagement/profRegistration")
@@ -253,17 +331,113 @@ public class AdminController {
 
     @RequestMapping("/profManagement/graduationResearch")
     public String graduationResearch(Model model) {
+
+        model.addAttribute("yearList", getYearList());
         return "role/admin/graduationResearch/graduationResearch";
+    }
+
+    @RequestMapping("/profManagement/graduationResearch/studentTable")
+    public String graduationResearchPlanStudentTable(Model model, @RequestParam(required=false, defaultValue = "0") int year, @RequestParam(defaultValue = "0", required=false) int semester) {
+        User firstUser = null;
+        List<User> userList;
+        System.out.println("year = " + year);
+        if(year == 0) {
+            userList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+
+            searchable.setYear(year);
+            userList = userMapper.findByStudentLookup(searchable);
+
+
+            for(User user: userList) {
+                firstUser = user;
+                break;
+            }
+        }
+        model.addAttribute("userList", userList);
+        model.addAttribute("firstUser", firstUser);
+        return "role/admin/graduationResearch/studentTable";
+    }
+
+    @RequestMapping("/profManagement/graduationResearch/studentDetail")
+    public String graduationResearchPlanStudentDetail(Model model, @RequestParam int studentId) {
+        User studentUser = userMapper.findOne(studentId);
+        model.addAttribute("studentUser", studentUser);
+        return "role/admin/graduationResearch/studentDetail";
     }
 
     @RequestMapping("/profManagement/studentEnrolment")
     public String studentEnrolment(Model model) {
+
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("yearList", getYearList());
+
+        Searchable searchable = new Searchable();
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
         return "role/admin/studentEnrolment/studentEnrolment";
+    }
+
+    @RequestMapping("/profManagement/studentEnrolment/courseTable")
+    public String enrolmentCourseTable(Model model,
+                                       @RequestParam(defaultValue = "0", required=false) int year,
+                                       @RequestParam(defaultValue = "0", required=false) int semester) {
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/admin/studentEnrolment/courseTable";
     }
 
     @RequestMapping("/courseManagement/curriculum")
     public String curriculum(Model model) {
+
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("yearList", getYearList());
         return "role/admin/curriculum/curriculum";
+    }
+
+    @RequestMapping("/courseManagement/curriculum/courseTable")
+    public String curriculumTable(Model model,
+                                  @RequestParam(defaultValue = "0", required=false) int year,
+                                  @RequestParam(defaultValue = "0", required=false) int division) {
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setDivision(division);
+
+        List<Course> courseList = courseMapper.findByMakeupClass(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/admin/curriculum/courseTable";
     }
 
     @RequestMapping("/courseManagement/course")
@@ -334,24 +508,46 @@ public class AdminController {
         return true;
     }
 
-/*    @RequestMapping("/courseManagement/courseDetail")
-    public String courseDetail(Model model, @RequestParam int courseId) {
-        Course course = courseMapper.findOne(courseId);
-        model.addAttribute("course", course);
+    @RequestMapping("/courseManagement/alternative")
+    public String alternative(Model model, @RequestParam(required=false) String result) {
+
         List<Division> divisions = divisionMapper.findAll();
         List<Major> majors = majorMapper.findAll();
+
         model.addAttribute("divisions", divisions);
         model.addAttribute("majors", majors);
         model.addAttribute("yearList", getYearList());
+        model.addAttribute("course", new Course());
         model.addAttribute("compCategoryList", CompCategory.values());
         model.addAttribute("subjCategoryList", SubjCategory.values());
-        return "role/admin/course/courseDetail";
-    }*/
-
-
-    @RequestMapping("/courseManagement/alternative")
-    public String alternative(Model model) {
+        model.addAttribute("result", result);
         return "role/admin/alternative/alternative";
+    }
+
+    @RequestMapping("/courseManagement/alternative/courseTable")
+    public String alternativeCourseTable(Model model,
+                              @RequestParam(defaultValue = "0", required=false) int year,
+                              @RequestParam(defaultValue = "0", required=false) int semester,
+                              @RequestParam(defaultValue = "0", required=false) int division,
+                              @RequestParam(defaultValue = "0", required=false) int major) {
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+        searchable.setDivision(division);
+        searchable.setMajor(major);
+
+        List<Course> courseList = courseMapper.findByCourseManagement(searchable);
+
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/admin/alternative/courseTable";
     }
 
     @RequestMapping("/courseManagement/cOpen")
@@ -418,8 +614,45 @@ public class AdminController {
     }
 
     @RequestMapping("/courseManagement/attendance")
-    public String attendance(Model model) {
+    public String attendance(Model model, @RequestParam(required=false) String result) {
+
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+        model.addAttribute("yearList", getYearList());
+        model.addAttribute("course", new Course());
+        model.addAttribute("compCategoryList", CompCategory.values());
+        model.addAttribute("subjCategoryList", SubjCategory.values());
+        model.addAttribute("result", result);
         return "role/admin/attendance/attendance";
+    }
+
+    @RequestMapping("/courseManagement/attendance/courseTable")
+    public String attendanceCourseTable(Model model,
+                                         @RequestParam(defaultValue = "0", required=false) int year,
+                                         @RequestParam(defaultValue = "0", required=false) int semester,
+                                         @RequestParam(defaultValue = "0", required=false) int division,
+                                         @RequestParam(defaultValue = "0", required=false) int major) {
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+        searchable.setDivision(division);
+        searchable.setMajor(major);
+
+        List<Course> courseList = courseMapper.findByCourseManagement(searchable);
+
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/admin/attendance/courseTable";
     }
 
     @RequestMapping("/courseManagement/syllabus")
@@ -427,6 +660,8 @@ public class AdminController {
         model.addAttribute("yearList", getYearList());
         return "role/admin/syllabus/syllabus";
     }
+
+
 
     @RequestMapping("/courseManagement/syllabus/courseDetail")
     public String courseDetail(Model model, @RequestParam int courseId) {
@@ -458,33 +693,249 @@ public class AdminController {
     }
 
     @RequestMapping("/courseManagement/makeupClass")
-    public String makeupClass(Model model) {
+    public String makeupClass(Model model, @RequestParam(required=false) String result) {
+
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+        model.addAttribute("yearList", getYearList());
+        model.addAttribute("course", new Course());
+        model.addAttribute("compCategoryList", CompCategory.values());
+        model.addAttribute("subjCategoryList", SubjCategory.values());
+        model.addAttribute("result", result);
         return "role/admin/makeupClass/makeupClass";
+    }
+
+    @RequestMapping("/courseManagement/makeupClass/courseTable")
+    public String makeupClassCourseTable(Model model,
+                                        @RequestParam(defaultValue = "0", required=false) int year,
+                                        @RequestParam(defaultValue = "0", required=false) int semester,
+                                        @RequestParam(defaultValue = "0", required=false) int division,
+                                        @RequestParam(defaultValue = "0", required=false) int major) {
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+        searchable.setDivision(division);
+        searchable.setMajor(major);
+        List<Course> courseList = courseMapper.findByCourseManagement(searchable);
+
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/admin/makeupClass/courseTable";
     }
 
     @RequestMapping("/academicManagement/studentGrade")
     public String studentGrade(Model model) {
+        model.addAttribute("yearList", getYearList());
         return "role/admin/studentGrade/studentGrade";
+    }
+
+    @RequestMapping("/classProgress/registerGrade/courseTable")
+    public String academicManagementCourseTable(Model model,
+                                           @RequestParam(defaultValue = "0", required=false) int year,
+                                           @RequestParam(defaultValue = "0", required=false) int semester) {
+
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/admin/studentGrade/courseTable";
+    }
+
+    @RequestMapping("/classProgress/registerGrade/courseDetail")
+    public String academicManagementCourseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+
+        return "role/admin/studentGrade/courseDetail";
     }
 
     @RequestMapping("/academicManagement/graduationCriteria")
     public String graduationCriteria(Model model) {
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
         return "role/admin/graduationCriteria/graduationCriteria";
+    }
+
+    @RequestMapping("/academicManagement/graduationCriteria/studentTable")
+    public String graduationCriteriaStudentTable(Model model, @RequestParam(required=false) String number,
+                               @RequestParam(required=false) String name,
+                               @RequestParam(defaultValue = "0", required=false) int division,
+                               @RequestParam(defaultValue = "0", required=false) int major) {
+        User firstUser = null;
+        List<User> userList;
+        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0 && major == 0) {
+            userList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setNumber(number);
+            searchable.setName(name);
+            searchable.setDivision(division);
+            searchable.setMajor(major);
+            userList = userMapper.findByStudentLookup(searchable);
+
+
+            for(User user: userList) {
+                firstUser = user;
+                break;
+            }
+        }
+
+        model.addAttribute("userList", userList);
+        model.addAttribute("firstUser", firstUser);
+        return "role/admin/graduationCriteria/studentTable";
+    }
+
+    @RequestMapping("/academicManagement/graduationCriteria/studentDetail")
+    public String graduationCriteriaStudentDetail(Model model, @RequestParam int studentId) {
+        User studentUser = userMapper.findOne(studentId);
+        model.addAttribute("studentUser", studentUser);
+        model.addAttribute("statusList", StudentStatus.values());
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+
+        return "role/admin/graduationCriteria/studentDetail";
     }
 
     @RequestMapping("/academicManagement/assessmentFactor")
     public String assessmentFactor(Model model) {
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+        model.addAttribute("yearList", getYearList());
         return "role/admin/assessmentFactor/assessmentFactor";
+    }
+    @RequestMapping("/academicManagement/assessmentFactor/courseTable")
+    public String assessmentFactorCourseTable(Model model,
+                                                @RequestParam(defaultValue = "0", required=false) int year,
+                                                @RequestParam(defaultValue = "0", required=false) int semester) {
+
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/admin/assessmentFactor/courseTable";
+    }
+
+    @RequestMapping("/academicManagement/assessmentFactor/courseDetail")
+    public String assessmentFactorCourseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+
+        return "role/admin/assessmentFactor/courseDetail";
     }
 
     @RequestMapping("/academicManagement/assessmentResult")
     public String assessmentResult(Model model) {
+        List<Division> divisions = divisionMapper.findAll();
+        List<Major> majors = majorMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("majors", majors);
+        model.addAttribute("yearList", getYearList());
         return "role/admin/assessmentResult/assessmentResult";
+    }
+
+    @RequestMapping("/academicManagement/assessmentResult/courseTable")
+    public String assessmentResultCourseTable(Model model,
+                                              @RequestParam(defaultValue = "0", required=false) int year,
+                                              @RequestParam(defaultValue = "0", required=false) int semester) {
+
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/admin/assessmentResult/courseTable";
+    }
+
+    @RequestMapping("/academicManagement/assessmentResult/courseDetail")
+    public String assessmentResultCourseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+
+        return "role/admin/assessmentResult/courseDetail";
     }
 
     @RequestMapping("/academicManagement/cqi")
     public String cqi(Model model) {
+        model.addAttribute("yearList", getYearList());
         return "role/admin/cqi/cqi";
+    }
+
+    @RequestMapping("/academicManagement/cqi/courseTable")
+    public String cqiReportCourseTable(Model model,
+                                       @RequestParam(defaultValue = "0", required=false) int year,
+                                       @RequestParam(defaultValue = "0", required=false) int semester) {
+
+
+        Searchable searchable = new Searchable();
+        searchable.setYear(year);
+        searchable.setSemester(semester);
+
+        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        return "role/admin/cqi/courseTable";
+    }
+
+    @RequestMapping("/academicManagement/cqi/courseDetail")
+    public String cqiReportCourseDetail(Model model, @RequestParam int courseId) {
+        Course course = courseMapper.findOne(courseId);
+        model.addAttribute("course", course);
+
+        return "role/admin/cqi/courseDetail";
     }
 
     @RequestMapping("/systemManagement/yearSemester")
@@ -549,6 +1000,11 @@ public class AdminController {
 
     @RequestMapping("/systemManagement/addAdmin")
     public String addAdmin(Model model) {
+
+        User adminUser = new User();
+        Contact contact = new Contact();
+        adminUser.setContact(contact);
+        model.addAttribute("adminUser", adminUser);
         return "role/admin/addAdmin/addAdmin";
     }
 

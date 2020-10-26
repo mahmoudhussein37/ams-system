@@ -20,7 +20,49 @@
 
                         </div>
                         <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <spring:message code="common.year"/><br/>
+                                    <select id="search-year" class="form-control" style="">
+                                        <c:forEach var="y" items="${yearList}">
+                                            <option value="${y}">${y}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <spring:message code="common.semester"/><br/>
+                                    <select id="search-semester" class="form-control" style="">
+                                        <option value="1"><spring:message code="common.sem1"/></option>
+                                        <option value="2"><spring:message code="common.sem2"/></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <spring:message code="common.division"/><br/>
+                                    <select id="search-division" class="form-control" style="">
+                                        <c:forEach var="division" items="${divisions}">
+                                            <option value="${division.id}">${division.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <spring:message code="common.major"/><br/>
+                                    <select id="search-major" class="form-control" style="">
+                                        <%--<c:forEach var="major" items="${majors}">
+                                            <option value="${major.id}">${major.name}</option>
+                                        </c:forEach>--%>
+                                    </select>
+                                </div>
 
+                                <div class="col-md-2">
+                                    <br/>
+                                    <button class="btn btn-primary" style="width:100%;" onclick="search()"><spring:message code="common.search"/></button>
+                                </div>
+                            </div>
+                            <br/><br/>
+                            <div class="table-div">
+
+
+                            </div>
 
                         </div>
                     </div>
@@ -45,8 +87,32 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
-    $(document).ready(function() {
+
+    function search() {
+        var year = $("#search-year").children("option:selected").val().trim();
+        var semester = $("#search-semester").children("option:selected").val().trim();
+        var major = $("#search-major").children("option:selected").val().trim();
+        var division = $("#search-division").children("option:selected").val().trim();
+        $(".table-div").load("${baseUrl}/admin/courseManagement/attendance/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&major=" + major);
+    }
+
+    $(".input-enter").keydown(function(key) {
+        if (key.keyCode == 13) {
+            search();
+        }
     });
+
+    $(document).ready(function() {
+        <c:if test="${not empty result}">
+        alert("<spring:message code='common.success'/>");
+        location.href="${baseUrl}/admin/courseManagement/attendance";
+        </c:if>
+
+        $(".table-div").load("${baseUrl}/admin/courseManagement/attendance/courseTable");
+        changeMajor("#search-division", "#search-major", true);
+        changeMajor("#divisionId", "#majorId", true);
+    });
+
 </script>
 </body>
 </html>

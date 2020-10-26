@@ -60,7 +60,7 @@
 
 
 
-                            <div class="student-table-div">
+                            <div class="table-div">
 
 
                             </div>
@@ -106,13 +106,13 @@
 
         console.log(division);
         console.log(major);
-        $(".student-table-div").load("${baseUrl}/admin/profManagement/profInformation/profTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
+        $(".table-div").load("${baseUrl}/admin/profManagement/profInformation/profTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
     }
 
 
 
     $(document).ready(function() {
-        $(".student-table-div").load("${baseUrl}/admin/profManagement/profInformation/profTable");
+        $(".table-div").load("${baseUrl}/admin/profManagement/profInformation/profTable");
 
         $(".input-enter").keydown(function(key) {
             if (key.keyCode == 13) {

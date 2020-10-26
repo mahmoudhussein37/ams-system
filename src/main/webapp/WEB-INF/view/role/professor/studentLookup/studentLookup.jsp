@@ -17,52 +17,7 @@
                     <div class="card card-custom">
                         <div class="card-header">
                             <h3 class="card-title font-weight-bolder"><spring:message code="menu.professor.sub1_1"/></h3>
-                            <%--<div class="card-toolbar">
-                                <div class="dropdown dropdown-inline">
-                                    <a href="#" class="btn btn-transparent-white btn-sm font-weight-bolder dropdown-toggle px-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Export
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                        <!--begin::Navigation-->
-                                        <ul class="navi navi-hover">
-                                            <li class="navi-header pb-1">
-                                                <span class="text-primary text-uppercase font-weight-bold font-size-sm">Add new:</span>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="flaticon2-shopping-cart-1"></i></span>
-                                                    <span class="navi-text">Order</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="flaticon2-calendar-8"></i></span>
-                                                    <span class="navi-text">Event</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="flaticon2-graph-1"></i></span>
-                                                    <span class="navi-text">Report</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="flaticon2-rocket-1"></i></span>
-                                                    <span class="navi-text">Post</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon"><i class="flaticon2-writing"></i></span>
-                                                    <span class="navi-text">File</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        <!--end::Navigation-->
-                                    </div>
-                                </div>
-                            </div>--%>
+
                         </div>
                         <div class="card-body">
                                 <div class="row">
@@ -91,7 +46,7 @@
                                     </div>
                                     <div class="col-md-1">
                                         <br/>
-                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="searchStudent()"><spring:message code="common.search"/></button>
+                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
                                     </div>
                                     <div class="col-md-1">
                                         <br/>
@@ -103,7 +58,7 @@
 
 
 
-                            <div class="student-table-div">
+                            <div class="table-div">
 
 
                             </div>
@@ -143,23 +98,23 @@
 
 <script>
 
-    function searchStudent() {
+    function search() {
         var number = $("#search-number").val().trim();
         var name = $("#search-name").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
         var major = $("#search-major").children("option:selected").val().trim();
 
-        $(".student-table-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
+        $(".table-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
     }
 
 
 
     $(document).ready(function() {
-        $(".student-table-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentTable");
+        $(".table-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentTable");
 
         $(".input-enter").keydown(function(key) {
             if (key.keyCode == 13) {
-                searchStudent();
+                search();
             }
 
 

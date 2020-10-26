@@ -20,7 +20,7 @@
                     <div class="card card-custom bg-gray-100 gutter-b card-stretch">
                         <!--begin::Header-->
                         <div class="card-header border-0 bg-primary py-5">
-                            <h3 class="card-title font-weight-bolder text-white">Sales Stat</h3>
+                            <h3 class="card-title font-weight-bolder text-white">${locale}</h3>
                             <div class="card-toolbar">
                                 <div class="dropdown dropdown-inline">
                                     <a href="#" class="btn btn-transparent-white btn-sm font-weight-bolder dropdown-toggle px-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -16,11 +16,11 @@
                     <!--begin::Card-->
                     <div class="card card-custom">
                         <div class="card-header">
-                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.professor.sub1_3"/></h3>
+                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.student.sub3_2"/></h3>
+
                         </div>
                         <div class="card-body">
                                 <div class="row">
-
                                     <div class="col-md-2">
                                         <spring:message code="common.year"/><br/>
                                         <select id="search-year" class="form-control" style="margin-top:10px;">
@@ -37,23 +37,18 @@
                                         </select>
                                     </div>
 
+
                                     <div class="col-md-2">
                                         <br/>
-                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="searchCourse()"><spring:message code="common.search"/></button>
+                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
                                     </div>
-                                    <div class="col-md-2">
-
-                                    </div>
-
-
-
 
                                 </div>
                             <br/><br/>
 
 
 
-                            <div class="course-table-div">
+                            <div class="table-div">
 
 
                             </div>
@@ -65,7 +60,7 @@
                             <br/><br/>
                             <div class="separator separator-solid my-5"></div>
                             <br/><br/>
-                            <div class="course-detail-div">
+                            <div class="detail-div">
 
                             </div>
 
@@ -93,20 +88,24 @@
 
 <script>
 
-    function searchCourse() {
-        var year = $("#search-year").children("option:selected").val().trim();
-        var semester = $("#search-semester").children("option:selected").val().trim();
-        $(".course-table-div").load("${baseUrl}/professor/classProgress/syllabus/courseTable?year=" + year + "&semester=" + semester);
+    function search() {
+        var number = $("#search-number").val().trim();
+        var name = $("#search-name").val().trim();
+        var division = $("#search-division").children("option:selected").val().trim();
+        var major = $("#search-major").children("option:selected").val().trim();
+
+        $(".table-div").load("${baseUrl}/student/classInformation/classAssessment/courseTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
     }
 
     $(".input-enter").keydown(function(key) {
         if (key.keyCode == 13) {
-            searchCourse();
+            search();
         }
     });
 
     $(document).ready(function() {
-        $(".course-table-div").load("${baseUrl}/professor/classProgress/syllabus/courseTable");
+        $(".table-div").load("${baseUrl}/student/classInformation/classAssessment/courseTable");
+
     });
 
 </script>

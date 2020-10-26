@@ -82,6 +82,13 @@
 <script src="${resources}/vendor/bootstrap3-editable/js/bootstrap-editable.js" type="text/javascript"></script>
 <script>
 
+    $(".country-select").click(function(e) {
+       e.preventDefault();
+       var lang = $(this).attr("data-lang");
+       $.get("${baseUrl}?lang=" + lang, function() {
+          location.reload();
+       });
+    });
     var y = document.getElementById("current-year");
     if(y) y.innerHTML = String(new Date().getFullYear());
 

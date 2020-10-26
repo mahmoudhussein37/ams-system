@@ -7,6 +7,7 @@
     <!--begin::Logo-->
     <a href="/">
         <img alt="Logo" src="${resources}/images/bst_logo.png" class="max-h-30px" />
+        <img alt="Logo" src="${resources}/images/koika_logo.png" class="max-h-30px" />
     </a>
     <!--end::Logo-->
 
@@ -51,6 +52,7 @@
                             <!--begin::Logo-->
                             <a href="/" class="mr-20">
                                 <img alt="Logo" src="${resources}/images/bst_logo.png" class="max-h-50px" style="border-radius:5px;"/>
+                                <img alt="Logo" src="${resources}/images/koika_logo.png" class="max-h-50px" style="border-radius:5px;"/>
                             </a>
                             <!--end::Logo-->
                             <!--begin::Tab Navs(for desktop mode)-->
@@ -158,7 +160,7 @@
                                 <div class="topbar-item">
                                     <a href="/signup" class="btn btn-icon btn-hover-transparent-white w-lg-auto d-flex align-items-center btn-lg px-2">
                                         <div class="d-flex flex-column text-right pr-lg-3">
-                                            <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline">Signup</span>
+                                            <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline"><spring:message code="common.signup"/></span>
                                         </div>
 
                                     </a>
@@ -166,7 +168,7 @@
                                 <div class="topbar-item">
                                     <a  href="/signin" class="btn btn-icon btn-hover-transparent-white w-lg-auto d-flex align-items-center btn-lg px-2">
                                         <div class="d-flex flex-column text-right pr-lg-3">
-                                            <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline">Signin</span>
+                                            <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline"><spring:message code="common.signin"/></span>
                                         </div>
 
                                     </a>
@@ -417,8 +419,8 @@
                                                     <li class="menu-item  ${fn:contains(requestUri, '/student/classInformation/counselingCourseEnrolment') ? 'menu-item-active' : ''}"  aria-haspopup="true">
                                                         <a  href="/student/classInformation/counselingCourseEnrolment" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub3_3"/></span></a>
                                                     </li>
-                                                    <li class="menu-item  ${fn:contains(requestUri, '/student/classInformation/assessment') ? 'menu-item-active' : ''}"  aria-haspopup="true">
-                                                        <a  href="/student/classInformation/assessment" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub3_4"/></span></a>
+                                                    <li class="menu-item  ${fn:contains(requestUri, '/student/classInformation/classAssessment') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                                                        <a  href="/student/classInformation/classAssessment" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub3_4"/></span></a>
                                                     </li>
 
                                                 </ul>

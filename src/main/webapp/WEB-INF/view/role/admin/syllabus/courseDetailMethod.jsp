@@ -40,7 +40,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group" style="text-align:right">
-                    <button type="button" class="btn btn-primary mr-2">Save</button>
+                    <button type="button" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
                 </div>
             </div>
         </div>

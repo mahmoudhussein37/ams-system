@@ -39,7 +39,7 @@
 
                                     <div class="col-md-2">
                                         <br/>
-                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="searchCourse()"><spring:message code="common.search"/></button>
+                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
                                     </div>
                                     <div class="col-md-2">
 
@@ -53,7 +53,7 @@
 
 
 
-                            <div class="course-table-div">
+                            <div class="table-div">
 
 
                             </div>
@@ -65,7 +65,7 @@
                             <br/><br/>
                             <div class="separator separator-solid my-5"></div>
                             <br/><br/>
-                            <div class="course-detail-div">
+                            <div class="detail-div">
 
                             </div>
 
@@ -93,20 +93,20 @@
 
 <script>
 
-    function searchCourse() {
+    function search() {
         var year = $("#search-year").children("option:selected").val().trim();
         var semester = $("#search-semester").children("option:selected").val().trim();
-        $(".course-table-div").load("${baseUrl}/professor/classProgress/syllabus/courseTable?year=" + year + "&semester=" + semester);
+        $(".table-div").load("${baseUrl}/professor/classProgress/classAssessment/courseTable?year=" + year + "&semester=" + semester);
     }
 
     $(".input-enter").keydown(function(key) {
         if (key.keyCode == 13) {
-            searchCourse();
+            search();
         }
     });
 
     $(document).ready(function() {
-        $(".course-table-div").load("${baseUrl}/professor/classProgress/syllabus/courseTable");
+        $(".table-div").load("${baseUrl}/professor/classProgress/classAssessment/courseTable");
     });
 
 </script>

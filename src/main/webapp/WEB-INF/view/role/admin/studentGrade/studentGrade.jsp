@@ -20,7 +20,55 @@
 
                         </div>
                         <div class="card-body">
+                            <div class="row">
 
+                                <div class="col-md-2">
+                                    <spring:message code="common.year"/><br/>
+                                    <select id="search-year" class="form-control" style="margin-top:10px;">
+                                        <c:forEach var="y" items="${yearList}">
+                                            <option value="${y}">${y}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <spring:message code="common.semester"/><br/>
+                                    <select id="search-semester" class="form-control" style="margin-top:10px;">
+                                        <option value="1"><spring:message code="common.sem1"/></option>
+                                        <option value="2"><spring:message code="common.sem2"/></option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <br/>
+                                    <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
+                                </div>
+                                <div class="col-md-2">
+
+                                </div>
+
+
+
+
+                            </div>
+                            <br/><br/>
+
+
+
+                            <div class="table-div">
+
+
+                            </div>
+
+
+
+
+
+                            <br/><br/>
+                            <div class="separator separator-solid my-5"></div>
+                            <br/><br/>
+                            <div class="detail-div">
+
+                            </div>
 
                         </div>
                     </div>
@@ -45,8 +93,23 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
-    $(document).ready(function() {
+
+    function search() {
+        var year = $("#search-year").children("option:selected").val().trim();
+        var semester = $("#search-semester").children("option:selected").val().trim();
+        $(".table-div").load("${baseUrl}/admin/classProgress/registerGrade/courseTable?year=" + year + "&semester=" + semester);
+    }
+
+    $(".input-enter").keydown(function(key) {
+        if (key.keyCode == 13) {
+            search();
+        }
     });
+
+    $(document).ready(function() {
+        $(".table-div").load("${baseUrl}/admin/classProgress/registerGrade/courseTable");
+    });
+
 </script>
 </body>
 </html>

@@ -21,7 +21,63 @@
                         </div>
                         <div class="card-body">
 
+                            <form:form modelAttribute="adminUser" method="post">
+                                <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.information"/></h3>
+                                <div class="row">
+                                    <div class="col-md-3">
 
+                                        <div class="form-group">
+                                            <label><spring:message code="common.firstName"/></label>
+                                            <form:input type="text" path="contact.firstName" class="form-control"/>
+                                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label><spring:message code="common.lastName"/></label>
+                                            <form:input type="text" path="contact.lastName" class="form-control"/>
+                                                <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-3">
+
+                                        <div class="form-group">
+                                            <label><spring:message code="common.username"/></label>
+                                            <form:input type="text" path="username" class="form-control"/>
+                                                <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+
+                                        <div class="form-group">
+                                            <label><spring:message code="common.password"/></label>
+                                            <form:input type="text" path="password" class="form-control"/>
+                                                <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+
+                                        <div class="form-group">
+                                            <label><spring:message code="common.passwordAgain"/></label>
+                                            <input type="text" name="passwordAgain" class="form-control"/>
+                                                <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+
+
+                                    </div>
+                                </div>
+                                <br/>
+                                <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.register"/></button>
+
+
+                            </form:form>
                         </div>
                     </div>
                     <!--end::Card-->

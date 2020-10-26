@@ -1,5 +1,12 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <%@include file="/WEB-INF/view/include/head.jsp" %>
+<style>
+/*    .container {
+        width:100% !important;
+        max-width:100% !important;
+    }*/
+
+</style>
 <!--end::Head-->
 
 <!--begin::Body-->
@@ -20,6 +27,7 @@
 
                         </div>
                         <div class="card-body">
+
                                 <div class="row">
                                     <div class="col-md-2">
                                         <spring:message code="common.year"/><br/>
@@ -51,30 +59,130 @@
                                     </div>
                                     <div class="col-md-2">
                                         <br/>
-                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="searchStudent()">Search</button>
+                                        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
                                     </div>
 
                                 </div>
                             <br/><br/>
 
 
-
-                            <div class="student-table-div">
+                            <h4><spring:message code="student.listOfOpenCourses"/></h4>
+                            <div class="table-div">
 
 
                             </div>
+                            <br/><br/>
+                            <hr/>
+                            <br/><br/>
+
+                            <h4><spring:message code="student.listOfAppliedCourses"/></h4>
+                            <table class="table table-head-custom table-vertical-center" style="width:100% !important;">
+                                <thead>
+                                <tr class="text-uppercase">
+
+                                    <th style=""><spring:message code="common.no"/></th>
+                                    <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
+                                    <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span>
+                                    <th style=""><span class="text-primary"><spring:message code="common.divide2"/></span>
+                                    <th style=""><span class="text-primary"><spring:message code="common.compCategory"/></span>
+                                    <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span>
+                                    <th style=""><span class="text-primary"><spring:message code="professor.course.ltlp"/></span>
+                                    <th style=""><span class="text-primary"><spring:message code="common.professor"/></span>
+                                    <th style=""><span class="text-primary"><spring:message code="common.lectureTime"/></span>
+                                    <th style=""><span class="text-primary"><spring:message code="common.classRoom"/></span>
+                                    <th style=""><span class="text-primary"><spring:message code="common.division"/></span>
+                                    <th style=""><span class="text-primary"><spring:message code="common.syllabus"/></span>
+                                    <th style=""><span class="text-primary"><spring:message code="common.cancel"/></span>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <c:forEach var="courseElement" items="${courseList}" varStatus="varStatus">
+                                    <tr>
+
+                                        <td class="pl-0">
+                                                ${varStatus.count}
+                                        </td>
+                                        <td>
+                                            <a href="#" class="course-detail" data-course-id="${courseElement.id}">
+                                                    ${courseElement.code}
+                                            </a>
+                                        </td>
+                                        <td>
+                                                ${courseElement.title}
+
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                            <spring:message code="comp.category.${courseElement.compCategory}"/>
+                                        </td>
+                                        <td>
+                                            <spring:message code="subj.category.${courseElement.subjCategory}"/>
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                        <td>
+
+                                        </td>
+
+                                        <td>
+
+                                        </td>
+                                        <td>
+                                            B308
+                                        </td>
+
+                                        <td>
+                                                ${courseElement.division.name}
+                                        </td>
+                                        <td>
+                                            View
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary mr-2"><spring:message code="common.cancel"/></button>
+                                        </td>
+
+                                    </tr>
+                                </c:forEach>
 
 
-
+                                </tbody>
+                            </table>
 
 
                             <br/><br/>
                             <div class="separator separator-solid my-5"></div>
                             <br/><br/>
                             <div class="detail-div">
+                                <div class="row">
+
+                                    <div class="col-md-4">
+
+                                        <div class="form-group">
+                                            <label><spring:message code="common.approve"/></label>
+                                            <input type="text" value="Y"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-12">
+
+                                        <div class="form-group">
+                                            <label><spring:message code="student.consultation"/></label>
+                                            <textarea class="form-control" rows="6" disabled></textarea>
+                                            <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div>
 
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary mr-2"><spring:message code="student.submitModify"/></button>
                         </div>
                     </div>
                     <!--end::Card-->
@@ -99,23 +207,23 @@
 
 <script>
 
-    function searchStudent() {
+    function search() {
         var number = $("#search-number").val().trim();
         var name = $("#search-name").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
         var major = $("#search-major").children("option:selected").val().trim();
 
-        $(".student-table-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
+        $(".table-div").load("${baseUrl}/student/classInformation/counselingCourseEnrolment/courseTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
     }
 
     $(".input-enter").keydown(function(key) {
         if (key.keyCode == 13) {
-            searchStudent();
+            search();
         }
     });
 
     $(document).ready(function() {
-        $(".student-table-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentTable");
+        $(".table-div").load("${baseUrl}/student/classInformation/counselingCourseEnrolment/courseTable");
 
     });
 
