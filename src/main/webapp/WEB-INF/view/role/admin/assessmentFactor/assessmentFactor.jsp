@@ -20,7 +20,7 @@
 
                         </div>
                         <div class="card-body">
-                            <%@include file="/WEB-INF/view/role/admin/include/courseTableSearchDiv.jsp" %>
+                            <%@include file="/WEB-INF/view/include/courseTableSearchDiv.jsp" %>
 
                         </div>
                     </div>
