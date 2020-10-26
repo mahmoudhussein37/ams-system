@@ -6,6 +6,7 @@
         padding-right:0;
     }
 </style>
+
 <table class="table table-head-custom table-vertical-center" id="course-list" style="width:100% !important;">
     <thead>
     <tr class="text-uppercase">

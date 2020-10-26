@@ -47,7 +47,8 @@
                                     <br/>
                                     <button class="btn btn-primary" style="width:100%;margin-top:10px;"><spring:message code="common.new"/></button>
                                 </div>
-
+                                <div class="col-md-2">
+                                </div>
                             </div>
                             <br/><br/>
 

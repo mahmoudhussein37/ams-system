@@ -68,7 +68,11 @@
                             <br/><br/>
                             <hr/>
                             <br/><br/>
-
+                            <div class="print-div">
+                                <a href="#" class="btn btn-sm btn-light font-weight-bold">
+                                    <spring:message code="common.print"/>
+                                </a>
+                            </div>
                             <h4><spring:message code="student.listOfAppliedCourses"/></h4>
                             <table class="table table-head-custom table-vertical-center" style="width:100% !important;">
                                 <thead>

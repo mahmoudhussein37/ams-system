@@ -1,4 +1,9 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
+<div class="print-div">
+    <a href="#" class="btn btn-sm btn-light font-weight-bold">
+        <spring:message code="common.print"/>
+    </a>
+</div>
 <form:form modelAttribute="course" action="${baseUrl}/admin/courseManagement/courseDetail" method="post" class="form">
 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.editCourse"/></h3>
 <div class="row">

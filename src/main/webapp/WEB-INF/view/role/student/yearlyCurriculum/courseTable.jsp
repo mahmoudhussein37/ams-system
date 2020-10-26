@@ -7,7 +7,7 @@
         <th class="pl-0"><spring:message code="common.no"/></th>
         <th><span class="text-primary"><spring:message code="common.year"/></span></th>
         <th><span class="text-primary"><spring:message code="common.division"/></span>
-        <th><span class="text-primary"><spring:message code="common.download"/></span>
+        <th></span>
 
     </tr>
     </thead>
