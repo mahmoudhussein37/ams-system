@@ -69,5 +69,9 @@
         }
         </c:if>
 
+        .print-div {
+            text-align:${isRTL ? 'left' : 'right'};
+        }
+
     </style>
 </head>

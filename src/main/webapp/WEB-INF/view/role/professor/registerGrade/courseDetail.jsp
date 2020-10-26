@@ -1,5 +1,12 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
-
+<div class="print-div">
+    <a href="#" class="btn btn-sm btn-light font-weight-bold">
+        <spring:message code="common.save"/>
+    </a>
+    <a href="#" class="btn btn-sm btn-light font-weight-bold">
+        <spring:message code="common.print"/>
+    </a>
+</div>
 <div class="card-body">
 
     <div class="row">

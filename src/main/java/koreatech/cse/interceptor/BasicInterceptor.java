@@ -29,26 +29,26 @@ public class BasicInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
 
-        String userInput = request.getQueryString();
-        if(StringUtils.isBlank(userInput)) {
-            return super.preHandle(request, response, handler);
-        }
-
-
-        /* 특수문자 공백 처리 */
-        Pattern SpecialChars = Pattern.compile("['\"\\-#()%@;=*/+]");
-        userInput = SpecialChars.matcher(userInput).replaceAll("");
-
-        /* SQL injection 처리 */
-        String regex = "(select|delete|update|insert|create|alter|drop)";
-
-        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(userInput);
-
-        if(matcher.find()) {
-            ModelAndView mav = new ModelAndView("common/error/sql");
-            throw new ModelAndViewDefiningException(mav);
-        }
+//        String userInput = request.getQueryString();
+//        if(StringUtils.isBlank(userInput)) {
+//            return super.preHandle(request, response, handler);
+//        }
+//
+//
+//
+//        Pattern SpecialChars = Pattern.compile("['\"\\-#()%@;=*/+]");
+//        userInput = SpecialChars.matcher(userInput).replaceAll("");
+//
+//        /* SQL injection 처리 */
+//        String regex = "(select|delete|update|insert|create|alter|drop)";
+//
+//        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+//        Matcher matcher = pattern.matcher(userInput);
+//
+//        if(matcher.find()) {
+//            ModelAndView mav = new ModelAndView("common/error/sql");
+//            throw new ModelAndViewDefiningException(mav);
+//        }
 
         return super.preHandle(request, response, handler);
     }
