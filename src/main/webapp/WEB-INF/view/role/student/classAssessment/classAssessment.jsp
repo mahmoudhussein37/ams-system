@@ -16,7 +16,7 @@
                     <!--begin::Card-->
                     <div class="card card-custom">
                         <div class="card-header">
-                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.student.sub3_2"/></h3>
+                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.student.sub3_4"/></h3>
 
                         </div>
                         <div class="card-body">
