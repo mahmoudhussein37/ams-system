@@ -13,9 +13,9 @@
         <sec:session-management>
             <sec:concurrency-control max-sessions="99" expired-url="/"/>
         </sec:session-management>
-        <sec:intercept-url pattern="/onlyUserByXml" access="hasRole('ROLE_USER')" />
-        <sec:intercept-url pattern="/onlyAdminByXml" access="hasRole('ROLE_ADMIN')" />
+        <sec:intercept-url pattern="/student/**" access="hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN')" />
         <sec:intercept-url pattern="/professor/**" access="hasAnyRole('ROLE_PROFESSOR', 'ROLE_ADMIN')" />
+        <sec:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
         <sec:intercept-url pattern="/**" access="permitAll" />
     </sec:http>
 
