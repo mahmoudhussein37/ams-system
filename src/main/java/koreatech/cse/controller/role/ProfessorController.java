@@ -59,18 +59,16 @@ public class ProfessorController {
     @RequestMapping("/studentGuidance/studentLookup/studentTable")
     public String studentTable(Model model, @RequestParam(required=false) String number,
                                @RequestParam(required=false) String name,
-                               @RequestParam(defaultValue = "0", required=false) int division,
-                               @RequestParam(defaultValue = "0", required=false) int major) {
+                               @RequestParam(defaultValue = "0", required=false) int division) {
         User firstUser = null;
         List<User> userList;
-        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0 && major == 0) {
+        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
             userList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            searchable.setMajor(major);
             userList = userMapper.findByStudentLookup(searchable);
 
 

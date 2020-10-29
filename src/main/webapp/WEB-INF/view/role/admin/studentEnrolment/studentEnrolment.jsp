@@ -185,9 +185,9 @@
         var number = $("#search-number").val().trim();
         var name = $("#search-name").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
-        var major = $("#search-major").children("option:selected").val().trim();
+        //var major = $("#search-major").children("option:selected").val().trim();
 
-        $(".table-div").load("${baseUrl}/admin/profManagement/studentEnrolment/courseTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
+        $(".table-div").load("${baseUrl}/admin/profManagement/studentEnrolment/courseTable?number=" + number + "&name=" + name + "&division=" + division);
     }
 
     $(".input-enter").keydown(function(key) {

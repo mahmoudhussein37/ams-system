@@ -91,9 +91,9 @@
     function search() {
         var year = $("#search-year").children("option:selected").val().trim();
         var semester = $("#search-semester").children("option:selected").val().trim();
-        var major = $("#search-major").children("option:selected").val().trim();
+        //var major = $("#search-major").children("option:selected").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/admin/courseManagement/alternative/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&major=" + major);
+        $(".table-div").load("${baseUrl}/admin/courseManagement/alternative/courseTable?year=" + year + "&semester=" + semester + "&division=" + division);
     }
 
     $(".input-enter").keydown(function(key) {

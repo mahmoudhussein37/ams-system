@@ -37,13 +37,13 @@
                                         </c:forEach>
                                         </select>
                                     </div>
-                                    <div class="col-md-2">
+                                    <%--<div class="col-md-2">
                                         <spring:message code="common.major"/><br/>
                                         <select id="search-major" class="form-control" style="margin-top:10px;">
 
 
                                         </select>
-                                    </div>
+                                    </div>--%>
                                     <div class="col-md-1">
                                         <br/>
                                         <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
@@ -102,9 +102,9 @@
         var number = $("#search-number").val().trim();
         var name = $("#search-name").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
-        var major = $("#search-major").children("option:selected").val().trim();
+        //var major = $("#search-major").children("option:selected").val().trim();
 
-        $(".table-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentTable?number=" + number + "&name=" + name + "&division=" + division + "&major=" + major);
+        $(".table-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentTable?number=" + number + "&name=" + name + "&division=" + division);
     }
 
 
