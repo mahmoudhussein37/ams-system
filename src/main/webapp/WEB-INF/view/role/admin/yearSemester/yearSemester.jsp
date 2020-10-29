@@ -75,7 +75,11 @@
 
                                     <div class="form-group">
                                         <label><spring:message code="common.semester"/></label>
-                                        <input type="number" name="semester" class="form-control"/>
+                                        <select class="form-control">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                        </select>
+
                                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                     </div>
                                 </div>

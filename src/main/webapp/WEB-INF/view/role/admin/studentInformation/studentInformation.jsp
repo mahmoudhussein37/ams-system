@@ -37,7 +37,7 @@
                                         </c:forEach>
                                     </select>
                                 </div>
-                                <div class="col-md-2">
+                                <%--<div class="col-md-2">
                                     <spring:message code="common.major"/><br/>
                                     <select id="search-major" class="form-control" style="margin-top:10px;">
                                         <c:forEach var="major" items="${majors}">
@@ -45,7 +45,7 @@
                                         </c:forEach>
 
                                     </select>
-                                </div>
+                                </div>--%>
                                 <div class="col-md-1">
                                     <br/>
                                     <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>

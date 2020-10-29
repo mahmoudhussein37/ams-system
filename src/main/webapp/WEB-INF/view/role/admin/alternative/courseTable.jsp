@@ -7,8 +7,8 @@
         <th class="pl-0" style=""><spring:message code="common.no"/></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.category"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.compCategory"/></span>
+        <%--<th style=""><span class="text-primary"><spring:message code="common.category"/></span>--%>
+        <%--<th style=""><span class="text-primary"><spring:message code="common.compCategory"/></span>--%>
         <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.alternative"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.prerequisite"/></span>
@@ -31,12 +31,12 @@
                 <a href="#" class="course-editable" data-type="text" data-name="title" data-url="${baseUrl}/admin/courseManagement/courseEditable" data-pk="${courseElement.id}" data-original-title="<spring:message code="common.courseTitle"/>">${courseElement.title}</a>
 
             </td>
-            <td>
+            <%--<td>
                     ${courseElement.category}
-            </td>
-            <td>
+            </td>--%>
+            <%--<td>
                 <spring:message code="comp.category.${courseElement.compCategory}"/>
-            </td>
+            </td>--%>
             <td>
                 <spring:message code="subj.category.${courseElement.subjCategory}"/>
             </td>

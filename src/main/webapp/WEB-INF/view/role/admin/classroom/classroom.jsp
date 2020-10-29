@@ -20,12 +20,14 @@
 
                         </div>
                         <div class="card-body">
+                            <div class="print-div">
+                                <a href="#" class="btn btn-sm btn-light font-weight-bold">
+                                    <spring:message code="common.print"/>
+                                </a>
+                            </div>
+                            <br/>
                             <div class="table-div">
-                                <div class="print-div">
-                                    <a href="#" class="btn btn-sm btn-light font-weight-bold">
-                                        <spring:message code="common.print"/>
-                                    </a>
-                                </div>
+
                                 <table class="table table-head-custom table-vertical-center" id="course-list">
                                     <thead>
                                     <tr class="table-secondary text-center">

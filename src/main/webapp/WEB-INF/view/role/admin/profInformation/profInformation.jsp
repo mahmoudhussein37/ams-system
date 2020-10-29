@@ -37,15 +37,15 @@
                                         </c:forEach>
                                     </select>
                                 </div>
-                                <div class="col-md-2">
+                                <%--<div class="col-md-2">
                                     <spring:message code="common.major"/><br/>
                                     <select id="search-major" class="form-control" style="margin-top:10px;">
-                                        <%--<c:forEach var="major" items="${majors}">
+                                        &lt;%&ndash;<c:forEach var="major" items="${majors}">
                                             <option value="${major.id}">${major.name}</option>
-                                        </c:forEach>--%>
+                                        </c:forEach>&ndash;%&gt;
 
                                     </select>
-                                </div>
+                                </div>--%>
                                 <div class="col-md-1">
                                     <br/>
                                     <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="searchProfessor()"><spring:message code="common.search"/></button>
@@ -104,8 +104,6 @@
         var division = $("#search-division").children("option:selected").val().trim();
         //var major = $("#search-major").children("option:selected").val().trim();
 
-        console.log(division);
-        console.log(major);
         $(".table-div").load("${baseUrl}/admin/profManagement/profInformation/profTable?number=" + number + "&name=" + name + "&division=" + division);
     }
 
@@ -123,7 +121,7 @@
         alert("<spring:message code='common.success'/>");
         location.href="${baseUrl}/admin/profManagement/profInformation";
         </c:if>
-        changeMajor("#search-division", "#search-major", true);
+        //changeMajor("#search-division", "#search-major", true);
     });
 </script>
 </body>

@@ -68,8 +68,8 @@
         </c:if>
 
         $(".table-div").load("${baseUrl}/admin/academicManagement/assessmentFactor/courseTable");
-        changeMajor("#search-division", "#search-major", true);
-        changeMajor("#divisionId", "#majorId", true);
+        //changeMajor("#search-division", "#search-major", true);
+        //changeMajor("#divisionId", "#majorId", true);
     });
 
 </script>

@@ -44,14 +44,14 @@
                                         </c:forEach>
                                     </select>
                                 </div>
-                                <div class="col-md-2">
+                                <%--<div class="col-md-2">
                                     <spring:message code="common.major"/><br/>
                                     <select id="search-major" class="form-control" style="">
-                                        <%--<c:forEach var="major" items="${majors}">
+                                        &lt;%&ndash;<c:forEach var="major" items="${majors}">
                                             <option value="${major.id}">${major.name}</option>
-                                        </c:forEach>--%>
+                                        </c:forEach>&ndash;%&gt;
                                     </select>
-                                </div>
+                                </div>--%>
 
                                 <div class="col-md-2">
                                     <br/>
@@ -109,8 +109,8 @@
         </c:if>
 
         $(".table-div").load("${baseUrl}/admin/courseManagement/attendance/courseTable");
-        changeMajor("#search-division", "#search-major", true);
-        changeMajor("#divisionId", "#majorId", true);
+        //changeMajor("#search-division", "#search-major", true);
+        //changeMajor("#divisionId", "#majorId", true);
     });
 
 </script>

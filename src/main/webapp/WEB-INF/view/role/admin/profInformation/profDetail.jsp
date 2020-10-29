@@ -30,19 +30,19 @@
             </div>
 
         </div>
-        <div class="col-md-3">
+        <%--<div class="col-md-3">
 
             <div class="form-group">
                 <label><spring:message code="common.major"/></label>
                 <form:select path="majorId" class="form-control">
-                    <%--<c:forEach var="major" items="${majors}">
+                    &lt;%&ndash;<c:forEach var="major" items="${majors}">
                         <form:option value="${major.id}">${major.name}</form:option>
-                    </c:forEach>--%>
+                    </c:forEach>&ndash;%&gt;
                 </form:select>
 
-                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+                    &lt;%&ndash;<span class="form-text text-muted">We'll never share your email with anyone else</span>&ndash;%&gt;
             </div>
-        </div>
+        </div>--%>
     </div>
 
 
@@ -59,6 +59,6 @@
         alert("<spring:message code='common.success'/>");
         location.href="${baseUrl}/admin/profManagement/profInformation";
         </c:if>
-        changeMajor("#divisionId", "#majorId", true);
+        //changeMajor("#divisionId", "#majorId", true);
     });
 </script>

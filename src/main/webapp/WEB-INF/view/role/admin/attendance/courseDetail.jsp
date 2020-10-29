@@ -24,12 +24,12 @@
             <%--<span class="form-text text-muted">Please enter your full name</span>--%>
         </div>
     </div>
-    <div class="col-md-3">
+    <%--<div class="col-md-3">
         <div class="form-group">
             <label><spring:message code="common.major"/></label>
             <form:input path="majorId" type="text" class="form-control"/>
         </div>
-    </div>
+    </div>--%>
 </div>
 <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
 </form:form>

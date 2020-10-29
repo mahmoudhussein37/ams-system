@@ -40,17 +40,17 @@
                 </form:select>
             </div>
         </div>
-        <div class="col-md-3">
+<%--        <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.major"/></label>
                 <form:select path="majorId" class="form-control">
-                    <%--<c:forEach var="major" items="${majors}">
+                    &lt;%&ndash;<c:forEach var="major" items="${majors}">
                         <form:option value="${major.id}">${major.name}</form:option>
-                    </c:forEach>--%>
+                    </c:forEach>&ndash;%&gt;
                 </form:select>
             </div>
-        </div>
-        <div class="col-md-3">
+        </div>--%>
+<%--        <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.compCategory"/></label>
                 <form:select path="compCategory" class="form-control" style="">
@@ -59,7 +59,7 @@
                     </c:forEach>
                 </form:select>
             </div>
-        </div>
+        </div>--%>
         <div class="col-md-3">
 
             <div class="form-group">
@@ -136,7 +136,7 @@
 
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
-    changeMajor("#divisionId", "#majorId", true, ${course.majorId});
+    //changeMajor("#divisionId", "#majorId", true, ${course.majorId});
 
 
 

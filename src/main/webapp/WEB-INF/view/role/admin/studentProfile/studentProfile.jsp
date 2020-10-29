@@ -67,7 +67,7 @@
 
         });
 
-        changeMajor("#search-division", "#search-major", true);
+        //changeMajor("#search-division", "#search-major", true);
     });
 </script>
 </body>

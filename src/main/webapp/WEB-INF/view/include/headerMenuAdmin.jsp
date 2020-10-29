@@ -142,9 +142,9 @@
             <li class="menu-item  ${fn:contains(requestUri, '/admin/courseManagement/syllabus') ? 'menu-item-active' : ''}"  aria-haspopup="true">
                 <a  href="/admin/courseManagement/syllabus" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub3_6"/></span></a>
             </li>
-            <li class="menu-item  ${fn:contains(requestUri, '/admin/courseManagement/makeupClass') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+            <%--<li class="menu-item  ${fn:contains(requestUri, '/admin/courseManagement/makeupClass') ? 'menu-item-active' : ''}"  aria-haspopup="true">
                 <a  href="/admin/courseManagement/makeupClass" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub3_7"/></span></a>
-            </li>
+            </li>--%>
         </ul>
         <!--end::Nav-->
     </div>
