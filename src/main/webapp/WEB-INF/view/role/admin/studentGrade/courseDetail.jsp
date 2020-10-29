@@ -20,7 +20,7 @@
                         <spring:message code="common.divide"/>
                     </td>
                     <td>
-                        <spring:message code="common.division"/>
+                        <spring:message code="common.department"/>
                     </td>
                     <td>
                         <spring:message code="common.schoolYear"/>

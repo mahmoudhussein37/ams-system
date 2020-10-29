@@ -37,7 +37,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <spring:message code="common.division"/><br/>
+                                    <spring:message code="common.department"/><br/>
                                     <select id="search-division" class="form-control" style="">
                                         <c:forEach var="division" items="${divisions}">
                                             <option value="${division.id}">${division.name}</option>
@@ -92,9 +92,9 @@
         var year = $("#search-year").children("option:selected").val().trim();
         var semester = $("#search-semester").children("" +
             "option:selected").val().trim();
-        var major = $("#search-major").children("option:selected").val().trim();
+        //var major = $("#search-major").children("option:selected").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/admin/courseManagement/makeupClass/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&major=" + major);
+        $(".table-div").load("${baseUrl}/admin/courseManagement/makeupClass/courseTable?year=" + year + "&semester=" + semester + "&division=" + division);
     }
 
     $(".input-enter").keydown(function(key) {
@@ -110,8 +110,8 @@
         </c:if>
 
         $(".table-div").load("${baseUrl}/admin/courseManagement/makeupClass/courseTable");
-        changeMajor("#search-division", "#search-major", true);
-        changeMajor("#divisionId", "#majorId", true);
+        //changeMajor("#search-division", "#search-major", true);
+        //changeMajor("#divisionId", "#majorId", true);
     });
 
 </script>

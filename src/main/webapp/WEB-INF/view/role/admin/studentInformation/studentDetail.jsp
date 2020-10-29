@@ -25,7 +25,7 @@
         </div>
         <div class="col-md-3">
             <div class="form-group">
-                <label><spring:message code="common.division"/></label>
+                <label><spring:message code="common.department"/></label>
                 <form:select path="divisionId" class="form-control" style="">
                     <c:forEach var="division" items="${divisions}">
                         <form:option value="${division.id}">${division.name}</form:option>
@@ -35,7 +35,7 @@
             </div>
 
         </div>
-        <div class="col-md-3">
+        <%--<div class="col-md-3">
 
             <div class="form-group">
                 <label><spring:message code="common.major"/></label>
@@ -45,9 +45,9 @@
                     </c:forEach>
                 </form:select>
 
-                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+                    &lt;%&ndash;<span class="form-text text-muted">We'll never share your email with anyone else</span>&ndash;%&gt;
             </div>
-        </div>
+        </div>--%>
     </div>
     <div class="row">
         <div class="col-md-3">

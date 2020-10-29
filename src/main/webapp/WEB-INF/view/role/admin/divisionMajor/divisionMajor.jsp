@@ -38,7 +38,7 @@
 
 
                             </form:form>
-                            <br/>
+                            <%--<br/>
                             <div class="separator separator-solid my-5"></div>
                             <br/>
                             <form:form modelAttribute="major" action="${baseUrl}/admin/systemManagement/createMajor" method="post">
@@ -47,13 +47,13 @@
                                     <div class="col-md-3">
 
                                         <div class="form-group">
-                                            <label><spring:message code="common.division"/></label>
+                                            <label><spring:message code="common.department"/></label>
                                             <form:select path="divisionId" class="form-control">
                                                 <c:forEach var="d" items="${divisions}">
                                                     <option value="${d.id}">${d.name}</option>
                                                 </c:forEach>
                                             </form:select>
-                                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                                &lt;%&ndash;<span class="form-text text-muted">Please enter your full name</span>&ndash;%&gt;
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -61,7 +61,7 @@
                                         <div class="form-group">
                                             <label><spring:message code="common.name"/></label>
                                             <form:input type="text" path="name" class="form-control"/>
-                                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                                &lt;%&ndash;<span class="form-text text-muted">Please enter your full name</span>&ndash;%&gt;
                                         </div>
                                     </div>
 
@@ -70,7 +70,7 @@
                                 <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.register"/></button>
 
 
-                            </form:form>
+                            </form:form>--%>
 
                         </div>
                     </div>

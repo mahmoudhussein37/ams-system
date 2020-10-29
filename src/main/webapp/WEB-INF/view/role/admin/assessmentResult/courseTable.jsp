@@ -5,7 +5,7 @@
     <tr class="text-uppercase">
 
         <th class="pl-0" style=""><spring:message code="common.no"/></th>
-        <th style=""><span class="text-primary"><spring:message code="common.division"/></span></th>
+        <th style=""><span class="text-primary"><spring:message code="common.department"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.divide"/></span>

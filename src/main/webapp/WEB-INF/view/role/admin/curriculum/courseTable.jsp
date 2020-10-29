@@ -6,7 +6,7 @@
 
         <th class="pl-0"><spring:message code="common.no"/></th>
         <th><span class="text-primary"><spring:message code="common.year"/></span></th>
-        <th><span class="text-primary"><spring:message code="common.division"/></span></th>
+        <th><span class="text-primary"><spring:message code="common.department"/></span></th>
         <th></th>
         <th></th>
 
@@ -29,7 +29,7 @@
             <a href="#"><spring:message code="common.download"/></a>
         </td>
         <td>
-            <button type="button" class="btn btn-primary mr-2"><spring:message code="common.edit"/></button>
+            <button type="button" class="btn btn-primary mr-2"><spring:message code="common.upload"/></button>
             <button type="button" class="btn btn-primary mr-2"><spring:message code="common.delete"/></button>
         </td>
 

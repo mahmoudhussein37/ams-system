@@ -15,7 +15,7 @@
         <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.divide2"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.compCategory"/></span>
+        <%--<th style=""><span class="text-primary"><spring:message code="common.compCategory"/></span>--%>
         <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span>
         <th style=""><span class="text-primary"><spring:message code="professor.course.ltlp"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.professor"/></span>
@@ -23,7 +23,7 @@
         <th style=""><span class="text-primary"><spring:message code="professor.course.numStudent"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.lectureTime"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.classRoom"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.division"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.department"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.syllabus"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.apply"/></span>
     </tr>
@@ -47,9 +47,9 @@
             </td>
             <td>
             </td>
-            <td>
+            <%--<td>
                 <spring:message code="comp.category.${courseElement.compCategory}"/>
-            </td>
+            </td>--%>
             <td>
                 <spring:message code="subj.category.${courseElement.subjCategory}"/>
             </td>

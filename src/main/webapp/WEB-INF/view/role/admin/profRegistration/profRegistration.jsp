@@ -34,7 +34,7 @@
 
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label><spring:message code="common.division"/></label>
+                                            <label><spring:message code="common.department"/></label>
                                             <form:select id="search-division" path="divisionId" class="form-control" >
                                                 <c:forEach var="division" items="${divisions}">
                                                     <option value="${division.id}">${division.name}</option>
@@ -44,16 +44,16 @@
                                         </div>
 
                                     </div>
-                                    <div class="col-md-3">
+<%--                                    <div class="col-md-3">
 
                                         <div class="form-group">
                                             <label><spring:message code="common.major"/></label>
                                             <form:select id="search-major" path="majorId" class="form-control" >
 
                                             </form:select>
-                                                <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+                                                &lt;%&ndash;<span class="form-text text-muted">We'll never share your email with anyone else</span>&ndash;%&gt;
                                         </div>
-                                    </div>
+                                    </div>--%>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-3">
@@ -166,7 +166,7 @@
         location.href="${baseUrl}/admin/profManagement/profRegistration";
         </c:if>
 
-        changeMajor("#search-division", "#search-major", true);
+        //changeMajor("#search-division", "#search-major", true);
     });
 </script>
 </body>

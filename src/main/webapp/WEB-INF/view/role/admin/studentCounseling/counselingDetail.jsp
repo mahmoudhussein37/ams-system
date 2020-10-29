@@ -43,27 +43,20 @@
     </div>
     <div class="col-md-3">
         <div class="form-group">
-            <label><spring:message code="common.division"/></label>
+            <label><spring:message code="common.department"/></label>
             <input type="text" class="form-control" value="${counseling.studentUser.division.name}" disabled/>
             <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
         </div>
 
     </div>
-    <div class="col-md-3">
+    <%--<div class="col-md-3">
 
         <div class="form-group">
             <label><spring:message code="common.major"/></label>
             <input type="text" class="form-control" value="${counseling.studentUser.major.name}" disabled/>
-            <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+            &lt;%&ndash;<span class="form-text text-muted">We'll never share your email with anyone else</span>&ndash;%&gt;
         </div>
-    </div>
-    <div class="col-md-3">
-
-
-    </div>
-</div>
-<div class="row">
-
+    </div>--%>
     <div class="col-md-3">
 
         <div class="form-group">
@@ -72,12 +65,12 @@
             <%--<span class="form-text text-muted">Please enter your full name</span>--%>
         </div>
     </div>
-
     <div class="col-md-3">
 
 
     </div>
 </div>
+
 <div class="row">
 
     <div class="col-md-12">

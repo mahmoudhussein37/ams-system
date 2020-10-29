@@ -8,7 +8,7 @@
         <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.category"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.compCategory"/></span>
+        <%--<th style=""><span class="text-primary"><spring:message code="common.compCategory"/></span>--%>
         <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.dateTime"/></span>
         <th class="pr-0" style="min-width: 160px"><span class="text-primary"></span></th>
@@ -34,9 +34,9 @@
             <td>
                     ${courseElement.category}
             </td>
-            <td>
+            <%--<td>
                 <spring:message code="comp.category.${courseElement.compCategory}"/>
-            </td>
+            </td>--%>
             <td>
                 <spring:message code="subj.category.${courseElement.subjCategory}"/>
             </td>

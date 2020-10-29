@@ -6,7 +6,7 @@
 
                 <div class="form-group">
                     <label><spring:message code="common.cellPhone"/></label>
-                    <form:input type="text" class="form-control" path="contact.cellPhone"/>
+                    <form:input type="text" class="form-control" path="contact.cellPhone" disabled="true"/>
                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                 </div>
             </div>
@@ -14,7 +14,7 @@
 
                 <div class="form-group">
                     <label><spring:message code="common.phone"/></label>
-                    <form:input type="text" class="form-control" path="contact.phone"/>
+                    <form:input type="text" class="form-control" path="contact.phone" disabled="true"/>
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
             </div>
@@ -25,7 +25,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label><spring:message code="common.post"/></label>
-                    <form:input type="text" class="form-control" path="contact.postCode"/>
+                    <form:input type="text" class="form-control" path="contact.postCode" disabled="true"/>
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
             </div>
@@ -34,7 +34,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label><spring:message code="common.address"/></label>
-                    <form:input type="text" class="form-control" path="contact.address"/>
+                    <form:input type="text" class="form-control" path="contact.address" disabled="true"/>
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
             </div>
@@ -46,28 +46,28 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label><spring:message code="common.name"/></label>
-                    <form:input type="text" class="form-control" path="contact.parentName"/>
+                    <form:input type="text" class="form-control" path="contact.parentName" disabled="true"/>
                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label><spring:message code="common.relation"/></label>
-                    <form:input type="text" class="form-control" path="contact.relation"/>
+                    <form:input type="text" class="form-control" path="contact.relation" disabled="true"/>
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label><spring:message code="common.cellPhone"/></label>
-                    <form:input type="text" class="form-control" path="contact.parentCellPhone"/>
+                    <form:input type="text" class="form-control" path="contact.parentCellPhone" disabled="true"/>
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label><spring:message code="common.phone"/></label>
-                    <form:input type="text" class="form-control" path="contact.parentPhone"/>
+                    <form:input type="text" class="form-control" path="contact.parentPhone" disabled="true"/>
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
             </div>
@@ -78,7 +78,7 @@
 
                 <div class="form-group">
                     <label><spring:message code="common.post"/></label>
-                    <form:input type="text" class="form-control" path="contact.parentPostCode"/>
+                    <form:input type="text" class="form-control" path="contact.parentPostCode" disabled="true"/>
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
             </div>
@@ -87,7 +87,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label><spring:message code="common.address"/></label>
-                    <form:input type="text" class="form-control" path="contact.parentAddress"/>
+                    <form:input type="text" class="form-control" path="contact.parentAddress" disabled="true"/>
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
             </div>

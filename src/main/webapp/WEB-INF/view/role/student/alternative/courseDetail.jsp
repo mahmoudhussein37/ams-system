@@ -25,9 +25,7 @@
                 <td>
                     <spring:message code="common.oldCourseTitle"/>
                 </td>
-                <td>
-                    <spring:message code="common.compCategory"/>
-                </td>
+
                 <td>
                     <spring:message code="common.subjCategory"/>
                 </td>
@@ -56,9 +54,7 @@
                 <td>
                     Major
                 </td>
-                <td>
-                    Major-Require
-                </td>
+
                 <td>
                     5-3-2-0
                 </td>
@@ -95,11 +91,9 @@
                     <spring:message code="common.preCourseCode"/>
                 </td>
                 <td>
-                    <spring:message code="common.preCourseCode"/>
+                    <spring:message code="common.preCourseTitle"/>
                 </td>
-                <td>
-                    <spring:message code="common.compCategory"/>
-                </td>
+
                 <td>
                     <spring:message code="common.subjCategory"/>
                 </td>
@@ -135,9 +129,7 @@
                 <td>
                     Major
                 </td>
-                <td>
-                    Major-Require
-                </td>
+
                 <td>
                     5-3-2-0
                 </td>

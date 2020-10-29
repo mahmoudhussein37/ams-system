@@ -9,8 +9,7 @@
         <th style=""><span class="text-primary"><spring:message code="common.date"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.studentNumber"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.name"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.division"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.major"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.department"/></span>
 
     </tr>
     </thead>
@@ -38,9 +37,7 @@
             <td>
                     ${counseling.studentUser.division.name}
             </td>
-            <td>
-                    ${counseling.studentUser.major.name}
-            </td>
+
         </tr>
     </c:forEach>
 

@@ -37,22 +37,22 @@
                                     </select>
                                 </div>
                                 <div class="col-md-2">
-                                    <spring:message code="common.division"/><br/>
+                                    <spring:message code="common.department"/><br/>
                                     <select id="search-division" class="form-control" style="">
                                         <c:forEach var="division" items="${divisions}">
                                             <option value="${division.id}">${division.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
-                                <div class="col-md-2">
+                                <%--<div class="col-md-2">
                                     <spring:message code="common.major"/><br/>
                                     <select id="search-major" class="form-control" style="">
-                                        <%--<c:forEach var="major" items="${majors}">
+                                        &lt;%&ndash;<c:forEach var="major" items="${majors}">
                                             <option value="${major.id}">${major.name}</option>
-                                        </c:forEach>--%>
+                                        </c:forEach>&ndash;%&gt;
                                     </select>
                                 </div>
-
+--%>
                                 <div class="col-md-2">
                                     <br/>
                                     <button class="btn btn-primary" style="width:100%;" onclick="search()"><spring:message code="common.search"/></button>
@@ -104,9 +104,9 @@
     function search() {
         var year = $("#search-year").children("option:selected").val().trim();
         var semester = $("#search-semester").children("option:selected").val().trim();
-        var major = $("#search-major").children("option:selected").val().trim();
+        //var major = $("#search-major").children("option:selected").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/admin/courseManagement/cOpen/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&major=" + major);
+        $(".table-div").load("${baseUrl}/admin/courseManagement/cOpen/courseTable?year=" + year + "&semester=" + semester + "&division=" + division);
     }
 
     $(".input-enter").keydown(function(key) {
@@ -121,7 +121,7 @@
         location.href="${baseUrl}/admin/courseManagement/cOpen";
         </c:if>
         $(".table-div").load("${baseUrl}/admin/courseManagement/cOpen/courseTable");
-        changeMajor("#search-division", "#search-major", "true", 0);
+        //changeMajor("#search-division", "#search-major", "true", 0);
     });
 </script>
 </body>

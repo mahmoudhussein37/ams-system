@@ -21,10 +21,10 @@
                 <td>
                     2nd
                 </td>
-                <td colspan="3">
+                <td>
                     <spring:message code="common.professor"/>
                 </td>
-                <td>
+                <td colspan="3">
                     ${user.contact.getFullName()}
                 </td>
 
@@ -55,31 +55,22 @@
                     <spring:message code="common.courseTarget"/>
                 </td>
                 <td>
-                    <spring:message code="common.division"/>
+                    <spring:message code="common.department"/>
                 </td>
                 <td colspan="2">
                     ${course.division.name}
                 </td>
-                <td>
+                <%--<td>
                         <spring:message code="common.major"/>
                 </td>
                 <td>
                     ${course.major.name}
-                </td>
+                </td>--%>
                 <td>
                     <spring:message code="common.schoolYear"/>
                 </td>
-                            <td>
-                            3
-                            </td>
-
-            </tr>
-            <tr>
                 <td>
-                    <spring:message code="common.compCategory"/>
-                </td>
-                <td>
-                    <spring:message code="comp.category.${course.compCategory}"/>
+                    3
                 </td>
                 <td>
                     <spring:message code="common.subjCategory"/>
@@ -87,15 +78,30 @@
                 <td>
                     <spring:message code="subj.category.${course.subjCategory}"/>
                 </td>
+
+            </tr>
+            <tr>
+                <%--                <td>
+                                    <spring:message code="common.compCategory"/>
+                                </td>
+                                <td>
+                                    <spring:message code="comp.category.${course.compCategory}"/>
+                                </td>
+                                <td>
+                                    <spring:message code="common.subjCategory"/>
+                                </td>
+                                <td>
+                                    <spring:message code="subj.category.${course.subjCategory}"/>
+                                </td>--%>
                 <td>
                     <spring:message code="professor.engAccreditation"/>
                 </td>
-                <td>
+                <td colspan="3">
                     Y
                 </td>
-                <td colspan="2">
-
+                <td colspan="4">
                 </td>
+
 
             </tr>
         </table>

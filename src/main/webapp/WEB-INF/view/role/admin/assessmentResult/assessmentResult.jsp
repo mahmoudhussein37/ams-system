@@ -50,9 +50,9 @@
         var year = $("#search-year").children("option:selected").val().trim();
         var semester = $("#search-semester").children("" +
             "option:selected").val().trim();
-        var major = $("#search-major").children("option:selected").val().trim();
+        //var major = $("#search-major").children("option:selected").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/admin/academicManagement/assessmentResult/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&major=" + major);
+        $(".table-div").load("${baseUrl}/admin/academicManagement/assessmentResult/courseTable?year=" + year + "&semester=" + semester + "&division=" + division);
     }
 
     $(".input-enter").keydown(function(key) {
@@ -68,8 +68,8 @@
         </c:if>
 
         $(".table-div").load("${baseUrl}/admin/academicManagement/assessmentResult/courseTable");
-        changeMajor("#search-division", "#search-major", true);
-        changeMajor("#divisionId", "#majorId", true);
+        //changeMajor("#search-division", "#search-major", true);
+        //changeMajor("#divisionId", "#majorId", true);
     });
 
 </script>
