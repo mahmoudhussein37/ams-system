@@ -30,6 +30,11 @@
     <c:when test="${not empty locale and locale eq 'ar'}">
         <c:set var="isRTL" value="true"/>
     </c:when>
+
+    <c:when test="${fn:contains(requestUri, '/professor/classProgress/cqiReport') or fn:contains(requestUri, '/student/classInformation/classAssessment') or fn:contains(requestUri, '/professor/studentGuidance/counseling')}">
+        <c:set var="isRTL" value="true"/>
+    </c:when>
+
     <c:otherwise>
         <c:set var="isRTL" value="false"/>
     </c:otherwise>
