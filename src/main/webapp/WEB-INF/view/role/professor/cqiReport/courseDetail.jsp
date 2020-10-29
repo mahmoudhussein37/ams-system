@@ -55,7 +55,7 @@
                     <spring:message code="common.courseTarget"/>
                 </td>
                 <td>
-                    <spring:message code="common.division"/>
+                    <spring:message code="common.department"/>
                 </td>
                 <td colspan="2">
                     ${course.division.name}

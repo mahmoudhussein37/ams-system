@@ -10,7 +10,7 @@
         <th style=""><span class="text-primary"><spring:message code="common.compCategory"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span>
         <th style=""><span class="text-primary"><spring:message code="professor.course.ltlp"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.division"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.department"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.registeredDate"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.closedDate"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.alternative"/></span>

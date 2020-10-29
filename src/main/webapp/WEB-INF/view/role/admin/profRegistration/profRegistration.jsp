@@ -34,7 +34,7 @@
 
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label><spring:message code="common.division"/></label>
+                                            <label><spring:message code="common.department"/></label>
                                             <form:select id="search-division" path="divisionId" class="form-control" >
                                                 <c:forEach var="division" items="${divisions}">
                                                     <option value="${division.id}">${division.name}</option>

@@ -9,7 +9,7 @@
         <th style=""><span class="text-primary"><spring:message code="common.date"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.studentNumber"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.name"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.division"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.department"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.major"/></span>
 
     </tr>

@@ -38,7 +38,7 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <spring:message code="common.division"/><br/>
+                                        <spring:message code="common.department"/><br/>
                                         <select id="search-division" class="form-control" style="margin-top:10px;">
                                         <c:forEach var="division" items="${divisions}">
                                             <option value="${division.id}">${division.name}</option>
@@ -84,7 +84,7 @@
                                     <th style=""><span class="text-primary"><spring:message code="common.professor"/></span>
                                     <th style=""><span class="text-primary"><spring:message code="common.lectureTime"/></span>
                                     <th style=""><span class="text-primary"><spring:message code="common.classRoom"/></span>
-                                    <th style=""><span class="text-primary"><spring:message code="common.division"/></span>
+                                    <th style=""><span class="text-primary"><spring:message code="common.department"/></span>
                                     <th style=""><span class="text-primary"><spring:message code="common.syllabus"/></span>
                                     <th style=""><span class="text-primary"><spring:message code="common.cancel"/></span>
                                 </tr>

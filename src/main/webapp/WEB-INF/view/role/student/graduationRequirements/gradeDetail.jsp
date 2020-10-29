@@ -12,7 +12,7 @@
         </div>
         <div class="col-md-3">
             <div class="form-group">
-                <label><spring:message code="common.division"/></label>
+                <label><spring:message code="common.department"/></label>
                 <input type="text" class="form-control" value="${studentUser.division.name}" disabled/>
                 <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
             </div>
@@ -24,13 +24,13 @@
                 <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
             </div>
         </div>
-        <div class="col-md-3">
+        <%--<div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.major"/></label>
                 <input type="text" class="form-control" value="${studentUser.major.name}" disabled/>
-                <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+                &lt;%&ndash;<span class="form-text text-muted">We'll never share your email with anyone else</span>&ndash;%&gt;
             </div>
-        </div>
+        </div>--%>
     </div>
     <div class="row">
         <div class="col-md-3">
@@ -71,7 +71,7 @@
             <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.curriculumStatus"/></h3>
             <table class="table">
                 <tr>
-                    <td colspan="2">
+                    <td>
                         <spring:message code="common.classification"/>
                     </td>
                     <td>
@@ -85,62 +85,29 @@
                     </td>
                 </tr>
                 <tr class="table-light">
-                    <td rowspan="3" class="table-light"><spring:message code="common.liberal"/></td>
-                    <td><spring:message code="common.require"/></td>
+                    <td class="table-light"><spring:message code="common.liberal"/></td>
+                    <%--<td><spring:message code="common.require"/></td>--%>
                     <td>10</td>
                     <td>8</td>
                     <td>-2</td>
                 </tr>
+
                 <tr>
-                    <td><spring:message code="common.option"/></td>
-                    <td>6</td>
-                    <td>13</td>
-                    <td>7</td>
-                </tr>
-                <tr class="table-light">
-                    <td><spring:message code="common.subSum"/></td>
-                    <td>6</td>
-                    <td>13</td>
-                    <td>7</td>
-                </tr>
-                <tr>
-                    <td rowspan="3">MSC</td>
-                    <td><spring:message code="common.require"/></td>
+                    <td >MSC</td>
+                    <%--<td><spring:message code="common.require"/></td>--%>
                     <td>10</td>
                     <td>8</td>
                     <td>-2</td>
                 </tr>
+
                 <tr class="table-light">
-                    <td><spring:message code="common.option"/></td>
-                    <td>6</td>
-                    <td>13</td>
-                    <td>7</td>
-                </tr>
-                <tr>
-                    <td><spring:message code="common.subSum"/></td>
-                    <td>6</td>
-                    <td>13</td>
-                    <td>7</td>
-                </tr>
-                <tr class="table-light">
-                    <td rowspan="3" class="table-light"><spring:message code="common.major"/></td>
-                    <td><spring:message code="common.require"/></td>
+                    <td class="table-light"><spring:message code="common.major"/></td>
+                    <%--<td><spring:message code="common.require"/></td>--%>
                     <td>10</td>
                     <td>8</td>
                     <td>-2</td>
                 </tr>
-                <tr>
-                    <td><spring:message code="common.option"/></td>
-                    <td>6</td>
-                    <td>13</td>
-                    <td>7</td>
-                </tr>
-                <tr class="table-light">
-                    <td><spring:message code="common.subSum"/></td>
-                    <td>6</td>
-                    <td>13</td>
-                    <td>7</td>
-                </tr>
+
 
 
             </table>

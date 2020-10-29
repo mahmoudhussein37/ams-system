@@ -22,7 +22,7 @@
         <th style=""><span class="text-primary"><spring:message code="professor.course.numStudent"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.lectureTime"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.classRoom"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.division"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.department"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.syllabus"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.apply"/></span>
     </tr>

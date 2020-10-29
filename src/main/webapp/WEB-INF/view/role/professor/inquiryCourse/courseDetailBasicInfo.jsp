@@ -64,19 +64,20 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <%--<div class="col-md-4">
                 <div class="form-group">
                     <label><spring:message code="common.compCategory"/></label>
                     <input type="text" class="form-control" value="<spring:message code='comp.category.${course.compCategory}'/>" disabled/>
-                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                    &lt;%&ndash;<span class="form-text text-muted">Please enter your full name</span>&ndash;%&gt;
                 </div>
-
-
-
-
-
-
-            </div>
+            </div>--%>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label><spring:message code="common.supervisor"/></label>
+                        <input type="text" class="form-control" disabled/>
+                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                    </div>
+                </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label><spring:message code="common.subjCategory"/></label>
@@ -96,19 +97,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label><spring:message code="common.supervisor"/></label>
-                    <input type="text" class="form-control" disabled/>
-                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                </div>
 
-
-
-
-
-
-            </div>
             <div class="col-md-2">
                 <div class="form-group">
                     <label><spring:message code="common.profLab"/></label>
@@ -134,14 +123,7 @@
                 </div>
 
 
-
-
-
-
             </div>
-        </div>
-        <div class="row">
-
             <div class="col-md-4">
                 <div class="form-group">
                     <label><spring:message code="common.prerequisite"/></label>
@@ -151,5 +133,4 @@
 
 
             </div>
-
         </div>
