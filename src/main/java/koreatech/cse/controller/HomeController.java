@@ -126,4 +126,12 @@ public class HomeController {
         return "redirect:/signin?msg=signupSuccess";
     }
 
+    @RequestMapping(value = "/feedback", method = RequestMethod.GET)
+    public String feedback(Model model) {
+        User signupUser = new User();
+        model.addAttribute("signupUser", signupUser);
+
+        return "feedback";
+    }
+
 }
