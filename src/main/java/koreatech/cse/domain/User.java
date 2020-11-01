@@ -28,6 +28,7 @@ public class User implements UserDetails {
     private String number; //student/professor number
 
     private String advisor;
+    private int advisorId; //지도교수
     private String status;
     private int schoolYear;
 
@@ -176,6 +177,14 @@ public class User implements UserDetails {
 
     public void setSchoolYear(int schoolYear) {
         this.schoolYear = schoolYear;
+    }
+
+    public int getAdvisorId() {
+        return advisorId;
+    }
+
+    public void setAdvisorId(int advisorId) {
+        this.advisorId = advisorId;
     }
 
     public static User current() {

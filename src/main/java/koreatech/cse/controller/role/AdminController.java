@@ -58,16 +58,17 @@ public class AdminController {
     public String studentRegistration(Model model, @RequestParam(required=false) String result) {
 
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
         User studentUser = new User();
         Contact contact = new Contact();
         studentUser.setContact(contact);
         model.addAttribute("studentUser", studentUser);
         model.addAttribute("result", result);
         model.addAttribute("statusList", StudentStatus.values());
+
+        List<User> professors = userMapper.findAllProfessors();
+        model.addAttribute("professors", professors);
         return "role/admin/studentRegistration/studentRegistration";
     }
 

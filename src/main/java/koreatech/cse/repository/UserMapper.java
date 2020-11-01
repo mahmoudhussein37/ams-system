@@ -16,7 +16,7 @@ public interface UserMapper {
             "`password`,"+
             "`number`,"+
             "`division_id`,"+
-            "`major_id`,"+
+            "`advisor_id`,"+
             "`school_year`,"+
             "`confirm`,"+
             "`register_date`,"+
@@ -28,7 +28,7 @@ public interface UserMapper {
             "#{password},"+
             "#{number},"+
             "#{divisionId},"+
-            "#{majorId},"+
+            "#{advisorId},"+
             "#{schoolYear},"+
             "#{confirm},"+
             "CURRENT_TIMESTAMP,"+
@@ -42,7 +42,7 @@ public interface UserMapper {
     @Update("UPDATE `user` SET"+
             "`number` = #{number},"+
             "`division_id` = #{divisionId},"+
-            "`major_id` = #{majorId},"+
+            "`advisor_id` = #{advisorId},"+
             "`school_year` = #{schoolYear},"+
             "`advisor` = #{advisor},"+
             "`status` = #{status} "+
@@ -77,6 +77,10 @@ public interface UserMapper {
     @ResultMap("findOne-int")
     @Select("SELECT * FROM USER u join authority a on u.id = a.user_id where a.role = 'ROLE_STUDENT'")
     List<User> findAllStudents();
+
+    @ResultMap("findOne-int")
+    @Select("SELECT * FROM USER u join authority a on u.id = a.user_id where a.role = 'ROLE_PROFESSOR'")
+    List<User> findAllProfessors();
 
     @ResultMap("findOne-int")
     @Select("select * from user where username = #{username}")
