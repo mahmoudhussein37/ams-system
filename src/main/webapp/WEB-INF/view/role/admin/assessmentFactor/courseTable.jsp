@@ -12,8 +12,8 @@
         <th style=""><span class="text-primary"><spring:message code="common.department"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.registeredDate"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.closedDate"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.alternative"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.prerequisite"/></span>
+        <%--<th style=""><span class="text-primary"><spring:message code="common.alternative"/></span>--%>
+        <%--<th style=""><span class="text-primary"><spring:message code="common.prerequisite"/></span>--%>
     </tr>
     </thead>
     <tbody>
@@ -51,12 +51,12 @@
             <td>
                 YYYY-MM-dd
             </td>
-            <td>
+            <%--<td>
                 Y
-            </td>
-            <td>
+            </td>--%>
+            <%--<td>
                 Y
-            </td>
+            </td>--%>
 
         </tr>
     </c:forEach>

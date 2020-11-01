@@ -192,6 +192,41 @@
                                         </div>
 
                                     </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label><spring:message code="professor.course.ltlp"/></label>
+                                                <div class="form-group">
+                                                <input type="number" class="form-control" style="width:23%;display:inline" placeholder="Lecture"/>
+                                                <input type="number" class="form-control" style="width:23%;display:inline" placeholder="Tutorial"/>
+                                                <input type="number" class="form-control" style="width:23%;display:inline" placeholder="Lab"/>
+                                                <input type="number" class="form-control" style="width:29%;display:inline" placeholder="Workshop/Practice"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <%--<div class="col-md-3">
+
+                                            <div class="form-group">
+                                                <label></label>
+                                                <input type="number" class="form-control"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+
+                                            <div class="form-group">
+                                                <label></label>
+                                                <input type="number" class="form-control"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+
+                                            <div class="form-group">
+                                                <label></label>
+                                                <input type="number" class="form-control"/>
+                                            </div>
+                                        </div>--%>
+
+                                    </div>
                                     <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.create"/></button>
                                 </form:form>
                             </div>

@@ -21,6 +21,40 @@
                         </div>
                         <div class="card-body">
 
+                            <table class="table table-head-custom table-vertical-center" id="student-list">
+                                <thead>
+                                <tr class="text-uppercase">
+
+                                    <th class="pl-0" style="min-width: 100px"><spring:message code="common.no"/></th>
+                                    <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.username"/></span>
+                                    <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.name"/></span>
+                                        <%--<th style="min-width: 150px"><span class="text-primary"><spring:message code="common.major"/></span>--%>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+
+                                    <td class="pl-0">
+                                        1
+                                    </td>
+
+                                    <td>
+                                        admin2@test.com
+                                    </td>
+                                    <td>
+                                        admin2
+                                    </td>
+                                    <td>
+                                            <button class="btn btn-light"><spring:message code="common.delete"/></button>
+                                    </td>
+                                </tr>
+
+
+                                </tbody>
+                            </table>
+
+
                             <form:form modelAttribute="adminUser" method="post">
                                 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.information"/></h3>
                                 <div class="row">

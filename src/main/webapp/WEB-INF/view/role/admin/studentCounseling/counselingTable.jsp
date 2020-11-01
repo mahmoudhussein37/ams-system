@@ -4,6 +4,7 @@
     <thead>
     <tr class="text-uppercase">
 
+        <th></th>
         <th class="pl-0" style=""><spring:message code="common.no"/></th>
         <th style=""><span class="text-primary"><spring:message code="common.year"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.date"/></span></th>
@@ -16,7 +17,9 @@
     <tbody>
     <c:forEach var="counseling" items="${counselingList}" varStatus="varStatus">
         <tr>
-
+            <td>
+                <input type="checkbox"/>
+            </td>
             <td class="pl-0">
                     ${varStatus.count}
             </td>

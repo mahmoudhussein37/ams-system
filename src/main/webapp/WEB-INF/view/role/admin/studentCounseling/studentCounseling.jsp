@@ -46,6 +46,15 @@
 
                                 </div>
                                 <div class="col-md-3">
+                                    <spring:message code="common.grade"/><br/>
+                                    <select id="search-grade" class="form-control" style="margin-top:10px;">
+                                        <c:forEach var="y" begin="1" end="4">
+                                            <option value="${y}">${y}</option>
+                                        </c:forEach>
+                                    </select>
+
+                                </div>
+                                <div class="col-md-3">
                                     <spring:message code="common.studentsName"/><br/>
                                     <input type="text" id="search-name" class="form-control input-enter"  value="" style="margin-top:10px;"/>
                                 </div>

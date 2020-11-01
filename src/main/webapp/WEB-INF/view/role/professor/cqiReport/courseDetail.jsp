@@ -397,13 +397,13 @@
             </tr>
             <tr>
                 <td>
-<textarea rows="6" class="form-control" disabled>
+<textarea rows="6" dir="rtl" class="form-control" disabled>
 last data...
 
 </textarea>
                 </td>
                 <td>
-                    <textarea rows="6"  class="form-control" >
+                    <textarea rows="6"  dir="rtl" class="form-control" >
 
                     </textarea>
                 </td>
@@ -416,7 +416,7 @@ last data...
 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="professor.comprehensiveLecture"/></h3>
 <div class="row">
     <div class="col-md-12">
-        <textarea rows="6"  class="form-control" >
+        <textarea rows="6" dir="rtl"  class="form-control" >
 
                     </textarea>
     </div>
