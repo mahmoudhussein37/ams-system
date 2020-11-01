@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.information"/></h3>
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-2">
 
         <div class="form-group">
             <label><spring:message code="common.studentNumber"/></label>
@@ -9,7 +9,7 @@
             <%--<span class="form-text text-muted">Please enter your full name</span>--%>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="form-group">
             <label><spring:message code="common.name"/></label>
             <input type="text" class="form-control"  value="${studentUser.getFullName()}" disabled/>
@@ -17,7 +17,7 @@
         </div>
 
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="form-group">
             <label><spring:message code="common.department"/></label>
             <input type="text" class="form-control" value="${studentUser.division.name}" disabled/>
@@ -25,7 +25,7 @@
         </div>
 
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
 
         <div class="form-group">
             <label><spring:message code="common.major"/></label>
@@ -33,9 +33,16 @@
             <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
         </div>
     </div>
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-2" style="text-align:center">
+        <img src="${resources}/images/user.png" style="max-width:100px"/> <br/><br/>
+        <input type="file"/>
+    </div>
+
 </div>
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-2">
 
         <div class="form-group">
             <label><spring:message code="common.status"/></label>
@@ -43,7 +50,7 @@
             <%--<span class="form-text text-muted">Please enter your full name</span>--%>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="form-group">
             <label><spring:message code="common.advisor"/></label>
             <input type="text" class="form-control"  value="${studentUser.advisor}" disabled/>
@@ -51,7 +58,7 @@
         </div>
 
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="form-group">
             <label><spring:message code="common.schoolYear"/></label>
             <input type="text" class="form-control" value="${studentUser.schoolYear}" disabled/>
