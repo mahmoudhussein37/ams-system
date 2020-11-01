@@ -86,7 +86,7 @@
 
 
                 <label><spring:message code="common.comment"/></label>
-                <textarea class="form-control" rows="6"></textarea>
+                <textarea dir="rtl" class="form-control" rows="6"></textarea>
             </div>
         </div>
     </div>
