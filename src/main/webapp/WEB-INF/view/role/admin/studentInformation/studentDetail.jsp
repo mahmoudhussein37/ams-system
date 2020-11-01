@@ -67,7 +67,11 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.advisor"/></label>
-                <form:input type="text" path="advisor" class="form-control" />
+                <form:select path="advisorId" class="form-control" >
+                    <c:forEach var="s" items="${professors}">
+                        <form:option value="${s.id}">${s.contact.getFullName()}</form:option>
+                    </c:forEach>
+                </form:select>
                     <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
             </div>
 

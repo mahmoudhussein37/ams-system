@@ -20,7 +20,6 @@ public interface UserMapper {
             "`school_year`,"+
             "`confirm`,"+
             "`register_date`,"+
-            "`advisor`,"+
             "`status`,"+
             "`enabled`"+
             ")VALUES("+
@@ -32,7 +31,6 @@ public interface UserMapper {
             "#{schoolYear},"+
             "#{confirm},"+
             "CURRENT_TIMESTAMP,"+
-            "#{advisor},"+
             "#{status},"+
             "#{enabled}"+
             ")")
@@ -44,7 +42,6 @@ public interface UserMapper {
             "`division_id` = #{divisionId},"+
             "`advisor_id` = #{advisorId},"+
             "`school_year` = #{schoolYear},"+
-            "`advisor` = #{advisor},"+
             "`status` = #{status} "+
             "WHERE `id` = #{id}")
     void update(User user);
@@ -61,11 +58,9 @@ public interface UserMapper {
     @Results({
             @Result(column = "id", property = "id"),
             @Result(column = "division_id", property = "divisionId"),
-            @Result(column = "major_id", property = "majorId"),
             @Result(column = "id", property = "contact", one = @One(select = "koreatech.cse.repository.ContactMapper.findByUserId")),
             @Result(column = "id", property = "authorities", many = @Many(select = "koreatech.cse.repository.AuthorityMapper.findByUserId")),
-            @Result(column = "division_id", property = "division", one = @One(select = "koreatech.cse.repository.DivisionMapper.findOne")),
-            @Result(column = "major_id", property = "major", one = @One(select = "koreatech.cse.repository.MajorMapper.findOne")),
+            @Result(column = "division_id", property = "division", one = @One(select = "koreatech.cse.repository.DivisionMapper.findOne"))
     })
     @Select("SELECT * FROM USER WHERE ID = #{id}")
     User findOne(@Param("id") int id);
@@ -103,7 +98,6 @@ public interface UserMapper {
             + "<if test='name != null'> and (c.last_name LIKE CONCAT('%', #{name}, '%') or c.first_name LIKE CONCAT('%', #{name}, '%'))</if>"
             + "<if test='number != null'> and u.number LIKE CONCAT('%', #{number}, '%')</if>"
             + "<if test='division != 0'> and u.division_id = #{division}</if>"
-            + "<if test='major != 0'> and u.major_id = #{major}</if>"
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
     //@formatter on
@@ -116,7 +110,6 @@ public interface UserMapper {
             + "<if test='name != null'> and (c.last_name LIKE CONCAT('%', #{name}, '%') or c.first_name LIKE CONCAT('%', #{name}, '%'))</if>"
             + "<if test='number != null'> and u.number LIKE CONCAT('%', #{number}, '%')</if>"
             + "<if test='division != 0'> and u.division_id = #{division}</if>"
-            + "<if test='major != 0'> and u.major_id = #{major}</if>"
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
         //@formatter on

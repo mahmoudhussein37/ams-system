@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"studentUser", "profUser", "course", "division", "major"})
+@SessionAttributes({"studentUser", "profUser", "course", "division"})
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
@@ -118,11 +118,13 @@ public class AdminController {
         model.addAttribute("studentUser", studentUser);
         model.addAttribute("statusList", StudentStatus.values());
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
 
+        User advisor = userMapper.findOne(studentUser.getAdvisorId());
+        model.addAttribute("advisor", advisor);
+        List<User> professors = userMapper.findAllProfessors();
+        model.addAttribute("professors", professors);
         return "role/admin/studentInformation/studentDetail";
     }
 
@@ -140,11 +142,10 @@ public class AdminController {
     @RequestMapping("/studentManagement/studentInformation")
     public String studentInformation(Model model, @RequestParam(required=false) String result) {
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
         model.addAttribute("result", result);
+
         return "role/admin/studentInformation/studentInformation";
     }
 
