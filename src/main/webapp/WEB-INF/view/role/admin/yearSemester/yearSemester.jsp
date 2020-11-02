@@ -22,7 +22,7 @@
                         <div class="card-body">
 
                             <div class="table-div">
-                                <table class="table table-head-custom table-vertical-center" id="course-list">
+                                <%--<table class="table table-head-custom table-vertical-center" id="course-list">
                                     <thead>
                                     <tr class="text-uppercase">
 
@@ -54,40 +54,40 @@
 
 
                                     </tbody>
-                                </table>
+                                </table>--%>
 
                             </div>
                             <br/><br/>
                             <div class="separator separator-solid my-5"></div>
                             <br/><br/>
+                            <form:form modelAttribute="semester" method="post">
+                                <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.createYearSemester"/></h3>
+                                <div class="row">
+                                    <div class="col-md-3">
 
-                            <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.createYearSemester"/></h3>
-                            <div class="row">
-                                <div class="col-md-3">
-
-                                    <div class="form-group">
-                                        <label><spring:message code="common.year"/></label>
-                                        <input type="number" name="year" class="form-control"/>
-                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        <div class="form-group">
+                                            <label><spring:message code="common.year"/></label>
+                                            <form:input type="number" path="year" class="form-control"/>
+                                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-3">
+                                    <div class="col-md-3">
 
-                                    <div class="form-group">
-                                        <label><spring:message code="common.semester"/></label>
-                                        <select class="form-control">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                        </select>
+                                        <div class="form-group">
+                                            <label><spring:message code="common.semester"/></label>
+                                            <form:select path="semester" class="form-control">
+                                                <form:option value="1">1</form:option>
+                                                <form:option value="2">2</form:option>
+                                            </form:select>
 
-                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        </div>
                                     </div>
+
                                 </div>
-
-                            </div>
-                            <br/>
-                            <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.register"/></button>
-
+                                <br/>
+                                <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.register"/></button>
+                            </form:form>
 
 
                         </div>
@@ -114,6 +114,12 @@
 
 <script>
     $(document).ready(function() {
+        $(".table-div").load("${baseUrl}/admin/systemManagement/yearSemester/semesterTable");
+
+        <c:if test="${not empty result}">
+        alert("<spring:message code='common.success'/>");
+        location.href="${baseUrl}/admin/systemManagement/yearSemester";
+        </c:if>
     });
 </script>
 </body>

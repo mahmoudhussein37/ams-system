@@ -12,6 +12,7 @@ import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
 import koreatech.cse.domain.univ.Major;
+import koreatech.cse.domain.univ.Semester;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.AuthorityService;
 import koreatech.cse.service.UserService;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"studentUser", "profUser", "course", "division"})
+@SessionAttributes({"studentUser", "profUser", "course", "division", "semester"})
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
@@ -51,6 +52,8 @@ public class AdminController {
     private AuthorityService authorityService;
     @Inject
     private CounselingMapper counselingMapper;
+    @Inject
+    private SemesterMapper semesterMapper;
 
 
 
@@ -86,18 +89,16 @@ public class AdminController {
     @RequestMapping("/studentManagement/studentInformation/studentTable")
     public String studentTable(Model model, @RequestParam(required=false) String number,
                                @RequestParam(required=false) String name,
-                               @RequestParam(defaultValue = "0", required=false) int division,
-                               @RequestParam(defaultValue = "0", required=false) int major) {
+                               @RequestParam(defaultValue = "0", required=false) int division) {
         User firstUser = null;
         List<User> userList;
-        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0 && major == 0) {
+        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
             userList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            searchable.setMajor(major);
             userList = userMapper.findByStudentLookup(searchable);
 
 
@@ -941,8 +942,57 @@ public class AdminController {
     }
 
     @RequestMapping("/systemManagement/yearSemester")
-    public String yearSemester(Model model) {
+    public String yearSemester(Model model, @RequestParam(required=false) String result) {
+        Semester semester = new Semester();
+        model.addAttribute("semester", semester);
+        model.addAttribute("result", result);
         return "role/admin/yearSemester/yearSemester";
+    }
+
+    @RequestMapping(value = "/systemManagement/yearSemester", method = RequestMethod.POST)
+    public String yearSemester(@ModelAttribute("semester") Semester semester, SessionStatus sessionStatus) {
+
+
+        Semester exist = semesterMapper.findByYearAndSemester(semester.getYear(), semester.getSemester());
+        if(exist == null)
+            semesterMapper.insert(semester);
+        sessionStatus.setComplete();
+
+        return "redirect:/admin/systemManagement/yearSemester?result=success";
+    }
+
+    @RequestMapping(value = "/systemManagement/yearSemester/deleteSemester", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean deleteSemester(@RequestParam int id) {
+        Semester exist = semesterMapper.findOne(id);
+        semesterMapper.delete(exist);
+
+        return true;
+    }
+
+    @RequestMapping(value = "/systemManagement/yearSemester/semesterEditable", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean semesterEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
+        Semester semester = semesterMapper.findOne(pk);
+        System.out.println("name = " + name);
+        System.out.println("value = " + value);
+        switch (name) {
+            default:
+                SystemUtil.setObjectFieldValue(semester, name, value);
+        }
+        semesterMapper.update(semester);
+
+        return true;
+    }
+
+    @RequestMapping("/systemManagement/yearSemester/semesterTable")
+    public String semesterTable(Model model) {
+
+
+        List<Semester> semesterList = semesterMapper.findAll();
+
+        model.addAttribute("semesterList", semesterList);
+        return "role/admin/yearSemester/semesterTable";
     }
 
     @RequestMapping("/systemManagement/divisionMajor")

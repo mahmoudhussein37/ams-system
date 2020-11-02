@@ -1,6 +1,6 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <div class="print-div">
-    <a href="#" class="btn btn-sm btn-light font-weight-bold">
+    <a href="#" class="btn btn-sm btn-light font-weight-bold" onclick="printContent('kt_tab_pane_1')">
         <spring:message code="common.print"/>
     </a>
 </div>

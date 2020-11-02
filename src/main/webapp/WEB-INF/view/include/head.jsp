@@ -48,6 +48,7 @@
 
     </c:otherwise>
     </c:choose>
+    <link href="${resources}/vendor/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="${resources}/vendor/metronic_assets_7/assets/media/logos/favicon.ico"/>
     <style>
 
@@ -71,6 +72,21 @@
 
         .print-div {
             text-align:${isRTL ? 'left' : 'right'};
+        }
+
+        @media print {
+            .div-to-print {
+                background-color: white;
+                height: 100%;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                margin: 0;
+                padding: 15px;
+                font-size: 14px;
+                line-height: 18px;
+            }
         }
 
     </style>
