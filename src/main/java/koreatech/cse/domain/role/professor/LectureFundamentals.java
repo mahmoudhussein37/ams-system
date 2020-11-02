@@ -30,6 +30,9 @@ public class LectureFundamentals implements Serializable {
     private int rateFinal;
     private int rateOptional;
 
+
+
+
     public int getId() {
         return id;
     }

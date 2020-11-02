@@ -12,13 +12,13 @@
     <tbody>
     <c:forEach var="division" items="${divisionList}" varStatus="varStatus">
         <c:if test="${division.enabled}">
-            <tr>
+            <tr class="text-center">
 
                 <td class="pl-0">
                         ${varStatus.count}
                 </td>
                 <td class="pl-0">
-                    <a href="#" class="course-editable" data-type="text" data-name="name" data-url="${baseUrl}/admin//systemManagement/divisionMajor/divisionEditable" data-pk="${division.id}" data-original-title="<spring:message code="common.name"/>">${division.name}</a>
+                    <a href="#" class="course-editable" data-type="text" data-name="name" data-url="${baseUrl}/admin/systemManagement/divisionMajor/divisionEditable" data-pk="${division.id}" data-original-title="<spring:message code="common.name"/>">${division.name}</a>
                 </td>
 
 
@@ -31,13 +31,13 @@
     </c:forEach>
     <c:forEach var="division" items="${divisionList}" varStatus="varStatus">
         <c:if test="${not division.enabled}">
-            <tr class="disabled-tr">
+            <tr class="text-center disabled-tr">
 
                 <td class="pl-0">
                         ${varStatus.count}
                 </td>
                 <td class="pl-0">
-                    <a href="#" class="course-editable" data-type="text" data-name="name" data-url="${baseUrl}/admin//systemManagement/divisionMajor/divisionEditable" data-pk="${division.id}" data-original-title="<spring:message code="common.name"/>">${division.name}</a>
+                    <a href="#" class="course-editable" data-type="text" data-name="name" data-url="${baseUrl}/admin/systemManagement/divisionMajor/divisionEditable" data-pk="${division.id}" data-original-title="<spring:message code="common.name"/>">${division.name}</a>
                 </td>
 
 

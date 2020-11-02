@@ -9,10 +9,7 @@ import koreatech.cse.domain.constant.SubjCategory;
 import koreatech.cse.domain.role.professor.Counseling;
 import koreatech.cse.domain.role.professor.LectureFundamentals;
 import koreatech.cse.domain.role.professor.ProfessorCourse;
-import koreatech.cse.domain.univ.Course;
-import koreatech.cse.domain.univ.Division;
-import koreatech.cse.domain.univ.Major;
-import koreatech.cse.domain.univ.Semester;
+import koreatech.cse.domain.univ.*;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.AuthorityService;
 import koreatech.cse.service.UserService;
@@ -55,6 +52,10 @@ public class AdminController {
     private CounselingMapper counselingMapper;
     @Inject
     private SemesterMapper semesterMapper;
+    @Inject
+    private LectureMethodMapper lectureMethodMapper;
+    @Inject
+    private LectureFundamentalsMapper lectureFundamentalsMapper;
 
 
 
@@ -289,7 +290,7 @@ public class AdminController {
         System.out.println("division = " + division);
         System.out.println("major = " + major);
         System.out.println("number = " + number);
-        System.out.println("name = " + name);;
+        ;
         if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0 && major == 0) {
             userList = new ArrayList<>();
         } else {
@@ -504,8 +505,8 @@ public class AdminController {
     @ResponseBody
     public Boolean courseEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
         Course course = courseMapper.findOne(pk);
-        System.out.println("name = " + name);
-        System.out.println("value = " + value);
+        
+        
         switch (name) {
             default:
                 SystemUtil.setObjectFieldValue(course, name, value);
@@ -978,8 +979,8 @@ public class AdminController {
     @ResponseBody
     public Boolean semesterEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
         Semester semester = semesterMapper.findOne(pk);
-        System.out.println("name = " + name);
-        System.out.println("value = " + value);
+        
+        
         switch (name) {
             default:
                 SystemUtil.setObjectFieldValue(semester, name, value);
@@ -1025,8 +1026,8 @@ public class AdminController {
     @ResponseBody
     public Boolean divisionEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
         Division division = divisionMapper.findOne(pk);
-        System.out.println("name = " + name);
-        System.out.println("value = " + value);
+        
+        
         switch (name) {
             default:
                 SystemUtil.setObjectFieldValue(division, name, value);
@@ -1065,15 +1066,71 @@ public class AdminController {
         return "redirect:/admin/systemManagement/divisionMajor?result=success";
     }
 
-    @RequestMapping(value = "/systemManagement/createMajor", method = RequestMethod.POST)
-    public String createDivision(@ModelAttribute Major major) {
-        majorMapper.insert(major);
-        return "redirect:/admin/systemManagement/divisionMajor?result=success";
+    @RequestMapping("/systemManagement/lectureMethod")
+    public String lectureMethod(Model model, @RequestParam(required=false) String result) {
+        LectureMethod lectureMethod = new LectureMethod();
+        model.addAttribute("lectureMethod", lectureMethod);
+        model.addAttribute("result", result);
+        return "role/admin/lectureMethod/lectureMethod";
     }
 
-    @RequestMapping("/systemManagement/lectureMethod")
-    public String lectureMethod(Model model) {
-        return "role/admin/lectureMethod/lectureMethod";
+    @RequestMapping(value = "/systemManagement/lectureMethod", method = RequestMethod.POST)
+    public String lectureMethod(@ModelAttribute LectureMethod lectureMethod) {
+        lectureMethodMapper.insert(lectureMethod);
+        return "redirect:/admin/systemManagement/lectureMethod?result=success";
+    }
+
+    @RequestMapping("/systemManagement/lectureMethod/lectureMethodTable")
+    public String lectureMethodTable(Model model) {
+
+
+        List<LectureMethod> lectureMethodList = lectureMethodMapper.findAll();
+
+        model.addAttribute("lectureMethodList", lectureMethodList);
+        return "role/admin/lectureMethod/lectureMethodTable";
+    }
+
+    @RequestMapping(value = "/systemManagement/lectureMethod/lectureMethodEditable", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean lectureMethodEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
+        LectureMethod lectureMethod = lectureMethodMapper.findOne(pk);
+        
+        
+        switch (name) {
+            default:
+                SystemUtil.setObjectFieldValue(lectureMethod, name, value);
+        }
+        lectureMethodMapper.update(lectureMethod);
+        return true;
+    }
+
+    @RequestMapping(value = "/systemManagement/lectureMethod/deleteLectureMethod", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean deleteLectureMethod(@RequestParam int id) {
+        LectureMethod lectureMethod = lectureMethodMapper.findOne(id);
+
+        //TODO:
+        lectureMethodMapper.delete(lectureMethod);
+
+        /*List<Course> courses = courseMapper.findByLectureMethod(id);
+        if(CollectionUtils.isEmpty(courses)) {
+            lectureMethodMapper.delete(lectureMethod);
+            return true;
+        } else {
+            lectureMethod.setEnabled(false);
+            lectureMethodMapper.update(lectureMethod);
+            return false;
+        }*/
+        return true;
+    }
+
+    @RequestMapping(value = "/systemManagement/lectureMethod/enableLectureMethod", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean enableLectureMethod(@RequestParam int id) {
+        LectureMethod lectureMethod = lectureMethodMapper.findOne(id);
+        lectureMethod.setEnabled(true);
+        lectureMethodMapper.update(lectureMethod);
+        return true;
     }
 
     @RequestMapping("/systemManagement/evaluationMethod")
