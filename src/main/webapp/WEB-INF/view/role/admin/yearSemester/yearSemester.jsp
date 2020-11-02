@@ -22,40 +22,6 @@
                         <div class="card-body">
 
                             <div class="table-div">
-                                <%--<table class="table table-head-custom table-vertical-center" id="course-list">
-                                    <thead>
-                                    <tr class="text-uppercase">
-
-                                        <th class="pl-0" style=""><spring:message code="common.no"/></th>
-                                        <th style=""><span class="text-primary"><spring:message code="common.year"/></span></th>
-                                        <th style=""><span class="text-primary"><spring:message code="common.semester"/></span></th>
-                                        <th style=""><span class="text-primary"></span>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-
-                                        <td class="pl-0">
-                                            1
-                                        </td>
-                                        <td class="pl-0">
-                                            2020
-                                        </td>
-                                        <td>
-
-                                            1
-
-                                        </td>
-
-                                        <td>
-
-                                        </td>
-                                    </tr>
-
-
-                                    </tbody>
-                                </table>--%>
-
                             </div>
                             <br/><br/>
                             <div class="separator separator-solid my-5"></div>

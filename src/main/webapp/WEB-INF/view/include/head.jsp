@@ -88,6 +88,11 @@
                 line-height: 18px;
             }
         }
+        .disabled-tr {
+            color:grey;
+            background-color: #e7e5e5;
+
+        }
 
     </style>
 </head>

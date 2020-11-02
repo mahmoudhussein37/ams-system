@@ -25,6 +25,10 @@ public interface CourseMapper {
     List<Course> findAll();
 
     @ResultMap("findOne-int")
+    @Select("SELECT * FROM course where division_id = #{divisionId}")
+    List<Course> findByDivision(@Param("divisionId") int divisionId);
+
+    @ResultMap("findOne-int")
     @Select("SELECT * FROM course where enabled = 1")
     List<Course> findAllEnabled();
 

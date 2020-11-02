@@ -9,6 +9,7 @@ public class Division implements Serializable {
 
     private int id;
     private String name;
+    private boolean enabled;
 
 
     public int getId() {
@@ -25,6 +26,14 @@ public class Division implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

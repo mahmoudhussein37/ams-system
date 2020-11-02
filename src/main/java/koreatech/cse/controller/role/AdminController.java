@@ -22,6 +22,7 @@ import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -984,7 +985,6 @@ public class AdminController {
                 SystemUtil.setObjectFieldValue(semester, name, value);
         }
         semesterMapper.update(semester);
-
         return true;
     }
 
@@ -1009,6 +1009,54 @@ public class AdminController {
         model.addAttribute("result", result);
 
         return "role/admin/divisionMajor/divisionMajor";
+    }
+
+    @RequestMapping("/systemManagement/divisionMajor/divisionTable")
+    public String divisionTable(Model model) {
+
+
+        List<Division> divisionList = divisionMapper.findAll();
+
+        model.addAttribute("divisionList", divisionList);
+        return "role/admin/divisionMajor/divisionTable";
+    }
+
+    @RequestMapping(value = "/systemManagement/divisionMajor/divisionEditable", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean divisionEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
+        Division division = divisionMapper.findOne(pk);
+        System.out.println("name = " + name);
+        System.out.println("value = " + value);
+        switch (name) {
+            default:
+                SystemUtil.setObjectFieldValue(division, name, value);
+        }
+        divisionMapper.update(division);
+        return true;
+    }
+
+    @RequestMapping(value = "/systemManagement/divisionMajor/deleteDivision", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean deleteDivision(@RequestParam int id) {
+        Division division = divisionMapper.findOne(id);
+        List<Course> courses = courseMapper.findByDivision(id);
+        if(CollectionUtils.isEmpty(courses)) {
+            divisionMapper.delete(division);
+            return true;
+        } else {
+            division.setEnabled(false);
+            divisionMapper.update(division);
+            return false;
+        }
+    }
+
+    @RequestMapping(value = "/systemManagement/divisionMajor/enableDivision", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean enableDivision(@RequestParam int id) {
+        Division division = divisionMapper.findOne(id);
+        division.setEnabled(true);
+        divisionMapper.update(division);
+        return true;
     }
 
     @RequestMapping(value = "/systemManagement/createDivision", method = RequestMethod.POST)
