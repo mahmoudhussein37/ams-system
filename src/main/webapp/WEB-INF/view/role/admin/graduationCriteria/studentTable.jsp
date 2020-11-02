@@ -29,9 +29,7 @@
             <td>
                     ${studentUser.division.name}
             </td>
-            <%--<td>
-                    ${studentUser.major.name}
-            </td>--%>
+
         </tr>
     </c:forEach>
 

@@ -281,7 +281,7 @@
                                 }
                             }
                         },
-                        "signupUser.passwordConform": {
+                        "signupUser.passwordConfirm": {
                             validators: {
                                 identical: {
                                     compare: function() {

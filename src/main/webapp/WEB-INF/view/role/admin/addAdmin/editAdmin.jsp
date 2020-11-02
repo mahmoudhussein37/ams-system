@@ -16,17 +16,12 @@
                     <!--begin::Card-->
                     <div class="card card-custom">
                         <div class="card-header">
-                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.admin.sub5_9"/></h3>
+                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.admin.sub5_9_2"/></h3>
 
                         </div>
                         <div class="card-body">
-                            <div class="table-div">
-                            </div>
-                            <br/><br/>
-                            <div class="separator separator-solid my-5"></div>
-                            <br/><br/>
-
-                            <form:form modelAttribute="adminUser" method="post" id="signup-form">
+                            <form:form modelAttribute="adminUser" action="${baseUrl}/admin/systemManagement/editAdmin" id="signup-form" method="post">
+                                <%--<form:hidden path="id" value="${adminUser.id}"/>--%>
                                 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.information"/></h3>
                                 <div class="row">
                                     <div class="col-md-3">
@@ -61,7 +56,7 @@
 
                                         <div class="form-group">
                                             <label><spring:message code="common.password"/></label>
-                                            <form:input type="password" path="password" class="form-control"/>
+                                            <input type="password" name="password" class="form-control"/>
                                                 <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                                         </div>
                                     </div>
@@ -79,7 +74,7 @@
                                     </div>
                                 </div>
                                 <br/>
-                                <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.register"/></button>
+                                <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
 
 
                             </form:form>
@@ -191,14 +186,10 @@
             }
         };
     }();
-    $(document).ready(function() {
 
-        $(".table-div").load("${baseUrl}/admin/systemManagement/addAdmin/adminTable");
+    $(document).ready(function() {
         KTFormControls.init();
-        <c:if test="${not empty result}">
-        alert("<spring:message code='common.success'/>");
-        location.href="${baseUrl}/admin/systemManagement/addAdmin";
-        </c:if>
+
     });
 </script>
 </body>

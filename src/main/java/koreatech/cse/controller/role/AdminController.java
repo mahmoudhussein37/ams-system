@@ -17,6 +17,7 @@ import koreatech.cse.util.SystemUtil;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"studentUser", "profUser", "course", "division", "semester", "menuAccess"})
+@SessionAttributes({"studentUser", "profUser", "adminUser", "course", "division", "semester", "menuAccess"})
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
@@ -66,7 +67,8 @@ public class AdminController {
     private ClassroomMapper classroomMapper;
     @Inject
     private MenuAccessMapper menuAccessMapper;
-
+    @Inject
+    private PasswordEncoder passwordEncoder;
 
 
 
@@ -1442,14 +1444,69 @@ public class AdminController {
 
 
     @RequestMapping("/systemManagement/addAdmin")
-    public String addAdmin(Model model) {
+    public String addAdmin(Model model, @RequestParam(required=false) String result) {
 
         User adminUser = new User();
         Contact contact = new Contact();
         adminUser.setContact(contact);
         model.addAttribute("adminUser", adminUser);
+        model.addAttribute("result", result);
         return "role/admin/addAdmin/addAdmin";
     }
+
+    @RequestMapping("/systemManagement/editAdmin")
+    public String editAdmin(Model model, @RequestParam int id) {
+
+        User adminUser = userMapper.findOne(id);
+        model.addAttribute("adminUser", adminUser);
+        return "role/admin/addAdmin/editAdmin";
+    }
+
+    @RequestMapping(value = "/systemManagement/addAdmin", method = RequestMethod.POST)
+    public String addAdmin(@ModelAttribute("adminUser") User adminUser, SessionStatus sessionStatus) {
+
+        adminUser.setEnabled(true);
+        adminUser.setConfirm(true);
+        userService.signupAdmin(adminUser);
+        sessionStatus.setComplete();
+
+        return "redirect:/admin/systemManagement/addAdmin?result=success";
+    }
+
+    @RequestMapping(value = "/systemManagement/deleteAdmin", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean deleteAdmin(@RequestParam int id) {
+        List<User> admins = userMapper.findAllAdmins();
+        if(admins.size() > 1) {
+            User adminUser = userMapper.findOne(id);
+            userMapper.delete(adminUser);
+            return true;
+        } else
+            return false;
+
+    }
+
+    @RequestMapping(value = "/systemManagement/editAdmin", method = RequestMethod.POST)
+    public String editAdmin(@ModelAttribute("adminUser") User adminUser, SessionStatus sessionStatus) {
+        System.out.println("adminUser = " + adminUser.getPassword());
+
+        adminUser.setPassword(passwordEncoder.encode(adminUser.getPassword()));
+        System.out.println("adminUser = " + adminUser.getPassword());
+        System.out.println("adminUser = " + adminUser);
+        userMapper.updateFromSignup(adminUser);
+        contactMapper.update(adminUser.getContact());
+        sessionStatus.setComplete();
+
+        return "redirect:/admin/systemManagement/addAdmin?result=success";
+    }
+
+    @RequestMapping("/systemManagement/addAdmin/adminTable")
+    public String adminTable(Model model) {
+        List<User> adminList = userMapper.findAllAdmins();
+        model.addAttribute("adminList", adminList);
+        return "role/admin/addAdmin/adminTable";
+    }
+
 
     @RequestMapping("/systemManagement/errorReport")
     public String errorReport(Model model) {

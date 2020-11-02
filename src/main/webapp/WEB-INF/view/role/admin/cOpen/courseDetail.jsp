@@ -136,7 +136,7 @@
 
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
-    //changeMajor("#divisionId", "#majorId", true, ${course.majorId});
+
 
 
 

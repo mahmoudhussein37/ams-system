@@ -60,7 +60,7 @@ public class UserService implements UserDetailsService {
             authorityMapper.insert(authority);
 
             //TODO: remove
-            if(user.getUsername().contains("admin")) {
+            if(role == Role.admin) {
                 Authority adminAuthority = new Authority();
                 adminAuthority.setUserId(stored.getId());
                 adminAuthority.setRole(Role.admin);
@@ -76,6 +76,34 @@ public class UserService implements UserDetailsService {
                 profAuthority.setRole(Role.professor);
                 authorityMapper.insert(profAuthority);
             }
+
+            System.out.println("user created :" + new Date());
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean signupAdmin(User user) {
+
+        if(user.getUsername() == null || user.getPassword() ==  null)
+            return false;
+
+        if(isUniqueUsername(user.getUsername().trim())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userMapper.insert(user);
+            user.getContact().setUserId(user.getId());
+            Contact contact = user.getContact();
+            contactMapper.insert(contact);
+
+            Authority authority = new Authority();
+            authority.setUserId(user.getId());
+            authority.setRole(Role.user);
+            authorityMapper.insert(authority);
+
+            Authority adminAuthority = new Authority();
+            adminAuthority.setUserId(user.getId());
+            adminAuthority.setRole(Role.admin);
+            authorityMapper.insert(adminAuthority);
 
             System.out.println("user created :" + new Date());
             return true;

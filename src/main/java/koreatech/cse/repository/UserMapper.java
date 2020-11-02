@@ -41,10 +41,12 @@ public interface UserMapper {
             "`number` = #{number},"+
             "`division_id` = #{divisionId},"+
             "`advisor_id` = #{advisorId},"+
+
             "`school_year` = #{schoolYear},"+
             "`status` = #{status} "+
             "WHERE `id` = #{id}")
     void update(User user);
+
 
     @Update("UPDATE `user` SET"+
             "`username` = #{username},"+
@@ -78,6 +80,10 @@ public interface UserMapper {
     List<User> findAllProfessors();
 
     @ResultMap("findOne-int")
+    @Select("SELECT * FROM USER u join authority a on u.id = a.user_id where a.role = 'ROLE_ADMIN'")
+    List<User> findAllAdmins();
+
+    @ResultMap("findOne-int")
     @Select("select * from user where username = #{username}")
     User findByUsername(@Param("username") String username);
 
@@ -86,7 +92,7 @@ public interface UserMapper {
     User findByNumber(@Param("number") String number);
 
     @Delete("DELETE FROM USER WHERE ID = #{id}")
-    void delete(@Param("id") int id);
+    void delete(User user);
 
     @SelectProvider(type = UserSqlProvider.class, method = "findAllByProvider")
     List<User> findByProvider(Searchable searchable);
