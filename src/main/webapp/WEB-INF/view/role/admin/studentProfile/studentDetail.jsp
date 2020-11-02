@@ -51,7 +51,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <label><spring:message code="common.advisor"/></label>
-            <input type="text" class="form-control"  value="${studentUser.advisor}" disabled/>
+            <input type="text" class="form-control"  value="${advisor.contact.getFullName()}" disabled/>
             <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
         </div>
 

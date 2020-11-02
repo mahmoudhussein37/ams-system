@@ -1,7 +1,6 @@
 package koreatech.cse.repository;
 
 
-import koreatech.cse.domain.Authority;
 import koreatech.cse.domain.univ.Semester;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -22,6 +21,9 @@ public interface SemesterMapper {
 
     @Select("SELECT * FROM semester where year=#{year} and semester=#{semester} limit 1")
     Semester findByYearAndSemester(@Param("year") int year, @Param("semester") int semester);
+
+    @Select("SELECT distinct year FROM semester order by year desc")
+    List<Integer> findYears();
 
     @Update("UPDATE `semester` SET"+
             "`year` = #{year},"+

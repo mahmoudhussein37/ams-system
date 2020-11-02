@@ -44,7 +44,8 @@ public class StudentController {
     private ProfessorCourseMapper professorCourseMapper;
     @Inject
     private LectureFundamentalsMapper lectureFundamentalsMapper;
-
+    @Inject
+    private SemesterMapper semesterMapper;
 
 
     @RequestMapping("/courseGuide/yearlyCurriculum")
@@ -403,15 +404,9 @@ public class StudentController {
 
 
 
-    
+
     private List<Integer> getYearList() {
-        DateTime dt = new DateTime();
-        int currentYear = dt.getYear();
-        List<Integer> yearList = new ArrayList<>();
-        for(int i=currentYear; i>=(currentYear - 10); i--) {
-            yearList.add(i);
-        }
-        return yearList;
+        return semesterMapper.findYears();
     }
 
 }

@@ -11,6 +11,7 @@ public class Course implements Serializable {
 
     private int id;
     private int year;
+    private int yearId;
     private String semester;
     private String code;
     private String title;
@@ -55,6 +56,14 @@ public class Course implements Serializable {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public int getYearId() {
+        return yearId;
+    }
+
+    public void setYearId(int yearId) {
+        this.yearId = yearId;
     }
 
     public String getSemester() {

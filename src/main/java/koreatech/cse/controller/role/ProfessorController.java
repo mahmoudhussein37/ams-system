@@ -42,6 +42,9 @@ public class ProfessorController {
     private LectureFundamentalsMapper lectureFundamentalsMapper;
     @Inject
     private CounselingMapper counselingMapper;
+    @Inject
+    private SemesterMapper semesterMapper;
+
 
 
 
@@ -494,15 +497,9 @@ public class ProfessorController {
 
         return "role/professor/makeupClass/courseDetail";
     }
-    
+
     private List<Integer> getYearList() {
-        DateTime dt = new DateTime();
-        int currentYear = dt.getYear();
-        List<Integer> yearList = new ArrayList<>();
-        for(int i=currentYear; i>=(currentYear - 10); i--) {
-            yearList.add(i);
-        }
-        return yearList;
+        return semesterMapper.findYears();
     }
 
 }

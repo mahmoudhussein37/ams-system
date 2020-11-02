@@ -198,6 +198,9 @@ public class AdminController {
     public String studentProfileStudentDetail(Model model, @RequestParam int studentId) {
         User studentUser = userMapper.findOne(studentId);
         model.addAttribute("studentUser", studentUser);
+        User advisor = userMapper.findOne(studentUser.getAdvisorId());
+        model.addAttribute("advisor", advisor);
+
         return "role/admin/studentProfile/studentDetail";
     }
 
@@ -1082,13 +1085,7 @@ public class AdminController {
 
     
     private List<Integer> getYearList() {
-        DateTime dt = new DateTime();
-        int currentYear = dt.getYear();
-        List<Integer> yearList = new ArrayList<>();
-        for(int i=currentYear; i>=(currentYear - 10); i--) {
-            yearList.add(i);
-        }
-        return yearList;
+        return semesterMapper.findYears();
     }
 
 }
