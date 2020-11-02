@@ -76,7 +76,7 @@
                                     <li class="menu-item "  aria-haspopup="true"><a  href="/admin/systemManagement/divisionMajor" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_2"/></span></a></li>
                                     <li class="menu-item "  aria-haspopup="true"><a  href="/admin/systemManagement/lectureMethod" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_3"/></span></a></li>
                                     <li class="menu-item "  aria-haspopup="true"><a  href="/admin/systemManagement/evaluationMethod" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_4"/></span></a></li>
-                                    <li class="menu-item "  aria-haspopup="true"><a  href="/admin/systemManagement/eduType" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_5"/></span></a></li>
+                                    <li class="menu-item "  aria-haspopup="true"><a  href="/admin/systemManagement/educationalMedium" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_5"/></span></a></li>
                                     <li class="menu-item "  aria-haspopup="true"><a  href="/admin/systemManagement/equipment" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_6"/></span></a></li>
                                     <li class="menu-item "  aria-haspopup="true"><a  href="/admin/systemManagement/classroom" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_7"/></span></a></li>
                                     <li class="menu-item "  aria-haspopup="true"><a  href="/admin/systemManagement/menu" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text"><spring:message code="menu.admin.sub5_8"/></span></a></li>
@@ -194,8 +194,8 @@
             <li class="menu-item  ${fn:contains(requestUri, '/admin/systemManagement/evaluationMethod') ? 'menu-item-active' : ''}"  aria-haspopup="true">
                 <a  href="/admin/systemManagement/evaluationMethod" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub5_4"/></span></a>
             </li>
-            <li class="menu-item  ${fn:contains(requestUri, '/admin/systemManagement/eduType') ? 'menu-item-active' : ''}"  aria-haspopup="true">
-                <a  href="/admin/systemManagement/eduType" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub5_5"/></span></a>
+            <li class="menu-item  ${fn:contains(requestUri, '/admin/systemManagement/educationalMedium') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                <a  href="/admin/systemManagement/educationalMedium" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub5_5"/></span></a>
             </li>
             <li class="menu-item  ${fn:contains(requestUri, '/admin/systemManagement/equipment') ? 'menu-item-active' : ''}"  aria-haspopup="true">
                 <a  href="/admin/systemManagement/equipment" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub5_6"/></span></a>

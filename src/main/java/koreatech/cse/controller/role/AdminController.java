@@ -56,6 +56,14 @@ public class AdminController {
     private LectureMethodMapper lectureMethodMapper;
     @Inject
     private LectureFundamentalsMapper lectureFundamentalsMapper;
+    @Inject
+    private EvaluationMethodMapper evaluationMethodMapper;
+    @Inject
+    private EducationalMediumMapper educationalMediumMapper;
+    @Inject
+    private EquipmentMapper equipmentMapper;
+    @Inject
+    private ClassroomMapper classroomMapper;
 
 
 
@@ -1134,23 +1142,270 @@ public class AdminController {
     }
 
     @RequestMapping("/systemManagement/evaluationMethod")
-    public String evaluationMethod(Model model) {
+    public String evaluationMethod(Model model, @RequestParam(required=false) String result) {
+        EvaluationMethod evaluationMethod = new EvaluationMethod();
+        model.addAttribute("evaluationMethod", evaluationMethod);
+        model.addAttribute("result", result);
         return "role/admin/evaluationMethod/evaluationMethod";
     }
 
-    @RequestMapping("/systemManagement/eduType")
-    public String eduType(Model model) {
-        return "role/admin/eduType/eduType";
+    @RequestMapping(value = "/systemManagement/evaluationMethod", method = RequestMethod.POST)
+    public String evaluationMethod(@ModelAttribute EvaluationMethod evaluationMethod) {
+        evaluationMethodMapper.insert(evaluationMethod);
+        return "redirect:/admin/systemManagement/evaluationMethod?result=success";
+    }
+
+    @RequestMapping("/systemManagement/evaluationMethod/evaluationMethodTable")
+    public String evaluationMethodTable(Model model) {
+
+
+        List<EvaluationMethod> evaluationMethodList = evaluationMethodMapper.findAll();
+
+        model.addAttribute("evaluationMethodList", evaluationMethodList);
+        return "role/admin/evaluationMethod/evaluationMethodTable";
+    }
+
+    @RequestMapping(value = "/systemManagement/evaluationMethod/evaluationMethodEditable", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean evaluationMethodEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
+        EvaluationMethod evaluationMethod = evaluationMethodMapper.findOne(pk);
+
+
+        switch (name) {
+            default:
+                SystemUtil.setObjectFieldValue(evaluationMethod, name, value);
+        }
+        evaluationMethodMapper.update(evaluationMethod);
+        return true;
+    }
+
+    @RequestMapping(value = "/systemManagement/evaluationMethod/deleteEvaluationMethod", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean deleteEvaluationMethod(@RequestParam int id) {
+        EvaluationMethod evaluationMethod = evaluationMethodMapper.findOne(id);
+
+        //TODO:
+        evaluationMethodMapper.delete(evaluationMethod);
+
+        /*List<Course> courses = courseMapper.findByEvaluationMethod(id);
+        if(CollectionUtils.isEmpty(courses)) {
+            evaluationMethodMapper.delete(evaluationMethod);
+            return true;
+        } else {
+            evaluationMethod.setEnabled(false);
+            evaluationMethodMapper.update(evaluationMethod);
+            return false;
+        }*/
+        return true;
+    }
+
+    @RequestMapping(value = "/systemManagement/evaluationMethod/enableEvaluationMethod", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean enableEvaluationMethod(@RequestParam int id) {
+        EvaluationMethod evaluationMethod = evaluationMethodMapper.findOne(id);
+        evaluationMethod.setEnabled(true);
+        evaluationMethodMapper.update(evaluationMethod);
+        return true;
+    }
+
+    @RequestMapping("/systemManagement/educationalMedium")
+    public String educationalMedium(Model model) {
+        EducationalMedium educationalMedium = new EducationalMedium();
+        model.addAttribute("educationalMedium", educationalMedium);
+        return "role/admin/educationalMedium/educationalMedium";
+    }
+
+    @RequestMapping(value = "/systemManagement/educationalMedium", method = RequestMethod.POST)
+    public String educationalMedium(@ModelAttribute EducationalMedium educationalMedium) {
+        educationalMediumMapper.insert(educationalMedium);
+        return "redirect:/admin/systemManagement/educationalMedium?result=success";
+    }
+
+    @RequestMapping("/systemManagement/educationalMedium/educationalMediumTable")
+    public String educationalMediumTable(Model model) {
+
+
+        List<EducationalMedium> educationalMediumList = educationalMediumMapper.findAll();
+
+        model.addAttribute("educationalMediumList", educationalMediumList);
+        return "role/admin/educationalMedium/educationalMediumTable";
+    }
+
+    @RequestMapping(value = "/systemManagement/educationalMedium/educationalMediumEditable", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean educationalMediumEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
+        EducationalMedium educationalMedium = educationalMediumMapper.findOne(pk);
+
+
+        switch (name) {
+            default:
+                SystemUtil.setObjectFieldValue(educationalMedium, name, value);
+        }
+        educationalMediumMapper.update(educationalMedium);
+        return true;
+    }
+
+    @RequestMapping(value = "/systemManagement/educationalMedium/deleteEducationalMedium", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean deleteEducationalMedium(@RequestParam int id) {
+        EducationalMedium educationalMedium = educationalMediumMapper.findOne(id);
+
+        //TODO:
+        educationalMediumMapper.delete(educationalMedium);
+
+        /*List<Course> courses = courseMapper.findByEducationalMedium(id);
+        if(CollectionUtils.isEmpty(courses)) {
+            educationalMediumMapper.delete(educationalMedium);
+            return true;
+        } else {
+            educationalMedium.setEnabled(false);
+            educationalMediumMapper.update(educationalMedium);
+            return false;
+        }*/
+        return true;
+    }
+
+    @RequestMapping(value = "/systemManagement/educationalMedium/enableEducationalMedium", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean enableEducationalMedium(@RequestParam int id) {
+        EducationalMedium educationalMedium = educationalMediumMapper.findOne(id);
+        educationalMedium.setEnabled(true);
+        educationalMediumMapper.update(educationalMedium);
+        return true;
     }
 
     @RequestMapping("/systemManagement/equipment")
-    public String equipment(Model model) {
+    public String equipment(Model model, @RequestParam(required=false) String result) {
+        Equipment equipment = new Equipment();
+        model.addAttribute("equipment", equipment);
+        model.addAttribute("result", result);
         return "role/admin/equipment/equipment";
     }
 
+    @RequestMapping(value = "/systemManagement/equipment", method = RequestMethod.POST)
+    public String equipment(@ModelAttribute Equipment equipment) {
+        equipmentMapper.insert(equipment);
+        return "redirect:/admin/systemManagement/equipment?result=success";
+    }
+
+    @RequestMapping("/systemManagement/equipment/equipmentTable")
+    public String equipmentTable(Model model) {
+
+
+        List<Equipment> equipmentList = equipmentMapper.findAll();
+
+        model.addAttribute("equipmentList", equipmentList);
+        return "role/admin/equipment/equipmentTable";
+    }
+
+    @RequestMapping(value = "/systemManagement/equipment/equipmentEditable", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean equipmentEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
+        Equipment equipment = equipmentMapper.findOne(pk);
+
+
+        switch (name) {
+            default:
+                SystemUtil.setObjectFieldValue(equipment, name, value);
+        }
+        equipmentMapper.update(equipment);
+        return true;
+    }
+
+    @RequestMapping(value = "/systemManagement/equipment/deleteEquipment", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean deleteEquipment(@RequestParam int id) {
+        Equipment equipment = equipmentMapper.findOne(id);
+
+        //TODO:
+        equipmentMapper.delete(equipment);
+
+        /*List<Course> courses = courseMapper.findByEquipment(id);
+        if(CollectionUtils.isEmpty(courses)) {
+            equipmentMapper.delete(equipment);
+            return true;
+        } else {
+            equipment.setEnabled(false);
+            equipmentMapper.update(equipment);
+            return false;
+        }*/
+        return true;
+    }
+
+    @RequestMapping(value = "/systemManagement/equipment/enableEquipment", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean enableEquipment(@RequestParam int id) {
+        Equipment equipment = equipmentMapper.findOne(id);
+        equipment.setEnabled(true);
+        equipmentMapper.update(equipment);
+        return true;
+    }
+
     @RequestMapping("/systemManagement/classroom")
-    public String classroom(Model model) {
+    public String classroom(Model model, @RequestParam(required=false) String result) {
+        Classroom classroom = new Classroom();
+        model.addAttribute("classroom", classroom);
+        model.addAttribute("result", result);
         return "role/admin/classroom/classroom";
+    }
+
+    @RequestMapping(value = "/systemManagement/classroom", method = RequestMethod.POST)
+    public String classroom(@ModelAttribute Classroom classroom) {
+        classroomMapper.insert(classroom);
+        return "redirect:/admin/systemManagement/classroom?result=success";
+    }
+
+    @RequestMapping("/systemManagement/classroom/classroomTable")
+    public String classroomTable(Model model) {
+
+
+        List<Classroom> classroomList = classroomMapper.findAll();
+
+        model.addAttribute("classroomList", classroomList);
+        return "role/admin/classroom/classroomTable";
+    }
+
+    @RequestMapping(value = "/systemManagement/classroom/classroomEditable", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean classroomEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
+        Classroom classroom = classroomMapper.findOne(pk);
+
+
+        switch (name) {
+            default:
+                SystemUtil.setObjectFieldValue(classroom, name, value);
+        }
+        classroomMapper.update(classroom);
+        return true;
+    }
+
+    @RequestMapping(value = "/systemManagement/classroom/deleteClassroom", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean deleteClassroom(@RequestParam int id) {
+        Classroom classroom = classroomMapper.findOne(id);
+
+        //TODO:
+        classroomMapper.delete(classroom);
+
+        /*List<Course> courses = courseMapper.findByClassroom(id);
+        if(CollectionUtils.isEmpty(courses)) {
+            classroomMapper.delete(classroom);
+            return true;
+        } else {
+            classroom.setEnabled(false);
+            classroomMapper.update(classroom);
+            return false;
+        }*/
+        return true;
+    }
+
+    @RequestMapping(value = "/systemManagement/classroom/enableClassroom", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean enableClassroom(@RequestParam int id) {
+        Classroom classroom = classroomMapper.findOne(id);
+        classroom.setEnabled(true);
+        classroomMapper.update(classroom);
+        return true;
     }
 
     @RequestMapping("/systemManagement/menu")
@@ -1172,17 +1427,6 @@ public class AdminController {
     public String errorReport(Model model) {
         return "role/admin/errorReport/errorReport";
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 

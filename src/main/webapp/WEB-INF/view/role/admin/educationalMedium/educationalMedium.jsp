@@ -16,7 +16,7 @@
                     <!--begin::Card-->
                     <div class="card card-custom">
                         <div class="card-header">
-                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.admin.sub5_6"/></h3>
+                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.admin.sub5_5"/></h3>
 
                         </div>
                         <div class="card-body">
@@ -27,21 +27,13 @@
                             <br/><br/>
                             <div class="separator separator-solid my-5"></div>
                             <br/><br/>
-                            <form:form modelAttribute="equipment" action="${baseUrl}/admin/systemManagement/equipment" method="post">
-                                <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.createEquipmentAndTools"/></h3>
+                            <form:form modelAttribute="educationalMedium" action="${baseUrl}/admin/systemManagement/educationalMedium" method="post">
+                                <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.createEducationalMedium"/></h3>
                                 <div class="row">
                                     <div class="col-md-3">
 
                                         <div class="form-group">
-                                            <label><spring:message code="common.code"/></label>
-                                            <input type="text" name="code" class="form-control"/>
-                                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-
-                                        <div class="form-group">
-                                            <label><spring:message code="common.name"/></label>
+                                            <label><spring:message code="professor.methods"/></label>
                                             <input type="text" name="name" class="form-control"/>
                                                 <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                         </div>
@@ -74,11 +66,11 @@
 
 <script>
     $(document).ready(function() {
-        $(".table-div").load("${baseUrl}/admin/systemManagement/equipment/equipmentTable");
+        $(".table-div").load("${baseUrl}/admin/systemManagement/educationalMedium/educationalMediumTable");
 
         <c:if test="${not empty result}">
         alert("<spring:message code='common.success'/>");
-        location.href="${baseUrl}/admin/systemManagement/equipment";
+        location.href="${baseUrl}/admin/systemManagement/educationalMedium";
         </c:if>
     });
 </script>
