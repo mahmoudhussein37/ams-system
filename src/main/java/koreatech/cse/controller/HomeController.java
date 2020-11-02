@@ -1,8 +1,10 @@
 package koreatech.cse.controller;
 
+import koreatech.cse.domain.Feedback;
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.Role;
+import koreatech.cse.repository.FeedbackMapper;
 import koreatech.cse.repository.MajorMapper;
 import koreatech.cse.repository.UserMapper;
 import koreatech.cse.service.UserService;
@@ -29,7 +31,7 @@ public class HomeController {
     @Inject
     private UserMapper userMapper;
     @Inject
-    private MajorMapper majorMapper;
+    private FeedbackMapper feedbackMapper;
 
 
     @RequestMapping
@@ -38,7 +40,7 @@ public class HomeController {
         return "index";
     }
 
-    @RequestMapping("/majorList")
+    /*@RequestMapping("/majorList")
     public String majorList(Model model, @RequestParam(required=false, defaultValue = "0") int divisionId,
                             @RequestParam(required=false, defaultValue = "true") boolean enabled,
                             @RequestParam(required=false, defaultValue = "0") int defaultSelected) {
@@ -57,7 +59,7 @@ public class HomeController {
         }
         model.addAttribute("defaultSelected", defaultSelected);
         return "include/majorOptions";
-    }
+    }*/
 
     @RequestMapping("/profList")
     public String profList(Model model, @RequestParam(required=false, defaultValue = "0") int divisionId, @RequestParam(required=false, defaultValue = "0") int defaultSelected) {
@@ -128,10 +130,18 @@ public class HomeController {
 
     @RequestMapping(value = "/feedback", method = RequestMethod.GET)
     public String feedback(Model model) {
-        User signupUser = new User();
-        model.addAttribute("signupUser", signupUser);
+        Feedback feedback = new Feedback();
+        model.addAttribute("feedback", feedback);
 
         return "feedback";
+    }
+
+    @RequestMapping(value = "/feedback", method = RequestMethod.POST)
+    public String feedback(@ModelAttribute Feedback feedback, SessionStatus status) {
+        feedbackMapper.insert(feedback);
+        status.setComplete();
+
+        return "redirect:/";
     }
 
 }

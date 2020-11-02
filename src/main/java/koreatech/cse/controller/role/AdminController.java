@@ -1,6 +1,7 @@
 package koreatech.cse.controller.role;
 
 import koreatech.cse.domain.Contact;
+import koreatech.cse.domain.Feedback;
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.CompCategory;
@@ -69,6 +70,8 @@ public class AdminController {
     private MenuAccessMapper menuAccessMapper;
     @Inject
     private PasswordEncoder passwordEncoder;
+    @Inject
+    private FeedbackMapper feedbackMapper;
 
 
 
@@ -1510,6 +1513,8 @@ public class AdminController {
 
     @RequestMapping("/systemManagement/errorReport")
     public String errorReport(Model model) {
+        List<Feedback> feedbackList = feedbackMapper.findRecent();
+        model.addAttribute("feedbackList", feedbackList);
         return "role/admin/errorReport/errorReport";
     }
 
