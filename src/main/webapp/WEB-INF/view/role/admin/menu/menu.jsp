@@ -21,6 +21,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-div">
+<form:form modelAttribute="menuAccess" action="${baseUrl}/admin/systemManagement/menu" method="post" class="form">
                                 <table class="table table-head-custom table-vertical-center" id="course-list">
                                     <thead>
                                     <tr class="table-secondary text-center">
@@ -35,10 +36,10 @@
                                             Register grade
                                         </td>
                                         <td class="pl-0">
-                                            <select class="form-control">
-                                                <option value="true">Y</option>
-                                                <option value="true">N</option>
-                                            </select>
+                                            <form:select path="grade" class="form-control">
+                                                <form:option value="true">Y</form:option>
+                                                <form:option value="false">N</form:option>
+                                            </form:select>
                                         </td>
                                     </tr>
                                     <tr class="text-center">
@@ -47,10 +48,10 @@
                                             Course assessment
                                         </td>
                                         <td class="pl-0">
-                                            <select class="form-control">
-                                                <option value="true">Y</option>
-                                                <option value="true">N</option>
-                                            </select>
+                                            <form:select path="assessment" class="form-control">
+                                                <form:option value="true">Y</form:option>
+                                                <form:option value="false">N</form:option>
+                                            </form:select>
                                         </td>
                                     </tr>
                                     <tr class="text-center">
@@ -59,10 +60,10 @@
                                             Syllabus
                                         </td>
                                         <td class="pl-0">
-                                            <select class="form-control">
-                                                <option value="true">Y</option>
-                                                <option value="true">N</option>
-                                            </select>
+                                            <form:select path="syllabus" class="form-control">
+                                                <form:option value="true">Y</form:option>
+                                                <form:option value="false">N</form:option>
+                                            </form:select>
                                         </td>
                                     </tr>
                                     <tr class="text-center">
@@ -71,17 +72,25 @@
                                             CQI
                                         </td>
                                         <td class="pl-0">
-                                            <select class="form-control">
-                                                <option value="true">Y</option>
-                                                <option value="true">N</option>
-                                            </select>
+                                            <form:select path="cqi" class="form-control">
+                                                <form:option value="true">Y</form:option>
+                                                <form:option value="false">N</form:option>
+                                            </form:select>
                                         </td>
                                     </tr>
 
                                     </tbody>
                                 </table>
-                            </div>
 
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group" style="text-align:right">
+                                        <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
+                                    </div>
+                                </div>
+                            </div>
+                            </form:form>
 
                         </div>
                     </div>
@@ -107,6 +116,10 @@
 
 <script>
     $(document).ready(function() {
+        <c:if test="${not empty result}">
+        alert("<spring:message code='common.success'/>");
+        location.href="${baseUrl}/admin/systemManagement/menu";
+        </c:if>
     });
 </script>
 </body>

@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"studentUser", "profUser", "course", "division", "semester"})
+@SessionAttributes({"studentUser", "profUser", "course", "division", "semester", "menuAccess"})
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
@@ -64,6 +64,9 @@ public class AdminController {
     private EquipmentMapper equipmentMapper;
     @Inject
     private ClassroomMapper classroomMapper;
+    @Inject
+    private MenuAccessMapper menuAccessMapper;
+
 
 
 
@@ -1418,9 +1421,25 @@ public class AdminController {
     }
 
     @RequestMapping("/systemManagement/menu")
-    public String menu(Model model) {
+    public String menu(Model model, @RequestParam(required=false) String result) {
+        MenuAccess menuAccess = menuAccessMapper.findOne();
+        if(menuAccess == null) {
+            menuAccess = new MenuAccess();
+            menuAccessMapper.insert(menuAccess);
+        }
+
+        model.addAttribute("menuAccess", menuAccess);
+        model.addAttribute("result", result);
         return "role/admin/menu/menu";
     }
+
+    @RequestMapping(value = "/systemManagement/menu", method = RequestMethod.POST)
+    public String menu(@ModelAttribute MenuAccess menuAccess) {
+        menuAccessMapper.update(menuAccess);
+        return "redirect:/admin/systemManagement/menu?result=success";
+    }
+
+
 
     @RequestMapping("/systemManagement/addAdmin")
     public String addAdmin(Model model) {
