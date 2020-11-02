@@ -1,4 +1,5 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
+<link href="${resources}/vendor/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" type="text/css"/>
 <table class="table table-head-custom table-vertical-center" id="course-list">
     <thead>
     <tr class="table-secondary text-center">

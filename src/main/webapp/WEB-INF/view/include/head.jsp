@@ -48,7 +48,7 @@
 
     </c:otherwise>
     </c:choose>
-    <link href="${resources}/vendor/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" type="text/css"/>
+
     <link rel="shortcut icon" href="${resources}/vendor/metronic_assets_7/assets/media/logos/favicon.ico"/>
     <style>
 
