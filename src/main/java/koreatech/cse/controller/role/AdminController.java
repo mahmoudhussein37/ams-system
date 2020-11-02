@@ -1408,6 +1408,15 @@ public class AdminController {
         return true;
     }
 
+    @RequestMapping(value = "/systemManagement/classroom/disableClassroom", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean disableClassroom(@RequestParam int id) {
+        Classroom classroom = classroomMapper.findOne(id);
+        classroom.setEnabled(false);
+        classroomMapper.update(classroom);
+        return true;
+    }
+
     @RequestMapping("/systemManagement/menu")
     public String menu(Model model) {
         return "role/admin/menu/menu";
