@@ -60,12 +60,6 @@
                 <td colspan="2">
                     ${course.division.name}
                 </td>
-                <%--<td>
-                        <spring:message code="common.major"/>
-                </td>
-                <td>
-                    ${course.major.name}
-                </td>--%>
                 <td>
                     <spring:message code="common.schoolYear"/>
                 </td>

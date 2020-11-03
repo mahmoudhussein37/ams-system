@@ -23,7 +23,6 @@ public class Course implements Serializable {
 
     private int divide;
 
-    private int majorId;
     private int schoolYear;
     private String lang;
     private String lectureTime;
@@ -33,7 +32,6 @@ public class Course implements Serializable {
     private int maxStudent;
 
     private Division division;
-    private Major major;
     private User profUser;
     private LectureFundamentals lectureFundamentals;
 
@@ -142,15 +140,6 @@ public class Course implements Serializable {
         this.enabled = enabled;
     }
 
-
-    public int getMajorId() {
-        return majorId;
-    }
-
-    public void setMajorId(int majorId) {
-        this.majorId = majorId;
-    }
-
     public int getSchoolYear() {
         return schoolYear;
     }
@@ -221,14 +210,6 @@ public class Course implements Serializable {
 
     public void setDivision(Division division) {
         this.division = division;
-    }
-
-    public Major getMajor() {
-        return major;
-    }
-
-    public void setMajor(Major major) {
-        this.major = major;
     }
 
     public LectureFundamentals getLectureFundamentals() {

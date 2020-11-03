@@ -147,6 +147,7 @@ public class AdminController {
         System.out.println("studentUser = " + studentUser);
 
         userMapper.update(studentUser);
+        userMapper.updateFromSignup(studentUser);
         contactMapper.update(studentUser.getContact());
         sessionStatus.setComplete();
 
