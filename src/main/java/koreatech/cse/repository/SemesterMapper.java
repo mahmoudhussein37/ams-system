@@ -13,7 +13,7 @@ public interface SemesterMapper {
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(Semester semester);
 
-    @Select("SELECT * FROM semester")
+    @Select("SELECT * FROM semester order by year desc semester asc")
     List<Semester> findAll();
 
     @Select("SELECT * FROM semester where id=#{id}")

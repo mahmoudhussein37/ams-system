@@ -41,7 +41,6 @@ public interface UserMapper {
             "`number` = #{number},"+
             "`division_id` = #{divisionId},"+
             "`advisor_id` = #{advisorId},"+
-
             "`school_year` = #{schoolYear},"+
             "`status` = #{status} "+
             "WHERE `id` = #{id}")

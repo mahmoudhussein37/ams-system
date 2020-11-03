@@ -8,15 +8,12 @@ import koreatech.cse.domain.constant.CompCategory;
 import koreatech.cse.domain.constant.StudentStatus;
 import koreatech.cse.domain.constant.SubjCategory;
 import koreatech.cse.domain.role.professor.Counseling;
-import koreatech.cse.domain.role.professor.LectureFundamentals;
-import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.univ.*;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.AuthorityService;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.SystemUtil;
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -38,8 +35,6 @@ public class AdminController {
     private UserMapper userMapper;
     @Inject
     private DivisionMapper divisionMapper;
-    @Inject
-    private MajorMapper majorMapper;
     @Inject
     private UserService userService;
     @Inject
@@ -176,28 +171,24 @@ public class AdminController {
     public String studentProfile(Model model) {
 
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
         return "role/admin/studentProfile/studentProfile";
     }
 
     @RequestMapping("/studentManagement/studentProfile/studentTable")
     public String studentProfileStudentTable(Model model, @RequestParam(required=false) String number,
                                @RequestParam(required=false) String name,
-                               @RequestParam(defaultValue = "0", required=false) int division,
-                               @RequestParam(defaultValue = "0", required=false) int major) {
+                               @RequestParam(defaultValue = "0", required=false) int division) {
         User firstUser = null;
         List<User> userList;
-        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0 && major == 0) {
+        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
             userList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            searchable.setMajor(major);
             userList = userMapper.findByStudentLookup(searchable);
 
 
@@ -264,9 +255,7 @@ public class AdminController {
     @RequestMapping("/profManagement/profRegistration")
     public String profRegistration(Model model, @RequestParam(required=false) String result) {
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
         User profUser = new User();
         Contact contact = new Contact();
         profUser.setContact(contact);
@@ -288,10 +277,8 @@ public class AdminController {
     public String profInformation(Model model, @RequestParam(required=false) String result) {
 
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
         model.addAttribute("result", result);
         return "role/admin/profInformation/profInformation";
     }
@@ -299,22 +286,16 @@ public class AdminController {
     @RequestMapping("/profManagement/profInformation/profTable")
     public String profTable(Model model, @RequestParam(required=false) String number,
                                @RequestParam(required=false) String name,
-                               @RequestParam(defaultValue = "0", required=false) int division,
-                               @RequestParam(defaultValue = "0", required=false) int major) {
+                               @RequestParam(defaultValue = "0", required=false) int division) {
         User firstUser = null;
         List<User> userList;
-        System.out.println("division = " + division);
-        System.out.println("major = " + major);
-        System.out.println("number = " + number);
-        ;
-        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0 && major == 0) {
+        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
             userList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            searchable.setMajor(major);
             userList = userMapper.findByProfLookup(searchable);
 
 
@@ -335,10 +316,8 @@ public class AdminController {
         model.addAttribute("profUser", profUser);
         model.addAttribute("statusList", StudentStatus.values());
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
 
         return "role/admin/profInformation/profDetail";
     }
@@ -347,6 +326,7 @@ public class AdminController {
     public String profDetail(@ModelAttribute("profUser") User profUser, SessionStatus sessionStatus) {
 
         userMapper.update(profUser);
+        userMapper.updateFromSignup(profUser);
         contactMapper.update(profUser.getContact());
         sessionStatus.setComplete();
 
@@ -400,7 +380,7 @@ public class AdminController {
         model.addAttribute("yearList", getYearList());
 
         Searchable searchable = new Searchable();
-        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -421,7 +401,7 @@ public class AdminController {
         searchable.setYear(year);
         searchable.setSemester(semester);
 
-        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -467,10 +447,8 @@ public class AdminController {
     @RequestMapping("/courseManagement/course")
     public String course(Model model,  @RequestParam(required=false) String result) {
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
         model.addAttribute("yearList", getYearList());
         model.addAttribute("course", new Course());
         model.addAttribute("compCategoryList", CompCategory.values());
@@ -493,17 +471,15 @@ public class AdminController {
     public String courseTable(Model model,
                                        @RequestParam(defaultValue = "0", required=false) int year,
                                        @RequestParam(defaultValue = "0", required=false) int semester,
-                              @RequestParam(defaultValue = "0", required=false) int division,
-                              @RequestParam(defaultValue = "0", required=false) int major) {
+                              @RequestParam(defaultValue = "0", required=false) int division) {
         System.out.println("course table");
 
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
         searchable.setDivision(division);
-        searchable.setMajor(major);
 
-        List<Course> courseList = courseMapper.findByCourseManagement(searchable);
+        List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
 
         Course firstCourse = null;
         for(Course course: courseList) {
@@ -536,10 +512,8 @@ public class AdminController {
     public String alternative(Model model, @RequestParam(required=false) String result) {
 
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
         model.addAttribute("yearList", getYearList());
         model.addAttribute("course", new Course());
         model.addAttribute("compCategoryList", CompCategory.values());
@@ -552,16 +526,15 @@ public class AdminController {
     public String alternativeCourseTable(Model model,
                               @RequestParam(defaultValue = "0", required=false) int year,
                               @RequestParam(defaultValue = "0", required=false) int semester,
-                              @RequestParam(defaultValue = "0", required=false) int division,
-                              @RequestParam(defaultValue = "0", required=false) int major) {
+                              @RequestParam(defaultValue = "0", required=false) int division) {
 
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
         searchable.setDivision(division);
-        searchable.setMajor(major);
+        
 
-        List<Course> courseList = courseMapper.findByCourseManagement(searchable);
+        List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
 
         Course firstCourse = null;
         for(Course course: courseList) {
@@ -577,10 +550,8 @@ public class AdminController {
     @RequestMapping("/courseManagement/cOpen")
     public String cOpen(Model model, @RequestParam(required=false) String result) {
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
         model.addAttribute("yearList", getYearList());
         model.addAttribute("course", new Course());
         model.addAttribute("compCategoryList", CompCategory.values());
@@ -594,15 +565,14 @@ public class AdminController {
     public String cOpenCourseTable(Model model,
                               @RequestParam(defaultValue = "0", required=false) int year,
                               @RequestParam(defaultValue = "0", required=false) int semester,
-                              @RequestParam(defaultValue = "0", required=false) int division,
-                              @RequestParam(defaultValue = "0", required=false) int major) {
+                              @RequestParam(defaultValue = "0", required=false) int division) {
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
         searchable.setDivision(division);
-        searchable.setMajor(major);
+        
 
-        List<Course> courseList = courseMapper.findByCourseManagement(searchable);
+        List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
 
         Course firstCourse = null;
         for(Course course: courseList) {
@@ -621,9 +591,7 @@ public class AdminController {
         Course course = courseMapper.findOne(courseId);
         model.addAttribute("course", course);
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
         model.addAttribute("yearList", getYearList());
         model.addAttribute("compCategoryList", CompCategory.values());
         model.addAttribute("subjCategoryList", SubjCategory.values());
@@ -641,10 +609,8 @@ public class AdminController {
     public String attendance(Model model, @RequestParam(required=false) String result) {
 
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
         model.addAttribute("yearList", getYearList());
         model.addAttribute("course", new Course());
         model.addAttribute("compCategoryList", CompCategory.values());
@@ -657,16 +623,15 @@ public class AdminController {
     public String attendanceCourseTable(Model model,
                                          @RequestParam(defaultValue = "0", required=false) int year,
                                          @RequestParam(defaultValue = "0", required=false) int semester,
-                                         @RequestParam(defaultValue = "0", required=false) int division,
-                                         @RequestParam(defaultValue = "0", required=false) int major) {
+                                         @RequestParam(defaultValue = "0", required=false) int division) {
 
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
         searchable.setDivision(division);
-        searchable.setMajor(major);
+        
 
-        List<Course> courseList = courseMapper.findByCourseManagement(searchable);
+        List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
 
         Course firstCourse = null;
         for(Course course: courseList) {
@@ -704,7 +669,7 @@ public class AdminController {
         searchable.setYear(year);
         searchable.setSemester(semester);
 
-        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -720,10 +685,8 @@ public class AdminController {
     public String makeupClass(Model model, @RequestParam(required=false) String result) {
 
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
         model.addAttribute("yearList", getYearList());
         model.addAttribute("course", new Course());
         model.addAttribute("compCategoryList", CompCategory.values());
@@ -736,14 +699,13 @@ public class AdminController {
     public String makeupClassCourseTable(Model model,
                                         @RequestParam(defaultValue = "0", required=false) int year,
                                         @RequestParam(defaultValue = "0", required=false) int semester,
-                                        @RequestParam(defaultValue = "0", required=false) int division,
-                                        @RequestParam(defaultValue = "0", required=false) int major) {
+                                        @RequestParam(defaultValue = "0", required=false) int division) {
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
         searchable.setDivision(division);
-        searchable.setMajor(major);
-        List<Course> courseList = courseMapper.findByCourseManagement(searchable);
+        
+        List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
 
         Course firstCourse = null;
         for(Course course: courseList) {
@@ -772,7 +734,7 @@ public class AdminController {
         searchable.setYear(year);
         searchable.setSemester(semester);
 
-        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -795,28 +757,25 @@ public class AdminController {
     @RequestMapping("/academicManagement/graduationCriteria")
     public String graduationCriteria(Model model) {
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
         return "role/admin/graduationCriteria/graduationCriteria";
     }
 
     @RequestMapping("/academicManagement/graduationCriteria/studentTable")
     public String graduationCriteriaStudentTable(Model model, @RequestParam(required=false) String number,
                                @RequestParam(required=false) String name,
-                               @RequestParam(defaultValue = "0", required=false) int division,
-                               @RequestParam(defaultValue = "0", required=false) int major) {
+                               @RequestParam(defaultValue = "0", required=false) int division) {
         User firstUser = null;
         List<User> userList;
-        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0 && major == 0) {
+        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
             userList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            searchable.setMajor(major);
+            
             userList = userMapper.findByStudentLookup(searchable);
 
 
@@ -837,10 +796,8 @@ public class AdminController {
         model.addAttribute("studentUser", studentUser);
         model.addAttribute("statusList", StudentStatus.values());
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
 
         return "role/admin/graduationCriteria/studentDetail";
     }
@@ -848,15 +805,14 @@ public class AdminController {
     @RequestMapping("/academicManagement/assessmentFactor")
     public String assessmentFactor(Model model) {
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
         model.addAttribute("yearList", getYearList());
         return "role/admin/assessmentFactor/assessmentFactor";
     }
     @RequestMapping("/academicManagement/assessmentFactor/courseTable")
     public String assessmentFactorCourseTable(Model model,
+                                                @RequestParam(defaultValue = "0", required=false) int division,
                                                 @RequestParam(defaultValue = "0", required=false) int year,
                                                 @RequestParam(defaultValue = "0", required=false) int semester) {
 
@@ -864,8 +820,10 @@ public class AdminController {
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
+        searchable.setDivision(division);
 
-        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+
+        List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -888,10 +846,8 @@ public class AdminController {
     @RequestMapping("/academicManagement/assessmentResult")
     public String assessmentResult(Model model) {
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
         model.addAttribute("yearList", getYearList());
         return "role/admin/assessmentResult/assessmentResult";
     }
@@ -906,7 +862,8 @@ public class AdminController {
         searchable.setYear(year);
         searchable.setSemester(semester);
 
-        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+
+        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -942,7 +899,7 @@ public class AdminController {
         searchable.setYear(year);
         searchable.setSemester(semester);
 
-        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -1525,6 +1482,11 @@ public class AdminController {
     
     private List<Integer> getYearList() {
         return semesterMapper.findYears();
+    }
+
+    private List<Semester> getSemesterList() {
+        return semesterMapper.findAll();
+
     }
 
 }

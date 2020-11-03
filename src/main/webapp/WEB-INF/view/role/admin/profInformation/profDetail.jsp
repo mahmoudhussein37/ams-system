@@ -30,19 +30,18 @@
             </div>
 
         </div>
-        <%--<div class="col-md-3">
+        <div class="col-md-3">
 
             <div class="form-group">
-                <label><spring:message code="common.major"/></label>
-                <form:select path="majorId" class="form-control">
-                    &lt;%&ndash;<c:forEach var="major" items="${majors}">
-                        <form:option value="${major.id}">${major.name}</form:option>
-                    </c:forEach>&ndash;%&gt;
+                <label><spring:message code="common.activation"/></label>
+                <form:select path="enabled" class="form-control">
+                    <form:option value="true">Y</form:option>
+                    <form:option value="false">N</form:option>
                 </form:select>
 
-                    &lt;%&ndash;<span class="form-text text-muted">We'll never share your email with anyone else</span>&ndash;%&gt;
+                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
             </div>
-        </div>--%>
+        </div>
     </div>
 
 

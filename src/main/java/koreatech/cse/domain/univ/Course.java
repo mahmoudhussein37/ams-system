@@ -10,9 +10,8 @@ public class Course implements Serializable {
     private static final long serialVersionUID = 14570353849L;
 
     private int id;
-    private int year;
-    private int yearId;
-    private String semester;
+    private int semesterId;
+    private Semester semester;
     private String code;
     private String title;
     private String category;
@@ -38,6 +37,11 @@ public class Course implements Serializable {
     private User profUser;
     private LectureFundamentals lectureFundamentals;
 
+    private int lec;
+    private int tut;
+    private int lab;
+    private int ws;
+
 
     private boolean enabled;
 
@@ -50,27 +54,19 @@ public class Course implements Serializable {
         this.id = id;
     }
 
-    public int getYear() {
-        return year;
+    public int getSemesterId() {
+        return semesterId;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setSemesterId(int semesterId) {
+        this.semesterId = semesterId;
     }
 
-    public int getYearId() {
-        return yearId;
-    }
-
-    public void setYearId(int yearId) {
-        this.yearId = yearId;
-    }
-
-    public String getSemester() {
+    public Semester getSemester() {
         return semester;
     }
 
-    public void setSemester(String semester) {
+    public void setSemester(Semester semester) {
         this.semester = semester;
     }
 
@@ -249,6 +245,38 @@ public class Course implements Serializable {
 
     public void setDivide(int divide) {
         this.divide = divide;
+    }
+
+    public int getLec() {
+        return lec;
+    }
+
+    public void setLec(int lec) {
+        this.lec = lec;
+    }
+
+    public int getTut() {
+        return tut;
+    }
+
+    public void setTut(int tut) {
+        this.tut = tut;
+    }
+
+    public int getLab() {
+        return lab;
+    }
+
+    public void setLab(int lab) {
+        this.lab = lab;
+    }
+
+    public int getWs() {
+        return ws;
+    }
+
+    public void setWs(int ws) {
+        this.ws = ws;
     }
 
     @Override
