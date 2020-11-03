@@ -450,6 +450,7 @@ public class AdminController {
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
+        model.addAttribute("semesterList", getSemesterList());
         model.addAttribute("course", new Course());
         model.addAttribute("compCategoryList", CompCategory.values());
         model.addAttribute("subjCategoryList", SubjCategory.values());

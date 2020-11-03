@@ -161,24 +161,15 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label><spring:message code="common.year"/></label>
-                                                <form:select path="year" class="form-control" style="">
-                                                    <c:forEach var="y" items="${yearList}">
-                                                        <option value="${y}">${y}</option>
+                                                <label><spring:message code="common.semester"/></label>
+                                                <form:select path="semesterId" class="form-control" style="">
+                                                    <c:forEach var="y" items="${semesterList}">
+                                                        <option value="${y}">${y.year} - ${y.semester}</option>
                                                     </c:forEach>
                                                 </form:select>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
 
-                                            <div class="form-group">
-                                                <label><spring:message code="common.semester"/></label>
-                                                <form:select path="semester" class="form-control" style="">
-                                                    <option value="1"><spring:message code="common.sem1"/></option>
-                                                    <option value="2"><spring:message code="common.sem2"/></option>
-                                                </form:select>
-                                            </div>
-                                        </div>
                                         <div class="col-md-3">
 
                                             <div class="form-group">

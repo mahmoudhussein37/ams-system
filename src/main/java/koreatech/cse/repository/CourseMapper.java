@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface CourseMapper {
 
-    @Insert("INSERT INTO course (year, semester, code, title, category, credit, division_id, divide, prof_user_id, school_year, lang, lec, tut, lab, ws, lecture_time, max_student, comp_category, subj_category) VALUES " +
-            "(#{year}, #{semester}, #{code}, #{title}, #{category}, #{credit}, #{divisionId}, #{divide}, #{profUserId}, #{schoolYear}, #{lang}, #{lec}, #{tut}, #{lab}, #{ws}, #{lectureTime}, #{maxStudent}, #{compCategory}, #{subjCategory})")
+    @Insert("INSERT INTO course (semester_id, code, title, category, credit, division_id, divide, prof_user_id, school_year, lang, lec, tut, lab, ws, lecture_time, max_student, comp_category, subj_category) VALUES " +
+            "(#{semesterId}, #{code}, #{title}, #{category}, #{credit}, #{divisionId}, #{divide}, #{profUserId}, #{schoolYear}, #{lang}, #{lec}, #{tut}, #{lab}, #{ws}, #{lectureTime}, #{maxStudent}, #{compCategory}, #{subjCategory})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(Course course);
 
