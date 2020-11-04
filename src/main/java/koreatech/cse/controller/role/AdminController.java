@@ -554,9 +554,6 @@ public class AdminController {
         List<Division> divisions = divisionMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("yearList", getYearList());
-        model.addAttribute("course", new Course());
-        model.addAttribute("compCategoryList", CompCategory.values());
         model.addAttribute("subjCategoryList", SubjCategory.values());
         model.addAttribute("result", result);
         return "role/admin/alternative/alternative";
@@ -564,17 +561,9 @@ public class AdminController {
 
     @RequestMapping("/courseManagement/alternative/courseTable")
     public String alternativeCourseTable(Model model,
-                              @RequestParam(defaultValue = "0", required=false) int year,
-                              @RequestParam(defaultValue = "0", required=false) int semester,
                               @RequestParam(defaultValue = "0", required=false) int division) {
 
-        Searchable searchable = new Searchable();
-        searchable.setYear(year);
-        searchable.setSemester(semester);
-        searchable.setDivision(division);
-        
-
-        List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
+        List<Course> courseList = courseMapper.findByDivision(division);
 
         Course firstCourse = null;
         for(Course course: courseList) {

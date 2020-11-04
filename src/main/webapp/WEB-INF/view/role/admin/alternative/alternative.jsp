@@ -21,21 +21,6 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-2">
-                                    <spring:message code="common.year"/><br/>
-                                    <select id="search-year" class="form-control" style="">
-                                        <c:forEach var="y" items="${yearList}">
-                                            <option value="${y}">${y}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <spring:message code="common.semester"/><br/>
-                                    <select id="search-semester" class="form-control" style="">
-                                        <option value="1"><spring:message code="common.sem1"/></option>
-                                        <option value="2"><spring:message code="common.sem2"/></option>
-                                    </select>
-                                </div>
                                 <div class="col-md-4">
                                     <spring:message code="common.department"/><br/>
                                     <select id="search-division" class="form-control" style="">
@@ -89,11 +74,8 @@
 <script>
 
     function search() {
-        var year = $("#search-year").children("option:selected").val().trim();
-        var semester = $("#search-semester").children("option:selected").val().trim();
-        //var major = $("#search-major").children("option:selected").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/admin/courseManagement/alternative/courseTable?year=" + year + "&semester=" + semester + "&division=" + division);
+        $(".table-div").load("${baseUrl}/admin/courseManagement/alternative/courseTable?division=" + division);
     }
 
     $(".input-enter").keydown(function(key) {

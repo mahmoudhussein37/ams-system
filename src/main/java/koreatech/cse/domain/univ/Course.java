@@ -26,6 +26,9 @@ public class Course implements Serializable {
     private int lab;
     private int ws;
 
+    private String alternative;
+    private String prerequisite;
+
     private boolean enabled;
 
 
@@ -302,6 +305,22 @@ public class Course implements Serializable {
 
     public void setLearningObjective(String learningObjective) {
         this.learningObjective = learningObjective;
+    }
+
+    public String getAlternative() {
+        return alternative;
+    }
+
+    public void setAlternative(String alternative) {
+        this.alternative = alternative;
+    }
+
+    public String getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(String prerequisite) {
+        this.prerequisite = prerequisite;
     }
 
     @Override
