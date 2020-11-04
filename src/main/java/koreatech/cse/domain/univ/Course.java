@@ -17,10 +17,11 @@ public class Course implements Serializable {
     private int divisionId;
     private Division division;
     private Date registeredDate;
-    private int credit;
+
     private String overview;
     private String learningObjective;
 
+    private int credit;
     private int lec;
     private int tut;
     private int lab;

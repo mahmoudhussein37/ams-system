@@ -116,11 +116,11 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-3">
+<%--                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label><spring:message code="common.credit"/></label>
                                                 <form:input path="credit" type="number" class="form-control"/>
-                                                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                                    &lt;%&ndash;<span class="form-text text-muted">Please enter your full name</span>&ndash;%&gt;
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -133,7 +133,7 @@
                                                     <form:input type="number" path="ws" class="form-control" style="width:29%;display:inline" placeholder="Workshop/Practice"/>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>--%>
                                     </div>
 
                                     <div class="row">

@@ -8,7 +8,7 @@
         <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span>
-        <th style=""><span class="text-primary"><spring:message code="professor.course.ltlp"/></span>
+        <%--<th style=""><span class="text-primary"><spring:message code="professor.course.ltlp"/></span>--%>
         <%--<th style=""><span class="text-primary"><spring:message code="professor.learningObjectives"/></span>
         <th style=""><span class="text-primary"><spring:message code="professor.courseOverview"/></span>--%>
         <th style=""><span class="text-primary"><spring:message code="common.registeredDate"/></span>
@@ -34,9 +34,9 @@
                 <td>
                     <spring:message code="subj.category.${courseElement.subjCategory}"/>
                 </td>
-                <td>
+                <%--<td>
 ${courseElement.lec}-${courseElement.tut}-${courseElement.lab}-${courseElement.ws}
-                </td>
+                </td>--%>
 <%--
                 <td>
                     <a href="#" class="course-editable" data-type="textarea" data-name="learningObjective" data-url="${baseUrl}/admin/courseManagement/courseEditable" data-pk="${courseElement.id}" data-original-title="<spring:message code="professor.learningObjectives"/>">${courseElement.learningObjective}</a>
@@ -72,9 +72,9 @@ ${courseElement.lec}-${courseElement.tut}-${courseElement.lab}-${courseElement.w
                 <td>
                     <spring:message code="subj.category.${courseElement.subjCategory}"/>
                 </td>
-                <td>
+                <%--<td>
                         ${courseElement.lec}-${courseElement.tut}-${courseElement.lab}-${courseElement.ws}
-                </td>
+                </td>--%>
 
                 <%--<td>
                         ${courseElement.learningObjective}
