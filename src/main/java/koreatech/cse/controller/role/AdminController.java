@@ -471,17 +471,8 @@ public class AdminController {
 
     @RequestMapping("/courseManagement/course/courseTable")
     public String courseTable(Model model,
-                                       @RequestParam(defaultValue = "0", required=false) int year,
-                                       @RequestParam(defaultValue = "0", required=false) int semester,
                               @RequestParam(defaultValue = "0", required=false) int division) {
-        System.out.println("course table");
-
-        Searchable searchable = new Searchable();
-        searchable.setYear(year);
-        searchable.setSemester(semester);
-        searchable.setDivision(division);
-
-        List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
+        List<Course> courseList = courseMapper.findByDivision(division);
 
         Course firstCourse = null;
         for(Course course: courseList) {
@@ -491,7 +482,6 @@ public class AdminController {
 
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);
-        System.out.println("course table end");
         return "role/admin/course/courseTable";
     }
 
@@ -507,6 +497,35 @@ public class AdminController {
         }
         courseMapper.update(course);
 
+        return true;
+    }
+
+    @RequestMapping(value = "/courseManagement/course/deleteCourse", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean deleteCourse(@RequestParam int id) {
+        Course course = courseMapper.findOne(id);
+
+        //TODO:
+        courseMapper.delete(course);
+
+        /*List<Course> courses = courseMapper.findByClassroom(id);
+        if(CollectionUtils.isEmpty(courses)) {
+            classroomMapper.delete(classroom);
+            return true;
+        } else {
+            classroom.setEnabled(false);
+            classroomMapper.update(classroom);
+            return false;
+        }*/
+        return true;
+    }
+
+    @RequestMapping(value = "/courseManagement/course/changeStatus", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean changeCourseStatus(@RequestParam int id, @RequestParam boolean status) {
+        Course course = courseMapper.findOne(id);
+        course.setEnabled(status);
+        courseMapper.update(course);
         return true;
     }
 
@@ -1366,23 +1385,16 @@ public class AdminController {
         return true;
     }
 
-    @RequestMapping(value = "/systemManagement/classroom/enableClassroom", method = RequestMethod.POST)
+    @RequestMapping(value = "/systemManagement/classroom/changeStatus", method = RequestMethod.POST)
     @ResponseBody
-    public Boolean enableClassroom(@RequestParam int id) {
+    public Boolean changeClassroomStatus(@RequestParam int id, @RequestParam boolean status) {
         Classroom classroom = classroomMapper.findOne(id);
-        classroom.setEnabled(true);
+        classroom.setEnabled(status);
         classroomMapper.update(classroom);
         return true;
     }
 
-    @RequestMapping(value = "/systemManagement/classroom/disableClassroom", method = RequestMethod.POST)
-    @ResponseBody
-    public Boolean disableClassroom(@RequestParam int id) {
-        Classroom classroom = classroomMapper.findOne(id);
-        classroom.setEnabled(false);
-        classroomMapper.update(classroom);
-        return true;
-    }
+
 
     @RequestMapping("/systemManagement/menu")
     public String menu(Model model, @RequestParam(required=false) String result) {

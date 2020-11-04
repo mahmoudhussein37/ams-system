@@ -26,8 +26,8 @@
 
 
                 <td>
-                    <button class="btn btn-light btm-sm disable-lecture" data-id="${classroom.id}"><spring:message code="common.disable"/></button>
-                    <button class="btn btn-light btm-sm delete-lecture" data-id="${classroom.id}"><spring:message code="common.delete"/></button>
+                    <button class="btn btn-light btm-sm change-status-row-btn" data-id="${classroom.id}" data-to-status="false"><spring:message code="common.disable"/></button>
+                    <button class="btn btn-light btm-sm delete-row-btn" data-id="${classroom.id}"><spring:message code="common.delete"/></button>
                 </td>
             </tr>
         </c:if>
@@ -49,7 +49,7 @@
 
 
                 <td>
-                    <button class="btn btn-light btm-sm enable-lecture" data-id="${classroom.id}"><spring:message code="common.enable"/></button>
+                    <button class="btn btn-light btm-sm change-status-row-btn" data-id="${classroom.id}" data-to-status="true"><spring:message code="common.enable"/></button>
                 </td>
             </tr>
         </c:if>
@@ -66,32 +66,20 @@
         $("#course-list").DataTable();
         $('.course-editable').editable();
 
-        $("body").on("click", ".delete-lecture", function(e) {
+        $("body").on("click", ".delete-row-btn", function(e) {
             e.preventDefault();
             var id = $(this).attr("data-id");
             $.post("${baseUrl}/admin/systemManagement/classroom/deleteClassroom?id=" + id, function(result) {
-                alert("<spring:message code="common.success"/>");
                 location.reload();
             });
         });
 
-        $("body").on("click", ".enable-lecture", function(e) {
+        $("body").on("click", ".change-status-row-btn", function(e) {
             e.preventDefault();
             var id = $(this).attr("data-id");
-            $.post("${baseUrl}/admin/systemManagement/classroom/enableClassroom?id=" + id, function(result) {
+            var status = $(this).attr("data-to-status");
+            $.post("${baseUrl}/admin/systemManagement/classroom/changeStatus?id=" + id + "&status=" + status, function(result) {
                 if(result == true) {
-                    alert("<spring:message code="common.success"/>");
-                    location.reload();
-                }
-
-            });
-        });
-        $("body").on("click", ".disable-lecture", function(e) {
-            e.preventDefault();
-            var id = $(this).attr("data-id");
-            $.post("${baseUrl}/admin/systemManagement/classroom/disableClassroom?id=" + id, function(result) {
-                if(result == true) {
-                    alert("<spring:message code="common.success"/>");
                     location.reload();
                 }
 

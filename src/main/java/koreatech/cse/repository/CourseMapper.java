@@ -106,4 +106,7 @@ public interface CourseMapper {
             "WHERE `id` = #{id}")
     @Options(flushCache = true)
     void update(Course course);
+
+    @Delete("DELETE FROM `course` WHERE ID = #{id}")
+    void delete(Course course);
 }

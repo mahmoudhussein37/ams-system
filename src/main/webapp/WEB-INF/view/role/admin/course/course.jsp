@@ -21,21 +21,6 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-2">
-                                    <spring:message code="common.year"/><br/>
-                                    <select id="search-year" class="form-control" style="">
-                                        <c:forEach var="y" items="${yearList}">
-                                            <option value="${y}">${y}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <spring:message code="common.semester"/><br/>
-                                    <select id="search-semester" class="form-control" style="">
-                                        <option value="1"><spring:message code="common.sem1"/></option>
-                                        <option value="2"><spring:message code="common.sem2"/></option>
-                                    </select>
-                                </div>
                                 <div class="col-md-4">
                                     <spring:message code="common.department"/><br/>
                                     <select id="search-division" class="form-control" style="">
@@ -106,29 +91,10 @@
                                                 </form:select>
                                             </div>
                                         </div>
-<%--                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label><spring:message code="common.major"/></label>
-                                                <form:select path="majorId" class="form-control">
-                                                    &lt;%&ndash;<c:forEach var="major" items="${majors}">
-                                                        <form:option value="${major.id}">${major.name}</form:option>
-                                                    </c:forEach>&ndash;%&gt;
-                                                </form:select>
-                                            </div>
-                                        </div>--%>
 
                                     </div>
                                     <div class="row">
-<%--                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label><spring:message code="common.compCategory"/></label>
-                                                <form:select path="compCategory" class="form-control" style="">
-                                                    <c:forEach var="c" items="${compCategoryList}">
-                                                        <form:option value="${c.name()}"><spring:message code="comp.category.${c.name()}"/></form:option>
-                                                    </c:forEach>
-                                                </form:select>
-                                            </div>
-                                        </div>--%>
+
                                         <div class="col-md-3">
 
                                             <div class="form-group">
@@ -158,7 +124,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <%--<div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label><spring:message code="common.semester"/></label>
@@ -195,29 +161,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <%--<div class="col-md-3">
 
-                                            <div class="form-group">
-                                                <label></label>
-                                                <input type="number" class="form-control"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-
-                                            <div class="form-group">
-                                                <label></label>
-                                                <input type="number" class="form-control"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-
-                                            <div class="form-group">
-                                                <label></label>
-                                                <input type="number" class="form-control"/>
-                                            </div>
-                                        </div>--%>
-
-                                    </div>
+                                    </div>--%>
                                     <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.create"/></button>
                                 </form:form>
                             </div>
@@ -247,11 +192,8 @@
 <script>
 
     function search() {
-        var year = $("#search-year").children("option:selected").val().trim();
-        var semester = $("#search-semester").children("option:selected").val().trim();
-        //var major = $("#search-major").children("option:selected").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/admin/courseManagement/course/courseTable?year=" + year + "&semester=" + semester + "&division=" + division);
+        $(".table-div").load("${baseUrl}/admin/courseManagement/course/courseTable?division=" + division);
     }
 
     $(".input-enter").keydown(function(key) {
