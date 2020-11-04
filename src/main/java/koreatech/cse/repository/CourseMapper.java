@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface CourseMapper {
 
-    @Insert("INSERT INTO course (semester_id, code, title, category, credit, division_id, divide, prof_user_id, school_year, lang, lec, tut, lab, ws, lecture_time, max_student, comp_category, subj_category) VALUES " +
-            "(#{semesterId}, #{code}, #{title}, #{category}, #{credit}, #{divisionId}, #{divide}, #{profUserId}, #{schoolYear}, #{lang}, #{lec}, #{tut}, #{lab}, #{ws}, #{lectureTime}, #{maxStudent}, #{compCategory}, #{subjCategory})")
+    @Insert("INSERT INTO course (code, title, credit, division_id, school_year, subj_category, learning_objective, overview, lec, tut, lab, ws) VALUES " +
+            "(#{code}, #{title}, #{credit}, #{divisionId}, #{schoolYear}, #{subjCategory}, #{learningObjective}, #{overview}, #{lec}, #{tut}, #{lab}, #{ws})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(Course course);
 
@@ -84,24 +84,18 @@ public interface CourseMapper {
     List<Course> findByYearSemesterDivisionProfId(Searchable searchable);
 
     @Update("UPDATE `course` SET"+
-            "`semester_id` = #{semesterId},"+
             "`code` = #{code},"+
             "`title` = #{title},"+
-            "`category` = #{category},"+
             "`credit` = #{credit},"+
-            "`division_id` = #{divisionId},"+
-            "`divide` = #{divide},"+
-            "`prof_user_id` = #{profUserId},"+
-            "`school_year` = #{schoolYear},"+
-            "`lang` = #{lang},"+
             "`lec` = #{lec},"+
             "`tut` = #{tut},"+
             "`lab` = #{lab},"+
             "`ws` = #{ws},"+
-            "`lecture_time` = #{lectureTime},"+
-            "`max_student` = #{maxStudent},"+
-            "`comp_category` = #{compCategory},"+
+            "`division_id` = #{divisionId},"+
+            "`school_year` = #{schoolYear},"+
             "`subj_category` = #{subjCategory},"+
+            "`learning_objective` = #{learningObjective},"+
+            "`overview` = #{overview},"+
             "`enabled` = #{enabled} "+
             "WHERE `id` = #{id}")
     @Options(flushCache = true)

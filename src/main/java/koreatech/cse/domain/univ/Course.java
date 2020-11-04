@@ -5,21 +5,44 @@ import koreatech.cse.domain.role.professor.LectureFundamentals;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Course implements Serializable {
     private static final long serialVersionUID = 14570353849L;
 
     private int id;
-    private int semesterId;
-    private Semester semester;
     private String code;
     private String title;
-    private String category;
+    private String subjCategory;
+    private int divisionId;
+    private Division division;
+    private Date registeredDate;
     private int credit;
+    private String overview;
+    private String learningObjective;
+
+    private int lec;
+    private int tut;
+    private int lab;
+    private int ws;
+
+    private boolean enabled;
+
+
+
+
+
+
+
+    private int semesterId;
+    private Semester semester;
+
+    private String category;
+
     private boolean retake;
     private String retakeCode;
     private String retakeTitle;
-    private int divisionId;
+
 
     private int divide;
 
@@ -27,21 +50,18 @@ public class Course implements Serializable {
     private String lang;
     private String lectureTime;
     private String compCategory;
-    private String subjCategory;
+
     private int profUserId;
     private int maxStudent;
 
-    private Division division;
+
     private User profUser;
     private LectureFundamentals lectureFundamentals;
 
-    private int lec;
-    private int tut;
-    private int lab;
-    private int ws;
 
 
-    private boolean enabled;
+
+
 
 
     public int getId() {
@@ -258,6 +278,30 @@ public class Course implements Serializable {
 
     public void setWs(int ws) {
         this.ws = ws;
+    }
+
+    public Date getRegisteredDate() {
+        return registeredDate;
+    }
+
+    public void setRegisteredDate(Date registeredDate) {
+        this.registeredDate = registeredDate;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public String getLearningObjective() {
+        return learningObjective;
+    }
+
+    public void setLearningObjective(String learningObjective) {
+        this.learningObjective = learningObjective;
     }
 
     @Override

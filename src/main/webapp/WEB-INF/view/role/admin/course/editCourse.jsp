@@ -20,51 +20,9 @@
 
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <spring:message code="common.department"/><br/>
-                                    <select id="search-division" class="form-control" style="">
-                                        <c:forEach var="division" items="${divisions}">
-                                            <option value="${division.id}">${division.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <%--<div class="col-md-2">
-                                    <spring:message code="common.major"/><br/>
-                                    <select id="search-major" class="form-control" style="">
-                                        &lt;%&ndash;<c:forEach var="major" items="${majors}">
-                                            <option value="${major.id}">${major.name}</option>
-                                        </c:forEach>&ndash;%&gt;
-                                    </select>
-                                </div>--%>
-
-                                <div class="col-md-2">
-                                    <br/>
-                                    <button class="btn btn-primary" style="width:100%;" onclick="search()"><spring:message code="common.search"/></button>
-                                </div>
-                            </div>
-                            <br/><br/>
-
-
-
-                            <div class="table-div">
-
-
-                            </div>
-
-
-
-
-
-                            <br/><br/>
-                            <div class="separator separator-solid my-5"></div>
-                            <br/><br/>
                             <div>
-
-
-
-                                <form:form modelAttribute="course" action="${baseUrl}/admin/courseManagement/course" method="post" class="form">
-                                    <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.createCourse"/></h3>
+                                <form:form modelAttribute="course" action="${baseUrl}/admin/courseManagement/course/editCourse" method="post" class="form">
+                                    <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.editCourse"/></h3>
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group">
@@ -152,7 +110,7 @@
 
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.create"/></button>
+                                    <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
                                 </form:form>
                             </div>
 
@@ -180,28 +138,8 @@
 
 <script>
 
-    function search() {
-        var division = $("#search-division").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/admin/courseManagement/course/courseTable?division=" + division);
-    }
-
-    $(".input-enter").keydown(function(key) {
-        if (key.keyCode == 13) {
-            search();
-        }
-    });
-
     $(document).ready(function() {
-        <c:if test="${not empty result}">
-        alert("<spring:message code='common.success'/>");
-        location.href="${baseUrl}/admin/courseManagement/course";
-        </c:if>
-
-        $(".table-div").load("${baseUrl}/admin/courseManagement/course/courseTable");
-        //changeMajor("#search-division", "#search-major", true);
-        //changeMajor("#divisionId", "#majorId", true);
     });
-
 </script>
 </body>
 </html>

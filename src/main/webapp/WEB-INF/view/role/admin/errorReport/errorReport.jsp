@@ -37,7 +37,7 @@
                                         <tr class="text-center">
 
                                             <td class="pl-0">
-                                                <fmt:formatDate pattern="yyyy-MM-dd" value="${feedback.datetime}"/>
+                                                <fmt:formatDate pattern="dd-MMM-yyyy" value="${feedback.datetime}"/>
                                             </td>
                                             <td class="pl-0">
                                                 ${feedback.number}

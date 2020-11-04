@@ -450,10 +450,7 @@ public class AdminController {
         List<Division> divisions = divisionMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("yearList", getYearList());
-        model.addAttribute("semesterList", getSemesterList());
         model.addAttribute("course", new Course());
-        model.addAttribute("compCategoryList", CompCategory.values());
         model.addAttribute("subjCategoryList", SubjCategory.values());
         model.addAttribute("result", result);
         return "role/admin/course/course";
@@ -463,6 +460,28 @@ public class AdminController {
     public String course(@ModelAttribute("course") Course course, SessionStatus sessionStatus) {
 
         courseMapper.insert(course);
+
+        sessionStatus.setComplete();
+
+        return "redirect:/admin/courseManagement/course?result=success";
+    }
+
+    @RequestMapping("/courseManagement/course/editCourse")
+    public String editCourse(Model model, @RequestParam int id) {
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("course", new Course());
+        model.addAttribute("subjCategoryList", SubjCategory.values());
+        Course course = courseMapper.findOne(id);
+        model.addAttribute("course", course);
+        return "role/admin/course/editCourse";
+    }
+
+    @RequestMapping(value = "/courseManagement/course/editCourse", method = RequestMethod.POST)
+    public String editCourse(@ModelAttribute("course") Course course, SessionStatus sessionStatus) {
+
+        courseMapper.update(course);
 
         sessionStatus.setComplete();
 

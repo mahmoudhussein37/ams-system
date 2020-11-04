@@ -8,6 +8,10 @@
         <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span>
+        <th style=""><span class="text-primary"><spring:message code="professor.course.ltlp"/></span>
+        <%--<th style=""><span class="text-primary"><spring:message code="professor.learningObjectives"/></span>
+        <th style=""><span class="text-primary"><spring:message code="professor.courseOverview"/></span>--%>
+        <th style=""><span class="text-primary"><spring:message code="common.registeredDate"/></span>
         <th class="pr-0" style="min-width: 160px"><span class="text-primary"></span></th>
     </tr>
     </thead>
@@ -21,9 +25,7 @@
                         ${varStatus.count}
                 </td>
                 <td>
-                    <a href="#" class="course-detail" data-course-id="${courseElement.id}">
-                            ${courseElement.code}
-                    </a>
+                        ${courseElement.code}
                 </td>
                 <td>
                     <a href="#" class="course-editable" data-type="text" data-name="title" data-url="${baseUrl}/admin/courseManagement/courseEditable" data-pk="${courseElement.id}" data-original-title="<spring:message code="common.courseTitle"/>">${courseElement.title}</a>
@@ -33,6 +35,22 @@
                     <spring:message code="subj.category.${courseElement.subjCategory}"/>
                 </td>
                 <td>
+${courseElement.lec}-${courseElement.tut}-${courseElement.lab}-${courseElement.ws}
+                </td>
+<%--
+                <td>
+                    <a href="#" class="course-editable" data-type="textarea" data-name="learningObjective" data-url="${baseUrl}/admin/courseManagement/courseEditable" data-pk="${courseElement.id}" data-original-title="<spring:message code="professor.learningObjectives"/>">${courseElement.learningObjective}</a>
+
+                </td>
+                <td>
+                    <a href="#" class="course-editable" data-type="textarea" data-name="overview" data-url="${baseUrl}/admin/courseManagement/courseEditable" data-pk="${courseElement.id}" data-original-title="<spring:message code="professor.courseOverview"/>">${courseElement.overview}</a>
+
+                </td>--%>
+                <td>
+                    <fmt:formatDate pattern="dd-MMM-yyyy" value="${courseElement.registeredDate}"/>
+                </td>
+                <td>
+                    <a href="${baseUrl}/admin/courseManagement/course/editCourse?id=${courseElement.id}" class="btn btn-light btm-sm" data-id="${courseElement.id}"><spring:message code="common.edit"/></a>
                     <button class="btn btn-light btm-sm change-status-row-btn" data-id="${courseElement.id}" data-to-status="false"><spring:message code="common.disable"/></button>
                     <button class="btn btn-light btm-sm delete-row-btn" data-id="${courseElement.id}"><spring:message code="common.delete"/></button>
                 </td>
@@ -45,9 +63,7 @@
                         ${varStatus.count}
                 </td>
                 <td>
-                    <a href="#" class="course-detail" data-course-id="${courseElement.id}">
-                            ${courseElement.code}
-                    </a>
+                        ${courseElement.code}
                 </td>
                 <td>
                     <a href="#" class="course-editable" data-type="text" data-name="title" data-url="${baseUrl}/admin/courseManagement/courseEditable" data-pk="${courseElement.id}" data-original-title="<spring:message code="common.courseTitle"/>">${courseElement.title}</a>
@@ -57,6 +73,20 @@
                     <spring:message code="subj.category.${courseElement.subjCategory}"/>
                 </td>
                 <td>
+                        ${courseElement.lec}-${courseElement.tut}-${courseElement.lab}-${courseElement.ws}
+                </td>
+
+                <%--<td>
+                        ${courseElement.learningObjective}
+                </td>
+                <td>
+                        ${courseElement.overview}
+                </td>--%>
+                <td>
+                    <fmt:formatDate pattern="dd-MMM-yyyy" value="${courseElement.registeredDate}"/>
+                </td>
+                <td>
+                    <a href="${baseUrl}/admin/courseManagement/course/editCourse?id=${courseElement.id}" class="btn btn-light btm-sm" data-id="${courseElement.id}"><spring:message code="common.edit"/></a>
                     <button class="btn btn-light btm-sm change-status-row-btn" data-id="${courseElement.id}"  data-to-status="true"><spring:message code="common.enable"/></button>
                 </td>
             </tr>
