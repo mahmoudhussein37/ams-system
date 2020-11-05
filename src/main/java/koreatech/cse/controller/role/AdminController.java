@@ -67,6 +67,8 @@ public class AdminController {
     private PasswordEncoder passwordEncoder;
     @Inject
     private FeedbackMapper feedbackMapper;
+    @Inject
+    private AltCourseMapper altCourseMapper;
 
 
 
@@ -179,8 +181,8 @@ public class AdminController {
 
     @RequestMapping("/studentManagement/studentProfile/studentTable")
     public String studentProfileStudentTable(Model model, @RequestParam(required=false) String number,
-                               @RequestParam(required=false) String name,
-                               @RequestParam(defaultValue = "0", required=false) int division) {
+                                             @RequestParam(required=false) String name,
+                                             @RequestParam(defaultValue = "0", required=false) int division) {
         User firstUser = null;
         List<User> userList;
         if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
@@ -286,8 +288,8 @@ public class AdminController {
 
     @RequestMapping("/profManagement/profInformation/profTable")
     public String profTable(Model model, @RequestParam(required=false) String number,
-                               @RequestParam(required=false) String name,
-                               @RequestParam(defaultValue = "0", required=false) int division) {
+                            @RequestParam(required=false) String name,
+                            @RequestParam(defaultValue = "0", required=false) int division) {
         User firstUser = null;
         List<User> userList;
         if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
@@ -490,8 +492,15 @@ public class AdminController {
 
     @RequestMapping("/courseManagement/course/courseTable")
     public String courseTable(Model model,
+                              @RequestParam(required=false) String code,
+                              @RequestParam(required=false) String title,
                               @RequestParam(defaultValue = "0", required=false) int division) {
-        List<Course> courseList = courseMapper.findByDivision(division);
+        Searchable searchable = new Searchable();
+        searchable.setCode(code);
+        searchable.setTitle(title);
+        searchable.setDivision(division);
+
+        List<Course> courseList = courseMapper.findByCodeTitleDivision(searchable);
 
         Course firstCourse = null;
         for(Course course: courseList) {
@@ -508,8 +517,8 @@ public class AdminController {
     @ResponseBody
     public Boolean courseEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
         Course course = courseMapper.findOne(pk);
-        
-        
+
+
         switch (name) {
             default:
                 SystemUtil.setObjectFieldValue(course, name, value);
@@ -559,11 +568,33 @@ public class AdminController {
         return "role/admin/alternative/alternative";
     }
 
+    @RequestMapping("/courseManagement/alternative/manageCourse")
+    public String manageCourse(Model model, @RequestParam int id) {
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("subjCategoryList", SubjCategory.values());
+        Course course = courseMapper.findOne(id);
+        model.addAttribute("course", course);
+
+        List<AltCourse> altCourses = altCourseMapper.findByTargetCourseId(id);
+        model.addAttribute("altCourses", altCourses);
+        return "role/admin/alternative/manageCourse";
+    }
+
     @RequestMapping("/courseManagement/alternative/courseTable")
     public String alternativeCourseTable(Model model,
-                              @RequestParam(defaultValue = "0", required=false) int division) {
+                                         @RequestParam(required=false) String code,
+                                         @RequestParam(required=false) String title,
+                                         @RequestParam(defaultValue = "0", required=false) int division) {
 
-        List<Course> courseList = courseMapper.findByDivision(division);
+        Searchable searchable = new Searchable();
+        searchable.setCode(code);
+        searchable.setTitle(title);
+        searchable.setDivision(division);
+
+        List<Course> courseList = courseMapper.findByCodeTitleDivision(searchable);
+
 
         Course firstCourse = null;
         for(Course course: courseList) {
@@ -574,6 +605,44 @@ public class AdminController {
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);
         return "role/admin/alternative/courseTable";
+    }
+
+    @RequestMapping("/courseManagement/alternative/altCourseTable")
+    public String altCourseTable(Model model,
+                                 @RequestParam int targetCourseId,
+                                 @RequestParam(required=false) String code,
+                                 @RequestParam(required=false) String title,
+                                 @RequestParam(defaultValue = "0", required=false) int division) {
+
+        Searchable searchable = new Searchable();
+        searchable.setCode(code);
+        searchable.setTitle(title);
+        searchable.setDivision(division);
+
+        List<Course> courseList = courseMapper.findByCodeTitleDivision(searchable);
+
+
+        Course firstCourse = null;
+        for(Course course: courseList) {
+            firstCourse = course;
+            break;
+        }
+
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("courseList", courseList);
+        model.addAttribute("targetCourseId", targetCourseId);
+        return "role/admin/alternative/altCourseTable";
+    }
+
+    @RequestMapping(value = "/courseManagement/alternative/addToAlt", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean addToAlt(@RequestParam int id, @RequestParam int targetCourseId, @RequestParam String type) {
+        AltCourse altCourse = new AltCourse();
+        altCourse.setCourseId(id);
+        altCourse.setTargetCourseId(targetCourseId);
+        altCourse.setType(type);
+        altCourseMapper.insert(altCourse);
+        return true;
     }
 
     @RequestMapping("/courseManagement/cOpen")
@@ -592,14 +661,14 @@ public class AdminController {
 
     @RequestMapping("/courseManagement/cOpen/courseTable")
     public String cOpenCourseTable(Model model,
-                              @RequestParam(defaultValue = "0", required=false) int year,
-                              @RequestParam(defaultValue = "0", required=false) int semester,
-                              @RequestParam(defaultValue = "0", required=false) int division) {
+                                   @RequestParam(defaultValue = "0", required=false) int year,
+                                   @RequestParam(defaultValue = "0", required=false) int semester,
+                                   @RequestParam(defaultValue = "0", required=false) int division) {
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
         searchable.setDivision(division);
-        
+
 
         List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
 
@@ -650,15 +719,15 @@ public class AdminController {
 
     @RequestMapping("/courseManagement/attendance/courseTable")
     public String attendanceCourseTable(Model model,
-                                         @RequestParam(defaultValue = "0", required=false) int year,
-                                         @RequestParam(defaultValue = "0", required=false) int semester,
-                                         @RequestParam(defaultValue = "0", required=false) int division) {
+                                        @RequestParam(defaultValue = "0", required=false) int year,
+                                        @RequestParam(defaultValue = "0", required=false) int semester,
+                                        @RequestParam(defaultValue = "0", required=false) int division) {
 
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
         searchable.setDivision(division);
-        
+
 
         List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
 
@@ -726,14 +795,14 @@ public class AdminController {
 
     @RequestMapping("/courseManagement/makeupClass/courseTable")
     public String makeupClassCourseTable(Model model,
-                                        @RequestParam(defaultValue = "0", required=false) int year,
-                                        @RequestParam(defaultValue = "0", required=false) int semester,
-                                        @RequestParam(defaultValue = "0", required=false) int division) {
+                                         @RequestParam(defaultValue = "0", required=false) int year,
+                                         @RequestParam(defaultValue = "0", required=false) int semester,
+                                         @RequestParam(defaultValue = "0", required=false) int division) {
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
         searchable.setDivision(division);
-        
+
         List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
 
         Course firstCourse = null;
@@ -755,8 +824,8 @@ public class AdminController {
 
     @RequestMapping("/classProgress/registerGrade/courseTable")
     public String academicManagementCourseTable(Model model,
-                                           @RequestParam(defaultValue = "0", required=false) int year,
-                                           @RequestParam(defaultValue = "0", required=false) int semester) {
+                                                @RequestParam(defaultValue = "0", required=false) int year,
+                                                @RequestParam(defaultValue = "0", required=false) int semester) {
 
 
         Searchable searchable = new Searchable();
@@ -793,8 +862,8 @@ public class AdminController {
 
     @RequestMapping("/academicManagement/graduationCriteria/studentTable")
     public String graduationCriteriaStudentTable(Model model, @RequestParam(required=false) String number,
-                               @RequestParam(required=false) String name,
-                               @RequestParam(defaultValue = "0", required=false) int division) {
+                                                 @RequestParam(required=false) String name,
+                                                 @RequestParam(defaultValue = "0", required=false) int division) {
         User firstUser = null;
         List<User> userList;
         if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
@@ -804,7 +873,7 @@ public class AdminController {
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            
+
             userList = userMapper.findByStudentLookup(searchable);
 
 
@@ -841,9 +910,9 @@ public class AdminController {
     }
     @RequestMapping("/academicManagement/assessmentFactor/courseTable")
     public String assessmentFactorCourseTable(Model model,
-                                                @RequestParam(defaultValue = "0", required=false) int division,
-                                                @RequestParam(defaultValue = "0", required=false) int year,
-                                                @RequestParam(defaultValue = "0", required=false) int semester) {
+                                              @RequestParam(defaultValue = "0", required=false) int division,
+                                              @RequestParam(defaultValue = "0", required=false) int year,
+                                              @RequestParam(defaultValue = "0", required=false) int semester) {
 
 
         Searchable searchable = new Searchable();
@@ -981,8 +1050,8 @@ public class AdminController {
     @ResponseBody
     public Boolean semesterEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
         Semester semester = semesterMapper.findOne(pk);
-        
-        
+
+
         switch (name) {
             default:
                 SystemUtil.setObjectFieldValue(semester, name, value);
@@ -1028,8 +1097,8 @@ public class AdminController {
     @ResponseBody
     public Boolean divisionEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
         Division division = divisionMapper.findOne(pk);
-        
-        
+
+
         switch (name) {
             default:
                 SystemUtil.setObjectFieldValue(division, name, value);
@@ -1096,8 +1165,8 @@ public class AdminController {
     @ResponseBody
     public Boolean lectureMethodEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
         LectureMethod lectureMethod = lectureMethodMapper.findOne(pk);
-        
-        
+
+
         switch (name) {
             default:
                 SystemUtil.setObjectFieldValue(lectureMethod, name, value);
@@ -1501,7 +1570,7 @@ public class AdminController {
 
 
 
-    
+
     private List<Integer> getYearList() {
         return semesterMapper.findYears();
     }

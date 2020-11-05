@@ -7,12 +7,8 @@
         <th class="pl-0" style=""><spring:message code="common.no"/></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span></th>
-        <%--<th style=""><span class="text-primary"><spring:message code="common.category"/></span>--%>
-        <%--<th style=""><span class="text-primary"><spring:message code="common.compCategory"/></span>--%>
         <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span></th>
-        <%--<th style=""><span class="text-primary"><spring:message code="common.alternativeCode"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.prerequisiteCode"/></span>--%>
-        <th style=""></th>
+        <th style="width:15%"></th>
     </tr>
     </thead>
     <tbody>
@@ -30,24 +26,15 @@
                     ${courseElement.title}
 
             </td>
-            <%--<td>
-                    ${courseElement.category}
-            </td>--%>
-            <%--<td>
-                <spring:message code="comp.category.${courseElement.compCategory}"/>
-            </td>--%>
+
             <td>
                 <spring:message code="subj.category.${courseElement.subjCategory}"/>
             </td>
             <td>
-                <a href="${baseUrl}/admin/courseManagement/alternative/manageCourse?id=${courseElement.id}" class="btn btn-light btm-sm" data-id="${courseElement.id}"><spring:message code="common.manage"/></a>
+                <button type="button" class="btn btn-light btm-sm add-to-btn" data-id="${courseElement.id}" data-type="alternative" style="width:100%"><spring:message code="admin.addToAlternative"/></button><br/><br/>
+                <button type="button" class="btn btn-light btm-sm add-to-btn" data-id="${courseElement.id}" data-type="prerequisite" style="width:100%"><spring:message code="admin.addToPrerequisite"/></button>
             </td>
-            <%--<td>
-                <a href="#" class="course-editable" data-type="text" data-name="alternative" data-url="${baseUrl}/admin/courseManagement/courseEditable" data-pk="${courseElement.id}" data-original-title="<spring:message code="common.alternative"/>">${courseElement.alternative}</a>
-            </td>
-            <td>
-                <a href="#" class="course-editable" data-type="text" data-name="prerequisite" data-url="${baseUrl}/admin/courseManagement/courseEditable" data-pk="${courseElement.id}" data-original-title="<spring:message code="common.prerequisite"/>">${courseElement.prerequisite}</a>
-            </td>--%>
+
 
         </tr>
     </c:forEach>
@@ -67,4 +54,16 @@
         $(".detail-div").load("${baseUrl}/admin/courseManagement/courseDetail?courseId=" + courseId);
 
     });--%>
+
+    $("body").on("click", ".add-to-btn", function(e) {
+        e.preventDefault();
+        var id = $(this).attr("data-id");
+        var type = $(this).attr("data-type");
+        $.post("${baseUrl}/admin/courseManagement/alternative/addToAlt?id=" + id + "&targetCourseId=${targetCourseId}&type=" + type, function(result) {
+            if(result == true) {
+                location.reload();
+            }
+
+        });
+    });
 </script>
