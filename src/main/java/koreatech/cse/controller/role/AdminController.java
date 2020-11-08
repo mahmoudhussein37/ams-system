@@ -25,6 +25,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @SessionAttributes({"studentUser", "profUser", "adminUser", "course", "division", "semester", "menuAccess"})
@@ -176,31 +177,28 @@ public class AdminController {
         List<Division> divisions = divisionMapper.findAll();
 
         model.addAttribute("divisions", divisions);
+        List<User> professors = userMapper.findAllProfessors();
+        model.addAttribute("professors", professors);
         return "role/admin/studentProfile/studentProfile";
     }
 
     @RequestMapping("/studentManagement/studentProfile/studentTable")
-    public String studentProfileStudentTable(Model model, @RequestParam(required=false) String number,
-                                             @RequestParam(required=false) String name,
+    public String studentProfileStudentTable(Model model, @RequestParam(defaultValue = "0", required=false) int schoolYear,
+                                             @RequestParam(defaultValue = "0", required=false) int advisor,
                                              @RequestParam(defaultValue = "0", required=false) int division) {
         User firstUser = null;
         List<User> userList;
-        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
-            userList = new ArrayList<>();
-        } else {
-            Searchable searchable = new Searchable();
-            searchable.setNumber(number);
-            searchable.setName(name);
-            searchable.setDivision(division);
-            userList = userMapper.findByStudentLookup(searchable);
+        Searchable searchable = new Searchable();
+        searchable.setAdvisor(advisor);
+        searchable.setSchoolYear(schoolYear);
+        searchable.setDivision(division);
+        userList = userMapper.findStudentsByAdvisorSchoolYearDivision(searchable);
 
 
-            for(User user: userList) {
-                firstUser = user;
-                break;
-            }
+        for(User user: userList) {
+            firstUser = user;
+            break;
         }
-
         model.addAttribute("userList", userList);
         model.addAttribute("firstUser", firstUser);
         return "role/admin/studentProfile/studentTable";
@@ -214,6 +212,33 @@ public class AdminController {
         model.addAttribute("advisor", advisor);
 
         return "role/admin/studentProfile/studentDetail";
+    }
+
+    @RequestMapping("/studentManagement/studentProfile/studentDetailsForPrint")
+    public String studentProfileStudentDetailsForPrint(Model model,
+                                                       @RequestParam boolean checkAll,
+                                                       @RequestParam(defaultValue = "0", required=false) int schoolYear,
+                                                       @RequestParam(defaultValue = "0", required=false) int advisor,
+                                                       @RequestParam(defaultValue = "0", required=false) int division, @RequestParam Map<String, String> params) {
+        System.out.println("checkAll = " + checkAll);
+        List<Integer> userIds = new ArrayList<>();
+        params.entrySet().stream().filter(entry -> entry.getKey().equals("studentCheckbox")).forEach(entry -> {
+            String value = entry.getValue();
+            String[] split = value.split(",");
+            for (String userIdString : split) {
+                if (StringUtils.isNotBlank(userIdString)) {
+                    userIds.add(Integer.parseInt(userIdString));
+                }
+            }
+        });
+        List<User> studentList = userMapper.findByUserIds(userIds);
+        for(User u:studentList) {
+            User advisorUser = userMapper.findOne(u.getAdvisorId());
+            u.setAdvisor(advisorUser);
+        }
+
+        model.addAttribute("studentList", studentList);
+        return "role/admin/studentProfile/studentDetailForPrint";
     }
 
     @RequestMapping("/studentManagement/studentCounseling")

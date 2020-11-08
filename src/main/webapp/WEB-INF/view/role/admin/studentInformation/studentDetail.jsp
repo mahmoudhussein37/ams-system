@@ -1,9 +1,10 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <div class="print-div">
-    <a href="#" class="btn btn-sm btn-light font-weight-bold">
+    <a href="#" class="btn btn-sm btn-light font-weight-bold" onclick="printContent('#print-area')">
         <spring:message code="common.print"/>
     </a>
 </div>
+<div id="print-area">
 <form:form modelAttribute="studentUser" action="${baseUrl}/admin/studentManagement/studentInformation/studentDetail" method="post" class="form">
     <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.information"/></h3>
     <div class="row">
@@ -151,7 +152,7 @@
     <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
 </form:form>
 
-
+</div>
 
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>

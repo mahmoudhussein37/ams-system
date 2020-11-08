@@ -1,9 +1,9 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
-<div class="print-div">
+<%--<div class="print-div">
     <a href="#" class="btn btn-sm btn-light font-weight-bold" onclick="printContent('kt_tab_pane_1')">
         <spring:message code="common.print"/>
     </a>
-</div>
+</div>--%>
 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.information"/></h3>
 <div class="row">
     <div class="col-md-3">

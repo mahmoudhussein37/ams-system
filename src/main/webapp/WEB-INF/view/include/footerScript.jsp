@@ -80,6 +80,7 @@
 <script src="${resources}/vendor/metronic_assets_7/assets/js/pages/widgets.js"></script>
 <!--end::Page Scripts-->
 <script src="${resources}/vendor/bootstrap3-editable/js/bootstrap-editable.js" type="text/javascript"></script>
+<script src="${resources}/js/CustomMap.js" type="text/javascript"></script>
 <script>
 
     $(".country-select").click(function(e) {
@@ -110,12 +111,69 @@
         });
     }
 
-    function printContent(el){
-        var restorepage = $('body').html();
-        var printcontent = $('#' + el).clone();
-        $('body').empty().html(printcontent);
-        window.print();
-        $('body').html(restorepage);
+    function openPage(url) {
+        newPage=window.open(url);
     }
+
+
+    function printContent(el){
+        var restorePage = $('body').html();
+        var pContent = $(el).clone();
+        $('body').empty().html(pContent);
+        window.print();
+        $('body').html(restorePage);
+    }
+
+    function setCheckboxAll(checked, checkboxes, map) {
+        for(var i=0; i<checkboxes.length; i++) {
+            if(checked) {
+                console.log("checked");
+                $(checkboxes[i]).prop("checked", true);
+                map.put($(checkboxes[i]).val(), true);
+            } else {
+                console.log("nchecked");
+                $(checkboxes[i]).prop("checked", false);
+                map.put($(checkboxes[i]).val(), false);
+            }
+        }
+        console.log(map.size());
+    }
+
+    function setCheckbox(selector, map) {
+        var keys = map.keys();
+        var i, j;
+        var checkboxes = selector;
+
+        for (i = 0; i < keys.length; i++) {
+            if (map.get(keys[i])) {
+                for(j=0; j<checkboxes.length; j++) {
+                    if($(checkboxes[j]).val() == keys[i]) {
+                        $(checkboxes[j]).prop("checked", true);
+                        $(checkboxes[j]).parent("span").addClass("checked");
+                    }
+                }
+            }
+        }
+    }
+
+    function parameterize(name, map) {
+        var parameter = name + "=";
+        var keys = map.keys();
+        var values = [], i;
+
+        for (i = 0; i < keys.length; i++) {
+            if (map.get(keys[i])) {
+                values.push(keys[i]);
+            }
+        }
+        for (i = 0; i < values.length; i++) {
+            parameter += values[i];
+            if(i < values.length - 1)
+                parameter += ",";
+        }
+        return parameter;
+    }
+
+
 </script>
 <!--end::Body-->

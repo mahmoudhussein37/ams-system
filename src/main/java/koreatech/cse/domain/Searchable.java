@@ -9,6 +9,8 @@ public class Searchable {
     private int semester;
     private int semesterId;
     private int userId;
+    private int schoolYear;
+    private int advisor;
     private String code;
     private String title;
 
@@ -95,6 +97,22 @@ public class Searchable {
 
     public void setSemesterId(int semesterId) {
         this.semesterId = semesterId;
+    }
+
+    public int getSchoolYear() {
+        return schoolYear;
+    }
+
+    public void setSchoolYear(int schoolYear) {
+        this.schoolYear = schoolYear;
+    }
+
+    public int getAdvisor() {
+        return advisor;
+    }
+
+    public void setAdvisor(int advisor) {
+        this.advisor = advisor;
     }
 
     public String getCode() {
