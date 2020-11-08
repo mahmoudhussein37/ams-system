@@ -4,8 +4,9 @@
         <spring:message code="common.print"/>
     </a>
 </div>
-<div id="print-area">
+
 <form:form modelAttribute="studentUser" action="${baseUrl}/admin/studentManagement/studentInformation/studentDetail" method="post" class="form">
+    <div id="print-area">
     <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.information"/></h3>
     <div class="row">
         <div class="col-md-3">
@@ -148,11 +149,11 @@
             </div>
         </div>
     </div>
-
+    </div>
     <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
 </form:form>
 
-</div>
+
 
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
