@@ -12,6 +12,7 @@ public class AssessmentFactor implements Serializable {
 
     private String title;
     private String question;
+    private int courseId;
     private boolean enabled;
 
     public int getId() {
@@ -36,6 +37,14 @@ public class AssessmentFactor implements Serializable {
 
     public void setQuestion(String question) {
         this.question = question;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
 
     public boolean isEnabled() {

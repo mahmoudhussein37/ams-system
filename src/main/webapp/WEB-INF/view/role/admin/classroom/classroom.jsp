@@ -28,40 +28,7 @@
                             <br/>
                             <div class="table-div">
 
-                                <table class="table table-head-custom table-vertical-center" id="course-list">
-                                    <thead>
-                                    <tr class="table-secondary text-center">
-                                        <th class="pl-0" style=""></th>
-                                        <th class="pl-0" style=""><spring:message code="common.no"/></th>
-                                        <th style=""><spring:message code="admin.classroomCode"/></th>
-                                        <th style=""><spring:message code="admin.classroomName"/></th>
-                                        <th style=""><spring:message code="common.use"/></th>
-                                        <th style=""></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr class="text-center">
-                                        <td class="pl-0">
-                                            <input type="checkbox" name=""/>
-                                        </td>
-                                        <td class="pl-0">
-                                            B308
-                                        </td>
-                                        <td class="pl-0">
-                                            B308
-                                        </td>
 
-
-                                        <td>
-                                            Y
-                                        </td>
-                                        <td>
-                                        </td>
-                                    </tr>
-
-
-                                    </tbody>
-                                </table>
                             </div>
 
                             <br/><br/>
@@ -90,9 +57,9 @@
                             </div>
                             <br/>
                             <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.register"/></button>
-
+                            </form:form>.
                         </div>
-                        </form:form>.
+
                     </div>
                     <!--end::Card-->
                 </div>

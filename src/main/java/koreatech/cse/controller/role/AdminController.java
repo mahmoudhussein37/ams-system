@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@SessionAttributes({"studentUser", "profUser", "adminUser", "course", "division", "semester", "menuAccess"})
+@SessionAttributes({"studentUser", "profUser", "adminUser", "course", "division", "semester", "menuAccess", "assessmentFactor"})
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
@@ -77,6 +77,9 @@ public class AdminController {
     private UploadedFileMapper uploadedFileMapper;
     @Inject
     private FileService fileService;
+    @Inject
+    private AssessmentFactorMapper assessmentFactorMapper;
+
 
 
     @RequestMapping("/studentManagement/studentRegistration")
@@ -986,18 +989,16 @@ public class AdminController {
     }
     @RequestMapping("/academicManagement/assessmentFactor/courseTable")
     public String assessmentFactorCourseTable(Model model,
-                                              @RequestParam(defaultValue = "0", required=false) int division,
-                                              @RequestParam(defaultValue = "0", required=false) int year,
-                                              @RequestParam(defaultValue = "0", required=false) int semester) {
-
+                                              @RequestParam(required=false) String code,
+                                              @RequestParam(required=false) String title,
+                                              @RequestParam(defaultValue = "0", required=false) int division) {
 
         Searchable searchable = new Searchable();
-        searchable.setYear(year);
-        searchable.setSemester(semester);
+        searchable.setCode(code);
+        searchable.setTitle(title);
         searchable.setDivision(division);
 
-
-        List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
+        List<Course> courseList = courseMapper.findByCodeTitleDivision(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -1009,12 +1010,53 @@ public class AdminController {
         return "role/admin/assessmentFactor/courseTable";
     }
 
-    @RequestMapping("/academicManagement/assessmentFactor/courseDetail")
+    @RequestMapping("/academicManagement/assessmentFactor/manageAf")
     public String assessmentFactorCourseDetail(Model model, @RequestParam int courseId) {
         Course course = courseMapper.findOne(courseId);
         model.addAttribute("course", course);
+        AssessmentFactor assessmentFactor = new AssessmentFactor();
+        assessmentFactor.setCourseId(courseId);
+        model.addAttribute("assessmentFactor", assessmentFactor);
+        List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(courseId);
+        model.addAttribute("assessmentFactors", assessmentFactors);
 
-        return "role/admin/assessmentFactor/courseDetail";
+        return "role/admin/assessmentFactor/manageAf";
+    }
+
+    @RequestMapping(value = "/academicManagement/assessmentFactor/manageAf", method = RequestMethod.POST)
+    public String assessmentFactorCourseDetail(@ModelAttribute AssessmentFactor assessmentFactor, @RequestParam int courseId) {
+        assessmentFactor.setEnabled(true);
+        assessmentFactorMapper.insert(assessmentFactor);
+        return "redirect:/admin/academicManagement/assessmentFactor/manageAf?courseId=" + courseId;
+    }
+
+    @RequestMapping(value = "/academicManagement/assessmentFactor/manageAf/deleteAf", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean deleteAf(@RequestParam int id) {
+        AssessmentFactor assessmentFactor = assessmentFactorMapper.findOne(id);
+
+        //TODO:
+        assessmentFactorMapper.delete(assessmentFactor);
+
+        /*List<Course> courses = courseMapper.findByClassroom(id);
+        if(CollectionUtils.isEmpty(courses)) {
+            classroomMapper.delete(classroom);
+            return true;
+        } else {
+            classroom.setEnabled(false);
+            classroomMapper.update(classroom);
+            return false;
+        }*/
+        return true;
+    }
+
+    @RequestMapping(value = "/academicManagement/assessmentFactor/manageAf/changeStatus", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean changeAfStatus(@RequestParam int id, @RequestParam boolean status) {
+        AssessmentFactor assessmentFactor = assessmentFactorMapper.findOne(id);
+        assessmentFactor.setEnabled(status);
+        assessmentFactorMapper.update(assessmentFactor);
+        return true;
     }
 
     @RequestMapping("/academicManagement/assessmentResult")

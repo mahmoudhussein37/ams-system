@@ -8,8 +8,8 @@
         <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span>
+        <th style=""><span class="text-primary"><spring:message code="professor.course.ltlp"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.department"/></span>
-        <th style=""></span>
     </tr>
     </thead>
     <tbody>
@@ -35,13 +35,13 @@
             <td>
                 <spring:message code="subj.category.${courseElement.subjCategory}"/>
             </td>
+            <td>
 
+            </td>
             <td>
                     ${courseElement.division.name}
             </td>
-            <td>
-                <a href="${baseUrl}/admin/academicManagement/assessmentFactor/manageAf?courseId=${courseElement.id}" class="btn btn-light btm-sm" data-id="${courseElement.id}"><spring:message code="common.manage"/></a>
-            </td>
+
 
 
         </tr>
@@ -53,13 +53,13 @@
 <script>
     $("#course-list").DataTable();
     /*$('.course-editable').editable();*/
-    <%--<c:if test="${not empty firstCourse}">
+    <c:if test="${not empty firstCourse}">
     $(".detail-div").load("${baseUrl}/admin/academicManagement/assessmentFactor/courseDetail?courseId=${firstCourse.id}");
-    </c:if>--%>
-    /*$("body").on('click', '.course-detail', function (e) {
+    </c:if>
+    $("body").on('click', '.course-detail', function (e) {
         e.preventDefault();
         var courseId = $(this).attr("data-course-id");
         $(".detail-div").load("${baseUrl}/admin/academicManagement/assessmentFactor/courseDetail?courseId=" + courseId);
 
-    });*/
+    });
 </script>
