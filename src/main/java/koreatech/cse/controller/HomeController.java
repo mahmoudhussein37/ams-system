@@ -2,16 +2,20 @@ package koreatech.cse.controller;
 
 import koreatech.cse.domain.Feedback;
 import koreatech.cse.domain.Searchable;
+import koreatech.cse.domain.UploadedFile;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.Role;
 import koreatech.cse.repository.FeedbackMapper;
 import koreatech.cse.repository.MajorMapper;
+import koreatech.cse.repository.UploadedFileMapper;
 import koreatech.cse.repository.UserMapper;
 import koreatech.cse.service.UserService;
+import koreatech.cse.util.SystemUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.LocaleResolver;
@@ -19,7 +23,12 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
 
 @Controller
@@ -32,6 +41,8 @@ public class HomeController {
     private UserMapper userMapper;
     @Inject
     private FeedbackMapper feedbackMapper;
+    @Inject
+    private UploadedFileMapper uploadedFileMapper;
 
 
     @RequestMapping
@@ -142,6 +153,39 @@ public class HomeController {
         status.setComplete();
 
         return "redirect:/";
+    }
+
+    @Transactional(readOnly = true)
+    @RequestMapping(value = "/download", method = RequestMethod.GET)
+    public void download(HttpServletRequest request, HttpServletResponse response, @RequestParam int uploadedFileId) throws IOException {
+        UploadedFile uploadedFile = uploadedFileMapper.findOne(uploadedFileId);
+        if (uploadedFile != null) {
+            File file = new File(uploadedFile.getPath());
+            this.handleDownloadFile(request, response, file, uploadedFile.getName());
+        }
+    }
+
+    private void handleDownloadFile(HttpServletRequest request, HttpServletResponse response, File file, String downloadFileName) {
+        response.setContentLength((int) file.length());
+        response.setHeader("Content-type", "application/octet-stream");
+        response.setHeader("Content-Transfer-Encoding", "binary");
+        FileInputStream fis = null;
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + SystemUtil.getDocName(request, downloadFileName));
+            OutputStream out = response.getOutputStream();
+            fis = new FileInputStream(file);
+            FileCopyUtils.copy(fis, out);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (Exception ignored) {
+                }
+            }
+        }
     }
 
 }

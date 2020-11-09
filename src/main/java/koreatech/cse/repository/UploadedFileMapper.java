@@ -15,20 +15,28 @@ public interface UploadedFileMapper {
             "`designation`,"+
             "`name`,"+
             "`path`,"+
+            "`year`,"+
+            "`division_id`,"+
+            "`prof_course_id`,"+
             "`uploader_id`"+
             ")VALUES("+
             "#{designation},"+
             "#{name},"+
             "#{path},"+
+            "#{year},"+
+            "#{divisionId},"+
+            "#{profCourseId},"+
             "#{uploaderId}"+
             ")")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(UploadedFile uploadedFile);
 
 
-    @ResultMap("findOne-int")
     @Select("SELECT * FROM `uploaded_file` where designation = #{designation}")
     List<UploadedFile> findByDesignation(@Param("designation") Designation designation);
+
+    @Select("SELECT * FROM `uploaded_file` where designation = #{designation} and year = #{year}")
+    List<UploadedFile> findByDesignationAndYear(@Param("designation") Designation designation, @Param("year") int year);
 
 
     @Select("SELECT * FROM `uploaded_file` where id=#{id}")
@@ -38,6 +46,9 @@ public interface UploadedFileMapper {
             "`designation` = #{designation},"+
             "`name` = #{name},"+
             "`path` = #{path},"+
+            "`year` = #{year},"+
+            "`division_id` = #{divisionId},"+
+            "`prof_course_id` = #{profCourseId},"+
             "`uploader_id` = #{uploaderId} "+
             "WHERE `id` = #{id}")
     void update(UploadedFile uploadedFile);

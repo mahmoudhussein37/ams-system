@@ -1,17 +1,21 @@
 package koreatech.cse.service;
 
+import koreatech.cse.domain.UploadedFile;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.Designation;
+import koreatech.cse.repository.UploadedFileMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class FileService {
@@ -21,40 +25,44 @@ public class FileService {
     @Value("${file.uploadPath}")
     private String originPath;
 
-    public boolean processUploadedFile(MultipartFile file, int programId, int enrollmentId, User uploader, Designation designation) throws IOException {
+
+    @Inject
+    private UploadedFileMapper uploadedFileMapper;
+
+
+    public boolean processUploadedFile(MultipartFile file, User uploader, Designation designation, int divisionId, int profCourseId, int year) throws IOException {
         if(file.getSize() > MAX_SIZE)
             return false;
         StringBuilder pathBuilder = new StringBuilder(originPath);
         pathBuilder.append(File.separator);
         pathBuilder.append(designation);
         pathBuilder.append(File.separator);
-        /*if (designation == Designation.enrollment) {
-            pathBuilder.append(programId);
+        if (designation == Designation.curriculum) {
+            pathBuilder.append(year);
             pathBuilder.append(File.separator);
-            pathBuilder.append(enrollmentId);
-        } else
-            pathBuilder.append(programId);*/
-
-        /*File originDir = new File(pathBuilder.toString());
+        }
+        File originDir = new File(pathBuilder.toString());
         if (!originDir.exists())
             originDir.mkdirs();
         String originalFilename = file.getOriginalFilename();
         if(this.isValidFileType(originalFilename)) {
             String validFilename = changeToValidFilename(originalFilename);
-            File tempFile = File.createTempFile(getPrefix(enrollmentId), validFilename, originDir);
+            String rName = UUID.randomUUID().toString().replace("-", "");
+            File tempFile = File.createTempFile(designation.name(), rName, originDir);
             FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(tempFile));
 
             UploadedFile uploadedFile = new UploadedFile();
-            uploadedFile.setUploader(uploader);
-            uploadedFile.setProgram(programMapper.findOne(programId));
-            uploadedFile.setEnrollment(enrollmentMapper.findOne(enrollmentId));
-            uploadedFile.setName(getPrefix(enrollmentId) + validFilename);
-            uploadedFile.setPath(pathBuilder.toString() + File.separator + tempFile.getName());
+            uploadedFile.setUploaderId(uploader.getId());
+            uploadedFile.setDesignation(designation.name());
+            uploadedFile.setDivisionId(divisionId);
+            uploadedFile.setProfCourseId(profCourseId);
+            uploadedFile.setName(file.getOriginalFilename());
+            uploadedFile.setYear(year);
+            uploadedFile.setPath(pathBuilder.toString() + tempFile.getName());
             uploadedFileMapper.insert(uploadedFile);
             return true;
         } else
-            return false;*/
-        return true;
+            return false;
     }
 
     public boolean isValidFileType(String fileName) {
@@ -75,7 +83,7 @@ public class FileService {
     }
 
     public String changeToValidFilename(String fileName) {
-        String[] preventString = { "!", "@", "#", "$", "%", "^", "&", "*", "`" };
+        String[] preventString = { "!", "@", "#", "$", "%", "^", "&", "*", "`"};
         for (String s : preventString)
             if (fileName.contains(s))
                 fileName = fileName.replace(s, "");

@@ -3,9 +3,11 @@ package koreatech.cse.domain;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class UploadedFile implements Serializable {
     /**
@@ -17,8 +19,11 @@ public class UploadedFile implements Serializable {
     private String path;
     private String designation;
     private int uploaderId;
+    private int year;
+    private int divisionId;
+    private int profCourseId;
     private Date registeredDate;
-
+    private MultipartFile file;
     public int getId() {
         return id;
     }
@@ -59,12 +64,44 @@ public class UploadedFile implements Serializable {
         this.registeredDate = registeredDate;
     }
 
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getDivisionId() {
+        return divisionId;
+    }
+
+    public void setDivisionId(int divisionId) {
+        this.divisionId = divisionId;
+    }
+
+    public int getProfCourseId() {
+        return profCourseId;
+    }
+
+    public void setProfCourseId(int profCourseId) {
+        this.profCourseId = profCourseId;
+    }
+
     public String getDesignation() {
         return designation;
     }
 
     public void setDesignation(String designation) {
         this.designation = designation;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 
     @Override

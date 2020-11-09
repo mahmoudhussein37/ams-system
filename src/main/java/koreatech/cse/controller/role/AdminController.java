@@ -1,16 +1,15 @@
 package koreatech.cse.controller.role;
 
-import koreatech.cse.domain.Contact;
-import koreatech.cse.domain.Feedback;
-import koreatech.cse.domain.Searchable;
-import koreatech.cse.domain.User;
+import koreatech.cse.domain.*;
 import koreatech.cse.domain.constant.CompCategory;
+import koreatech.cse.domain.constant.Designation;
 import koreatech.cse.domain.constant.StudentStatus;
 import koreatech.cse.domain.constant.SubjCategory;
 import koreatech.cse.domain.role.professor.Counseling;
 import koreatech.cse.domain.univ.*;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.AuthorityService;
+import koreatech.cse.service.FileService;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.SystemUtil;
 import org.apache.commons.lang.StringUtils;
@@ -21,8 +20,12 @@ import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.inject.Inject;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +73,10 @@ public class AdminController {
     private FeedbackMapper feedbackMapper;
     @Inject
     private AltCourseMapper altCourseMapper;
-
+    @Inject
+    private UploadedFileMapper uploadedFileMapper;
+    @Inject
+    private FileService fileService;
 
 
     @RequestMapping("/studentManagement/studentRegistration")
@@ -442,13 +448,58 @@ public class AdminController {
     }
 
     @RequestMapping("/courseManagement/curriculum")
-    public String curriculum(Model model) {
+    public String curriculum(Model model, @RequestParam(defaultValue = "0", required=false) int year) {
 
+
+        List<Integer> yearList = getYearList();
+        if(year == 0) {
+            Integer currentYear = yearList.get(0);
+            year = currentYear;
+        }
+
+        model.addAttribute("year", year);
+
+
+        List<UploadedFile> uploadedFiles = uploadedFileMapper.findByDesignationAndYear(Designation.curriculum, year);
+        model.addAttribute("uploadedFiles", uploadedFiles);
         List<Division> divisions = divisionMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("yearList", getYearList());
+        model.addAttribute("yearList", yearList);
         return "role/admin/curriculum/curriculum";
+    }
+
+    @RequestMapping("/courseManagement/curriculum/uploadCurriculum")
+    public String uploadCurriculum(Model model, @RequestParam int year, @RequestParam int divisionId) {
+
+        model.addAttribute("year", year);
+        model.addAttribute("divisionId", divisionId);
+        List<UploadedFile> uploadedFiles = uploadedFileMapper.findByDesignationAndYear(Designation.curriculum, year);
+        model.addAttribute("uploadedFiles", uploadedFiles);
+        model.addAttribute("uploadedFile", new UploadedFile());
+        return "role/admin/curriculum/uploadCurriculum";
+    }
+
+    @RequestMapping(value = "/courseManagement/curriculum/uploadCurriculum", method = RequestMethod.POST)
+    public String uploadCurriculum(@ModelAttribute UploadedFile uploadedFile, @RequestParam int year, @RequestParam int divisionId) {
+
+        User user = User.current();
+
+        List<UploadedFile> uploadedFiles = uploadedFileMapper.findByDesignationAndYear(Designation.curriculum, year);
+
+        for(UploadedFile stored: uploadedFiles) {
+            uploadedFileMapper.delete(stored);
+        }
+        MultipartFile multipartFile = uploadedFile.getFile();
+        if(multipartFile != null) {
+            try {
+                System.out.println("multipartFile = " + multipartFile);
+                fileService.processUploadedFile(multipartFile, user, Designation.curriculum, divisionId, 0, year);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "redirect:/admin/courseManagement/curriculum?year=" + year;
     }
 
     @RequestMapping("/courseManagement/curriculum/courseTable")
@@ -1592,7 +1643,18 @@ public class AdminController {
     }
 
 
-
+    @RequestMapping(value = "/deleteFile", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean deleteFile(@RequestParam int uploadedFileId) throws IOException {
+        UploadedFile uploadedFile = uploadedFileMapper.findOne(uploadedFileId);
+        if (uploadedFile != null) {
+            File file = new File(uploadedFile.getPath());
+            boolean delete = file.delete();
+            uploadedFileMapper.delete(uploadedFile);
+            return delete;
+        }
+        return false;
+    }
 
 
 
@@ -1604,5 +1666,7 @@ public class AdminController {
         return semesterMapper.findAll();
 
     }
+
+
 
 }
