@@ -12,12 +12,31 @@
         </div>
         <div class="col-md-3">
             <div class="form-group">
-                <label><spring:message code="common.name"/></label>
-                <input type="text" class="form-control"  value="${profUser.getFullName()}" disabled/>
+                <label><spring:message code="common.username"/></label>
+                <form:input type="text" class="form-control"  path="username"/>
                     <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
             </div>
 
         </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.firstName"/></label>
+                <form:input type="text" class="form-control"  path="contact.firstName"/>
+                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><spring:message code="common.lastName"/></label>
+                <form:input type="text" class="form-control"  path="contact.lastName"/>
+                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row">
         <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.department"/></label>
@@ -30,21 +49,19 @@
             </div>
 
         </div>
-        <%--<div class="col-md-3">
+        <div class="col-md-3">
 
             <div class="form-group">
-                <label><spring:message code="common.major"/></label>
-                <form:select path="majorId" class="form-control">
-                    &lt;%&ndash;<c:forEach var="major" items="${majors}">
-                        <form:option value="${major.id}">${major.name}</form:option>
-                    </c:forEach>&ndash;%&gt;
+                <label><spring:message code="common.activation"/></label>
+                <form:select path="enabled" class="form-control">
+                    <form:option value="true">Y</form:option>
+                    <form:option value="false">N</form:option>
                 </form:select>
 
-                    &lt;%&ndash;<span class="form-text text-muted">We'll never share your email with anyone else</span>&ndash;%&gt;
+                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
             </div>
-        </div>--%>
+        </div>
     </div>
-
 
     <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
 </form:form>

@@ -3,8 +3,6 @@ package koreatech.cse.repository;
 
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.role.professor.ProfessorCourse;
-import koreatech.cse.domain.role.student.StudentCourse;
-import koreatech.cse.domain.univ.Course;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -14,12 +12,7 @@ import java.util.List;
 @Repository
 public interface ProfessorCourseMapper {
 
-    /*private int limitStudent;
-    private int numStudent;
-    private int attendance;
-    private int lateness;
-    private int absence;*/
-    @Insert("INSERT INTO professor_course (user_id, course_id, limit_student, num_student, attendance, lateness, absence) VALUES (#{userId}, #{courseId}, #{limitStudent}, #{numStudent}, #{attendance}, #{lateness}, #{absence})")
+    @Insert("INSERT INTO professor_course (user_id, course_id, limit_student, num_student, attendance, lateness, absence, lec, tut, lab, ws, prerequisite, alternative, credit) VALUES (#{userId}, #{courseId}, #{limitStudent}, #{numStudent}, #{attendance}, #{lateness}, #{absence}, #{lec}, #{tut}, #{lab}, #{ws}, #{prerequisite}, #{alternative}, #{credit})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(ProfessorCourse professorCourse);
 
@@ -46,5 +39,27 @@ public interface ProfessorCourseMapper {
             + "</script>")
         //@formatter on
     List<ProfessorCourse> findByAttendance(Searchable searchable);
+
+    @Update("UPDATE `professor_course` SET "+
+            "`user_id` = #{userId},"+
+            "`course_id` = #{courseId},"+
+            "`limit_student` = #{limitStudent},"+
+            "`num_student` = #{numStudent},"+
+            "`attendance` = #{attendance},"+
+            "`lateness` = #{lateness},"+
+            "`absence` = #{absence},"+
+            "`lec` = #{lec},"+
+            "`lab` = #{lab},"+
+            "`tut` = #{tut},"+
+            "`ws` = #{ws},"+
+            "`credit` = #{credit},"+
+            "`alternative` = #{alternative},"+
+            "`prerequisite` = #{prerequisite} "+
+            "WHERE `id` = #{id}")
+    @Options(flushCache = true)
+    void update(ProfessorCourse professorCourse);
+
+    @Delete("DELETE FROM `professor_course` WHERE ID = #{id}")
+    void delete(ProfessorCourse professorCourse);
 
 }

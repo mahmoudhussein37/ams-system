@@ -111,7 +111,7 @@
                             <input class="form-control form-control-solid h-auto rounded" type="password" placeholder="<spring:message code="common.password"/>" name="password" autocomplete="off"/>
                         </div>
                         <div class="form-group">
-                            <input class="form-control form-control-solid h-auto rounded" type="password" placeholder="<spring:message code="common.passwordAgain"/>" name="signupUser.passwordConform" id="signupUser.passwordConform" autocomplete="off"/>
+                            <input class="form-control form-control-solid h-auto rounded" type="password" placeholder="<spring:message code="common.passwordAgain"/>" name="signupUser.passwordConfirm" id="signupUser.passwordConfirm" autocomplete="off"/>
                         </div>
                         <!--end::Form group-->
 
@@ -308,7 +308,7 @@
                                 }
                             }
                         },
-                        "signupUser.passwordConform": {
+                        "signupUser.passwordConfirm": {
                             validators: {
                                 identical: {
                                     compare: function() {

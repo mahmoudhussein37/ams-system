@@ -20,7 +20,75 @@
 
                         </div>
                         <div class="card-body">
-                            <%@include file="/WEB-INF/view/include/studentTableSearchDiv.jsp" %>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <spring:message code="common.schoolYear"/><br/>
+                                    <select id="search-school-year" class="form-control" style="margin-top:10px;">
+                                        <c:forEach var="sy" begin="1" end="4">
+                                            <option value="${sy}">${sy}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <spring:message code="common.advisor"/><br/>
+                                    <select id="search-advisor" class="form-control" style="margin-top:10px;">
+                                        <option value="0">-</option>
+                                        <c:forEach var="s" items="${professors}">
+                                            <option value="${s.id}">${s.contact.getFullName()}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <spring:message code="common.department"/><br/>
+                                    <select id="search-division" class="form-control" style="margin-top:10px;">
+                                        <c:forEach var="division" items="${divisions}">
+                                            <option value="${division.id}">${division.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <%--<div class="col-md-2">
+                                    <spring:message code="common.major"/><br/>
+                                    <select id="search-major" class="form-control" style="margin-top:10px;">
+
+
+                                    </select>
+                                </div>--%>
+                                <div class="col-md-1">
+                                    <br/>
+                                    <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
+                                </div>
+                                <div class="col-md-1">
+                                    <br/>
+                                    <button class="btn btn-light" style="width:100%;margin-top:10px;" onclick="javascript:location.reload()"><spring:message code="common.reset"/></button>
+                                </div>
+                                <div class="col-md-1">
+                                    <br/>
+                                    <button class="btn btn-light print" style="width:100%;margin-top:10px;"> <spring:message code="common.print"/></button>
+                                </div>
+
+
+                            </div>
+                            <br/><br/>
+
+
+
+                            <div class="table-div">
+
+
+                            </div>
+
+
+
+
+
+                            <br/><br/>
+                            <div class="separator separator-solid my-5"></div>
+                            <br/><br/>
+                            <div class="detail-div">
+
+                            </div>
 
                         </div>
                     </div>
@@ -45,19 +113,23 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
+    var studentMap = new CustomMap();
     function search() {
-        var number = $("#search-number").val().trim();
-        var name = $("#search-name").val().trim();
+        var schoolYear = $("#search-school-year").children("option:selected").val().trim();
+        var advisor = $("#search-advisor").children("option:selected").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
         //var major = $("#search-major").children("option:selected").val().trim();
-
-        $(".table-div").load("${baseUrl}/admin/studentManagement/studentProfile/studentTable?number=" + number + "&name=" + name + "&division=" + division);
+        studentMap = new CustomMap();
+        $(".table-div").load("${baseUrl}/admin/studentManagement/studentProfile/studentTable?schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division);
     }
 
 
 
     $(document).ready(function() {
-        $(".table-div").load("${baseUrl}/admin/studentManagement/studentProfile/studentTable");
+        var schoolYear = $("#search-school-year").children("option:selected").val().trim();
+        var advisor = $("#search-advisor").children("option:selected").val().trim();
+        var division = $("#search-division").children("option:selected").val().trim();
+        $(".table-div").load("${baseUrl}/admin/studentManagement/studentProfile/studentTable?schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division);
 
         $(".input-enter").keydown(function(key) {
             if (key.keyCode == 13) {

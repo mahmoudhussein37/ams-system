@@ -19,6 +19,15 @@ public class ProfessorCourse implements Serializable {
     private int lateness;
     private int absence;
 
+    private int credit;
+    private int lec;
+    private int tut;
+    private int lab;
+    private int ws;
+
+    private String alternative;
+    private String prerequisite;
+
 
     public int getId() {
         return id;
@@ -91,6 +100,62 @@ public class ProfessorCourse implements Serializable {
 
     public void setAbsence(int absence) {
         this.absence = absence;
+    }
+
+    public int getCredit() {
+        return credit;
+    }
+
+    public void setCredit(int credit) {
+        this.credit = credit;
+    }
+
+    public int getLec() {
+        return lec;
+    }
+
+    public void setLec(int lec) {
+        this.lec = lec;
+    }
+
+    public int getTut() {
+        return tut;
+    }
+
+    public void setTut(int tut) {
+        this.tut = tut;
+    }
+
+    public int getLab() {
+        return lab;
+    }
+
+    public void setLab(int lab) {
+        this.lab = lab;
+    }
+
+    public int getWs() {
+        return ws;
+    }
+
+    public void setWs(int ws) {
+        this.ws = ws;
+    }
+
+    public String getAlternative() {
+        return alternative;
+    }
+
+    public void setAlternative(String alternative) {
+        this.alternative = alternative;
+    }
+
+    public String getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(String prerequisite) {
+        this.prerequisite = prerequisite;
     }
 
     @Override

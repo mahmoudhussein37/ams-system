@@ -5,40 +5,67 @@ import koreatech.cse.domain.role.professor.LectureFundamentals;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Course implements Serializable {
     private static final long serialVersionUID = 14570353849L;
 
     private int id;
-    private int year;
-    private String semester;
     private String code;
     private String title;
-    private String category;
+    private String subjCategory;
+    private int divisionId;
+    private Division division;
+    private Date registeredDate;
+
+    private String overview;
+    private String learningObjective;
+
     private int credit;
+    private int lec;
+    private int tut;
+    private int lab;
+    private int ws;
+
+    private String alternative;
+    private String prerequisite;
+
+    private boolean enabled;
+
+
+
+
+
+
+
+    private int semesterId;
+    private Semester semester;
+
+    private String category;
+
     private boolean retake;
     private String retakeCode;
     private String retakeTitle;
-    private int divisionId;
+
 
     private int divide;
 
-    private int majorId;
     private int schoolYear;
     private String lang;
     private String lectureTime;
     private String compCategory;
-    private String subjCategory;
+
     private int profUserId;
     private int maxStudent;
 
-    private Division division;
-    private Major major;
+
     private User profUser;
     private LectureFundamentals lectureFundamentals;
 
 
-    private boolean enabled;
+
+
+
 
 
     public int getId() {
@@ -49,19 +76,19 @@ public class Course implements Serializable {
         this.id = id;
     }
 
-    public int getYear() {
-        return year;
+    public int getSemesterId() {
+        return semesterId;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setSemesterId(int semesterId) {
+        this.semesterId = semesterId;
     }
 
-    public String getSemester() {
+    public Semester getSemester() {
         return semester;
     }
 
-    public void setSemester(String semester) {
+    public void setSemester(Semester semester) {
         this.semester = semester;
     }
 
@@ -137,15 +164,6 @@ public class Course implements Serializable {
         this.enabled = enabled;
     }
 
-
-    public int getMajorId() {
-        return majorId;
-    }
-
-    public void setMajorId(int majorId) {
-        this.majorId = majorId;
-    }
-
     public int getSchoolYear() {
         return schoolYear;
     }
@@ -218,14 +236,6 @@ public class Course implements Serializable {
         this.division = division;
     }
 
-    public Major getMajor() {
-        return major;
-    }
-
-    public void setMajor(Major major) {
-        this.major = major;
-    }
-
     public LectureFundamentals getLectureFundamentals() {
         return lectureFundamentals;
     }
@@ -240,6 +250,78 @@ public class Course implements Serializable {
 
     public void setDivide(int divide) {
         this.divide = divide;
+    }
+
+    public int getLec() {
+        return lec;
+    }
+
+    public void setLec(int lec) {
+        this.lec = lec;
+    }
+
+    public int getTut() {
+        return tut;
+    }
+
+    public void setTut(int tut) {
+        this.tut = tut;
+    }
+
+    public int getLab() {
+        return lab;
+    }
+
+    public void setLab(int lab) {
+        this.lab = lab;
+    }
+
+    public int getWs() {
+        return ws;
+    }
+
+    public void setWs(int ws) {
+        this.ws = ws;
+    }
+
+    public Date getRegisteredDate() {
+        return registeredDate;
+    }
+
+    public void setRegisteredDate(Date registeredDate) {
+        this.registeredDate = registeredDate;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public String getLearningObjective() {
+        return learningObjective;
+    }
+
+    public void setLearningObjective(String learningObjective) {
+        this.learningObjective = learningObjective;
+    }
+
+    public String getAlternative() {
+        return alternative;
+    }
+
+    public void setAlternative(String alternative) {
+        this.alternative = alternative;
+    }
+
+    public String getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(String prerequisite) {
+        this.prerequisite = prerequisite;
     }
 
     @Override

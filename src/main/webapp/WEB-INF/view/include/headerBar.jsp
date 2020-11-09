@@ -6,8 +6,8 @@
 <div id="kt_header_mobile" class="header-mobile bg-primary  header-mobile-fixed " >
     <!--begin::Logo-->
     <a href="/">
-        <img alt="Logo" src="${resources}/images/bst_logo.png" class="max-h-30px" />
-        <img alt="Logo" src="${resources}/images/koika_logo.png" class="max-h-30px" />
+        <img alt="Logo" src="${resources}/images/bst_logo_transparent.png" class="max-h-30px" />
+        <img alt="Logo" src="${resources}/images/koika_logo_transparent.png" class="max-h-30px" />
     </a>
     <!--end::Logo-->
 
@@ -46,8 +46,8 @@
                         <div class="d-none d-lg-flex align-items-center mr-3">
                             <!--begin::Logo-->
                             <a href="/" class="mr-20">
-                                <img alt="Logo" src="${resources}/images/bst_logo.png" class="max-h-50px" style="border-radius:5px;"/>
-                                <img alt="Logo" src="${resources}/images/koika_logo.png" class="max-h-50px" style="border-radius:5px;"/>
+                                <img alt="Logo" src="${resources}/images/bst_logo_transparent.png" class="max-h-50px" style="border-radius:5px;"/>
+                                <img alt="Logo" src="${resources}/images/koika_logo_transparent.png" class="max-h-50px" style="border-radius:5px;"/>
                             </a>
                             <!--end::Logo-->
                             <!--begin::Tab Navs(for desktop mode)-->
@@ -59,7 +59,7 @@
                         <!--end::Left-->
 
                         <!--begin::Topbar-->
-                        <div class="topbar bg-primary">
+                        <div class="topbar">
 
                             <sec:authorize access="!isAuthenticated()">
                                 <div class="topbar-item">

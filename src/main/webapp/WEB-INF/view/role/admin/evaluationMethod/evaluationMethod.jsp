@@ -21,82 +21,27 @@
                         </div>
                         <div class="card-body">
                             <div class="table-div">
-                                <table class="table table-head-custom table-vertical-center" id="course-list">
-                                    <thead>
-                                    <tr class="table-secondary text-center">
-                                        <th class="pl-0" style=""></th>
-                                        <th class="pl-0" style=""><spring:message code="common.no"/></th>
-                                        <th style=""><spring:message code="professor.methods"/></th>
-                                        <th style=""><spring:message code="professor.directInput"/></th>
-                                        <th style=""><spring:message code="professor.inputAvailable"/></th>
-                                        <th style=""></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr class="text-center">
-                                        <td class="pl-0">
-                                            <input type="checkbox" name=""/>
-                                        </td>
-                                        <td class="pl-0">
-                                            1
-                                        </td>
-                                        <td class="pl-0">
-                                            Portfolio
-                                        </td>
-                                        <td>
 
-                                            Text Input
-
-                                        </td>
-
-                                        <td>
-                                            Y
-                                        </td>
-                                    </tr>
-
-
-                                    </tbody>
-                                </table>
                             </div>
 
                             <br/><br/>
                             <div class="separator separator-solid my-5"></div>
                             <br/><br/>
+                            <form:form modelAttribute="evaluationMethod" action="${baseUrl}/admin/systemManagement/evaluationMethod" method="post">
+                                <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.createEvaluationMethod"/></h3>
+                                <div class="row">
+                                    <div class="col-md-3">
 
-                            <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.createEvaluationMethod"/></h3>
-                            <div class="row">
-                                <div class="col-md-3">
-
-                                    <div class="form-group">
-                                        <label><spring:message code="professor.methods"/></label>
-                                        <input type="number" name="year" class="form-control"/>
-                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        <div class="form-group">
+                                            <label><spring:message code="professor.methods"/></label>
+                                            <input type="text" name="name" class="form-control"/>
+                                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-
-                                    <div class="form-group">
-                                        <label><spring:message code="professor.directInput"/></label>
-                                        <input type="number" name="semester" class="form-control"/>
-                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-
-                                    <div class="form-group">
-                                        <label><spring:message code="professor.inputAvailable"/></label>
-                                        <select class="form-control">
-                                            <option value="true">Y</option>
-                                            <option value="false">N</option>
-                                        </select>
-
-                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                                    </div>
-                                </div>
-                            </div>
-                            <br/>
-                            <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.register"/></button>
-
+                                <br/>
+                                <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.register"/></button>
+                            </form:form>
                         </div>
                     </div>
                     <!--end::Card-->
@@ -121,6 +66,12 @@
 
 <script>
     $(document).ready(function() {
+        $(".table-div").load("${baseUrl}/admin/systemManagement/evaluationMethod/evaluationMethodTable");
+
+        <c:if test="${not empty result}">
+        alert("<spring:message code='common.success'/>");
+        location.href="${baseUrl}/admin/systemManagement/evaluationMethod";
+        </c:if>
     });
 </script>
 </body>

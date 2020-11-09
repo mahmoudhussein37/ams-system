@@ -5,16 +5,19 @@ public class Searchable {
     private String name;
     private String number;
     private int division;
-    private int major;
     private int year;
     private int semester;
+    private int semesterId;
     private int userId;
+    private int schoolYear;
+    private int advisor;
     private String code;
     private String title;
 
 
     private String orderParam;
     private String orderDir;
+
 
     public String getName() {
         return name;
@@ -38,14 +41,6 @@ public class Searchable {
 
     public void setDivision(int division) {
         this.division = division;
-    }
-
-    public int getMajor() {
-        return major;
-    }
-
-    public void setMajor(int major) {
-        this.major = major;
     }
 
     public String getOrderParam() {
@@ -96,6 +91,29 @@ public class Searchable {
         this.title = title;
     }
 
+    public int getSemesterId() {
+        return semesterId;
+    }
+
+    public void setSemesterId(int semesterId) {
+        this.semesterId = semesterId;
+    }
+
+    public int getSchoolYear() {
+        return schoolYear;
+    }
+
+    public void setSchoolYear(int schoolYear) {
+        this.schoolYear = schoolYear;
+    }
+
+    public int getAdvisor() {
+        return advisor;
+    }
+
+    public void setAdvisor(int advisor) {
+        this.advisor = advisor;
+    }
 
     public String getCode() {
         return code;

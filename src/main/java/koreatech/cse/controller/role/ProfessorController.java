@@ -4,14 +4,12 @@ import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.role.professor.Counseling;
 import koreatech.cse.domain.role.professor.LectureFundamentals;
-import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
 import koreatech.cse.domain.univ.Major;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.UserService;
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +40,9 @@ public class ProfessorController {
     private LectureFundamentalsMapper lectureFundamentalsMapper;
     @Inject
     private CounselingMapper counselingMapper;
+    @Inject
+    private SemesterMapper semesterMapper;
+
 
 
 
@@ -187,7 +188,7 @@ public class ProfessorController {
         searchable.setYear(year);
         searchable.setSemester(semester);
 
-        List<Course> courseList = courseMapper.findByInquiryCourse(searchable);
+        List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -228,7 +229,7 @@ public class ProfessorController {
         searchable.setSemester(semester);
         searchable.setDivision(division);
 
-        List<Course> courseList = courseMapper.findByInquiryCourse(searchable);
+        List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -289,7 +290,7 @@ public class ProfessorController {
         searchable.setSemester(semester);
         searchable.setUserId(User.current().getId());
 
-        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -320,7 +321,7 @@ public class ProfessorController {
         searchable.setSemester(semester);
         searchable.setUserId(User.current().getId());
 
-        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -360,7 +361,7 @@ public class ProfessorController {
         searchable.setSemester(semester);
         searchable.setUserId(User.current().getId());
 
-        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -399,7 +400,7 @@ public class ProfessorController {
         searchable.setSemester(semester);
         searchable.setUserId(User.current().getId());
 
-        List<Course> courseList = courseMapper.findBySyllabus(searchable);
+        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -494,15 +495,9 @@ public class ProfessorController {
 
         return "role/professor/makeupClass/courseDetail";
     }
-    
+
     private List<Integer> getYearList() {
-        DateTime dt = new DateTime();
-        int currentYear = dt.getYear();
-        List<Integer> yearList = new ArrayList<>();
-        for(int i=currentYear; i>=(currentYear - 10); i--) {
-            yearList.add(i);
-        }
-        return yearList;
+        return semesterMapper.findYears();
     }
 
 }

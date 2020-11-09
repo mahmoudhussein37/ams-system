@@ -99,11 +99,9 @@ public interface ContactMapper {
     @Select("select * from contact where id = #{id}")
     Contact findOne(@Param("id") int id);
 
-    @ResultMap("findOne-int")
     @Select("SELECT * FROM contact")
     List<Contact> findAll();
 
-    @ResultMap("findOne-int")
     @Select("select * from contact where user_id = #{userId} limit 1")
     Contact findByUserId(@Param("userId") int userId);
 }

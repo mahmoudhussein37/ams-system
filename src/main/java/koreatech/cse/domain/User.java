@@ -2,7 +2,6 @@ package koreatech.cse.domain;
 
 import koreatech.cse.domain.constant.Role;
 import koreatech.cse.domain.univ.Division;
-import koreatech.cse.domain.univ.Major;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,14 +19,13 @@ public class User implements UserDetails {
     private Contact contact;
 
     private int divisionId;
-    private int majorId;
 
     private Division division;
-    private Major major;
 
     private String number; //student/professor number
 
-    private String advisor;
+    private User advisor; //지도교수
+    private int advisorId; //지도교수
     private String status;
     private int schoolYear;
 
@@ -64,14 +62,6 @@ public class User implements UserDetails {
         this.number = number;
     }
 
-    public int getMajorId() {
-        return majorId;
-    }
-
-    public void setMajorId(int majorId) {
-        this.majorId = majorId;
-    }
-
     public int getDivisionId() {
         return divisionId;
     }
@@ -86,14 +76,6 @@ public class User implements UserDetails {
 
     public void setDivision(Division division) {
         this.division = division;
-    }
-
-    public Major getMajor() {
-        return major;
-    }
-
-    public void setMajor(Major major) {
-        this.major = major;
     }
 
     @Override
@@ -154,11 +136,11 @@ public class User implements UserDetails {
         this.contact = contact;
     }
 
-    public String getAdvisor() {
+    public User getAdvisor() {
         return advisor;
     }
 
-    public void setAdvisor(String advisor) {
+    public void setAdvisor(User advisor) {
         this.advisor = advisor;
     }
 
@@ -176,6 +158,14 @@ public class User implements UserDetails {
 
     public void setSchoolYear(int schoolYear) {
         this.schoolYear = schoolYear;
+    }
+
+    public int getAdvisorId() {
+        return advisorId;
+    }
+
+    public void setAdvisorId(int advisorId) {
+        this.advisorId = advisorId;
     }
 
     public static User current() {

@@ -24,29 +24,39 @@
                                 <table class="table table-head-custom table-vertical-center" id="course-list">
                                     <thead>
                                     <tr class="table-secondary text-center">
-                                        <th class="pl-0" style=""><spring:message code="common.no"/></th>
-                                        <th style=""><spring:message code="common.subject"/></th>
+                                        <th class="pl-0" style=""><spring:message code="common.date"/></th>
+                                        <th style=""><spring:message code="common.number"/></th>
+                                        <th style=""><spring:message code="common.name"/></th>
+                                        <th style=""><spring:message code="common.email"/></th>
                                         <th style=""><spring:message code="admin.errorDetail"/></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr class="text-center">
 
-                                        <td class="pl-0">
-                                            1
-                                        </td>
-                                        <td class="pl-0">
-                                            Menu doesn't working
-                                        </td>
-                                        <td>
+                                    <c:forEach var="feedback" items="${feedbackList}" varStatus="varStatus">
+                                        <tr class="text-center">
 
-                                            Hello i have a problem with page when i'm going on this page, it doesn't loading i have just "white screen" how can i fix that ? a fue day ago i haven't problems with that, i dont know why it doesn't works. I reinstalled mozilla, ( that page is just working at internet explorer, at Google Chrome and Microsoft Edge it doesn't works too ). I send a screen shot with that.
-                                            Is it possible to speak about this in polish ? Any polish support is here ? Or even live chat in english ?
-                                            I reinstalled mozilla, i did clear boot, i reset memory of mozilla. Please tell me how to fix that.
+                                            <td class="pl-0">
+                                                <fmt:formatDate pattern="dd-MMM-yyyy" value="${feedback.datetime}"/>
+                                            </td>
+                                            <td class="pl-0">
+                                                ${feedback.number}
+                                            </td>
+                                            <td class="pl-0">
+                                                    ${feedback.name}
+                                            </td>
+                                            <td class="pl-0">
+                                                    ${feedback.email}
+                                            </td>
+                                            <td>
 
-                                        </td>
+                                                ${feedback.contents}
 
-                                    </tr>
+                                            </td>
+
+                                        </tr>
+                                    </c:forEach>
+
 
 
                                     </tbody>
@@ -77,6 +87,7 @@
 
 <script>
     $(document).ready(function() {
+        $("#course-list").DataTable();
     });
 </script>
 </body>

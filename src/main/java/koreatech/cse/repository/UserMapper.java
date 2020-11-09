@@ -16,11 +16,10 @@ public interface UserMapper {
             "`password`,"+
             "`number`,"+
             "`division_id`,"+
-            "`major_id`,"+
+            "`advisor_id`,"+
             "`school_year`,"+
             "`confirm`,"+
             "`register_date`,"+
-            "`advisor`,"+
             "`status`,"+
             "`enabled`"+
             ")VALUES("+
@@ -28,11 +27,10 @@ public interface UserMapper {
             "#{password},"+
             "#{number},"+
             "#{divisionId},"+
-            "#{majorId},"+
+            "#{advisorId},"+
             "#{schoolYear},"+
             "#{confirm},"+
             "CURRENT_TIMESTAMP,"+
-            "#{advisor},"+
             "#{status},"+
             "#{enabled}"+
             ")")
@@ -42,12 +40,12 @@ public interface UserMapper {
     @Update("UPDATE `user` SET"+
             "`number` = #{number},"+
             "`division_id` = #{divisionId},"+
-            "`major_id` = #{majorId},"+
+            "`advisor_id` = #{advisorId},"+
             "`school_year` = #{schoolYear},"+
-            "`advisor` = #{advisor},"+
             "`status` = #{status} "+
             "WHERE `id` = #{id}")
     void update(User user);
+
 
     @Update("UPDATE `user` SET"+
             "`username` = #{username},"+
@@ -61,11 +59,11 @@ public interface UserMapper {
     @Results({
             @Result(column = "id", property = "id"),
             @Result(column = "division_id", property = "divisionId"),
-            @Result(column = "major_id", property = "majorId"),
+            @Result(column = "advisor_id", property = "advisorId"),
             @Result(column = "id", property = "contact", one = @One(select = "koreatech.cse.repository.ContactMapper.findByUserId")),
             @Result(column = "id", property = "authorities", many = @Many(select = "koreatech.cse.repository.AuthorityMapper.findByUserId")),
             @Result(column = "division_id", property = "division", one = @One(select = "koreatech.cse.repository.DivisionMapper.findOne")),
-            @Result(column = "major_id", property = "major", one = @One(select = "koreatech.cse.repository.MajorMapper.findOne")),
+            @Result(column = "advisor_id", property = "advisor", one = @One(select = "koreatech.cse.repository.UserMapper.findOne"))
     })
     @Select("SELECT * FROM USER WHERE ID = #{id}")
     User findOne(@Param("id") int id);
@@ -79,6 +77,14 @@ public interface UserMapper {
     List<User> findAllStudents();
 
     @ResultMap("findOne-int")
+    @Select("SELECT * FROM USER u join authority a on u.id = a.user_id where a.role = 'ROLE_PROFESSOR'")
+    List<User> findAllProfessors();
+
+    @ResultMap("findOne-int")
+    @Select("SELECT * FROM USER u join authority a on u.id = a.user_id where a.role = 'ROLE_ADMIN'")
+    List<User> findAllAdmins();
+
+    @ResultMap("findOne-int")
     @Select("select * from user where username = #{username}")
     User findByUsername(@Param("username") String username);
 
@@ -87,7 +93,7 @@ public interface UserMapper {
     User findByNumber(@Param("number") String number);
 
     @Delete("DELETE FROM USER WHERE ID = #{id}")
-    void delete(@Param("id") int id);
+    void delete(User user);
 
     @SelectProvider(type = UserSqlProvider.class, method = "findAllByProvider")
     List<User> findByProvider(Searchable searchable);
@@ -99,7 +105,6 @@ public interface UserMapper {
             + "<if test='name != null'> and (c.last_name LIKE CONCAT('%', #{name}, '%') or c.first_name LIKE CONCAT('%', #{name}, '%'))</if>"
             + "<if test='number != null'> and u.number LIKE CONCAT('%', #{number}, '%')</if>"
             + "<if test='division != 0'> and u.division_id = #{division}</if>"
-            + "<if test='major != 0'> and u.major_id = #{major}</if>"
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
     //@formatter on
@@ -108,15 +113,35 @@ public interface UserMapper {
     @ResultMap("findOne-int")
     //@formatter off
     @Select("<script>"
+            + "SELECT * FROM USER u join authority a on u.id = a.user_id where a.role = 'ROLE_STUDENT' "
+            + "<if test='advisor != 0'> and u.advisor_id = #{advisor}</if>"
+            + "<if test='schoolYear != 0'> and u.school_year = #{schoolYear}</if>"
+            + "<if test='division != 0'> and u.division_id = #{division}</if>"
+            + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
+            + "</script>")
+        //@formatter on
+    List<User> findStudentsByAdvisorSchoolYearDivision(Searchable searchable);
+
+    @ResultMap("findOne-int")
+    //@formatter off
+    @Select("<script>"
             + "SELECT * FROM USER u join contact c on u.id=c.user_id join authority a on u.id = a.user_id where a.role = 'ROLE_PROFESSOR' "
             + "<if test='name != null'> and (c.last_name LIKE CONCAT('%', #{name}, '%') or c.first_name LIKE CONCAT('%', #{name}, '%'))</if>"
             + "<if test='number != null'> and u.number LIKE CONCAT('%', #{number}, '%')</if>"
             + "<if test='division != 0'> and u.division_id = #{division}</if>"
-            + "<if test='major != 0'> and u.major_id = #{major}</if>"
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
         //@formatter on
     List<User> findByProfLookup(Searchable searchable);
+
+    @ResultMap("findOne-int")
+    //@formatter:off
+    @Select("<script>"
+            + "SELECT * FROM USER WHERE 1=1"
+            + "<if test='userIds != null and !userIds.empty'> AND id IN <foreach item='item' collection='userIds' open='(' separator=',' close=')'>#{item}</foreach></if>"
+            + "</script>")
+        //@formatter:on
+    List<User> findByUserIds(@Param("userIds") List<Integer> userIds);
 
     //@formatter off
     @Select("<script>"

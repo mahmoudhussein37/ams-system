@@ -6,12 +6,13 @@
 
         <th class="pl-0" style=""><spring:message code="common.no"/></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
-        <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span></th>
         <%--<th style=""><span class="text-primary"><spring:message code="common.category"/></span>--%>
         <%--<th style=""><span class="text-primary"><spring:message code="common.compCategory"/></span>--%>
-        <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.alternative"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.prerequisite"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span></th>
+        <%--<th style=""><span class="text-primary"><spring:message code="common.alternativeCode"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.prerequisiteCode"/></span>--%>
+        <th style=""></th>
     </tr>
     </thead>
     <tbody>
@@ -23,12 +24,10 @@
                     ${varStatus.count}
             </td>
             <td>
-                <a href="#" class="course-detail" data-course-id="${courseElement.id}">
-                        ${courseElement.code}
-                </a>
+                    ${courseElement.code}
             </td>
             <td>
-                <a href="#" class="course-editable" data-type="text" data-name="title" data-url="${baseUrl}/admin/courseManagement/courseEditable" data-pk="${courseElement.id}" data-original-title="<spring:message code="common.courseTitle"/>">${courseElement.title}</a>
+                    ${courseElement.title}
 
             </td>
             <%--<td>
@@ -41,11 +40,14 @@
                 <spring:message code="subj.category.${courseElement.subjCategory}"/>
             </td>
             <td>
-                <input type="text" class="form-control"/>
+                <a href="${baseUrl}/admin/courseManagement/alternative/manageCourse?id=${courseElement.id}" class="btn btn-light btm-sm" data-id="${courseElement.id}"><spring:message code="common.manage"/></a>
+            </td>
+            <%--<td>
+                <a href="#" class="course-editable" data-type="text" data-name="alternative" data-url="${baseUrl}/admin/courseManagement/courseEditable" data-pk="${courseElement.id}" data-original-title="<spring:message code="common.alternative"/>">${courseElement.alternative}</a>
             </td>
             <td>
-                <input type="text" class="form-control"/>
-            </td>
+                <a href="#" class="course-editable" data-type="text" data-name="prerequisite" data-url="${baseUrl}/admin/courseManagement/courseEditable" data-pk="${courseElement.id}" data-original-title="<spring:message code="common.prerequisite"/>">${courseElement.prerequisite}</a>
+            </td>--%>
 
         </tr>
     </c:forEach>

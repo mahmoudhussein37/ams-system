@@ -48,6 +48,7 @@
 
     </c:otherwise>
     </c:choose>
+
     <link rel="shortcut icon" href="${resources}/vendor/metronic_assets_7/assets/media/logos/favicon.ico"/>
     <style>
 
@@ -72,6 +73,30 @@
         .print-div {
             text-align:${isRTL ? 'left' : 'right'};
         }
+
+        @media print {
+            .div-to-print {
+                background-color: white;
+                height: 100%;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                margin: 0;
+                padding: 15px;
+                font-size: 14px;
+                line-height: 18px;
+            }
+        }
+        .disabled-tr {
+            color:grey;
+            background-color: #e7e5e5;
+
+        }
+       /* .header .header-top {
+            background-color: #82a8d2;
+
+        }*/
 
     </style>
 </head>
