@@ -6,6 +6,7 @@ import koreatech.cse.domain.User;
 import koreatech.cse.repository.provider.UserSqlProvider;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -81,6 +82,10 @@ public interface UserMapper {
     List<User> findAllProfessors();
 
     @ResultMap("findOne-int")
+    @Select("SELECT * FROM USER u join authority a on u.id = a.user_id where a.role = 'ROLE_PROFESSOR' and u.division_id=#{divisionId}")
+    List<User> findProfessorsByDivision(@Param("divisionId") int divisionId);
+
+    @ResultMap("findOne-int")
     @Select("SELECT * FROM USER u join authority a on u.id = a.user_id where a.role = 'ROLE_ADMIN'")
     List<User> findAllAdmins();
 
@@ -108,7 +113,7 @@ public interface UserMapper {
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
     //@formatter on
-    List<User> findByStudentLookup(Searchable searchable);
+    List<User> findByNameNumberDivision(Searchable searchable);
 
     @ResultMap("findOne-int")
     //@formatter off

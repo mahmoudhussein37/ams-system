@@ -1,6 +1,8 @@
 package koreatech.cse.domain.role.professor;
 
+import koreatech.cse.domain.User;
 import koreatech.cse.domain.univ.Course;
+import koreatech.cse.domain.univ.Semester;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
@@ -11,22 +13,18 @@ public class ProfessorCourse implements Serializable {
     private int id;
     private int userId;
     private int courseId;
+    private int divide;
+    private int semesterId;
     private Course course;
+    private User professorUser;
+    private Semester semester;
 
     private int limitStudent;
     private int numStudent;
     private int attendance;
     private int lateness;
     private int absence;
-
-    private int credit;
-    private int lec;
-    private int tut;
-    private int lab;
-    private int ws;
-
-    private String alternative;
-    private String prerequisite;
+    private boolean enabled;
 
 
     public int getId() {
@@ -102,60 +100,44 @@ public class ProfessorCourse implements Serializable {
         this.absence = absence;
     }
 
-    public int getCredit() {
-        return credit;
+    public int getSemesterId() {
+        return semesterId;
     }
 
-    public void setCredit(int credit) {
-        this.credit = credit;
+    public void setSemesterId(int semesterId) {
+        this.semesterId = semesterId;
     }
 
-    public int getLec() {
-        return lec;
+    public User getProfessorUser() {
+        return professorUser;
     }
 
-    public void setLec(int lec) {
-        this.lec = lec;
+    public void setProfessorUser(User professorUser) {
+        this.professorUser = professorUser;
     }
 
-    public int getTut() {
-        return tut;
+    public int getDivide() {
+        return divide;
     }
 
-    public void setTut(int tut) {
-        this.tut = tut;
+    public void setDivide(int divide) {
+        this.divide = divide;
     }
 
-    public int getLab() {
-        return lab;
+    public Semester getSemester() {
+        return semester;
     }
 
-    public void setLab(int lab) {
-        this.lab = lab;
+    public void setSemester(Semester semester) {
+        this.semester = semester;
     }
 
-    public int getWs() {
-        return ws;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setWs(int ws) {
-        this.ws = ws;
-    }
-
-    public String getAlternative() {
-        return alternative;
-    }
-
-    public void setAlternative(String alternative) {
-        this.alternative = alternative;
-    }
-
-    public String getPrerequisite() {
-        return prerequisite;
-    }
-
-    public void setPrerequisite(String prerequisite) {
-        this.prerequisite = prerequisite;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

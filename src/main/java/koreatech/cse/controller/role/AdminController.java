@@ -6,6 +6,7 @@ import koreatech.cse.domain.constant.Designation;
 import koreatech.cse.domain.constant.StudentStatus;
 import koreatech.cse.domain.constant.SubjCategory;
 import koreatech.cse.domain.role.professor.Counseling;
+import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.univ.*;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.AuthorityService;
@@ -21,7 +22,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@SessionAttributes({"studentUser", "profUser", "adminUser", "course", "division", "semester", "menuAccess", "assessmentFactor"})
+@SessionAttributes({"studentUser", "profUser", "adminUser", "course", "division", "semester", "menuAccess", "assessmentFactor", "profCourse"})
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
@@ -124,7 +124,7 @@ public class AdminController {
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            userList = userMapper.findByStudentLookup(searchable);
+            userList = userMapper.findByNameNumberDivision(searchable);
 
 
             for(User user: userList) {
@@ -388,7 +388,7 @@ public class AdminController {
             Searchable searchable = new Searchable();
 
             searchable.setYear(year);
-            userList = userMapper.findByStudentLookup(searchable);
+            userList = userMapper.findByNameNumberDivision(searchable);
 
 
             for(User user: userList) {
@@ -725,7 +725,10 @@ public class AdminController {
     }
 
     @RequestMapping("/courseManagement/cOpen")
-    public String cOpen(Model model, @RequestParam(required=false) String result) {
+    public String cOpen(Model model, @RequestParam(required=false) String result,
+                        @RequestParam(defaultValue = "0", required=false) int year,
+                        @RequestParam(defaultValue = "0", required=false) int semester,
+                        @RequestParam(defaultValue = "0", required=false) int division) {
         List<Division> divisions = divisionMapper.findAll();
 
         model.addAttribute("divisions", divisions);
@@ -734,6 +737,7 @@ public class AdminController {
         model.addAttribute("compCategoryList", CompCategory.values());
         model.addAttribute("subjCategoryList", SubjCategory.values());
         model.addAttribute("result", result);
+        model.addAttribute("profCourse", new ProfessorCourse());
 
         return "role/admin/cOpen/cOpen";
     }
@@ -747,6 +751,7 @@ public class AdminController {
         searchable.setYear(year);
         searchable.setSemester(semester);
         searchable.setDivision(division);
+        searchable.setEnabled(true);
 
 
         List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
@@ -759,28 +764,97 @@ public class AdminController {
 
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);
-        System.out.println("course table end");
         return "role/admin/cOpen/courseTable";
     }
 
-    @RequestMapping("/courseManagement/cOpen/courseDetail")
-    public String cOpenCourseDetail(Model model, @RequestParam int courseId) {
+    @RequestMapping("/courseManagement/cOpen/manageDivide")
+    public String manageDivide(Model model, @RequestParam int courseId, @RequestParam(required=false) String result) {
         Course course = courseMapper.findOne(courseId);
         model.addAttribute("course", course);
         List<Division> divisions = divisionMapper.findAll();
         model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
-        model.addAttribute("compCategoryList", CompCategory.values());
         model.addAttribute("subjCategoryList", SubjCategory.values());
-        return "role/admin/cOpen/courseDetail";
+        List<Semester> semesters = semesterMapper.findAll();
+        model.addAttribute("semesters", semesters);
+        List<User> professors = userMapper.findProfessorsByDivision(course.getDivisionId());
+        model.addAttribute("professors", professors);
+        List<ProfessorCourse> professorCourseList = professorCourseMapper.findByCourseId(courseId);
+        model.addAttribute("professorCourseList", professorCourseList);
+        model.addAttribute("profCourse", new ProfessorCourse());
+        model.addAttribute("result", result);
+        return "role/admin/cOpen/manageDivide";
     }
 
-    @RequestMapping(value = "/courseManagement/cOpen/courseDetail", method = RequestMethod.POST)
-    public String cOpenCourseDetail(@RequestParam int courseId, @ModelAttribute Course course) {
-
-        courseMapper.update(course);
-        return "redirect:/admin/courseManagement/cOpen?result=success";
+    @RequestMapping(value = "/courseManagement/cOpen/manageDivide", method = RequestMethod.POST)
+    public String manageDivide(@ModelAttribute ProfessorCourse professorCourse,
+                               @RequestParam int courseId) {
+        professorCourseMapper.insert(professorCourse);
+        return "redirect:/admin/courseManagement/cOpen/manageDivide?courseId=" + courseId + "&result=success";
     }
+
+    @RequestMapping(value = "/courseManagement/cOpen/manageDivide/deleteDivide", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean deleteDivide(@RequestParam int id) {
+        ProfessorCourse professorCourse = professorCourseMapper.findOne(id);
+
+        //TODO:
+        professorCourseMapper.delete(professorCourse);
+
+        /*List<Course> courses = courseMapper.findByClassroom(id);
+        if(CollectionUtils.isEmpty(courses)) {
+            classroomMapper.delete(classroom);
+            return true;
+        } else {
+            classroom.setEnabled(false);
+            classroomMapper.update(classroom);
+            return false;
+        }*/
+        return true;
+    }
+
+    @RequestMapping(value = "/courseManagement/cOpen/manageDivide/changeStatus", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean changeDivideStatus(@RequestParam int id, @RequestParam boolean status) {
+        System.out.println("id = " + id);
+        ProfessorCourse professorCourse = professorCourseMapper.findOne(id);
+        professorCourse.setEnabled(status);
+        professorCourseMapper.update(professorCourse);
+        return true;
+    }
+
+    @RequestMapping("/courseManagement/cOpen/manageStudent")
+    public String manageStudent(Model model, @RequestParam int profCourseId, @RequestParam(required=false) String result) {
+        ProfessorCourse professorCourse = professorCourseMapper.findOne(profCourseId);
+        model.addAttribute("profCourse", professorCourse);
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("result", result);
+
+        return "role/admin/cOpen/manageStudent";
+    }
+
+    @RequestMapping("/courseManagement/cOpen/manageStudent/studentTable")
+    public String manageStudentStudentTable(Model model, @RequestParam(required=false) String number,
+                               @RequestParam(required=false) String name,
+                               @RequestParam(defaultValue = "0", required=false) int division) {
+        List<User> userList;
+        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
+            userList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setNumber(number);
+            searchable.setName(name);
+            searchable.setDivision(division);
+            userList = userMapper.findByNameNumberDivision(searchable);
+
+        }
+
+        model.addAttribute("userList", userList);
+        return "role/admin/cOpen/studentTable";
+    }
+
 
     @RequestMapping("/courseManagement/attendance")
     public String attendance(Model model, @RequestParam(required=false) String result) {
@@ -953,7 +1027,7 @@ public class AdminController {
             searchable.setName(name);
             searchable.setDivision(division);
 
-            userList = userMapper.findByStudentLookup(searchable);
+            userList = userMapper.findByNameNumberDivision(searchable);
 
 
             for(User user: userList) {

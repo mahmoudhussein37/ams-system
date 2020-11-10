@@ -70,7 +70,7 @@ public class ProfessorController {
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            userList = userMapper.findByStudentLookup(searchable);
+            userList = userMapper.findByNameNumberDivision(searchable);
 
 
             for(User user: userList) {
@@ -151,7 +151,7 @@ public class ProfessorController {
             Searchable searchable = new Searchable();
 
             searchable.setYear(year);
-            userList = userMapper.findByStudentLookup(searchable);
+            userList = userMapper.findByNameNumberDivision(searchable);
 
 
             for(User user: userList) {
@@ -439,7 +439,7 @@ public class ProfessorController {
             Searchable searchable = new Searchable();
 
             searchable.setYear(year);
-            userList = userMapper.findByStudentLookup(searchable);
+            userList = userMapper.findByNameNumberDivision(searchable);
 
 
             for(User user: userList) {

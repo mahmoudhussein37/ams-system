@@ -13,6 +13,7 @@ public class Searchable {
     private int advisor;
     private String code;
     private String title;
+    private boolean enabled;
 
 
     private String orderParam;
@@ -121,5 +122,13 @@ public class Searchable {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

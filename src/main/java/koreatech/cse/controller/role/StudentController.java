@@ -186,7 +186,6 @@ public class StudentController {
                                       @RequestParam(defaultValue = "0", required=false) int year,
                                       @RequestParam(defaultValue = "0", required=false) int semester) {
 
-        System.out.println("ddd");
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
