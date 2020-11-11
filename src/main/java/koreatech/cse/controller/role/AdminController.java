@@ -15,17 +15,25 @@ import koreatech.cse.service.FileService;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.SystemUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -880,17 +888,52 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/courseManagement/cOpen/manageStudent/uploadStudent", method = RequestMethod.POST)
-    public String uploadStudent(@ModelAttribute UploadedFile uploadedFile, @RequestParam int profCourseId) {
+    public String uploadStudent(HttpServletRequest request, @ModelAttribute UploadedFile uploadedFile, @RequestParam int profCourseId) {
 
         MultipartFile multipartFile = uploadedFile.getFile();
         if(multipartFile != null) {
             try {
+                String tempPath = fileService.getTempPath(request);
+                System.out.println("tempPath = " + tempPath);
+                File originalDir = new File(tempPath);
+
+                File convFile = new File(multipartFile.getOriginalFilename());
+                multipartFile.transferTo(convFile);
+                //FileCopyUtils.copy(multipartFile.getInputStream(), new FileOutputStream(convFile));
+                readStudentExcel(convFile, request);
                 //
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return "redirect:/admin//courseManagement/cOpen/manageStudent?result=success&profCourseId=" + profCourseId;
+    }
+
+    public boolean readStudentExcel(File file, HttpServletRequest request ){
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            int rows = sheet.getPhysicalNumberOfRows();
+            final int RESERVED_SKIP = 1;
+
+
+
+
+            for (int rowIndex = RESERVED_SKIP; rowIndex <= rows; rowIndex++) {
+                XSSFRow row = sheet.getRow(rowIndex);
+
+                if (row != null) {
+                    Cell cell0 = row.getCell(0);
+                    String studentNumber = cell0.getStringCellValue();
+                    System.out.println("studentNumber = " + studentNumber);
+                }
+            }
+            fileInputStream.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
 

@@ -62,7 +62,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label><spring:message code="admin.uploadRegistrationForm"/></label>
-                                                    <input type="file" name="file" class="form-control"/>
+                                                    <input type="file" name="file" class="form-control" required/>
                                                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
 
 
@@ -233,7 +233,7 @@
 
         <c:if test="${not empty result}">
         alert("<spring:message code='common.success'/>");
-        location.href="${baseUrl}/admin/studentManagement/studentInformation";
+        location.href="${baseUrl}/admin/courseManagement/cOpen/manageStudent?profCourseId=${profCourseId}";
         </c:if>
     });
 
