@@ -37,6 +37,10 @@ public interface StudentCourseMapper {
     @Select("SELECT * FROM student_course where prof_course_id = #{profCourseId}")
     List<StudentCourse> findByProfCourseId(@Param("profCourseId") int profCourseId);
 
+    @ResultMap("findOne-int")
+    @Select("SELECT * FROM student_course where user_id = #{userId} and prof_course_id = #{profCourseId} limit 1")
+    StudentCourse findByUserIdProfCourseId(@Param("userId") int userId, @Param("profCourseId") int profCourseId);
+
 
     @Update("UPDATE `student_course` SET"+
             "`user_id` = #{userId},"+

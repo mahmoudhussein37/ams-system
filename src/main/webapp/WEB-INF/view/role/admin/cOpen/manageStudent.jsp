@@ -48,7 +48,10 @@
 
                     <div class="card card-custom">
                         <div class="card-header">
-                            <h3 class="card-title font-weight-bolder"><a class="btn btn-light" href="${baseUrl}/admin/courseManagement/cOpen/manageDivide?courseId=${profCourse.courseId}"><i class="fa fa-arrow-left"></i> <spring:message code="common.back"/></a> &nbsp;&nbsp;&nbsp;${profCourse.semester.year} - ${profCourse.semester.semester}&nbsp;&nbsp;&nbsp;${profCourse.course.code}: ${profCourse.course.title} (<spring:message code="common.divide"/> : ${profCourse.divide})</h3>
+                            <h3 class="card-title font-weight-bolder">
+                                <%--<a class="btn btn-light" href="${baseUrl}/admin/courseManagement/cOpen"><i class="fa fa-arrow-left"></i> <spring:message code="common.back"/></a> &nbsp;&nbsp;&nbsp;${profCourse.course.code}: ${profCourse.course.title}--%>
+
+                                <a class="btn btn-light btn-sm" href="${baseUrl}/admin/courseManagement/cOpen/manageDivide?courseId=${profCourse.courseId}"><i class="fa fa-arrow-left"></i> <spring:message code="common.back"/></a> &nbsp;&nbsp;&nbsp;[${profCourse.semester.year} - ${profCourse.semester.semester}] ${profCourse.course.code}: ${profCourse.course.title} - <spring:message code="common.divide"/> : ${profCourse.divide}</h3>
 
                         </div>
                         <div class="card-body">
@@ -151,6 +154,7 @@
                                                     <th class="pl-0" style=""><spring:message code="common.no"/></th>
                                                     <th style=""><span class="text-primary"><spring:message code="common.studentNumber"/></span></th>
                                                     <th style=""><span class="text-primary"><spring:message code="common.name"/></span></th>
+                                                    <th style=""><span class="text-primary"><spring:message code="common.schoolYear"/></span></th>
                                                     <th style=""></th>
                                                     <%--<th style="min-width: 150px"><span class="text-primary"><spring:message code="common.major"/></span>--%>
 
@@ -169,7 +173,9 @@
                                                         <td>
                                                                 ${stCourse.studentUser.contact.getFullName()}
                                                         </td>
-
+                                                        <td>
+                                                                ${stCourse.studentUser.schoolYear}
+                                                        </td>
                                                         <td>
                                                             <%--<button class="btn btn-light btm-sm add-to-btn" data-id="${studentUser.id}" data-to-status="true"><spring:message code="admin.addToDivide"/></button>--%>
                                                         </td>

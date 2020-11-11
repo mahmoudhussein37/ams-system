@@ -97,6 +97,10 @@ public interface UserMapper {
     @Select("select * from user where number = #{number}")
     User findByNumber(@Param("number") String number);
 
+    @ResultMap("findOne-int")
+    @Select("select * from user u join authority a on u.id = a.user_id where a.role = 'ROLE_STUDENT' and u.number = #{number}")
+    User findStudentByNumber(@Param("number") String number);
+
     @Delete("DELETE FROM USER WHERE ID = #{id}")
     void delete(User user);
 

@@ -854,8 +854,8 @@ public class AdminController {
 
     @RequestMapping("/courseManagement/cOpen/manageStudent/studentTable")
     public String manageStudentStudentTable(Model model, @RequestParam int profCourseId, @RequestParam(required=false) String number,
-                               @RequestParam(required=false) String name,
-                               @RequestParam(defaultValue = "0", required=false) int division) {
+                                            @RequestParam(required=false) String name,
+                                            @RequestParam(defaultValue = "0", required=false) int division) {
         List<User> userList;
         if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
             userList = new ArrayList<>();
@@ -900,7 +900,7 @@ public class AdminController {
                 File convFile = new File(multipartFile.getOriginalFilename());
                 multipartFile.transferTo(convFile);
                 //FileCopyUtils.copy(multipartFile.getInputStream(), new FileOutputStream(convFile));
-                readStudentExcel(convFile, request);
+                readStudentExcel(convFile, profCourseId);
                 //
             } catch (Exception e) {
                 e.printStackTrace();
@@ -909,7 +909,7 @@ public class AdminController {
         return "redirect:/admin//courseManagement/cOpen/manageStudent?result=success&profCourseId=" + profCourseId;
     }
 
-    public boolean readStudentExcel(File file, HttpServletRequest request ){
+    public boolean readStudentExcel(File file, int profCourseId){
         try {
             FileInputStream fileInputStream = new FileInputStream(file);
             XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
@@ -917,16 +917,29 @@ public class AdminController {
             int rows = sheet.getPhysicalNumberOfRows();
             final int RESERVED_SKIP = 1;
 
-
-
-
             for (int rowIndex = RESERVED_SKIP; rowIndex <= rows; rowIndex++) {
-                XSSFRow row = sheet.getRow(rowIndex);
+                try {
+                    XSSFRow row = sheet.getRow(rowIndex);
+                    if (row != null) {
+                        Cell cell0 = row.getCell(0);
+                        String studentNumber = cell0.getStringCellValue();
 
-                if (row != null) {
-                    Cell cell0 = row.getCell(0);
-                    String studentNumber = cell0.getStringCellValue();
-                    System.out.println("studentNumber = " + studentNumber);
+                        User studentUser = userMapper.findStudentByNumber(studentNumber);
+                        ProfessorCourse professorCourse = professorCourseMapper.findOne(profCourseId);
+                        if(studentUser != null) {
+                            StudentCourse stored = studentCourseMapper.findByUserIdProfCourseId(studentUser.getId(), profCourseId);
+                            if (stored == null) {
+                                StudentCourse studentCourse = new StudentCourse();
+                                studentCourse.setCourseId(professorCourse.getCourseId());
+                                studentCourse.setProfCourseId(professorCourse.getId());
+                                studentCourse.setUserId(studentUser.getId());
+                                studentCourseMapper.insert(studentCourse);
+                            }
+                        }
+                    }
+                } catch(Exception e) {
+                    e.printStackTrace();
+                    System.out.println("rowIndex = " + rowIndex);
                 }
             }
             fileInputStream.close();
