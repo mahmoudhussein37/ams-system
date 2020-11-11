@@ -241,16 +241,28 @@ public class AdminController {
                                                        @RequestParam(defaultValue = "0", required=false) int division, @RequestParam Map<String, String> params) {
         System.out.println("checkAll = " + checkAll);
         List<Integer> userIds = new ArrayList<>();
-        params.entrySet().stream().filter(entry -> entry.getKey().equals("studentCheckbox")).forEach(entry -> {
-            String value = entry.getValue();
-            String[] split = value.split(",");
-            for (String userIdString : split) {
-                if (StringUtils.isNotBlank(userIdString)) {
-                    userIds.add(Integer.parseInt(userIdString));
+        List<User> studentList = null;
+        if (checkAll) {
+            Searchable searchable = new Searchable();
+            searchable.setAdvisor(advisor);
+            searchable.setSchoolYear(schoolYear);
+            searchable.setDivision(division);
+            studentList = userMapper.findStudentsByAdvisorSchoolYearDivision(searchable);
+        } else {
+            params.entrySet().stream().filter(entry -> entry.getKey().equals("tableCheckbox")).forEach(entry -> {
+                String value = entry.getValue();
+                String[] split = value.split(",");
+                for (String userIdString : split) {
+                    if (StringUtils.isNotBlank(userIdString)) {
+                        userIds.add(Integer.parseInt(userIdString));
+                    }
                 }
-            }
-        });
-        List<User> studentList = userMapper.findByUserIds(userIds);
+            });
+            studentList = userMapper.findByUserIds(userIds);
+        }
+
+
+
         for(User u:studentList) {
             User advisorUser = userMapper.findOne(u.getAdvisorId());
             u.setAdvisor(advisorUser);
@@ -297,6 +309,36 @@ public class AdminController {
         Counseling counseling = counselingMapper.findOne(counselingId);
         model.addAttribute("counseling", counseling);
         return "role/admin/studentCounseling/counselingDetail";
+    }
+
+    @RequestMapping("/studentManagement/studentCounseling/counselingDetailsForPrint")
+    public String counselingDetailsForPrint(Model model,
+                                                       @RequestParam boolean checkAll,
+                                            @RequestParam(required=false, defaultValue = "0") int year,
+                                            @RequestParam(required=false) String name, @RequestParam Map<String, String> params) {
+        System.out.println("checkAll = " + checkAll);
+        List<Counseling> counselingList;
+
+        if (checkAll) {
+            Searchable searchable = new Searchable();
+            searchable.setYear(year);
+            searchable.setName(name);
+            counselingList = counselingMapper.findByCounseling(searchable);
+        } else {
+            List<Integer> counselingIds = new ArrayList<>();
+            params.entrySet().stream().filter(entry -> entry.getKey().equals("tableCheckbox")).forEach(entry -> {
+                String value = entry.getValue();
+                String[] split = value.split(",");
+                for (String integerIdString : split) {
+                    if (StringUtils.isNotBlank(integerIdString)) {
+                        counselingIds.add(Integer.parseInt(integerIdString));
+                    }
+                }
+            });
+            counselingList = counselingMapper.findByIds(counselingIds);
+        }
+        model.addAttribute("counselingList", counselingList);
+        return "role/admin/studentCounseling/counselingDetailForPrint";
     }
 
     @RequestMapping("/profManagement/profRegistration")

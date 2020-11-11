@@ -110,9 +110,9 @@
             <li class="menu-item ${fn:contains(requestUri, '/admin/profManagement/graduationResearch') ? 'menu-item-active' : ''}"  aria-haspopup="true">
                 <a  href="/admin/profManagement/graduationResearch" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub2_3"/></span></a>
             </li>
-            <li class="menu-item ${fn:contains(requestUri, '/admin/profManagement/studentEnrolment') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+            <%--<li class="menu-item ${fn:contains(requestUri, '/admin/profManagement/studentEnrolment') ? 'menu-item-active' : ''}"  aria-haspopup="true">
                 <a  href="/admin/profManagement/studentEnrolment" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub2_4"/></span></a>
-            </li>
+            </li>--%>
         </ul>
         <!--end::Nav-->
     </div>

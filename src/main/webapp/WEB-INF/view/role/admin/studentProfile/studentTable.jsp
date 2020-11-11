@@ -3,7 +3,7 @@
 <table class="table table-head-custom table-vertical-center" id="student-list">
     <thead>
     <tr class="text-uppercase">
-        <th class="pl-0" style=""><input type="checkbox" class="student-checkbox-all" name="studentCheckboxAll" onClick="setStudentCheckboxAll()"></th>
+        <th class="pl-0" style=""><input type="checkbox" class="table-checkbox-all" name="tableCheckboxAll" onClick="setTableCheckboxAll()"></th>
         <th class="pl-0" style=""><spring:message code="common.no"/></th>
         <th style=""><span class="text-primary"><spring:message code="common.schoolYear"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.studentNumber"/></span></th>
@@ -18,7 +18,7 @@
     <c:forEach var="studentUser" items="${userList}" varStatus="varStatus">
         <tr>
             <td class="pl-0">
-                    <input type="checkbox" class="student-checkbox" name="studentCheckbox" value="${studentUser.id}">
+                    <input type="checkbox" class="table-checkbox" name="tableCheckbox" value="${studentUser.id}">
             </td>
             <td class="pl-0">
                     ${varStatus.count}
@@ -59,10 +59,10 @@
             }
         }
     }*/
-    function setStudentCheckboxAll() {
-        var checked = $("input[name=studentCheckboxAll]").is(":checked");
-        var checkboxes = $("input[name=studentCheckbox]");
-        setCheckboxAll(checked, checkboxes, studentMap);
+    function setTableCheckboxAll() {
+        var checked = $("input[name=tableCheckboxAll]").is(":checked");
+        var checkboxes = $("input[name=tableCheckbox]");
+        setCheckboxAll(checked, checkboxes, tableMap);
     }
     $(document).ready(function() {
         $("#student-list").DataTable();
@@ -76,17 +76,17 @@
             $(".detail-div").load("${baseUrl}/admin/studentManagement/studentProfile/studentDetail?studentId=" + studentId);
 
         });
-        $("body").on('click', 'input[name=studentCheckbox]', function (e) {
+        $("body").on('click', 'input[name=tableCheckbox]', function (e) {
             var value = $(this).val();
-            studentMap.put(value, $(this).is(":checked"));
+            tableMap.put(value, $(this).is(":checked"));
         });
         $("body").on('click', '.print', function (e) {
             e.preventDefault();
-            var checkedAll = $("input[name=studentCheckboxAll]").is(":checked");
+            var checkedAll = $("input[name=tableCheckboxAll]").is(":checked");
             var schoolYear = $("#search-school-year").children("option:selected").val().trim();
             var advisor = $("#search-advisor").children("option:selected").val().trim();
             var division = $("#search-division").children("option:selected").val().trim();
-            openPage("${baseUrl}/admin/studentManagement/studentProfile/studentDetailsForPrint?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("studentCheckbox", studentMap));
+            openPage("${baseUrl}/admin/studentManagement/studentProfile/studentDetailsForPrint?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("tableCheckbox", tableMap));
         });
 
 
