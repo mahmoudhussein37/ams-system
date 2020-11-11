@@ -51,7 +51,7 @@
                             <h3 class="card-title font-weight-bolder">
                                 <%--<a class="btn btn-light" href="${baseUrl}/admin/courseManagement/cOpen"><i class="fa fa-arrow-left"></i> <spring:message code="common.back"/></a> &nbsp;&nbsp;&nbsp;${profCourse.course.code}: ${profCourse.course.title}--%>
 
-                                <a class="btn btn-light btn-sm" href="${baseUrl}/admin/courseManagement/cOpen/manageDivide?courseId=${profCourse.courseId}"><i class="fa fa-arrow-left"></i> <spring:message code="common.back"/></a> &nbsp;&nbsp;&nbsp;[${profCourse.semester.year} - ${profCourse.semester.semester}] ${profCourse.course.code}: ${profCourse.course.title} - <spring:message code="common.divide"/> : ${profCourse.divide}</h3>
+                                <a class="btn btn-light" href="${baseUrl}/admin/courseManagement/cOpen/manageDivide?courseId=${profCourse.courseId}"><i class="fa fa-arrow-left"></i> <spring:message code="common.back"/></a> &nbsp;&nbsp;&nbsp;[${profCourse.semester.year} - ${profCourse.semester.semester}] ${profCourse.course.code}: ${profCourse.course.title} - <spring:message code="common.divide"/> : ${profCourse.divide}</h3>
 
                         </div>
                         <div class="card-body">
@@ -156,7 +156,6 @@
                                                     <th style=""><span class="text-primary"><spring:message code="common.name"/></span></th>
                                                     <th style=""><span class="text-primary"><spring:message code="common.schoolYear"/></span></th>
                                                     <th style=""></th>
-                                                    <%--<th style="min-width: 150px"><span class="text-primary"><spring:message code="common.major"/></span>--%>
 
                                                 </tr>
                                                 </thead>
@@ -177,7 +176,7 @@
                                                                 ${stCourse.studentUser.schoolYear}
                                                         </td>
                                                         <td>
-                                                            <%--<button class="btn btn-light btm-sm add-to-btn" data-id="${studentUser.id}" data-to-status="true"><spring:message code="admin.addToDivide"/></button>--%>
+                                                            <button class="btn btn-light btm-sm remove-from-btn" data-id="${stCourse.studentUser.id}" data-to-status="true"><spring:message code="admin.removeFromDivide"/></button>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
@@ -235,6 +234,14 @@
             if (key.keyCode == 13) {
                 search();
             }
+        });
+
+        $("body").on("click", ".remove-from-btn", function(e) {
+            e.preventDefault();
+            var id = $(this).attr("data-id");
+            $.post("${baseUrl}/admin/courseManagement/cOpen/manageStudent/removeFromDivide?id=" + id + "&profCourseId=${profCourseId}", function(result) {
+                location.reload();
+            });
         });
 
         <c:if test="${not empty result}">

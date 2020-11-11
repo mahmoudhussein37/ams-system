@@ -214,7 +214,6 @@ public class AdminController {
         searchable.setDivision(division);
         userList = userMapper.findStudentsByAdvisorSchoolYearDivision(searchable);
 
-
         for(User user: userList) {
             firstUser = user;
             break;
@@ -623,19 +622,15 @@ public class AdminController {
     public Boolean deleteCourse(@RequestParam int id) {
         Course course = courseMapper.findOne(id);
 
-        //TODO:
-        courseMapper.delete(course);
-
-        /*List<Course> courses = courseMapper.findByClassroom(id);
-        if(CollectionUtils.isEmpty(courses)) {
-            classroomMapper.delete(classroom);
+        int num = professorCourseMapper.countByCourseId(course.getId());
+        if (num == 0) {
+            courseMapper.delete(course);
             return true;
         } else {
-            classroom.setEnabled(false);
-            classroomMapper.update(classroom);
+            course.setEnabled(false);
+            courseMapper.update(course);
             return false;
-        }*/
-        return true;
+        }
     }
 
     @RequestMapping(value = "/courseManagement/course/changeStatus", method = RequestMethod.POST)
@@ -809,19 +804,15 @@ public class AdminController {
     public Boolean deleteDivide(@RequestParam int id) {
         ProfessorCourse professorCourse = professorCourseMapper.findOne(id);
 
-        //TODO:
-        professorCourseMapper.delete(professorCourse);
-
-        /*List<Course> courses = courseMapper.findByClassroom(id);
-        if(CollectionUtils.isEmpty(courses)) {
-            classroomMapper.delete(classroom);
+        int num = studentCourseMapper.countByProfCourseId(professorCourse.getId());
+        if (num == 0) {
+            professorCourseMapper.delete(professorCourse);
             return true;
         } else {
-            classroom.setEnabled(false);
-            classroomMapper.update(classroom);
-            return false;
-        }*/
-        return true;
+          professorCourse.setEnabled(false);
+          professorCourseMapper.update(professorCourse);
+          return false;
+        }
     }
 
     @RequestMapping(value = "/courseManagement/cOpen/manageDivide/changeStatus", method = RequestMethod.POST)
@@ -864,8 +855,9 @@ public class AdminController {
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            userList = userMapper.findByNameNumberDivision(searchable);
-
+            List<Integer> userIds = studentCourseMapper.findUserIdsByProfCourseId(profCourseId);
+            searchable.setUserIds(userIds);
+            userList = userMapper.findStudentsByAdvisorSchoolYearDivisionExceptRegistered(userIds, number, name, division);
         }
 
         model.addAttribute("userList", userList);
@@ -882,7 +874,22 @@ public class AdminController {
         studentCourse.setProfCourseId(professorCourse.getId());
         studentCourse.setUserId(id);
         studentCourseMapper.insert(studentCourse);
+        int num = studentCourseMapper.countByProfCourseId(profCourseId);
+        professorCourse.setNumStudent(num);
+        professorCourseMapper.update(professorCourse);
 
+        return true;
+    }
+
+    @RequestMapping(value = "/courseManagement/cOpen/manageStudent/removeFromDivide", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean removeFromDivide(@RequestParam int id, @RequestParam int profCourseId) {
+        ProfessorCourse professorCourse = professorCourseMapper.findOne(profCourseId);
+        StudentCourse studentCourse = studentCourseMapper.findByUserIdProfCourseId(id, profCourseId);
+        studentCourseMapper.delete(studentCourse);
+        int num = studentCourseMapper.countByProfCourseId(profCourseId);
+        professorCourse.setNumStudent(num);
+        professorCourseMapper.update(professorCourse);
 
         return true;
     }
@@ -916,32 +923,42 @@ public class AdminController {
             XSSFSheet sheet = workbook.getSheetAt(0);
             int rows = sheet.getPhysicalNumberOfRows();
             final int RESERVED_SKIP = 1;
+            ProfessorCourse professorCourse = professorCourseMapper.findOne(profCourseId);
+            int limitStudent = professorCourse.getLimitStudent();
 
             for (int rowIndex = RESERVED_SKIP; rowIndex <= rows; rowIndex++) {
-                try {
-                    XSSFRow row = sheet.getRow(rowIndex);
-                    if (row != null) {
-                        Cell cell0 = row.getCell(0);
-                        String studentNumber = cell0.getStringCellValue();
 
-                        User studentUser = userMapper.findStudentByNumber(studentNumber);
-                        ProfessorCourse professorCourse = professorCourseMapper.findOne(profCourseId);
-                        if(studentUser != null) {
-                            StudentCourse stored = studentCourseMapper.findByUserIdProfCourseId(studentUser.getId(), profCourseId);
-                            if (stored == null) {
-                                StudentCourse studentCourse = new StudentCourse();
-                                studentCourse.setCourseId(professorCourse.getCourseId());
-                                studentCourse.setProfCourseId(professorCourse.getId());
-                                studentCourse.setUserId(studentUser.getId());
-                                studentCourseMapper.insert(studentCourse);
+                int num = studentCourseMapper.countByProfCourseId(profCourseId);
+                if(num < limitStudent) {
+                    try {
+                        XSSFRow row = sheet.getRow(rowIndex);
+                        if (row != null) {
+                            Cell cell0 = row.getCell(0);
+                            String studentNumber = cell0.getStringCellValue();
+
+                            User studentUser = userMapper.findStudentByNumber(studentNumber);
+
+                            if(studentUser != null) {
+                                StudentCourse stored = studentCourseMapper.findByUserIdProfCourseId(studentUser.getId(), profCourseId);
+                                if (stored == null) {
+                                    StudentCourse studentCourse = new StudentCourse();
+                                    studentCourse.setCourseId(professorCourse.getCourseId());
+                                    studentCourse.setProfCourseId(professorCourse.getId());
+                                    studentCourse.setUserId(studentUser.getId());
+                                    studentCourseMapper.insert(studentCourse);
+                                }
                             }
                         }
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                        System.out.println("rowIndex = " + rowIndex);
                     }
-                } catch(Exception e) {
-                    e.printStackTrace();
-                    System.out.println("rowIndex = " + rowIndex);
                 }
+
             }
+            int num = studentCourseMapper.countByProfCourseId(profCourseId);
+            professorCourse.setNumStudent(num);
+            professorCourseMapper.update(professorCourse);
             fileInputStream.close();
         } catch(Exception e) {
             e.printStackTrace();

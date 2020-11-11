@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ProfessorCourseMapper {
 
-    @Insert("INSERT INTO professor_course (user_id, course_id, semester_id, limit_student, num_student, attendance, lateness, absence) VALUES (#{userId}, #{courseId}, #{semesterId}, #{limitStudent}, #{numStudent}, #{attendance}, #{lateness}, #{absence})")
+    @Insert("INSERT INTO professor_course (user_id, course_id, semester_id, limit_student, num_student, attendance, lateness, absence, divide) VALUES (#{userId}, #{courseId}, #{semesterId}, #{limitStudent}, #{numStudent}, #{attendance}, #{lateness}, #{absence}, #{divide})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(ProfessorCourse professorCourse);
 
@@ -36,6 +36,9 @@ public interface ProfessorCourseMapper {
     @Select("SELECT * FROM professor_course where course_id = #{courseId}")
     List<ProfessorCourse> findByCourseId(@Param("courseId") int courseId);
 
+    @Select("SELECT count(*) FROM professor_course where course_id = #{courseId}")
+    Integer countByCourseId(@Param("courseId") int courseId);
+
     @ResultMap("findOne-int")
     //@formatter off
     @Select("<script>"
@@ -56,6 +59,7 @@ public interface ProfessorCourseMapper {
             "`attendance` = #{attendance},"+
             "`lateness` = #{lateness},"+
             "`enabled` = #{enabled},"+
+            "`divide` = #{divide},"+
             "`absence` = #{absence} "+
             "WHERE `id` = #{id}")
     @Options(flushCache = true)

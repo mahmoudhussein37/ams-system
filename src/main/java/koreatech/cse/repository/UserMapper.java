@@ -134,6 +134,18 @@ public interface UserMapper {
     @ResultMap("findOne-int")
     //@formatter off
     @Select("<script>"
+            + "SELECT * FROM USER u join contact c on u.id=c.user_id join authority a on u.id = a.user_id where a.role = 'ROLE_STUDENT' "
+            + "<if test='name != null'> and (c.last_name LIKE CONCAT('%', #{name}, '%') or c.first_name LIKE CONCAT('%', #{name}, '%'))</if>"
+            + "<if test='number != null'> and u.number LIKE CONCAT('%', #{number}, '%')</if>"
+            + "<if test='division != 0'> and u.division_id = #{division}</if>"
+            + "<if test='userIds != null and !userIds.empty'> AND u.id not in <foreach item='item' collection='userIds' open='(' separator=',' close=')'>#{item}</foreach></if>"
+            + "</script>")
+    //@formatter on
+    List<User> findStudentsByAdvisorSchoolYearDivisionExceptRegistered(@Param("userIds") List<Integer> userIds, @Param("number") String number, @Param("name") String name, @Param("division") int division);
+
+    @ResultMap("findOne-int")
+    //@formatter off
+    @Select("<script>"
             + "SELECT * FROM USER u join contact c on u.id=c.user_id join authority a on u.id = a.user_id where a.role = 'ROLE_PROFESSOR' "
             + "<if test='name != null'> and (c.last_name LIKE CONCAT('%', #{name}, '%') or c.first_name LIKE CONCAT('%', #{name}, '%'))</if>"
             + "<if test='number != null'> and u.number LIKE CONCAT('%', #{number}, '%')</if>"

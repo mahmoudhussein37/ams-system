@@ -111,7 +111,12 @@ ${courseElement.lec}-${courseElement.tut}-${courseElement.lab}-${courseElement.w
             e.preventDefault();
             var id = $(this).attr("data-id");
             $.post("${baseUrl}/admin/courseManagement/course/deleteCourse?id=" + id, function(result) {
+                if(result != true) {
+                    alert("<spring:message code="admin.deleteCourseAlert"/>");
+                }
+
                 location.reload();
+
             });
         });
 

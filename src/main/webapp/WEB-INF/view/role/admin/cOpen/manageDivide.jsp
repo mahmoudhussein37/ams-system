@@ -265,7 +265,12 @@
             e.preventDefault();
             var id = $(this).attr("data-id");
             $.post("${baseUrl}/admin/courseManagement/cOpen/manageDivide/deleteDivide?id=" + id, function(result) {
+                if(result != true) {
+                    alert("<spring:message code="admin.deleteProfCourseAlert"/>");
+                }
+
                 location.reload();
+
             });
         });
 

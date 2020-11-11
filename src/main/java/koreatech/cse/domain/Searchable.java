@@ -1,6 +1,8 @@
 package koreatech.cse.domain;
 
 
+import java.util.List;
+
 public class Searchable {
     private String name;
     private String number;
@@ -19,6 +21,7 @@ public class Searchable {
     private String orderParam;
     private String orderDir;
 
+    private List<Integer> userIds;
 
     public String getName() {
         return name;
@@ -130,5 +133,13 @@ public class Searchable {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public List<Integer> getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(List<Integer> userIds) {
+        this.userIds = userIds;
     }
 }
