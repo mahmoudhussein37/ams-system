@@ -29,6 +29,7 @@
             <td>
                     ${studentUser.division.name}
             </td>
+
         </tr>
     </c:forEach>
 
@@ -39,12 +40,12 @@
     $("#student-list").DataTable();
 
     <c:if test="${not empty firstUser}">
-        $(".detail-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentDetail?studentId=${firstUser.id}");
+        $(".detail-div").load("${baseUrl}/professor/studentGuidance/counseling/newCounselingDetail?studentId=${firstUser.id}");
     </c:if>
     $("body").on('click', '.student-detail', function (e) {
         e.preventDefault();
         var studentId = $(this).attr("data-student-id");
-        $(".detail-div").load("${baseUrl}/professor/studentGuidance/studentLookup/studentDetail?studentId=" + studentId);
+        $(".detail-div").load("${baseUrl}/professor/studentGuidance/counseling/newCounselingDetail?studentId=" + studentId);
 
     });
 </script>

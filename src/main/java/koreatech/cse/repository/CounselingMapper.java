@@ -15,12 +15,18 @@ public interface CounselingMapper {
             "`student_user_id`,"+
             "`prof_user_id`,"+
             "`number`,"+
+            "`place`,"+
+            "`contents`,"+
+            "`suggestions`,"+
             "`year`,"+
             "`date`"+
             ")VALUES("+
             "#{studentUserId},"+
             "#{profUserId},"+
             "#{number},"+
+            "#{place},"+
+            "#{contents},"+
+            "#{suggestions},"+
             "#{year},"+
             "#{date}"+
             ")")
@@ -28,9 +34,11 @@ public interface CounselingMapper {
     void insert(Counseling counseling);
 
     @Update("UPDATE `counseling` SET"+
-            "`student_user_id` = #{studentUserId},"+
-            "`prof_user_id` = #{profUserId},"+
+
             "`year` = #{year},"+
+            "`contents` = #{contents},"+
+            "`suggestions` = #{suggestions},"+
+            "`place` = #{place},"+
             "`date` = #{date} "+
             "WHERE `id` = #{id}")
     @Options(flushCache = true)

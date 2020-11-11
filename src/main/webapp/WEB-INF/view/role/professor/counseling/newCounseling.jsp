@@ -16,45 +16,46 @@
                     <!--begin::Card-->
                     <div class="card card-custom">
                         <div class="card-header">
-                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.professor.sub1_2"/></h3>
+                            <div class="card-header">
+                                <h3 class="card-title font-weight-bolder"><a class="btn btn-light" href="${baseUrl}/professor/studentGuidance/counseling"><i class="fa fa-arrow-left"></i> <spring:message code="common.back"/></a></h3>
+
+                            </div>
                         </div>
                         <div class="card-body">
+
+
+
                             <div class="row">
-
-
-                                <%--<div class="col-md-2">
-                                    <button class="btn btn-secondary" style="width:100%;" ><spring:message code="common.delete"/></button>
-                                </div>
                                 <div class="col-md-2">
-                                    <button class="btn btn-secondary" style="width:100%;" ><spring:message code="common.save"/></button>
-                                </div>--%>
-                            </div>
-                            <br/>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <spring:message code="common.year"/><br/>
-                                    <select id="search-year" class="form-control" style="margin-top:10px;">
-                                        <c:forEach var="y" items="${yearList}">
-                                            <option value="${y}">${y}</option>
-                                        </c:forEach>
-                                    </select>
-
+                                    <spring:message code="common.studentsNumber"/><br/>
+                                    <input type="text" id="search-number" class="form-control input-enter" value="" style="margin-top:10px;"/>
                                 </div>
                                 <div class="col-md-3">
                                     <spring:message code="common.studentsName"/><br/>
                                     <input type="text" id="search-name" class="form-control input-enter"  value="" style="margin-top:10px;"/>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
+                                    <spring:message code="common.department"/><br/>
+                                    <select id="search-division" class="form-control" style="margin-top:10px;">
+                                        <c:forEach var="division" items="${divisions}">
+                                            <option value="${division.id}">${division.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <%--<div class="col-md-2">
+                                    <spring:message code="common.major"/><br/>
+                                    <select id="search-major" class="form-control" style="margin-top:10px;">
+
+
+                                    </select>
+                                </div>--%>
+                                <div class="col-md-1">
                                     <br/>
                                     <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
                                 </div>
-<%--                                <div class="col-md-2">
+                                <div class="col-md-1">
                                     <br/>
                                     <button class="btn btn-light" style="width:100%;margin-top:10px;" onclick="javascript:location.reload()"><spring:message code="common.reset"/></button>
-                                </div>--%>
-                                <div class="col-md-2">
-                                    <br/>
-                                    <a href="/professor/studentGuidance/counseling/newCounseling" class="btn btn-secondary" style="width:100%;margin-top:10px;" ><spring:message code="common.new"/></a>
                                 </div>
 
                             </div>
@@ -91,7 +92,13 @@
     <!--end::Entry-->
 </div>
 <!--end::Content-->
-
+<div class="modal fade" id="ajax" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            Loading...
+        </div>
+    </div>
+</div>
 <%@include file="/WEB-INF/view/include/footerBar.jsp" %>
 
 
@@ -102,20 +109,24 @@
 
 <script>
     function search() {
-        var year = $("#search-year").children("option:selected").val().trim();
+        var number = $("#search-number").val().trim();
         var name = $("#search-name").val().trim();
+        var division = $("#search-division").children("option:selected").val().trim();
+        //var major = $("#search-major").children("option:selected").val().trim();
 
-        $(".table-div").load("${baseUrl}/professor/studentGuidance/counseling/counselingTable?year=" + year + "&name=" + name);
+        $(".table-div").load("${baseUrl}/professor/studentGuidance/counseling/studentTable?number=" + number + "&name=" + name + "&division=" + division);
     }
 
-    $(".input-enter").keydown(function(key) {
-        if (key.keyCode == 13) {
-            search();
-        }
-    });
-
     $(document).ready(function() {
-        $(".table-div").load("${baseUrl}/professor/studentGuidance/counseling/counselingTable");
+        $(".table-div").load("${baseUrl}/professor/studentGuidance/counseling/studentTable");
+
+        $(".input-enter").keydown(function(key) {
+            if (key.keyCode == 13) {
+                search();
+            }
+
+
+        });
 
     });
 

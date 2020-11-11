@@ -10,6 +10,7 @@ import koreatech.cse.domain.univ.Major;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.UserService;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +19,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
-@SessionAttributes({"lectureFundamentals"})
+@SessionAttributes({"lectureFundamentals", "counseling"})
 @PreAuthorize("hasRole('ROLE_PROFESSOR')")
 @RequestMapping("/professor")
 public class ProfessorController {
@@ -50,10 +52,8 @@ public class ProfessorController {
     public String studentLookup(Model model) {
 
         List<Division> divisions = divisionMapper.findAll();
-        List<Major> majors = majorMapper.findAll();
 
         model.addAttribute("divisions", divisions);
-        model.addAttribute("majors", majors);
         return "role/professor/studentLookup/studentLookup";
     }
 
@@ -93,11 +93,72 @@ public class ProfessorController {
         return "role/professor/studentLookup/studentDetail";
     }
 
-    @RequestMapping("/studentGuidance/counseling")
-    public String counseling(Model model) {
-        model.addAttribute("yearList", getYearList());
 
+    @RequestMapping("/studentGuidance/counseling")
+    public String counseling(Model model, @RequestParam(required=false) String result) {
+        model.addAttribute("yearList", getYearList());
+        model.addAttribute("result", result);
         return "role/professor/counseling/counseling";
+    }
+
+    @RequestMapping("/studentGuidance/counseling/newCounseling")
+    public String newCounseling(Model model) {
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        return "role/professor/counseling/newCounseling";
+    }
+
+    @RequestMapping("/studentGuidance/counseling/newCounselingDetail")
+    public String newCounselingDetail(Model model, @RequestParam int studentId) {
+        User studentUser = userMapper.findOne(studentId);
+        model.addAttribute("yearList", getYearList());
+        Counseling counseling = new Counseling();
+        counseling.setStudentUser(studentUser);
+        counseling.setStudentUserId(studentId);
+        model.addAttribute("counseling", counseling);
+        model.addAttribute("studentId", studentId);
+        DateTime dt = new DateTime();
+        model.addAttribute("currentYear", dt.getYear());
+        return "role/professor/counseling/newCounselingDetail";
+    }
+
+    @RequestMapping(value = "/studentGuidance/counseling/newCounselingDetail", method = RequestMethod.POST)
+    public String newCounselingDetail(@ModelAttribute Counseling counseling, @RequestParam int studentId) {
+        //generate number
+        String number = UUID.randomUUID().toString().replace("-", "");
+        counseling.setNumber(number);
+        User user = User.current();
+        counseling.setProfUserId(user.getId());
+        counselingMapper.insert(counseling);
+        return "redirect:/professor/studentGuidance/counseling?result=success";
+    }
+
+    @RequestMapping("/studentGuidance/counseling/studentTable")
+    public String counselingStudentTable(Model model, @RequestParam(required=false) String number,
+                               @RequestParam(required=false) String name,
+                               @RequestParam(defaultValue = "0", required=false) int division) {
+        User firstUser = null;
+        List<User> userList;
+        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
+            userList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setNumber(number);
+            searchable.setName(name);
+            searchable.setDivision(division);
+            userList = userMapper.findByNameNumberDivision(searchable);
+
+
+            for(User user: userList) {
+                firstUser = user;
+                break;
+            }
+        }
+
+        model.addAttribute("userList", userList);
+        model.addAttribute("firstUser", firstUser);
+        return "role/professor/counseling/studentTable";
     }
 
     @RequestMapping("/studentGuidance/counseling/counselingTable")
@@ -114,7 +175,6 @@ public class ProfessorController {
             counselingList = counselingMapper.findByCounseling(searchable);
 
             for(Counseling counseling: counselingList) {
-                System.out.println("counseling = " + counseling);
                 firstCounseling = counseling;
                 break;
             }
@@ -144,7 +204,6 @@ public class ProfessorController {
     public String coCourseEnrolmentStudentTable(Model model, @RequestParam(required=false, defaultValue = "0") int year, @RequestParam(defaultValue = "0", required=false) int semester) {
         User firstUser = null;
         List<User> userList;
-        System.out.println("year = " + year);
         if(year == 0) {
             userList = new ArrayList<>();
         } else {
@@ -495,6 +554,7 @@ public class ProfessorController {
 
         return "role/professor/makeupClass/courseDetail";
     }
+
 
     private List<Integer> getYearList() {
         return semesterMapper.findYears();
