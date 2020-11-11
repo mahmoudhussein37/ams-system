@@ -1,5 +1,7 @@
 package koreatech.cse.domain.role.student;
 
+import koreatech.cse.domain.User;
+import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.univ.Course;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -11,9 +13,12 @@ public class StudentCourse implements Serializable {
     private int id;
     private int userId;
     private int courseId;
+    private int profCourseId;
+    private ProfessorCourse professorCourse;
     private Course course;
+    private User studentUser;
+
     private int acquire; //TODO: 수강중, 수강완료
-    private boolean retake;
 
     public int getId() {
         return id;
@@ -47,12 +52,20 @@ public class StudentCourse implements Serializable {
         this.acquire = acquire;
     }
 
-    public boolean isRetake() {
-        return retake;
+    public int getProfCourseId() {
+        return profCourseId;
     }
 
-    public void setRetake(boolean retake) {
-        this.retake = retake;
+    public void setProfCourseId(int profCourseId) {
+        this.profCourseId = profCourseId;
+    }
+
+    public ProfessorCourse getProfessorCourse() {
+        return professorCourse;
+    }
+
+    public void setProfessorCourse(ProfessorCourse professorCourse) {
+        this.professorCourse = professorCourse;
     }
 
     public Course getCourse() {
@@ -61,6 +74,14 @@ public class StudentCourse implements Serializable {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public User getStudentUser() {
+        return studentUser;
+    }
+
+    public void setStudentUser(User studentUser) {
+        this.studentUser = studentUser;
     }
 
     @Override

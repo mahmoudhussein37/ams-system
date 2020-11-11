@@ -22,7 +22,7 @@
                         <div class="card-body">
 
 
-                            <form:form id="file-form" commandName="uploadedFile" action="${baseUrl}/admin/courseManagement/curriculum/uploadCurriculum?year=${year}&divisionId=${divisionId}" cssClass="form-horizontal" enctype="multipart/form-data">
+                            <form:form id="file-form" commandName="uploadedFile" action="${baseUrl}/admin//courseManagement/curriculum/uploadCurriculum?year=${year}&divisionId=${divisionId}" cssClass="form-horizontal" enctype="multipart/form-data">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <div class="row">
                                     <div class="col-md-12">

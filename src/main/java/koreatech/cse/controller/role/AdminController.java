@@ -7,6 +7,7 @@ import koreatech.cse.domain.constant.StudentStatus;
 import koreatech.cse.domain.constant.SubjCategory;
 import koreatech.cse.domain.role.professor.Counseling;
 import koreatech.cse.domain.role.professor.ProfessorCourse;
+import koreatech.cse.domain.role.student.StudentCourse;
 import koreatech.cse.domain.univ.*;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.AuthorityService;
@@ -79,6 +80,8 @@ public class AdminController {
     private FileService fileService;
     @Inject
     private AssessmentFactorMapper assessmentFactorMapper;
+    @Inject
+    private StudentCourseMapper studentCourseMapper;
 
 
 
@@ -831,12 +834,18 @@ public class AdminController {
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("result", result);
+        model.addAttribute("profCourseId", profCourseId);
 
+        UploadedFile uploadedFile = new UploadedFile();
+        model.addAttribute("uploadedFile", uploadedFile);
+
+        List<StudentCourse> studentCourseList = studentCourseMapper.findByProfCourseId(profCourseId);
+        model.addAttribute("studentCourseList", studentCourseList);
         return "role/admin/cOpen/manageStudent";
     }
 
     @RequestMapping("/courseManagement/cOpen/manageStudent/studentTable")
-    public String manageStudentStudentTable(Model model, @RequestParam(required=false) String number,
+    public String manageStudentStudentTable(Model model, @RequestParam int profCourseId, @RequestParam(required=false) String number,
                                @RequestParam(required=false) String name,
                                @RequestParam(defaultValue = "0", required=false) int division) {
         List<User> userList;
@@ -852,7 +861,36 @@ public class AdminController {
         }
 
         model.addAttribute("userList", userList);
+        model.addAttribute("profCourseId", profCourseId);
         return "role/admin/cOpen/studentTable";
+    }
+
+    @RequestMapping(value = "/courseManagement/cOpen/manageStudent/addToDivide", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean addToDivide(@RequestParam int id, @RequestParam int profCourseId) {
+        StudentCourse studentCourse = new StudentCourse();
+        ProfessorCourse professorCourse = professorCourseMapper.findOne(profCourseId);
+        studentCourse.setCourseId(professorCourse.getCourseId());
+        studentCourse.setProfCourseId(professorCourse.getId());
+        studentCourse.setUserId(id);
+        studentCourseMapper.insert(studentCourse);
+
+
+        return true;
+    }
+
+    @RequestMapping(value = "/courseManagement/cOpen/manageStudent/uploadStudent", method = RequestMethod.POST)
+    public String uploadStudent(@ModelAttribute UploadedFile uploadedFile, @RequestParam int profCourseId) {
+
+        MultipartFile multipartFile = uploadedFile.getFile();
+        if(multipartFile != null) {
+            try {
+                //
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "redirect:/admin//courseManagement/cOpen/manageStudent?result=success&profCourseId=" + profCourseId;
     }
 
 

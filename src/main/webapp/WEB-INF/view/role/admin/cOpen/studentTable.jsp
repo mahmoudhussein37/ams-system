@@ -46,7 +46,7 @@
         $(".add-to-btn").click(function(e) {
            e.preventDefault();
            var id = $(this).attr("data-id");
-            $.post("${baseUrl}/admin/courseManagement/cOpen/manageStudent/addToDivide?id=" + id, function(result) {
+            $.post("${baseUrl}/admin/courseManagement/cOpen/manageStudent/addToDivide?id=" + id + "&profCourseId=${profCourseId}", function(result) {
 
                 location.reload();
             });
