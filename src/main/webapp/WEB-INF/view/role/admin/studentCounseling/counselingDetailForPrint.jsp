@@ -3,7 +3,7 @@
 <!--end::Head-->
 
 <!--begin::Body-->
-<body id="kt_body"  class="header-fixed header-mobile-fixed page-loading"  >
+<body id="kt_body"  class="header-fixed header-mobile-fixed page-loading">
 <!--begin::Content-->
 <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Entry-->
@@ -151,4 +151,5 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
     window.print();
+
 </script>

@@ -97,11 +97,9 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
-    var tableMap = new CustomMap();
     function search() {
         var year = $("#search-year").children("option:selected").val().trim();
         var name = $("#search-name").val().trim();
-        tableMap = new CustomMap();
         $(".table-div").load("${baseUrl}/admin/studentManagement/studentCounseling/counselingTable?year=" + year + "&name=" + name);
     }
 

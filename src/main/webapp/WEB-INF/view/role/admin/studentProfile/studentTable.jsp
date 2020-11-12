@@ -46,23 +46,10 @@
 </table>
 <script>
 
-/*    function setCheckboxAll(checked, checkboxes, map) {
-        for(var i=0; i<checkboxes.length; i++) {
-            if(checked) {
-                $(checkboxes[i]).prop("checked", true);
-                $(checkboxes[i]).parent("span").addClass("checked");
-                map.put($(checkboxes[i]).val(), true);
-            } else {
-                $(checkboxes[i]).prop("checked", false);
-                $(checkboxes[i]).parent("span").removeClass("checked");
-                map.put($(checkboxes[i]).val(), false);
-            }
-        }
-    }*/
     function setTableCheckboxAll() {
         var checked = $("input[name=tableCheckboxAll]").is(":checked");
         var checkboxes = $("input[name=tableCheckbox]");
-        setCheckboxAll(checked, checkboxes, tableMap);
+        setCheckboxAll(checked, checkboxes);
     }
     $(document).ready(function() {
         $("#student-list").DataTable();
@@ -76,17 +63,19 @@
             $(".detail-div").load("${baseUrl}/admin/studentManagement/studentProfile/studentDetail?studentId=" + studentId);
 
         });
-        $("body").on('click', 'input[name=tableCheckbox]', function (e) {
-            var value = $(this).val();
-            tableMap.put(value, $(this).is(":checked"));
-        });
         $("body").on('click', '.print', function (e) {
             e.preventDefault();
             var checkedAll = $("input[name=tableCheckboxAll]").is(":checked");
             var schoolYear = $("#search-school-year").children("option:selected").val().trim();
             var advisor = $("#search-advisor").children("option:selected").val().trim();
             var division = $("#search-division").children("option:selected").val().trim();
-            openPage("${baseUrl}/admin/studentManagement/studentProfile/studentDetailsForPrint?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("tableCheckbox", tableMap));
+            var size = $("input[name=tableCheckbox]:checked").length;
+            if (!checkedAll && size == 0) {
+                alert("<spring:message code="common.pleaseSelectItems"/>");
+            } else {
+                openPage("${baseUrl}/admin/studentManagement/studentProfile/studentDetailsForPrint?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("tableCheckbox"));
+            }
+
         });
 
 

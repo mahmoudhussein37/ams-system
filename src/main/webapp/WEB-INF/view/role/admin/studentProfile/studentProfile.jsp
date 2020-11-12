@@ -113,13 +113,11 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
-    var tableMap = new CustomMap();
     function search() {
         var schoolYear = $("#search-school-year").children("option:selected").val().trim();
         var advisor = $("#search-advisor").children("option:selected").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
         //var major = $("#search-major").children("option:selected").val().trim();
-        tableMap = new CustomMap();
         $(".table-div").load("${baseUrl}/admin/studentManagement/studentProfile/studentTable?schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division);
     }
 

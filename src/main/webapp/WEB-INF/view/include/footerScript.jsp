@@ -112,7 +112,7 @@
     }
 
     function openPage(url) {
-        newPage=window.open(url);
+        var newPage=window.open(url);
     }
 
 
@@ -124,53 +124,29 @@
         $('body').html(restorePage);
     }
 
-    function setCheckboxAll(checked, checkboxes, map) {
-        for(var i=0; i<checkboxes.length; i++) {
+    function setCheckboxAll(checked, checkboxes) {
+        var i;
+        for(i=0; i<checkboxes.length; i++) {
             if(checked) {
-                console.log("checked");
                 $(checkboxes[i]).prop("checked", true);
-                map.put($(checkboxes[i]).val(), true);
             } else {
-                console.log("nchecked");
                 $(checkboxes[i]).prop("checked", false);
-                map.put($(checkboxes[i]).val(), false);
-            }
-        }
-        console.log(map.size());
-    }
-
-    function setCheckbox(selector, map) {
-        var keys = map.keys();
-        var i, j;
-        var checkboxes = selector;
-
-        for (i = 0; i < keys.length; i++) {
-            if (map.get(keys[i])) {
-                for(j=0; j<checkboxes.length; j++) {
-                    if($(checkboxes[j]).val() == keys[i]) {
-                        $(checkboxes[j]).prop("checked", true);
-                        $(checkboxes[j]).parent("span").addClass("checked");
-                    }
-                }
             }
         }
     }
 
     function parameterize(name, map) {
-        var parameter = name + "=";
-        var keys = map.keys();
-        var values = [], i;
 
-        for (i = 0; i < keys.length; i++) {
-            if (map.get(keys[i])) {
-                values.push(keys[i]);
-            }
-        }
-        for (i = 0; i < values.length; i++) {
-            parameter += values[i];
-            if(i < values.length - 1)
+        var checked = $( "input[name=" + name + "]:checked" );
+        var i;
+
+        var parameter = name + "=";
+        for (i=0; i<checked.length; i++) {
+            parameter += $(checked[i]).val();
+            if(i < checked.length - 1)
                 parameter += ",";
         }
+        console.log(parameter);
         return parameter;
     }
 

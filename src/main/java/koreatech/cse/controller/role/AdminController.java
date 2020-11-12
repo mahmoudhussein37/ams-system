@@ -240,7 +240,7 @@ public class AdminController {
                                                        @RequestParam(defaultValue = "0", required=false) int advisor,
                                                        @RequestParam(defaultValue = "0", required=false) int division, @RequestParam Map<String, String> params) {
         System.out.println("checkAll = " + checkAll);
-        List<Integer> userIds = new ArrayList<>();
+        List<Integer> integerIds = new ArrayList<>();
         List<User> studentList = null;
         if (checkAll) {
             Searchable searchable = new Searchable();
@@ -254,11 +254,14 @@ public class AdminController {
                 String[] split = value.split(",");
                 for (String userIdString : split) {
                     if (StringUtils.isNotBlank(userIdString)) {
-                        userIds.add(Integer.parseInt(userIdString));
+                        integerIds.add(Integer.parseInt(userIdString));
                     }
                 }
             });
-            studentList = userMapper.findByUserIds(userIds);
+            if(CollectionUtils.isEmpty(integerIds))
+                studentList = new ArrayList<>();
+            else
+                studentList = userMapper.findByUserIds(integerIds);
         }
 
 
@@ -325,17 +328,20 @@ public class AdminController {
             searchable.setName(name);
             counselingList = counselingMapper.findByCounseling(searchable);
         } else {
-            List<Integer> counselingIds = new ArrayList<>();
+            List<Integer> integerIds = new ArrayList<>();
             params.entrySet().stream().filter(entry -> entry.getKey().equals("tableCheckbox")).forEach(entry -> {
                 String value = entry.getValue();
                 String[] split = value.split(",");
                 for (String integerIdString : split) {
                     if (StringUtils.isNotBlank(integerIdString)) {
-                        counselingIds.add(Integer.parseInt(integerIdString));
+                        integerIds.add(Integer.parseInt(integerIdString));
                     }
                 }
             });
-            counselingList = counselingMapper.findByIds(counselingIds);
+            if(CollectionUtils.isEmpty(integerIds))
+                counselingList = new ArrayList<>();
+            else
+                counselingList = counselingMapper.findByIds(integerIds);
         }
         model.addAttribute("counselingList", counselingList);
         return "role/admin/studentCounseling/counselingDetailForPrint";

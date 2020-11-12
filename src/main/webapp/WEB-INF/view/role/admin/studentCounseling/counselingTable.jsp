@@ -51,7 +51,7 @@
     function setTableCheckboxAll() {
         var checked = $("input[name=tableCheckboxAll]").is(":checked");
         var checkboxes = $("input[name=tableCheckbox]");
-        setCheckboxAll(checked, checkboxes, tableMap);
+        setCheckboxAll(checked, checkboxes);
     }
     $(document).ready(function() {
         $("#student-list").DataTable();
@@ -65,16 +65,18 @@
             $(".detail-div").load("${baseUrl}/admin/studentManagement/studentCounseling/counselingDetail?counselingId=" + counselingId);
 
         });
-        $("body").on('click', 'input[name=tableCheckbox]', function (e) {
-            var value = $(this).val();
-            tableMap.put(value, $(this).is(":checked"));
-        });
+
         $("body").on('click', '.print', function (e) {
             e.preventDefault();
             var checkedAll = $("input[name=tableCheckboxAll]").is(":checked");
             var year = $("#search-year").children("option:selected").val().trim();
             var name = $("#search-name").val().trim();
-            openPage("${baseUrl}/admin/studentManagement/studentCounseling/counselingDetailsForPrint?checkAll=" + checkedAll + "&year=" + year + "&name=" + name + "&" + parameterize("tableCheckbox", tableMap));
+            var size = $("input[name=tableCheckbox]:checked").length;
+            if (!checkedAll && size == 0) {
+                alert("<spring:message code="common.pleaseSelectItems"/>");
+            } else {
+                openPage("${baseUrl}/admin/studentManagement/studentCounseling/counselingDetailsForPrint?checkAll=" + checkedAll + "&year=" + year + "&name=" + name + "&" + parameterize("tableCheckbox"));
+            }
         });
     });
 
