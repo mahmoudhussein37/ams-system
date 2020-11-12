@@ -3,6 +3,7 @@ package koreatech.cse.controller.role;
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.role.professor.LectureFundamentals;
+import koreatech.cse.domain.role.student.GraduationResearchPlan;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
 import koreatech.cse.repository.*;
@@ -42,6 +43,8 @@ public class StudentController {
     private LectureFundamentalsMapper lectureFundamentalsMapper;
     @Inject
     private SemesterMapper semesterMapper;
+    @Inject
+    private GraduationResearchPlanMapper graduationResearchPlanMapper;
 
 
     @RequestMapping("/courseGuide/yearlyCurriculum")
@@ -367,13 +370,28 @@ public class StudentController {
     }
 
     @RequestMapping("/graduation/graduationResearchPlan")
-    public String graduationResearchPlan(Model model) {
+    public String graduationResearchPlan(Model model, @RequestParam(required=false) String result) {
         User studentUser = User.current();
         model.addAttribute("studentUser", studentUser);
-        return "role/student/graduationResearchPlan/graduationResearchPlan";
+
+        GraduationResearchPlan stored = graduationResearchPlanMapper.findByUserId(studentUser.getId());
+        model.addAttribute("stored", stored);
+        model.addAttribute("graduationResearchPlan", new GraduationResearchPlan());
+        model.addAttribute("result", result);
+        if (stored == null)
+            return "role/student/graduationResearchPlan/newGraduationResearchPlan";
+        else
+            return "role/student/graduationResearchPlan/graduationResearchPlan";
     }
 
+    @RequestMapping(value = "/graduation/graduationResearchPlan", method = RequestMethod.POST)
+    public String graduationResearchPlan(@ModelAttribute("graduationResearchPlan") GraduationResearchPlan graduationResearchPlan, SessionStatus sessionStatus) {
 
+        User studentUser = User.current();
+        graduationResearchPlan.setUserId(studentUser.getId());
+        graduationResearchPlanMapper.insert(graduationResearchPlan);
+        return "redirect:/student/graduation/graduationResearchPlan?result=success";
+    }
 
 
 
