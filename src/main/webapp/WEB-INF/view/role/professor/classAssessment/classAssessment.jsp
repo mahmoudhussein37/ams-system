@@ -24,14 +24,16 @@
                                     <div class="col-md-2">
                                         <spring:message code="common.year"/><br/>
                                         <select id="search-year" class="form-control" style="margin-top:10px;">
+<option value="0">-</option>
                                         <c:forEach var="y" items="${yearList}">
-                                            <option value="${y}">${y}</option>
+
+<option value="${y}">${y}</option>
                                         </c:forEach>
                                         </select>
                                     </div>
                                     <div class="col-md-2">
                                         <spring:message code="common.semester"/><br/>
-                                        <select id="search-semester" class="form-control" style="margin-top:10px;">
+                                        <select id="search-semester" class="form-control" style="margin-top:10px;"><option value="0">-</option>
                                         <option value="1"><spring:message code="common.sem1"/></option>
                                         <option value="2"><spring:message code="common.sem2"/></option>
                                         </select>

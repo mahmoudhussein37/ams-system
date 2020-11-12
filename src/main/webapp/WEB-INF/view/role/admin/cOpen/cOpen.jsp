@@ -24,6 +24,7 @@
                                 <div class="col-md-2">
                                     <spring:message code="common.year"/><br/>
                                     <select id="search-year" class="form-control" style="">
+                                        <option value="0">-</option>
                                         <c:forEach var="y" items="${yearList}">
                                             <option value="${y}" ${y eq year ? 'selected' : ''}>${y}</option>
                                         </c:forEach>
@@ -32,6 +33,7 @@
                                 <div class="col-md-2">
                                     <spring:message code="common.semester"/><br/>
                                     <select id="search-semester" class="form-control" style="">
+                                        <option value="0">-</option>
                                         <option value="1" ${semester eq 1 ? 'selected' : ''}><spring:message code="common.sem1"/></option>
                                         <option value="2" ${semester eq 2 ? 'selected' : ''}><spring:message code="common.sem2"/></option>
                                     </select>
@@ -39,6 +41,7 @@
                                 <div class="col-md-2">
                                     <spring:message code="common.department"/><br/>
                                     <select id="search-division" class="form-control" style="">
+                                        <option value="0">-</option>
                                         <c:forEach var="d" items="${divisions}">
                                             <option value="${d.id}" ${d eq division ? 'selected' : ''}>${d.name}</option>
                                         </c:forEach>

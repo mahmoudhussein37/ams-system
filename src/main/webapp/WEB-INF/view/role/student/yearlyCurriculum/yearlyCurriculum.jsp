@@ -24,19 +24,21 @@
                                     <div class="col-md-2">
                                         <spring:message code="common.year"/><br/>
                                         <select id="search-year" class="form-control" style="margin-top:10px;">
+<option value="0">-</option>
                                         <c:forEach var="y" items="${yearList}">
-                                            <option value="${y}">${y}</option>
+
+<option value="${y}">${y}</option>
                                         </c:forEach>
                                         </select>
                                     </div>
 
                                     <div class="col-md-4">
                                         <spring:message code="common.department"/><br/>
-                                        <select id="search-division" class="form-control" style="margin-top:10px;">
+                                        <select id="search-division" class="form-control" style="margin-top:10px;"><option value="0">-</option>
                                         <c:forEach var="division" items="${divisions}">
                                             <option value="${division.id}">${division.name}</option>
                                         </c:forEach>
-                                        </select>
+                                    </select>
                                     </div>
 
                                     <div class="col-md-2">

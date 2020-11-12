@@ -34,10 +34,12 @@
                                 <div class="col-md-3">
                                     <spring:message code="common.year"/><br/>
                                     <select id="search-year" class="form-control" style="margin-top:10px;">
+<option value="0">-</option>
                                         <c:forEach var="y" items="${yearList}">
-                                            <option value="${y}">${y}</option>
+
+<option value="${y}">${y}</option>
                                         </c:forEach>
-                                    </select>
+                                        </select>
 
                                 </div>
                                 <div class="col-md-3">
