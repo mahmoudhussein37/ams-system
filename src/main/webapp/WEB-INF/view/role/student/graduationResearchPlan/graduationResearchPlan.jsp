@@ -212,7 +212,7 @@
 
                         </div>
 
-</form:form>>
+</form:form>
                     </div>
                     <!--end::Card-->
                 </div>

@@ -7,6 +7,7 @@ import koreatech.cse.domain.constant.StudentStatus;
 import koreatech.cse.domain.constant.SubjCategory;
 import koreatech.cse.domain.role.professor.Counseling;
 import koreatech.cse.domain.role.professor.ProfessorCourse;
+import koreatech.cse.domain.role.student.GraduationResearchPlan;
 import koreatech.cse.domain.role.student.StudentCourse;
 import koreatech.cse.domain.univ.*;
 import koreatech.cse.repository.*;
@@ -90,6 +91,8 @@ public class AdminController {
     private AssessmentFactorMapper assessmentFactorMapper;
     @Inject
     private StudentCourseMapper studentCourseMapper;
+    @Inject
+    private GraduationResearchPlanMapper graduationResearchPlanMapper;
 
 
 
@@ -233,8 +236,8 @@ public class AdminController {
         return "role/admin/studentProfile/studentDetail";
     }
 
-    @RequestMapping("/studentManagement/studentProfile/studentDetailsForPrint")
-    public String studentProfileStudentDetailsForPrint(Model model,
+    @RequestMapping("/studentManagement/studentProfile/studentDetailForPrint")
+    public String studentProfileStudentDetailForPrint(Model model,
                                                        @RequestParam boolean checkAll,
                                                        @RequestParam(defaultValue = "0", required=false) int schoolYear,
                                                        @RequestParam(defaultValue = "0", required=false) int advisor,
@@ -314,8 +317,8 @@ public class AdminController {
         return "role/admin/studentCounseling/counselingDetail";
     }
 
-    @RequestMapping("/studentManagement/studentCounseling/counselingDetailsForPrint")
-    public String counselingDetailsForPrint(Model model,
+    @RequestMapping("/studentManagement/studentCounseling/counselingDetailForPrint")
+    public String counselingDetailForPrint(Model model,
                                                        @RequestParam boolean checkAll,
                                             @RequestParam(required=false, defaultValue = "0") int year,
                                             @RequestParam(required=false) String name, @RequestParam Map<String, String> params) {
@@ -432,38 +435,87 @@ public class AdminController {
     public String graduationResearch(Model model) {
 
         model.addAttribute("yearList", getYearList());
+        List<User> professors = userMapper.findAllProfessors();
+        model.addAttribute("professors", professors);
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+
         return "role/admin/graduationResearch/graduationResearch";
     }
 
-    @RequestMapping("/profManagement/graduationResearch/studentTable")
-    public String graduationResearchPlanStudentTable(Model model, @RequestParam(required=false, defaultValue = "0") int year, @RequestParam(defaultValue = "0", required=false) int semester) {
-        User firstUser = null;
-        List<User> userList;
-        System.out.println("year = " + year);
-        if(year == 0) {
-            userList = new ArrayList<>();
-        } else {
-            Searchable searchable = new Searchable();
+    @RequestMapping("/profManagement/graduationResearch/researchTable")
+    public String graduationResearchPlanTable(Model model,
+                                              @RequestParam(required=false, defaultValue = "0") int year,
+                                              @RequestParam(defaultValue = "0", required=false) int division,
+                                              @RequestParam(defaultValue = "0", required=false) int advisor,
+                                              @RequestParam(required=false) String number,
+                                              @RequestParam(required=false) String name) {
+        GraduationResearchPlan firstOne = null;
+        Searchable searchable = new Searchable();
 
-            searchable.setYear(year);
-            userList = userMapper.findByNameNumberDivision(searchable);
+        searchable.setYear(year);
+        searchable.setDivision(division);
+        searchable.setAdvisor(advisor);
+        searchable.setNumber(number);
+        searchable.setName(name);
+        List<GraduationResearchPlan> plans = graduationResearchPlanMapper.findBySearchable(searchable);
 
 
-            for(User user: userList) {
-                firstUser = user;
-                break;
-            }
+        for(GraduationResearchPlan graduationResearchPlan : plans) {
+            firstOne = graduationResearchPlan;
+            break;
         }
-        model.addAttribute("userList", userList);
-        model.addAttribute("firstUser", firstUser);
-        return "role/admin/graduationResearch/studentTable";
+        model.addAttribute("plans", plans);
+        model.addAttribute("firstOne", firstOne);
+        return "role/admin/graduationResearch/researchTable";
     }
 
-    @RequestMapping("/profManagement/graduationResearch/studentDetail")
-    public String graduationResearchPlanStudentDetail(Model model, @RequestParam int studentId) {
-        User studentUser = userMapper.findOne(studentId);
-        model.addAttribute("studentUser", studentUser);
-        return "role/admin/graduationResearch/studentDetail";
+    @RequestMapping("/profManagement/graduationResearch/planDetail")
+    public String graduationResearchPlanDetail(Model model, @RequestParam int planId) {
+        GraduationResearchPlan graduationResearchPlan = graduationResearchPlanMapper.findOne(planId);
+        model.addAttribute("stored", graduationResearchPlan);
+        model.addAttribute("studentUser", graduationResearchPlan.getUser());
+        return "role/admin/graduationResearch/planDetail";
+    }
+
+    @RequestMapping("/profManagement/graduationResearch/planDetailForPrint")
+    public String graduationResearchPlanDetailForPrint(Model model,
+                                                       @RequestParam boolean checkAll,
+                                                        @RequestParam(required=false, defaultValue = "0") int year,
+                                                        @RequestParam(defaultValue = "0", required=false) int division,
+                                                        @RequestParam(defaultValue = "0", required=false) int advisor,
+                                                        @RequestParam(required=false) String number,
+                                                        @RequestParam(required=false) String name, @RequestParam Map<String, String> params) {
+        System.out.println("checkAll = " + checkAll);
+        List<Integer> integerIds = new ArrayList<>();
+        List<GraduationResearchPlan> planList = null;
+        if (checkAll) {
+            Searchable searchable = new Searchable();
+            searchable.setYear(year);
+            searchable.setDivision(division);
+            searchable.setAdvisor(advisor);
+            searchable.setNumber(number);
+            searchable.setName(name);
+            planList = graduationResearchPlanMapper.findBySearchable(searchable);
+        } else {
+            params.entrySet().stream().filter(entry -> entry.getKey().equals("tableCheckbox")).forEach(entry -> {
+                String value = entry.getValue();
+                String[] split = value.split(",");
+                for (String userIdString : split) {
+                    if (StringUtils.isNotBlank(userIdString)) {
+                        integerIds.add(Integer.parseInt(userIdString));
+                    }
+                }
+            });
+            if(CollectionUtils.isEmpty(integerIds))
+                planList = new ArrayList<>();
+            else
+                planList = graduationResearchPlanMapper.findByIds(integerIds);
+        }
+
+        model.addAttribute("planList", planList);
+        return "role/admin/graduationResearch/planDetailForPrint";
     }
 
     @RequestMapping("/profManagement/studentEnrolment")

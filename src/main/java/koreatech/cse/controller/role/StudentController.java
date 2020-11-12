@@ -9,6 +9,8 @@ import koreatech.cse.domain.univ.Division;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.AuthorityService;
 import koreatech.cse.service.UserService;
+import koreatech.cse.util.DateHelper;
+import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -389,6 +392,16 @@ public class StudentController {
 
         User studentUser = User.current();
         graduationResearchPlan.setUserId(studentUser.getId());
+        try {
+            String submitDate = graduationResearchPlan.getSubmitDate();
+            Date d = DateHelper.parse("yyyy-MM-dd", submitDate);
+            DateTime dt = new DateTime(d);
+            graduationResearchPlan.setYear(dt.getYear());
+
+        } catch(Exception e) {
+
+        }
+
         graduationResearchPlanMapper.insert(graduationResearchPlan);
         return "redirect:/student/graduation/graduationResearchPlan?result=success";
     }

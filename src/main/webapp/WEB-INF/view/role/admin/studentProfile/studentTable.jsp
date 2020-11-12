@@ -73,7 +73,7 @@
             if (!checkedAll && size == 0) {
                 alert("<spring:message code="common.pleaseSelectItems"/>");
             } else {
-                openPage("${baseUrl}/admin/studentManagement/studentProfile/studentDetailsForPrint?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("tableCheckbox"));
+                openPage("${baseUrl}/admin/studentManagement/studentProfile/studentDetailForPrint?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("tableCheckbox"));
             }
 
         });

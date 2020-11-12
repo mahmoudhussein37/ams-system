@@ -1,5 +1,7 @@
 package koreatech.cse.domain.role.student;
 
+import koreatech.cse.domain.User;
+
 import java.io.Serializable;
 
 public class GraduationResearchPlan implements Serializable {
@@ -21,6 +23,9 @@ public class GraduationResearchPlan implements Serializable {
     private String etc;
     private String submitDate;
     private boolean enabled;
+
+    private User user;
+    private int year;
 
     public int getId() {
         return id;
@@ -134,11 +139,27 @@ public class GraduationResearchPlan implements Serializable {
         this.submitDate = submitDate;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 }

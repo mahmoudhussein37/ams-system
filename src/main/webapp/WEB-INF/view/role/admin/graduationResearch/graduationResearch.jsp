@@ -21,29 +21,49 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-
+                                <div class="col-md-2">
+                                    <spring:message code="common.department"/><br/>
+                                    <select id="search-division" class="form-control" style="margin-top:10px;">
+                                        <option value="0">-</option>
+                                        <c:forEach var="division" items="${divisions}">
+                                            <option value="${division.id}">${division.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
                                 <div class="col-md-2">
                                     <spring:message code="common.year"/><br/>
                                     <select id="search-year" class="form-control" style="margin-top:10px;">
+                                        <option value="0">-</option>
                                         <c:forEach var="y" items="${yearList}">
                                             <option value="${y}">${y}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
                                 <div class="col-md-2">
-                                    <spring:message code="common.semester"/><br/>
-                                    <select id="search-semester" class="form-control" style="margin-top:10px;">
-                                        <option value="1"><spring:message code="common.sem1"/></option>
-                                        <option value="2"><spring:message code="common.sem2"/></option>
+                                    <spring:message code="common.advisor"/><br/>
+                                    <select id="search-advisor" class="form-control" style="margin-top:10px;">
+                                        <option value="0">-</option>
+                                        <c:forEach var="s" items="${professors}">
+                                            <option value="${s.id}">${s.contact.getFullName()}</option>
+                                        </c:forEach>
                                     </select>
                                 </div>
 
                                 <div class="col-md-2">
+                                    <spring:message code="common.studentsNumber"/><br/>
+                                    <input type="text" id="search-number" class="form-control input-enter" value="" style="margin-top:10px;"/>
+                                </div>
+                                <div class="col-md-2">
+                                    <spring:message code="common.studentsName"/><br/>
+                                    <input type="text" id="search-name" class="form-control input-enter"  value="" style="margin-top:10px;"/>
+                                </div>
+                                <div class="col-md-1">
                                     <br/>
                                     <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
                                 </div>
-                                <div class="col-md-2">
-
+                                <div class="col-md-1">
+                                    <br/>
+                                    <button class="btn btn-light print" style="width:100%;margin-top:10px;"> <spring:message code="common.print"/></button>
                                 </div>
 
 
@@ -96,8 +116,13 @@
 
     function search() {
         var year = $("#search-year").children("option:selected").val().trim();
-        var semester = $("#search-semester").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/admin/profManagement/graduationResearch/studentTable?year=" + year + "&semester=" + semester);
+        var division = $("#search-division").children("option:selected").val().trim();
+        var advisor = $("#search-advisor").children("option:selected").val().trim();
+        var name = $("#search-name").val().trim();
+        var number = $("#search-number").val().trim();
+
+        $(".table-div").load("${baseUrl}/admin/profManagement/graduationResearch/researchTable?year=" + year + "&division=" + division + "&advisor=" + advisor + "&name=" + name + "&number=" + number);
+
     }
 
     $(".input-enter").keydown(function(key) {
@@ -107,7 +132,7 @@
     });
 
     $(document).ready(function() {
-        $(".table-div").load("${baseUrl}/admin/profManagement/graduationResearch/studentTable");
+        $(".table-div").load("${baseUrl}/admin/profManagement/graduationResearch/researchTable");
     });
 
 </script>

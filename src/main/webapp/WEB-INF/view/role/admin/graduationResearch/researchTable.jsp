@@ -3,44 +3,43 @@
 <table class="table table-head-custom table-vertical-center" id="student-list">
     <thead>
     <tr class="text-uppercase">
-
         <th class="pl-0" style=""><input type="checkbox" class="table-checkbox-all" name="tableCheckboxAll" onClick="setTableCheckboxAll()"></th>
-        <th class="pl-0" style=""><spring:message code="common.no"/></th>
+        <th class="pl-0" style="min-width: 100px"><spring:message code="common.no"/></th>
         <th style=""><span class="text-primary"><spring:message code="common.year"/></span></th>
-        <th style=""><span class="text-primary"><spring:message code="common.date"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.studentNumber"/></span></th>
-        <th style=""><span class="text-primary"><spring:message code="common.name"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.studentsName"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.department"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.advisor"/></span>
+            <%--<th style=""><span class="text-primary"><spring:message code="common.major"/></span>--%>
 
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="counseling" items="${counselingList}" varStatus="varStatus">
+    <c:forEach var="plan" items="${plans}" varStatus="varStatus">
         <tr>
             <td class="pl-0">
-                <input type="checkbox" class="counseling-checkbox" name="tableCheckbox" value="${counseling.id}">
+                <input type="checkbox" class="plan-checkbox" name="tableCheckbox" value="${plan.id}">
             </td>
             <td class="pl-0">
                     ${varStatus.count}
             </td>
             <td>
-                    ${counseling.year}
+                    ${plan.year}
             </td>
             <td>
-                    ${counseling.date}
-            </td>
-            <td>
-                <a href="#" class="student-detail" data-counseling-id="${counseling.id}">
-                        ${counseling.studentUser.number}
+                <a href="#" class="plan-detail" data-plan-id="${plan.id}">
+                        ${plan.user.number}
                 </a>
             </td>
             <td>
-                    ${counseling.studentUser.getFullName()}
+                    ${plan.user.getFullName()}
             </td>
             <td>
-                    ${counseling.studentUser.division.name}
+                    ${plan.user.division.name}
             </td>
-
+            <td>
+                    ${plan.user.advisor.getFullName()}
+            </td>
         </tr>
     </c:forEach>
 
@@ -56,13 +55,13 @@
     $(document).ready(function() {
         $("#student-list").DataTable();
 
-        <c:if test="${not empty firstCounseling}">
-        $(".detail-div").load("${baseUrl}/admin/studentManagement/studentCounseling/counselingDetail?counselingId=${firstCounseling.id}");
+        <c:if test="${not empty firstOne}">
+        $(".detail-div").load("${baseUrl}/admin/profManagement/graduationResearch/planDetail?planId=${firstOne.id}");
         </c:if>
-        $("body").on('click', '.student-detail', function (e) {
+        $("body").on('click', '.plan-detail', function (e) {
             e.preventDefault();
-            var counselingId = $(this).attr("data-counseling-id");
-            $(".detail-div").load("${baseUrl}/admin/studentManagement/studentCounseling/counselingDetail?counselingId=" + counselingId);
+            var planId = $(this).attr("data-plan-id");
+            $(".detail-div").load("${baseUrl}/admin/profManagement/graduationResearch/planDetail?planId=" + planId);
 
         });
 
@@ -70,14 +69,16 @@
             e.preventDefault();
             var checkedAll = $("input[name=tableCheckboxAll]").is(":checked");
             var year = $("#search-year").children("option:selected").val().trim();
+            var division = $("#search-division").children("option:selected").val().trim();
+            var advisor = $("#search-advisor").children("option:selected").val().trim();
             var name = $("#search-name").val().trim();
+            var number = $("#search-number").val().trim();
             var size = $("input[name=tableCheckbox]:checked").length;
             if (!checkedAll && size == 0) {
                 alert("<spring:message code="common.pleaseSelectItems"/>");
             } else {
-                openPage("${baseUrl}/admin/studentManagement/studentCounseling/counselingDetailForPrint?checkAll=" + checkedAll + "&year=" + year + "&name=" + name + "&" + parameterize("tableCheckbox"));
+                openPage("${baseUrl}/admin/profManagement/graduationResearch/planDetailForPrint?checkAll=" + checkedAll + "&year=" + year + "&division=" + division + "&advisor=" + advisor + "&name=" + name + "&number=" + number + "&" + parameterize("tableCheckbox"));
             }
         });
     });
-
 </script>
