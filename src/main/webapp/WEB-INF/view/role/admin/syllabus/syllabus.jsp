@@ -20,38 +20,7 @@
 
                         </div>
                         <div class="card-body">
-                            <div class="row">
-
-                                <div class="col-md-2">
-                                    <spring:message code="common.year"/><br/>
-                                    <select id="search-year" class="form-control" style="margin-top:10px;">
-<option value="0">-</option>
-                                        <c:forEach var="y" items="${yearList}">
-
-<option value="${y}">${y}</option>
-                                        </c:forEach>
-                                        </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <spring:message code="common.semester"/><br/>
-                                    <select id="search-semester" class="form-control" style="margin-top:10px;"><option value="0">-</option>
-                                        <option value="1"><spring:message code="common.sem1"/></option>
-                                        <option value="2"><spring:message code="common.sem2"/></option>
-                                        </select>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <br/>
-                                    <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
-                                </div>
-                                <div class="col-md-2">
-
-                                </div>
-
-
-
-
-                            </div>
+                            <%@include file="/WEB-INF/view/include/yearSemesterDivisionSearchDiv.jsp" %>
                             <br/><br/>
 
 

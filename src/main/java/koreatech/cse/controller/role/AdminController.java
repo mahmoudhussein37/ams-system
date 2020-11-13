@@ -1093,21 +1093,24 @@ public class AdminController {
         searchable.setDivision(division);
 
 
-        List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
+        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivision(searchable);
 
-        Course firstCourse = null;
-        for(Course course: courseList) {
+        ProfessorCourse firstCourse = null;
+        for(ProfessorCourse course: courseList) {
             firstCourse = course;
             break;
         }
 
         model.addAttribute("firstCourse", firstCourse);
-        model.addAttribute("courseList", courseList);
+        model.addAttribute("profCourseList", courseList);
         return "role/admin/attendance/courseTable";
     }
 
     @RequestMapping("/courseManagement/syllabus")
     public String syllabus(Model model) {
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
         return "role/admin/syllabus/syllabus";
     }
@@ -1124,22 +1127,25 @@ public class AdminController {
     @RequestMapping("/courseManagement/syllabus/courseTable")
     public String syllabusCourseTable(Model model,
                                       @RequestParam(defaultValue = "0", required=false) int year,
-                                      @RequestParam(defaultValue = "0", required=false) int semester) {
-
+                                      @RequestParam(defaultValue = "0", required=false) int semester,
+                                      @RequestParam(defaultValue = "0", required=false) int division) {
 
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
+        searchable.setDivision(division);
 
-        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
-        Course firstCourse = null;
-        for(Course course: courseList) {
+
+        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivision(searchable);
+
+        ProfessorCourse firstCourse = null;
+        for(ProfessorCourse course: courseList) {
             firstCourse = course;
             break;
         }
 
         model.addAttribute("firstCourse", firstCourse);
-        model.addAttribute("courseList", courseList);
+        model.addAttribute("profCourseList", courseList);
         return "role/admin/syllabus/courseTable";
     }
 

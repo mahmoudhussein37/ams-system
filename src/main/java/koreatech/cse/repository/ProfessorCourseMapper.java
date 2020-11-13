@@ -3,6 +3,7 @@ package koreatech.cse.repository;
 
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.role.professor.ProfessorCourse;
+import koreatech.cse.domain.univ.Course;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -42,13 +43,14 @@ public interface ProfessorCourseMapper {
     @ResultMap("findOne-int")
     //@formatter off
     @Select("<script>"
-            + "SELECT * FROM professor_course p join course c on p.course_id=c.id where p.user_id = #{userId} "
-            + "<if test='year != 0'> and c.year = #{year}</if>"
-            + "<if test='semester != 0'> and c.semester = #{semester}</if>"
+            + "SELECT * FROM professor_course p join course c on p.course_id=c.id where 1=1 "
+            + "<if test='year != 0'> and s.year = #{year}</if>"
+            + "<if test='semester != 0'> and s.semester = #{semester}</if>"
+            + "<if test='division != 0'> and c.division_id = #{division}</if>"
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
         //@formatter on
-    List<ProfessorCourse> findByAttendance(Searchable searchable);
+    List<ProfessorCourse> findByYearSemesterDivision(Searchable searchable);
 
     @Update("UPDATE `professor_course` SET "+
             "`user_id` = #{userId},"+

@@ -13,27 +13,27 @@
     </thead>
     <tbody>
 
-    <c:forEach var="courseElement" items="${courseList}" varStatus="varStatus">
+    <c:forEach var="pc" items="${profCourseList}" varStatus="varStatus">
         <tr>
 
             <td class="pl-0">
                     ${varStatus.count}
             </td>
             <td>
-                <a href="#" class="course-detail" data-course-id="${courseElement.id}">
-                        ${courseElement.code}
+                <a href="#" class="course-detail" data-course-id="${pc.course.id}">
+                        ${pc.course.code}
                 </a>
             </td>
             <td>
-                <a href="#" class="course-editable" data-type="text" data-name="title" data-url="${baseUrl}/admin/courseManagement/courseEditable" data-pk="${courseElement.id}" data-original-title="<spring:message code="common.courseTitle"/>">${courseElement.title}</a>
+                <a href="#" class="course-editable" data-type="text" data-name="title" data-url="${baseUrl}/admin/courseManagement/courseEditable" data-pk="${pc.course.id}" data-original-title="<spring:message code="common.courseTitle"/>">${pc.course.title}</a>
 
             </td>
 
             <%--<td>
-                <spring:message code="comp.category.${courseElement.compCategory}"/>
+                <spring:message code="comp.category.${pc.course.compCategory}"/>
             </td>--%>
             <td>
-                <spring:message code="subj.category.${courseElement.subjCategory}"/>
+                <spring:message code="subj.category.${pc.course.subjCategory}"/>
             </td>
             <td>
                 <a href="#"><spring:message code="common.download"/></a>
