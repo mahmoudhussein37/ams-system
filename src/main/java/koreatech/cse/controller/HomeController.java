@@ -6,20 +6,16 @@ import koreatech.cse.domain.UploadedFile;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.Role;
 import koreatech.cse.repository.FeedbackMapper;
-import koreatech.cse.repository.MajorMapper;
 import koreatech.cse.repository.UploadedFileMapper;
 import koreatech.cse.repository.UserMapper;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.SystemUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -77,7 +73,7 @@ public class HomeController {
         Searchable searchable = new Searchable();
         searchable.setDivision(divisionId);
 
-        model.addAttribute("profList", userMapper.findByProfLookup(searchable));
+        model.addAttribute("profList", userMapper.findProfessorsByNameNumberDivision(searchable));
         model.addAttribute("defaultSelected", defaultSelected);
 
         return "include/profOptions";

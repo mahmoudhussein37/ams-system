@@ -6,7 +6,6 @@ import koreatech.cse.domain.role.professor.Counseling;
 import koreatech.cse.domain.role.professor.LectureFundamentals;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
-import koreatech.cse.domain.univ.Major;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.UserService;
 import org.apache.commons.lang.StringUtils;
@@ -30,8 +29,6 @@ public class ProfessorController {
     private UserMapper userMapper;
     @Inject
     private DivisionMapper divisionMapper;
-    @Inject
-    private MajorMapper majorMapper;
     @Inject
     private UserService userService;
     @Inject
@@ -517,44 +514,6 @@ public class ProfessorController {
         model.addAttribute("studentUser", studentUser);
         return "role/professor/graduationResearchPlan/studentDetail";
     }
-
-    @RequestMapping("/classProgress/makeupClass")
-    public String makeupClass(Model model) {
-
-        model.addAttribute("yearList", getYearList());
-
-        return "role/professor/makeupClass/makeupClass";
-    }
-
-    @RequestMapping("/classProgress/makeupClass/courseTable")
-    public String courseTable(Model model,
-                               @RequestParam(defaultValue = "0", required=false) int year,
-                               @RequestParam(defaultValue = "0", required=false) int semester) {
-
-        Searchable searchable = new Searchable();
-        searchable.setYear(year);
-        searchable.setSemester(semester);
-
-        List<Course> courseList = courseMapper.findByMakeupClass(searchable);
-        Course firstCourse = null;
-        for(Course course: courseList) {
-            firstCourse = course;
-            break;
-        }
-
-        model.addAttribute("firstCourse", firstCourse);
-        model.addAttribute("courseList", courseList);
-        return "role/professor/makeupClass/courseTable";
-    }
-
-    @RequestMapping("/classProgress/makeupClass/courseDetail")
-    public String makeupClassCourseDetail(Model model, @RequestParam int courseId) {
-        Course course = courseMapper.findOne(courseId);
-        model.addAttribute("course", course);
-
-        return "role/professor/makeupClass/courseDetail";
-    }
-
 
     private List<Integer> getYearList() {
         return semesterMapper.findYears();

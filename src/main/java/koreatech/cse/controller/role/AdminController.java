@@ -25,7 +25,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,7 +33,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -394,7 +392,7 @@ public class AdminController {
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            userList = userMapper.findByProfLookup(searchable);
+            userList = userMapper.findProfessorsByNameNumberDivision(searchable);
 
 
             for(User user: userList) {
@@ -1417,7 +1415,7 @@ public class AdminController {
     public String yearSemester(@ModelAttribute("semester") Semester semester, SessionStatus sessionStatus) {
 
 
-        Semester exist = semesterMapper.findByYearAndSemester(semester.getYear(), semester.getSemester());
+        Semester exist = semesterMapper.findByYearSemester(semester.getYear(), semester.getSemester());
         if(exist == null)
             semesterMapper.insert(semester);
         sessionStatus.setComplete();
@@ -1973,12 +1971,4 @@ public class AdminController {
     private List<Integer> getYearList() {
         return semesterMapper.findYears();
     }
-
-    private List<Semester> getSemesterList() {
-        return semesterMapper.findAll();
-
-    }
-
-
-
 }

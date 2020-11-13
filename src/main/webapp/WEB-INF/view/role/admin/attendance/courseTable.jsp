@@ -30,11 +30,6 @@
                     ${pc.course.title}
 
             </td>
-
-
-            <%--<td>
-                <spring:message code="comp.category.${pc.course.compCategory}"/>
-            </td>--%>
             <td>
                 ${pc.professorUser.getFullName()}
             </td>

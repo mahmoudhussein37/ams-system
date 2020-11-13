@@ -35,8 +35,6 @@ public class StudentController {
     @Inject
     private AuthorityService authorityService;
     @Inject
-    private MajorMapper majorMapper;
-    @Inject
     private UserService userService;
     @Inject
     private CourseMapper courseMapper;
@@ -69,7 +67,7 @@ public class StudentController {
         searchable.setYear(year);
         searchable.setDivision(division);
 
-        List<Course> courseList = courseMapper.findByMakeupClass(searchable);
+        List<Course> courseList = courseMapper.findByYearSemester(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -97,7 +95,7 @@ public class StudentController {
         searchable.setCode(code);
         searchable.setTitle(title);
 
-        List<Course> courseList = courseMapper.findByMakeupClass(searchable);
+        List<Course> courseList = courseMapper.findByYearSemester(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -131,7 +129,7 @@ public class StudentController {
         searchable.setCode(code);
         searchable.setTitle(title);
 
-        List<Course> courseList = courseMapper.findByMakeupClass(searchable);
+        List<Course> courseList = courseMapper.findByYearSemester(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;

@@ -51,7 +51,7 @@ public interface CourseMapper {
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
         //@formatter on
-    List<Course> findByMakeupClass(Searchable searchable);
+    List<Course> findByYearSemester(Searchable searchable);
 
     @ResultMap("findOne-int")
     //@formatter off

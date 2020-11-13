@@ -153,7 +153,7 @@ public interface UserMapper {
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
         //@formatter on
-    List<User> findByProfLookup(Searchable searchable);
+    List<User> findProfessorsByNameNumberDivision(Searchable searchable);
 
     @ResultMap("findOne-int")
     //@formatter:off
