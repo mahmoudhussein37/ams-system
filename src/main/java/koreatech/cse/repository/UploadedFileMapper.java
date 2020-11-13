@@ -42,6 +42,9 @@ public interface UploadedFileMapper {
     @Select("SELECT * FROM `uploaded_file` where id=#{id}")
     UploadedFile findOne(@Param("id") int id);
 
+    @Select("SELECT * FROM `uploaded_file` where prof_course_id = #{profCourseId} and designation = 'attendance' limit 1")
+    UploadedFile findAttendanceFile(@Param("profCourseId") int profCourseId);
+
     @Update("UPDATE `uploaded_file` SET"+
             "`designation` = #{designation},"+
             "`name` = #{name},"+

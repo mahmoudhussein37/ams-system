@@ -615,27 +615,6 @@ public class AdminController {
         return "redirect:/admin/courseManagement/curriculum?year=" + year;
     }
 
-    @RequestMapping("/courseManagement/curriculum/courseTable")
-    public String curriculumTable(Model model,
-                                  @RequestParam(defaultValue = "0", required=false) int year,
-                                  @RequestParam(defaultValue = "0", required=false) int division) {
-
-        Searchable searchable = new Searchable();
-        searchable.setYear(year);
-        searchable.setDivision(division);
-
-        List<Course> courseList = courseMapper.findByMakeupClass(searchable);
-        Course firstCourse = null;
-        for(Course course: courseList) {
-            firstCourse = course;
-            break;
-        }
-
-        model.addAttribute("firstCourse", firstCourse);
-        model.addAttribute("courseList", courseList);
-        return "role/admin/curriculum/courseTable";
-    }
-
     @RequestMapping("/courseManagement/course")
     public String course(Model model,  @RequestParam(required=false) String result) {
         List<Division> divisions = divisionMapper.findAll();

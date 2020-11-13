@@ -1,5 +1,6 @@
 package koreatech.cse.domain.role.professor;
 
+import koreatech.cse.domain.UploadedFile;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Semester;
@@ -25,6 +26,8 @@ public class ProfessorCourse implements Serializable {
     private int lateness;
     private int absence;
     private boolean enabled;
+
+    private UploadedFile attendanceFile;
 
 
     public int getId() {
@@ -138,6 +141,14 @@ public class ProfessorCourse implements Serializable {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public UploadedFile getAttendanceFile() {
+        return attendanceFile;
+    }
+
+    public void setAttendanceFile(UploadedFile attendanceFile) {
+        this.attendanceFile = attendanceFile;
     }
 
     @Override

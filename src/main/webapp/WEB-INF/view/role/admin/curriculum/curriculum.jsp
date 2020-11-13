@@ -149,7 +149,6 @@
         var year = $("#search-year").val().trim();
         location.href="${baseUrl}/admin/courseManagement/curriculum?year=" + year;
 
-        /*$(".table-div").load("${baseUrl}/admin/courseManagement/curriculum/courseTable?year=" + year + "&division=" + division);*/
     }
 
 

@@ -25,6 +25,8 @@ public interface ProfessorCourseMapper {
             @Result(column = "course_id", property = "course", one = @One(select = "koreatech.cse.repository.CourseMapper.findOne")),
             @Result(column = "user_id", property = "professorUser", one = @One(select = "koreatech.cse.repository.UserMapper.findOne")),
             @Result(column = "semester_id", property = "semester", one = @One(select = "koreatech.cse.repository.SemesterMapper.findOne")),
+            @Result(column = "id", property = "attendanceFile", one = @One(select = "koreatech.cse.repository.UploadedFileMapper.findAttendanceFile")),
+
     })
     @Select("SELECT * FROM professor_course where id=#{id}")
     ProfessorCourse findOne(@Param("id") int id);
