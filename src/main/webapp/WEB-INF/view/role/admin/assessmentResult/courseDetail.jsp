@@ -29,7 +29,7 @@
 $(document).ready(function() {
    $("#lecture-fundamental-save").click(function(e) {
      e.preventDefault();
-       $.post('${baseUrl}/admin/academicManagement/assessmentResult/courseDetail?courseId=${course.id}', $('#lectureFundamentalsForm').serialize(), function() {
+       $.post('${baseUrl}/admin/academicManagement/assessmentResult/courseDetail?courseId=${pc.id}', $('#lectureFundamentalsForm').serialize(), function() {
          alert("<spring:message code="common.success"/>");
        });
    });

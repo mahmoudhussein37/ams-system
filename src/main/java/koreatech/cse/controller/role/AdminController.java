@@ -1333,23 +1333,29 @@ public class AdminController {
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
+        List<User> professors = userMapper.findAllProfessors();
+        model.addAttribute("professors", professors);
         return "role/admin/assessmentResult/assessmentResult";
     }
 
     @RequestMapping("/academicManagement/assessmentResult/courseTable")
     public String assessmentResultCourseTable(Model model,
                                               @RequestParam(defaultValue = "0", required=false) int year,
-                                              @RequestParam(defaultValue = "0", required=false) int semester) {
+                                              @RequestParam(defaultValue = "0", required=false) int semester,
+                                              @RequestParam(defaultValue = "0", required=false) int division,
+                                              @RequestParam(defaultValue = "0", required=false) int advisor) {
 
 
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
+        searchable.setDivision(division);
+        searchable.setAdvisor(advisor);
 
 
-        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
-        Course firstCourse = null;
-        for(Course course: courseList) {
+        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivisionProfId(searchable);
+        ProfessorCourse firstCourse = null;
+        for(ProfessorCourse course: courseList) {
             firstCourse = course;
             break;
         }
@@ -1361,8 +1367,8 @@ public class AdminController {
 
     @RequestMapping("/academicManagement/assessmentResult/courseDetail")
     public String assessmentResultCourseDetail(Model model, @RequestParam int courseId) {
-        Course course = courseMapper.findOne(courseId);
-        model.addAttribute("course", course);
+        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+        model.addAttribute("pc", pc);
 
         return "role/admin/assessmentResult/courseDetail";
     }
