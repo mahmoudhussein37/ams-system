@@ -5,6 +5,7 @@ import koreatech.cse.domain.constant.CompCategory;
 import koreatech.cse.domain.constant.Designation;
 import koreatech.cse.domain.constant.StudentStatus;
 import koreatech.cse.domain.constant.SubjCategory;
+import koreatech.cse.domain.role.professor.Assessment;
 import koreatech.cse.domain.role.professor.Counseling;
 import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.role.student.GraduationResearchPlan;
@@ -91,6 +92,8 @@ public class AdminController {
     private StudentCourseMapper studentCourseMapper;
     @Inject
     private GraduationResearchPlanMapper graduationResearchPlanMapper;
+    @Inject
+    private AssessmentMapper assessmentMapper;
 
 
 
@@ -1369,7 +1372,11 @@ public class AdminController {
     public String assessmentResultCourseDetail(Model model, @RequestParam int courseId) {
         ProfessorCourse pc = professorCourseMapper.findOne(courseId);
         model.addAttribute("pc", pc);
-
+        List<Assessment> assessments = assessmentMapper.findByProfCourseId(courseId);
+        System.out.println("courseId = " + courseId);
+        model.addAttribute("assessments", assessments);
+        List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(pc.getCourseId());
+        model.addAttribute("assessmentFactors", assessmentFactors);
         return "role/admin/assessmentResult/courseDetail";
     }
 

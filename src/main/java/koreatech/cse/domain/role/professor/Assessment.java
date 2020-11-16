@@ -38,166 +38,166 @@ public class Assessment implements Serializable {
     private int score25;
 
 
-    private int itemId1;
-    private int itemId2;
-    private int itemId3;
-    private int itemId4;
-    private int itemId5;
-    private int itemId6;
-    private int itemId7;
-    private int itemId8;
-    private int itemId9;
-    private int itemId10;
-    private int itemId11;
-    private int itemId12;
-    private int itemId13;
-    private int itemId14;
-    private int itemId15;
-    private int itemId16;
-    private int itemId17;
-    private int itemId18;
-    private int itemId19;
-    private int itemId20;
-    private int itemId21;
-    private int itemId22;
-    private int itemId23;
-    private int itemId24;
-    private int itemId25;
+    private int item1;
+    private int item2;
+    private int item3;
+    private int item4;
+    private int item5;
+    private int item6;
+    private int item7;
+    private int item8;
+    private int item9;
+    private int item10;
+    private int item11;
+    private int item12;
+    private int item13;
+    private int item14;
+    private int item15;
+    private int item16;
+    private int item17;
+    private int item18;
+    private int item19;
+    private int item20;
+    private int item21;
+    private int item22;
+    private int item23;
+    private int item24;
+    private int item25;
 
     private int numItems;
 
-    public void setItemId(int id, int index) {
+    public void setItem(int id, int index) {
         switch (index) {
             case 1:
-                itemId1 = id;
+                item1 = id;
                 break;
             case 2:
-                itemId2 = id;
+                item2 = id;
                 break;
             case 3:
-                itemId3 = id;
+                item3 = id;
                 break;
             case 4:
-                itemId4 = id;
+                item4 = id;
                 break;
             case 5:
-                itemId5 = id;
+                item5 = id;
                 break;
             case 6:
-                itemId6 = id;
+                item6 = id;
                 break;
             case 7:
-                itemId7 = id;
+                item7 = id;
                 break;
             case 8:
-                itemId8 = id;
+                item8 = id;
                 break;
             case 9:
-                itemId9 = id;
+                item9 = id;
                 break;
             case 10:
-                itemId10 = id;
+                item10 = id;
             case 11:
-                itemId11 = id;
+                item11 = id;
                 break;
             case 12:
-                itemId12 = id;
+                item12 = id;
                 break;
             case 13:
-                itemId13 = id;
+                item13 = id;
                 break;
             case 14:
-                itemId14 = id;
+                item14 = id;
                 break;
             case 15:
-                itemId15 = id;
+                item15 = id;
                 break;
             case 16:
-                itemId16 = id;
+                item16 = id;
                 break;
             case 17:
-                itemId17 = id;
+                item17 = id;
                 break;
             case 18:
-                itemId18 = id;
+                item18 = id;
                 break;
             case 19:
-                itemId19 = id;
+                item19 = id;
                 break;
             case 20:
-                itemId20 = id;
+                item20 = id;
                 break;
             case 21:
-                itemId21 = id;
+                item21 = id;
                 break;
             case 22:
-                itemId22 = id;
+                item22 = id;
                 break;
             case 23:
-                itemId23 = id;
+                item23 = id;
                 break;
             case 24:
-                itemId24 = id;
+                item24 = id;
                 break;
             case 25:
-                itemId25 = id;
+                item25 = id;
                 break;
             default:
         }
     }
 
-    public int getItemId(int id) {
+    public int getItem(int id) {
         switch (id) {
             case 1:
-                return itemId1;
+                return item1;
             case 2:
-                return itemId2;
+                return item2;
             case 3:
-                return itemId3;
+                return item3;
             case 4:
-                return itemId4;
+                return item4;
             case 5:
-                return itemId5;
+                return item5;
             case 6:
-                return itemId6;
+                return item6;
             case 7:
-                return itemId7;
+                return item7;
             case 8:
-                return itemId8;
+                return item8;
             case 9:
-                return itemId9;
+                return item9;
             case 10:
-                return itemId10;
+                return item10;
             case 11:
-                return itemId11;
+                return item11;
             case 12:
-                return itemId12;
+                return item12;
             case 13:
-                return itemId13;
+                return item13;
             case 14:
-                return itemId14;
+                return item14;
             case 15:
-                return itemId15;
+                return item15;
             case 16:
-                return itemId16;
+                return item16;
             case 17:
-                return itemId17;
+                return item17;
             case 18:
-                return itemId18;
+                return item18;
             case 19:
-                return itemId19;
+                return item19;
             case 20:
-                return itemId20;
+                return item20;
             case 21:
-                return itemId21;
+                return item21;
             case 22:
-                return itemId22;
+                return item22;
             case 23:
-                return itemId23;
+                return item23;
             case 24:
-                return itemId24;
+                return item24;
             case 25:
-                return itemId25;
+                return item25;
             default:
                 return 0;
         }
@@ -492,204 +492,204 @@ public class Assessment implements Serializable {
         this.score25 = score25;
     }
 
-    public int getItemId1() {
-        return itemId1;
+    public int getItem1() {
+        return item1;
     }
 
-    public void setItemId1(int itemId1) {
-        this.itemId1 = itemId1;
+    public void setItem1(int item1) {
+        this.item1 = item1;
     }
 
-    public int getItemId2() {
-        return itemId2;
+    public int getItem2() {
+        return item2;
     }
 
-    public void setItemId2(int itemId2) {
-        this.itemId2 = itemId2;
+    public void setItem2(int item2) {
+        this.item2 = item2;
     }
 
-    public int getItemId3() {
-        return itemId3;
+    public int getItem3() {
+        return item3;
     }
 
-    public void setItemId3(int itemId3) {
-        this.itemId3 = itemId3;
+    public void setItem3(int item3) {
+        this.item3 = item3;
     }
 
-    public int getItemId4() {
-        return itemId4;
+    public int getItem4() {
+        return item4;
     }
 
-    public void setItemId4(int itemId4) {
-        this.itemId4 = itemId4;
+    public void setItem4(int item4) {
+        this.item4 = item4;
     }
 
-    public int getItemId5() {
-        return itemId5;
+    public int getItem5() {
+        return item5;
     }
 
-    public void setItemId5(int itemId5) {
-        this.itemId5 = itemId5;
+    public void setItem5(int item5) {
+        this.item5 = item5;
     }
 
-    public int getItemId6() {
-        return itemId6;
+    public int getItem6() {
+        return item6;
     }
 
-    public void setItemId6(int itemId6) {
-        this.itemId6 = itemId6;
+    public void setItem6(int item6) {
+        this.item6 = item6;
     }
 
-    public int getItemId7() {
-        return itemId7;
+    public int getItem7() {
+        return item7;
     }
 
-    public void setItemId7(int itemId7) {
-        this.itemId7 = itemId7;
+    public void setItem7(int item7) {
+        this.item7 = item7;
     }
 
-    public int getItemId8() {
-        return itemId8;
+    public int getItem8() {
+        return item8;
     }
 
-    public void setItemId8(int itemId8) {
-        this.itemId8 = itemId8;
+    public void setItem8(int item8) {
+        this.item8 = item8;
     }
 
-    public int getItemId9() {
-        return itemId9;
+    public int getItem9() {
+        return item9;
     }
 
-    public void setItemId9(int itemId9) {
-        this.itemId9 = itemId9;
+    public void setItem9(int item9) {
+        this.item9 = item9;
     }
 
-    public int getItemId10() {
-        return itemId10;
+    public int getItem10() {
+        return item10;
     }
 
-    public void setItemId10(int itemId10) {
-        this.itemId10 = itemId10;
+    public void setItem10(int item10) {
+        this.item10 = item10;
     }
 
-    public int getItemId11() {
-        return itemId11;
+    public int getItem11() {
+        return item11;
     }
 
-    public void setItemId11(int itemId11) {
-        this.itemId11 = itemId11;
+    public void setItem11(int item11) {
+        this.item11 = item11;
     }
 
-    public int getItemId12() {
-        return itemId12;
+    public int getItem12() {
+        return item12;
     }
 
-    public void setItemId12(int itemId12) {
-        this.itemId12 = itemId12;
+    public void setItem12(int item12) {
+        this.item12 = item12;
     }
 
-    public int getItemId13() {
-        return itemId13;
+    public int getItem13() {
+        return item13;
     }
 
-    public void setItemId13(int itemId13) {
-        this.itemId13 = itemId13;
+    public void setItem13(int item13) {
+        this.item13 = item13;
     }
 
-    public int getItemId14() {
-        return itemId14;
+    public int getItem14() {
+        return item14;
     }
 
-    public void setItemId14(int itemId14) {
-        this.itemId14 = itemId14;
+    public void setItem14(int item14) {
+        this.item14 = item14;
     }
 
-    public int getItemId15() {
-        return itemId15;
+    public int getItem15() {
+        return item15;
     }
 
-    public void setItemId15(int itemId15) {
-        this.itemId15 = itemId15;
+    public void setItem15(int item15) {
+        this.item15 = item15;
     }
 
-    public int getItemId16() {
-        return itemId16;
+    public int getItem16() {
+        return item16;
     }
 
-    public void setItemId16(int itemId16) {
-        this.itemId16 = itemId16;
+    public void setItem16(int item16) {
+        this.item16 = item16;
     }
 
-    public int getItemId17() {
-        return itemId17;
+    public int getItem17() {
+        return item17;
     }
 
-    public void setItemId17(int itemId17) {
-        this.itemId17 = itemId17;
+    public void setItem17(int item17) {
+        this.item17 = item17;
     }
 
-    public int getItemId18() {
-        return itemId18;
+    public int getItem18() {
+        return item18;
     }
 
-    public void setItemId18(int itemId18) {
-        this.itemId18 = itemId18;
+    public void setItem18(int item18) {
+        this.item18 = item18;
     }
 
-    public int getItemId19() {
-        return itemId19;
+    public int getItem19() {
+        return item19;
     }
 
-    public void setItemId19(int itemId19) {
-        this.itemId19 = itemId19;
+    public void setItem19(int item19) {
+        this.item19 = item19;
     }
 
-    public int getItemId20() {
-        return itemId20;
+    public int getItem20() {
+        return item20;
     }
 
-    public void setItemId20(int itemId20) {
-        this.itemId20 = itemId20;
+    public void setItem20(int item20) {
+        this.item20 = item20;
     }
 
-    public int getItemId21() {
-        return itemId21;
+    public int getItem21() {
+        return item21;
     }
 
-    public void setItemId21(int itemId21) {
-        this.itemId21 = itemId21;
+    public void setItem21(int item21) {
+        this.item21 = item21;
     }
 
-    public int getItemId22() {
-        return itemId22;
+    public int getItem22() {
+        return item22;
     }
 
-    public void setItemId22(int itemId22) {
-        this.itemId22 = itemId22;
+    public void setItem22(int item22) {
+        this.item22 = item22;
     }
 
-    public int getItemId23() {
-        return itemId23;
+    public int getItem23() {
+        return item23;
     }
 
-    public void setItemId23(int itemId23) {
-        this.itemId23 = itemId23;
+    public void setItem23(int item23) {
+        this.item23 = item23;
     }
 
-    public int getItemId24() {
-        return itemId24;
+    public int getItem24() {
+        return item24;
     }
 
-    public void setItemId24(int itemId24) {
-        this.itemId24 = itemId24;
+    public void setItem24(int item24) {
+        this.item24 = item24;
     }
 
-    public int getItemId25() {
-        return itemId25;
+    public int getItem25() {
+        return item25;
     }
 
-    public void setItemId25(int itemId25) {
-        this.itemId25 = itemId25;
+    public void setItem25(int item25) {
+        this.item25 = item25;
     }
 
     public int getNumItems() {
@@ -698,5 +698,15 @@ public class Assessment implements Serializable {
 
     public void setNumItems(int numItems) {
         this.numItems = numItems;
+    }
+
+    public int getScoreByItemId(int itemId) {
+        for(int i=1; i<=20; i++) {
+            int id = this.getItem(i);
+            System.out.println("id = " + id);
+            if(id == itemId)
+                return getScore(i);
+        }
+        return -1;
     }
 }

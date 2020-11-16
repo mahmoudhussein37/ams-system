@@ -16,13 +16,15 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <c:forEach var="am" items="${assessments}" varStatus="varStatus">
                     <tr class="table-light text-center">
-                        <td>1</td>
+                        <td>${varStatus.count}</td>
                         <td>
-                            Thank you for teaching me
+                            ${am.comment}
                         </td>
 
                     </tr>
+                    </c:forEach>
 
 
                     </tbody>
