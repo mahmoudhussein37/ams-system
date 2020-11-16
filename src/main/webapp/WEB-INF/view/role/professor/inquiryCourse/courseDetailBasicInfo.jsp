@@ -45,15 +45,15 @@
 
 
             </div>
-            <div class="col-md-4">
+<%--            <div class="col-md-4">
                 <div class="form-group">
                     <label><spring:message code="common.lectureTime"/></label>
                     <input type="text" class="form-control" value="${course.lectureTime}" disabled/>
-                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+                    &lt;%&ndash;<span class="form-text text-muted">We'll never share your email with anyone else</span>&ndash;%&gt;
                 </div>
 
 
-            </div>
+            </div>--%>
             <div class="col-md-4">
                 <div class="form-group">
                     <label><spring:message code="common.engAccreditation"/></label>

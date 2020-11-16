@@ -10,21 +10,22 @@ import java.util.List;
 
 @Repository
 public interface LectureFundamentalsMapper {
-    @Insert("INSERT INTO lecture_fundamentals (course_id, user_id, intro, achieve1, achieve2, achieve3, achieve4, achieve5, achieve6, achieve7, achieve8, achieve9, achieve10, rate_attendance, rate_assignment, rate_mid, rate_final, rate_optional) " +
-            "VALUES (#{courseId}, #{userId}, #{intro}, #{achieve1}, #{achieve2}, #{achieve3}, #{achieve4}, #{achieve5}, #{achieve6}, #{achieve7}, #{achieve8}, #{achieve9}, #{achieve10}, #{rateAttendance}, #{rateAssignment}, #{rateMid}, #{rateFinal}, #{rateOptional})")
+    @Insert("INSERT INTO lecture_fundamentals (course_id, prof_course_id, user_id, intro, achieve1, achieve2, achieve3, achieve4, achieve5, achieve6, achieve7, achieve8, achieve9, achieve10, rate_attendance, rate_assignment, rate_mid, rate_final, rate_optional) " +
+            "VALUES (#{courseId}, #{profCourseId}, #{userId}, #{intro}, #{achieve1}, #{achieve2}, #{achieve3}, #{achieve4}, #{achieve5}, #{achieve6}, #{achieve7}, #{achieve8}, #{achieve9}, #{achieve10}, #{rateAttendance}, #{rateAssignment}, #{rateMid}, #{rateFinal}, #{rateOptional})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(LectureFundamentals lectureFundamentals);
 
     @Select("SELECT * FROM lecture_fundamentals where id=#{id}")
     LectureFundamentals findOne(@Param("id") int id);
 
-    @Select("SELECT * FROM lecture_fundamentals where course_id=#{courseId} limit 1")
-    LectureFundamentals findByCourseId(@Param("courseId") int courseId);
+    @Select("SELECT * FROM lecture_fundamentals where prof_course_id=#{profCourseId} limit 1")
+    LectureFundamentals findByProfCourseId(@Param("profCourseId") int profCourseId);
 
 
     @Update("UPDATE `lecture_fundamentals` SET"+
             "`course_id` = #{courseId},"+
             "`user_id` = #{userId},"+
+            "`prof_course_id` = #{profCourseId},"+
             "`intro` = #{intro},"+
             "`achieve1` = #{achieve1},"+
             "`achieve2` = #{achieve2},"+

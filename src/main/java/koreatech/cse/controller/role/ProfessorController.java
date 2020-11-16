@@ -4,6 +4,8 @@ import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.role.professor.Counseling;
 import koreatech.cse.domain.role.professor.LectureFundamentals;
+import koreatech.cse.domain.role.professor.ProfLectureMethod;
+import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
 import koreatech.cse.repository.*;
@@ -41,7 +43,8 @@ public class ProfessorController {
     private CounselingMapper counselingMapper;
     @Inject
     private SemesterMapper semesterMapper;
-
+    @Inject
+    private ProfLectureMethodMapper profLectureMethodMapper;
 
 
 
@@ -301,7 +304,7 @@ public class ProfessorController {
     public String inCourseDetail(Model model, @RequestParam int courseId) {
         Course course = courseMapper.findOne(courseId);
         model.addAttribute("course", course);
-        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByCourseId(courseId);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
         model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
         return "role/professor/inquiryCourse/courseDetail";
     }
@@ -315,22 +318,36 @@ public class ProfessorController {
     }
 
     @RequestMapping("/classProgress/syllabus/courseDetail")
-    public String courseDetail(Model model, @RequestParam int courseId) {
-        Course course = courseMapper.findOne(courseId);
-        model.addAttribute("course", course);
-        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByCourseId(courseId);
+    public String courseDetail(Model model, @RequestParam int profCourseId) {
+        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
+        model.addAttribute("pc", pc);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(pc.getId());
         model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
+        ProfLectureMethod profLectureMethod = profLectureMethodMapper.findByProfCourseId(pc.getId());
+        model.addAttribute("profLectureMethod", profLectureMethod == null ? new ProfLectureMethod() : profLectureMethod);
         return "role/professor/syllabus/courseDetail";
     }
 
-    @RequestMapping(value = "/classProgress/syllabus/courseDetail", method = RequestMethod.POST)
+    @RequestMapping(value = "/classProgress/syllabus/courseDetail/lectureFundamentals", method = RequestMethod.POST)
     @ResponseBody
-    public String syllabusCourseDetail(@RequestParam int courseId, @ModelAttribute LectureFundamentals lectureFundamentals) {
+    public String lectureFundamentals(@RequestParam int profCourseId, @ModelAttribute LectureFundamentals lectureFundamentals) {
 
         if (lectureFundamentals.getId() == 0) {
             lectureFundamentalsMapper.insert(lectureFundamentals);
         } else {
             lectureFundamentalsMapper.update(lectureFundamentals);
+        }
+        return "success";
+    }
+
+    @RequestMapping(value = "/classProgress/syllabus/courseDetail/profLectureMethod", method = RequestMethod.POST)
+    @ResponseBody
+    public String profLectureMethod(@RequestParam int profCourseId, @ModelAttribute ProfLectureMethod profLectureMethod) {
+
+        if (profLectureMethod.getId() == 0) {
+            profLectureMethodMapper.insert(profLectureMethod);
+        } else {
+            profLectureMethodMapper.update(profLectureMethod);
         }
         return "success";
     }
@@ -344,11 +361,11 @@ public class ProfessorController {
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
-        searchable.setUserId(User.current().getId());
+        searchable.setAdvisor(User.current().getId());
 
-        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
-        Course firstCourse = null;
-        for(Course course: courseList) {
+        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivisionProfId(searchable);
+        ProfessorCourse firstCourse = null;
+        for(ProfessorCourse course: courseList) {
             firstCourse = course;
             break;
         }
@@ -393,7 +410,7 @@ public class ProfessorController {
     public String classAssessmentCourseDetail(Model model, @RequestParam int courseId) {
         Course course = courseMapper.findOne(courseId);
         model.addAttribute("course", course);
-        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByCourseId(courseId);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
         model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
         return "role/professor/classAssessment/courseDetail";
     }

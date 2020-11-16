@@ -9,6 +9,7 @@ public class LectureFundamentals implements Serializable {
 
 
     private int id;
+    private int profCourseId;
     private int courseId;
     private int userId; //professor user id;
     private String intro;
@@ -183,6 +184,14 @@ public class LectureFundamentals implements Serializable {
 
     public void setRateOptional(int rateOptional) {
         this.rateOptional = rateOptional;
+    }
+
+    public int getProfCourseId() {
+        return profCourseId;
+    }
+
+    public void setProfCourseId(int profCourseId) {
+        this.profCourseId = profCourseId;
     }
 
     @Override
