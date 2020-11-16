@@ -1,9 +1,50 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <div class="print-div">
-    <a href="#" class="btn btn-sm btn-light font-weight-bold">
+    <a href="#" class="btn btn-sm btn-light font-weight-bold print">
         <spring:message code="common.print"/>
     </a>
 </div>
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label><spring:message code="common.semester"/></label>
+            <input type="text" class="form-control" disabled value="${pc.semester.year} - ${pc.semester.semester}"/>
+
+        </div>
+    </div>
+    <div class="col-md-3">
+
+        <div class="form-group">
+            <label><spring:message code="common.divide"/></label>
+            <input type="text" class="form-control" disabled value="${pc.divide}"/>
+            <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label><spring:message code="common.professor"/></label>
+            <input type="text" class="form-control" disabled value="${pc.professorUser.getFullName()}"/>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label><spring:message code="common.courseCode"/></label>
+            <input type="text" class="form-control" disabled value="${pc.course.code}"/>
+            <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label><spring:message code="common.courseTitle"/></label>
+            <input type="text" class="form-control" disabled value="${pc.course.title}"/>
+            <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+        </div>
+    </div>
+</div>
+
+
 <ul class="nav nav-tabs nav-tabs-line">
     <li class="nav-item">
         <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1"><spring:message code="common.result"/></a>
@@ -27,11 +68,9 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
 $(document).ready(function() {
-   $("#lecture-fundamental-save").click(function(e) {
-     e.preventDefault();
-       $.post('${baseUrl}/admin/academicManagement/assessmentResult/courseDetail?courseId=${pc.id}', $('#lectureFundamentalsForm').serialize(), function() {
-         alert("<spring:message code="common.success"/>");
-       });
-   });
+    $("body").on('click', '.print', function (e) {
+        e.preventDefault();
+        openPage("${baseUrl}/admin/academicManagement/assessmentResult/courseDetailForPrint?courseId=${pc.id}");
+    });
 });
 </script>

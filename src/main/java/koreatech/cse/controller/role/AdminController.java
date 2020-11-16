@@ -1373,11 +1373,22 @@ public class AdminController {
         ProfessorCourse pc = professorCourseMapper.findOne(courseId);
         model.addAttribute("pc", pc);
         List<Assessment> assessments = assessmentMapper.findByProfCourseId(courseId);
-        System.out.println("courseId = " + courseId);
         model.addAttribute("assessments", assessments);
         List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(pc.getCourseId());
         model.addAttribute("assessmentFactors", assessmentFactors);
         return "role/admin/assessmentResult/courseDetail";
+    }
+
+    @RequestMapping("/academicManagement/assessmentResult/courseDetailForPrint")
+    public String assessmentResultCourseDetailForPrint(Model model,
+                                                       @RequestParam int courseId) {
+        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+        model.addAttribute("pc", pc);
+        List<Assessment> assessments = assessmentMapper.findByProfCourseId(courseId);
+        model.addAttribute("assessments", assessments);
+        List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(pc.getCourseId());
+        model.addAttribute("assessmentFactors", assessmentFactors);
+        return "role/admin/assessmentResult/courseDetailForPrint";
     }
 
     @RequestMapping("/academicManagement/cqi")

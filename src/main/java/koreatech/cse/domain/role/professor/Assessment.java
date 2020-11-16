@@ -703,7 +703,6 @@ public class Assessment implements Serializable {
     public int getScoreByItemId(int itemId) {
         for(int i=1; i<=20; i++) {
             int id = this.getItem(i);
-            System.out.println("id = " + id);
             if(id == itemId)
                 return getScore(i);
         }

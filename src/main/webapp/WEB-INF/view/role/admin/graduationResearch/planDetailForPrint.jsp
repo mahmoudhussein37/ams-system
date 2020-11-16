@@ -226,6 +226,6 @@
 
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
-    //window.print();
+    window.print();
 
 </script>
