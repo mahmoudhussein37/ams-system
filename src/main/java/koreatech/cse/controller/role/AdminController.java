@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@SessionAttributes({"studentUser", "profUser", "adminUser", "course", "division", "semester", "menuAccess", "assessmentFactor", "profCourse"})
+@SessionAttributes({"studentUser", "profUser", "adminUser", "course", "division", "semester", "menuAccess", "assessmentFactor", "profCourse", "graduationCriteria"})
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
@@ -94,6 +94,8 @@ public class AdminController {
     private GraduationResearchPlanMapper graduationResearchPlanMapper;
     @Inject
     private AssessmentMapper assessmentMapper;
+    @Inject
+    private GraduationCriteriaMapper graduationCriteriaMapper;
 
 
 
@@ -1129,43 +1131,6 @@ public class AdminController {
         return "role/admin/syllabus/courseTable";
     }
 
-    @RequestMapping("/courseManagement/makeupClass")
-    public String makeupClass(Model model, @RequestParam(required=false) String result) {
-
-        List<Division> divisions = divisionMapper.findAll();
-
-        model.addAttribute("divisions", divisions);
-        model.addAttribute("yearList", getYearList());
-        model.addAttribute("course", new Course());
-        model.addAttribute("compCategoryList", CompCategory.values());
-        model.addAttribute("subjCategoryList", SubjCategory.values());
-        model.addAttribute("result", result);
-        return "role/admin/makeupClass/makeupClass";
-    }
-
-    @RequestMapping("/courseManagement/makeupClass/courseTable")
-    public String makeupClassCourseTable(Model model,
-                                         @RequestParam(defaultValue = "0", required=false) int year,
-                                         @RequestParam(defaultValue = "0", required=false) int semester,
-                                         @RequestParam(defaultValue = "0", required=false) int division) {
-        Searchable searchable = new Searchable();
-        searchable.setYear(year);
-        searchable.setSemester(semester);
-        searchable.setDivision(division);
-
-        List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
-
-        Course firstCourse = null;
-        for(Course course: courseList) {
-            firstCourse = course;
-            break;
-        }
-
-        model.addAttribute("firstCourse", firstCourse);
-        model.addAttribute("courseList", courseList);
-        return "role/admin/makeupClass/courseTable";
-    }
-
     @RequestMapping("/academicManagement/studentGrade")
     public String studentGrade(Model model) {
         model.addAttribute("yearList", getYearList());
@@ -1203,52 +1168,79 @@ public class AdminController {
     }
 
     @RequestMapping("/academicManagement/graduationCriteria")
-    public String graduationCriteria(Model model) {
+    public String graduationCriteria(Model model, @RequestParam(required=false) String result) {
+        model.addAttribute("yearList", getYearList());
         List<Division> divisions = divisionMapper.findAll();
-
         model.addAttribute("divisions", divisions);
+        GraduationCriteria graduationCriteria = new GraduationCriteria();
+        model.addAttribute("graduationCriteria", graduationCriteria);
+        model.addAttribute("result", result);
         return "role/admin/graduationCriteria/graduationCriteria";
     }
 
-    @RequestMapping("/academicManagement/graduationCriteria/studentTable")
-    public String graduationCriteriaStudentTable(Model model, @RequestParam(required=false) String number,
-                                                 @RequestParam(required=false) String name,
+    @RequestMapping(value = "/academicManagement/graduationCriteria", method = RequestMethod.POST)
+    public String graduationCriteria(@ModelAttribute GraduationCriteria graduationCriteria) {
+        graduationCriteriaMapper.insert(graduationCriteria);
+        return "redirect:/admin/academicManagement/graduationCriteria?result=success";
+    }
+
+    @RequestMapping("/academicManagement/graduationCriteria/criteriaTable")
+    public String graduationCriteriaStudentTable(Model model,
+                                                 @RequestParam(defaultValue = "0", required=false) int year,
                                                  @RequestParam(defaultValue = "0", required=false) int division) {
-        User firstUser = null;
-        List<User> userList;
-        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
-            userList = new ArrayList<>();
+        GraduationCriteria firstOne = null;
+        List<GraduationCriteria> list;
+        if(division == 0 && year == 0) {
+            list = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
-            searchable.setNumber(number);
-            searchable.setName(name);
+            searchable.setYear(year);
             searchable.setDivision(division);
 
-            userList = userMapper.findByNameNumberDivision(searchable);
+            list = graduationCriteriaMapper.findByYearDivision(searchable);
 
 
-            for(User user: userList) {
-                firstUser = user;
+            for(GraduationCriteria gc: list) {
+                firstOne = gc;
                 break;
             }
         }
 
-        model.addAttribute("userList", userList);
-        model.addAttribute("firstUser", firstUser);
-        return "role/admin/graduationCriteria/studentTable";
+        model.addAttribute("gcList", list);
+        model.addAttribute("firstOne", firstOne);
+        return "role/admin/graduationCriteria/criteriaTable";
     }
 
-    @RequestMapping("/academicManagement/graduationCriteria/studentDetail")
-    public String graduationCriteriaStudentDetail(Model model, @RequestParam int studentId) {
-        User studentUser = userMapper.findOne(studentId);
-        model.addAttribute("studentUser", studentUser);
-        model.addAttribute("statusList", StudentStatus.values());
-        List<Division> divisions = divisionMapper.findAll();
+    @RequestMapping(value = "/academicManagement/graduationCriteria/criteriaEditable", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean criteriaEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
+        GraduationCriteria gc = graduationCriteriaMapper.findOne(pk);
 
-        model.addAttribute("divisions", divisions);
 
-        return "role/admin/graduationCriteria/studentDetail";
+        switch (name) {
+            default:
+                SystemUtil.setObjectFieldValue(gc, name, value);
+        }
+        graduationCriteriaMapper.update(gc);
+
+        return true;
     }
+
+    @RequestMapping(value = "/courseManagement/course/deleteCriteria", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean deleteCriteria(@RequestParam int id) {
+        GraduationCriteria gc = graduationCriteriaMapper.findOne(id);
+        Searchable searchable = new Searchable();
+        searchable.setYear(gc.getYear());
+        searchable.setDivision(gc.getDivisionId());
+        List<GraduationCriteria> gcList = graduationCriteriaMapper.findByYearDivision(searchable);
+        if(!CollectionUtils.isEmpty(gcList) && gcList.size() == 1)
+            return false;
+
+        graduationCriteriaMapper.delete(gc);
+        return true;
+    }
+
 
     @RequestMapping("/academicManagement/assessmentFactor")
     public String assessmentFactor(Model model) {
@@ -1483,11 +1475,9 @@ public class AdminController {
     @RequestMapping("/systemManagement/divisionMajor")
     public String divisionMajor(Model model, @RequestParam(required=false) String result) {
         Division division = new Division();
-        Major major = new Major();
         List<Division> divisions = divisionMapper.findAll();
         model.addAttribute("divisions", divisions);
         model.addAttribute("division", division);
-        model.addAttribute("major", major);
         model.addAttribute("result", result);
 
         return "role/admin/divisionMajor/divisionMajor";

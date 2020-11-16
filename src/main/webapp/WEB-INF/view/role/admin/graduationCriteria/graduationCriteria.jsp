@@ -22,12 +22,14 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <spring:message code="common.studentsNumber"/><br/>
-                                    <input type="text" id="search-number" class="form-control input-enter" value="" style="margin-top:10px;"/>
-                                </div>
-                                <div class="col-md-3">
-                                    <spring:message code="common.studentsName"/><br/>
-                                    <input type="text" id="search-name" class="form-control input-enter"  value="" style="margin-top:10px;"/>
+                                    <spring:message code="common.year"/><br/>
+                                    <select id="search-year" class="form-control" style="margin-top:10px;">
+                                        <option value="0">-</option>
+                                        <c:forEach var="y" items="${yearList}">
+
+                                            <option value="${y}">${y}</option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
                                 <div class="col-md-3">
                                     <spring:message code="common.department"/><br/>
@@ -73,7 +75,57 @@
                             <div class="separator separator-solid my-5"></div>
                             <br/><br/>
                             <div class="detail-div">
+                                <form:form modelAttribute="graduationCriteria" action="${baseUrl}/admin/academicManagement/graduationCriteria" method="post" class="assessment-factor-form">
+                                    <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.createGraduationCriteria"/></h3>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label><spring:message code="common.year"/></label>
+                                                <form:input path="year" type="number" class="form-control"/>
+                                                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
 
+                                            <div class="form-group">
+                                                <label><spring:message code="common.department"/></label>
+                                                <form:select path="divisionId" class="form-control">
+                                                    <c:forEach var="division" items="${divisions}">
+                                                        <form:option value="${division.id}">${division.name}</form:option>
+                                                    </c:forEach>
+                                                </form:select>
+                                                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label><spring:message code="subj.category.msc"/></label>
+                                                <form:input path="msc" type="number" class="form-control"/>
+                                                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label><spring:message code="subj.category.liberal"/></label>
+                                                <form:input path="liberal" type="number" class="form-control"/>
+                                                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label><spring:message code="subj.category.major"/></label>
+                                                <form:input path="major" type="number" class="form-control"/>
+                                                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary mr-2 submit-assessment-factor"><spring:message code="common.submit"/></button>
+                                </form:form>
                             </div>
 
                         </div>
@@ -100,18 +152,16 @@
 
 <script>
     function search() {
-        var number = $("#search-number").val().trim();
-        var name = $("#search-name").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
-        //var major = $("#search-major").children("option:selected").val().trim();
+        var year = $("#search-year").children("option:selected").val().trim();
 
-        $(".table-div").load("${baseUrl}/admin/academicManagement/graduationCriteria/studentTable?number=" + number + "&name=" + name + "&division=" + division);
+        $(".table-div").load("${baseUrl}/admin/academicManagement/graduationCriteria/criteriaTable?division=" + division + "&year=" + year);
     }
 
 
 
     $(document).ready(function() {
-        $(".table-div").load("${baseUrl}/admin/academicManagement/graduationCriteria/studentTable");
+        $(".table-div").load("${baseUrl}/admin/academicManagement/graduationCriteria/criteriaTable");
 
         $(".input-enter").keydown(function(key) {
             if (key.keyCode == 13) {
