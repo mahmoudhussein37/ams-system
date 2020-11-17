@@ -5,9 +5,7 @@ import koreatech.cse.domain.constant.CompCategory;
 import koreatech.cse.domain.constant.Designation;
 import koreatech.cse.domain.constant.StudentStatus;
 import koreatech.cse.domain.constant.SubjCategory;
-import koreatech.cse.domain.role.professor.Assessment;
-import koreatech.cse.domain.role.professor.Counseling;
-import koreatech.cse.domain.role.professor.ProfessorCourse;
+import koreatech.cse.domain.role.professor.*;
 import koreatech.cse.domain.role.student.GraduationResearchPlan;
 import koreatech.cse.domain.role.student.StudentCourse;
 import koreatech.cse.domain.univ.*;
@@ -96,7 +94,10 @@ public class AdminController {
     private AssessmentMapper assessmentMapper;
     @Inject
     private GraduationCriteriaMapper graduationCriteriaMapper;
-
+    @Inject
+    private ProfLectureMethodMapper profLectureMethodMapper;
+    @Inject
+    private LectureContentsMapper lectureContentsMapper;
 
 
     @RequestMapping("/studentManagement/studentRegistration")
@@ -1100,9 +1101,27 @@ public class AdminController {
 
 
     @RequestMapping("/courseManagement/syllabus/courseDetail")
-    public String courseDetail(Model model, @RequestParam int courseId) {
-        Course course = courseMapper.findOne(courseId);
-        model.addAttribute("course", course);
+    public String courseDetail(Model model, @RequestParam int profCourseId) {
+        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
+        model.addAttribute("pc", pc);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(pc.getId());
+        model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
+        ProfLectureMethod profLectureMethod = profLectureMethodMapper.findByProfCourseId(pc.getId());
+        model.addAttribute("profLectureMethod", profLectureMethod == null ? new ProfLectureMethod() : profLectureMethod);
+        LectureContents lectureContents = lectureContentsMapper.findByProfCourseId(pc.getId());
+        model.addAttribute("lectureContents", lectureContents == null ? new LectureContents() : lectureContents);
+
+        List<LectureMethod> lectureMethods = lectureMethodMapper.findAll();
+        model.addAttribute("lectureMethods", lectureMethods);
+
+        List<EducationalMedium> educationalMediums = educationalMediumMapper.findAll();
+        model.addAttribute("educationalMediums", educationalMediums);
+
+        List<EvaluationMethod> evaluationMethods = evaluationMethodMapper.findAll();
+        model.addAttribute("evaluationMethods", evaluationMethods);
+
+        List<Equipment> equipments = equipmentMapper.findAll();
+        model.addAttribute("equipments", equipments);
         return "role/admin/syllabus/courseDetail";
     }
 
