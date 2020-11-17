@@ -9,12 +9,6 @@
                     <input type="text" class="form-control" value="${pc.course.code}" disabled/>
                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                 </div>
-
-
-
-
-
-
             </div>
             <div class="col-md-4">
                 <div class="form-group">
@@ -41,11 +35,6 @@
                     <input type="text" class="form-control" value="${pc.course.lang}" disabled/>
                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                 </div>
-
-
-
-
-
 
             </div>
 <%--            <div class="col-md-4">
@@ -93,7 +82,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label><spring:message code="common.profEmail"/></label>
-                    <input type="text" class="form-control" value="${not empty pc.course.profUser ? pc.course.profUser.username : ''}" disabled/>
+                    <input type="text" class="form-control" value="${not empty pc.professorUser ? pc.professorUser.username : ''}" disabled/>
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
 
@@ -104,7 +93,7 @@
             <div class="col-md-2">
                 <div class="form-group">
                     <label><spring:message code="common.profLab"/></label>
-                    <input type="text" class="form-control" value="${not empty pc.course.profUser ? pc.course.profUser.contact.lab : ''}" disabled/>
+                    <input type="text" class="form-control" value="${not empty pc.professorUser ? pc.professorUser.contact.lab : ''}" disabled/>
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
 
@@ -121,21 +110,10 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label><spring:message code="common.phone"/></label>
-                    <input type="text" class="form-control" value="${not empty pc.course.profUser ? pc.course.profUser.contact.phone : ''}" disabled/>
+                    <input type="text" class="form-control" value="${not empty pc.professorUser ? pc.professorUser.contact.phone : ''}" disabled/>
                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                 </div>
-
-
             </div>
-                <%--<div class="col-md-4">
-                    <div class="form-group">
-                        <label><spring:message code="common.prerequisite"/></label>
-                        <input type="text" class="form-control" disabled/>
-                        &lt;%&ndash;<span class="form-text text-muted">We'll never share your email with anyone else</span>&ndash;%&gt;
-                    </div>
-
-
-                </div>--%>
         </div>
 
 

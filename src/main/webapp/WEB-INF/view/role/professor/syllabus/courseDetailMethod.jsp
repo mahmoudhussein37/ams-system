@@ -272,20 +272,16 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label><spring:message code="common.note"/></label>
-                    <form:textarea path="note"></form:textarea>
+                    <form:textarea path="note" class="form-control" dir="rtl" rows="6"></form:textarea>
                 </div>
             </div>
 
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group" style="text-align:right">
-                    <button type="button" class="btn btn-primary mr-2">Save</button>
-                </div>
-            </div>
         </div>
 
 
     </div>
-
+    <div class="card-footer">
+        <button type="button" id="prof-lecture-method-save" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
+            <%--<button type="reset" class="btn btn-secondary">Cancel</button>--%>
+    </div>
 </form:form>

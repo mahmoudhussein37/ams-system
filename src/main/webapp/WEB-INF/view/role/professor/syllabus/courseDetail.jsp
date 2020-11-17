@@ -39,5 +39,18 @@ $(document).ready(function() {
          alert("<spring:message code="common.success"/>");
        });
    });
+
+    $("#prof-lecture-method-save").click(function(e) {
+        e.preventDefault();
+        $.post('${baseUrl}/professor/classProgress/syllabus/courseDetail/profLectureMethod?profCourseId=${pc.course.id}', $('#profLectureMethodForm').serialize(), function() {
+            alert("<spring:message code="common.success"/>");
+        });
+    });
+    $("#lecture-contents-save").click(function(e) {
+        e.preventDefault();
+        $.post('${baseUrl}/professor/classProgress/syllabus/courseDetail/lectureContents?profCourseId=${pc.course.id}', $('#lectureContentsForm').serialize(), function() {
+            alert("<spring:message code="common.success"/>");
+        });
+    });
 });
 </script>

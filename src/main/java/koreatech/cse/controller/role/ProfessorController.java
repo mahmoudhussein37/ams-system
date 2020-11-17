@@ -2,10 +2,7 @@ package koreatech.cse.controller.role;
 
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
-import koreatech.cse.domain.role.professor.Counseling;
-import koreatech.cse.domain.role.professor.LectureFundamentals;
-import koreatech.cse.domain.role.professor.ProfLectureMethod;
-import koreatech.cse.domain.role.professor.ProfessorCourse;
+import koreatech.cse.domain.role.professor.*;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
 import koreatech.cse.repository.*;
@@ -23,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
-@SessionAttributes({"lectureFundamentals", "counseling"})
+@SessionAttributes({"lectureFundamentals", "counseling", "lectureContents", "profLectureMethod"})
 @PreAuthorize("hasRole('ROLE_PROFESSOR')")
 @RequestMapping("/professor")
 public class ProfessorController {
@@ -45,6 +42,8 @@ public class ProfessorController {
     private SemesterMapper semesterMapper;
     @Inject
     private ProfLectureMethodMapper profLectureMethodMapper;
+    @Inject
+    private LectureContentsMapper lectureContentsMapper;
 
 
 
@@ -325,6 +324,8 @@ public class ProfessorController {
         model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
         ProfLectureMethod profLectureMethod = profLectureMethodMapper.findByProfCourseId(pc.getId());
         model.addAttribute("profLectureMethod", profLectureMethod == null ? new ProfLectureMethod() : profLectureMethod);
+        LectureContents lectureContents = lectureContentsMapper.findByProfCourseId(pc.getId());
+        model.addAttribute("lectureContents", lectureContents == null ? new LectureContents() : lectureContents);
         return "role/professor/syllabus/courseDetail";
     }
 
@@ -348,6 +349,18 @@ public class ProfessorController {
             profLectureMethodMapper.insert(profLectureMethod);
         } else {
             profLectureMethodMapper.update(profLectureMethod);
+        }
+        return "success";
+    }
+
+    @RequestMapping(value = "/classProgress/syllabus/courseDetail/lectureContents", method = RequestMethod.POST)
+    @ResponseBody
+    public String lectureContents(@RequestParam int profCourseId, @ModelAttribute LectureContents lectureContents) {
+
+        if (lectureContents.getId() == 0) {
+            lectureContentsMapper.insert(lectureContents);
+        } else {
+            lectureContentsMapper.update(lectureContents);
         }
         return "success";
     }
