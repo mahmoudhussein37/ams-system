@@ -3,8 +3,7 @@ package koreatech.cse.controller.role;
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.role.professor.*;
-import koreatech.cse.domain.univ.Course;
-import koreatech.cse.domain.univ.Division;
+import koreatech.cse.domain.univ.*;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.UserService;
 import org.apache.commons.lang.StringUtils;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -44,6 +44,16 @@ public class ProfessorController {
     private ProfLectureMethodMapper profLectureMethodMapper;
     @Inject
     private LectureContentsMapper lectureContentsMapper;
+    @Inject
+    private LectureMethodMapper lectureMethodMapper;
+    @Inject
+    private EvaluationMethodMapper evaluationMethodMapper;
+    @Inject
+    private EducationalMediumMapper educationalMediumMapper;
+    @Inject
+    private EquipmentMapper equipmentMapper;
+    @Inject
+    private MenuAccessMapper menuAccessMapper;
 
 
 
@@ -326,6 +336,23 @@ public class ProfessorController {
         model.addAttribute("profLectureMethod", profLectureMethod == null ? new ProfLectureMethod() : profLectureMethod);
         LectureContents lectureContents = lectureContentsMapper.findByProfCourseId(pc.getId());
         model.addAttribute("lectureContents", lectureContents == null ? new LectureContents() : lectureContents);
+
+        List<LectureMethod> lectureMethods = lectureMethodMapper.findAll();
+        model.addAttribute("lectureMethods", lectureMethods);
+
+        List<EducationalMedium> educationalMediums = educationalMediumMapper.findAll();
+        model.addAttribute("educationalMediums", educationalMediums);
+
+        List<EvaluationMethod> evaluationMethods = evaluationMethodMapper.findAll();
+        model.addAttribute("evaluationMethods", evaluationMethods);
+
+        List<Equipment> equipments = equipmentMapper.findAll();
+        model.addAttribute("equipments", equipments);
+
+        MenuAccess menuAccess = menuAccessMapper.findOne();
+        model.addAttribute("menuAccess", menuAccess);
+
+
         return "role/professor/syllabus/courseDetail";
     }
 
@@ -333,6 +360,8 @@ public class ProfessorController {
     @ResponseBody
     public String lectureFundamentals(@RequestParam int profCourseId, @ModelAttribute LectureFundamentals lectureFundamentals) {
 
+        User user = User.current();
+        lectureFundamentals.setUserId(user.getId());
         if (lectureFundamentals.getId() == 0) {
             lectureFundamentalsMapper.insert(lectureFundamentals);
         } else {
@@ -344,6 +373,25 @@ public class ProfessorController {
     @RequestMapping(value = "/classProgress/syllabus/courseDetail/profLectureMethod", method = RequestMethod.POST)
     @ResponseBody
     public String profLectureMethod(@RequestParam int profCourseId, @ModelAttribute ProfLectureMethod profLectureMethod) {
+        User user = User.current();
+        profLectureMethod.setUserId(user.getId());
+        String[] lectureMethodCheckbox = profLectureMethod.getLectureMethodCheckbox();
+        String lectureMethodCheckboxStr = checkboxToStr(lectureMethodCheckbox);
+        profLectureMethod.setLectureMethods(lectureMethodCheckboxStr);
+
+        String[] evaluationMethodCheckbox = profLectureMethod.getEvaluationMethodCheckbox();
+        String evaluationMethodCheckboxStr = checkboxToStr(evaluationMethodCheckbox);
+        profLectureMethod.setEvaluationMethods(evaluationMethodCheckboxStr);
+
+        String[] educationalMediumCheckbox = profLectureMethod.getEducationalMediumCheckbox();
+        String educationalMediumCheckboxStr = checkboxToStr(educationalMediumCheckbox);
+        profLectureMethod.setEducationalMediums(educationalMediumCheckboxStr);
+
+        String[] equipmentCheckbox = profLectureMethod.getEquipmentCheckbox();
+        String equipmentCheckboxStr = checkboxToStr(equipmentCheckbox);
+        profLectureMethod.setEquipments(equipmentCheckboxStr);
+
+
 
         if (profLectureMethod.getId() == 0) {
             profLectureMethodMapper.insert(profLectureMethod);
@@ -356,7 +404,8 @@ public class ProfessorController {
     @RequestMapping(value = "/classProgress/syllabus/courseDetail/lectureContents", method = RequestMethod.POST)
     @ResponseBody
     public String lectureContents(@RequestParam int profCourseId, @ModelAttribute LectureContents lectureContents) {
-
+        User user = User.current();
+        lectureContents.setUserId(user.getId());
         if (lectureContents.getId() == 0) {
             lectureContentsMapper.insert(lectureContents);
         } else {
@@ -548,6 +597,19 @@ public class ProfessorController {
 
     private List<Integer> getYearList() {
         return semesterMapper.findYears();
+    }
+
+    private String checkboxToStr(String[] sArray) {
+        String str = "";
+        if(sArray == null)
+            return str;
+
+        for(int i=0; i<sArray.length; i++) {
+            str += sArray[i];
+            if (i < sArray.length - 1)
+                str += ",";
+        }
+        return str;
     }
 
 }

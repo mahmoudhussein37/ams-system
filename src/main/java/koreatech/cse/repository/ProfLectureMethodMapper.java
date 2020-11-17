@@ -21,7 +21,15 @@ public interface ProfLectureMethodMapper {
             "`ref4`,"+
             "`ref5`,"+
             "`ref6`,"+
-            "`note`"+
+            "`note`,"+
+            "`lecture_methods`,"+
+            "`lecture_method_other`,"+
+            "`evaluation_methods`,"+
+            "`evaluation_method_other`,"+
+            "`educational_mediums`,"+
+            "`educational_medium_other`,"+
+            "`equipments`,"+
+            "`equipment_other`"+
             ")VALUES("+
             "#{profCourseId},"+
             "#{courseId},"+
@@ -36,7 +44,15 @@ public interface ProfLectureMethodMapper {
             "#{ref4},"+
             "#{ref5},"+
             "#{ref6},"+
-            "#{note}"+
+            "#{note},"+
+            "#{lectureMethods},"+
+            "#{lectureMethodOther},"+
+            "#{evaluationMethods},"+
+            "#{evaluationMethodOther},"+
+            "#{educationalMediums},"+
+            "#{educationalMediumOther},"+
+            "#{equipments},"+
+            "#{equipmentOther}"+
             ")")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(ProfLectureMethod profLectureMethod);
@@ -62,7 +78,16 @@ public interface ProfLectureMethodMapper {
             "`ref4` = #{ref4},"+
             "`ref5` = #{ref5},"+
             "`ref6` = #{ref6},"+
-            "`note` = #{note} "+
+            "`note` = #{note},"+
+            "`lecture_methods` = #{lectureMethods},"+
+            /*"`lecture_method_checkbox` = #{lectureMethodCheckbox},"+*/
+            "`lecture_method_other` = #{lectureMethodOther},"+
+            "`evaluation_methods` = #{evaluationMethods},"+
+            "`evaluation_method_other` = #{evaluationMethodOther},"+
+            "`educational_mediums` = #{educationalMediums},"+
+            "`educational_medium_other` = #{educationalMediumOther},"+
+            "`equipments` = #{equipments},"+
+            "`equipment_other` = #{equipmentOther} "+
             "WHERE `id` = #{id}")
     @Options(flushCache = true)
     void update(ProfLectureMethod profLectureMethod);

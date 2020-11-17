@@ -1,6 +1,8 @@
 package koreatech.cse.domain.role.professor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProfLectureMethod implements Serializable {
     private static final long serialVersionUID = 43432179L;
@@ -22,6 +24,29 @@ public class ProfLectureMethod implements Serializable {
     private String ref5;
     private String ref6;
     private String note;
+
+
+    private String lectureMethods;
+    private String lectureMethodOther;
+
+    private String evaluationMethods;
+    private String evaluationMethodOther;
+
+    private String educationalMediums;
+    private String educationalMediumOther;
+
+    private String equipments;
+    private String equipmentOther;
+
+
+    private String[] lectureMethodCheckbox;
+    private String[] evaluationMethodCheckbox;
+    private String[] educationalMediumCheckbox;
+    private String[] equipmentCheckbox;
+
+
+
+
 
     public int getId() {
         return id;
@@ -141,5 +166,128 @@ public class ProfLectureMethod implements Serializable {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getLectureMethods() {
+        return lectureMethods;
+    }
+
+    public void setLectureMethods(String lectureMethods) {
+        this.lectureMethods = lectureMethods;
+    }
+
+    public String getLectureMethodOther() {
+        return lectureMethodOther;
+    }
+
+    public void setLectureMethodOther(String lectureMethodOther) {
+        this.lectureMethodOther = lectureMethodOther;
+    }
+
+    public String getEvaluationMethods() {
+        return evaluationMethods;
+    }
+
+    public void setEvaluationMethods(String evaluationMethods) {
+        this.evaluationMethods = evaluationMethods;
+    }
+
+    public String getEvaluationMethodOther() {
+        return evaluationMethodOther;
+    }
+
+    public void setEvaluationMethodOther(String evaluationMethodOther) {
+        this.evaluationMethodOther = evaluationMethodOther;
+    }
+
+    public String getEducationalMediums() {
+        return educationalMediums;
+    }
+
+    public void setEducationalMediums(String educationalMediums) {
+        this.educationalMediums = educationalMediums;
+    }
+
+    public String getEducationalMediumOther() {
+        return educationalMediumOther;
+    }
+
+    public void setEducationalMediumOther(String educationalMediumOther) {
+        this.educationalMediumOther = educationalMediumOther;
+    }
+
+    public String getEquipments() {
+        return equipments;
+    }
+
+    public void setEquipments(String equipments) {
+        this.equipments = equipments;
+    }
+
+    public String getEquipmentOther() {
+        return equipmentOther;
+    }
+
+    public void setEquipmentOther(String equipmentOther) {
+        this.equipmentOther = equipmentOther;
+    }
+
+    public String[] getLectureMethodCheckbox() {
+        return lectureMethodCheckbox;
+    }
+
+    public void setLectureMethodCheckbox(String[] lectureMethodCheckbox) {
+        this.lectureMethodCheckbox = lectureMethodCheckbox;
+    }
+
+    public String[] getEvaluationMethodCheckbox() {
+        return evaluationMethodCheckbox;
+    }
+
+    public void setEvaluationMethodCheckbox(String[] evaluationMethodCheckbox) {
+        this.evaluationMethodCheckbox = evaluationMethodCheckbox;
+    }
+
+    public String[] getEducationalMediumCheckbox() {
+        return educationalMediumCheckbox;
+    }
+
+    public void setEducationalMediumCheckbox(String[] educationalMediumCheckbox) {
+        this.educationalMediumCheckbox = educationalMediumCheckbox;
+    }
+
+    public String[] getEquipmentCheckbox() {
+        return equipmentCheckbox;
+    }
+
+    public void setEquipmentCheckbox(String[] equipmentCheckbox) {
+        this.equipmentCheckbox = equipmentCheckbox;
+    }
+
+    public List<String> toStringList(String str) {
+        List<String> splitList = new ArrayList<>();
+        try {
+            String[] split = str.split(",");
+            for(String s:split) {
+                splitList.add(s);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();;
+        }
+        return splitList;
+    }
+
+    public Boolean hasValue(String str, int id) {
+        try {
+            String[] split = str.split(",");
+            for(String s:split) {
+                Integer v = Integer.parseInt(s);
+                if(v == id)
+                    return true;
+            }
+        } catch(Exception e) {
+            e.printStackTrace();;
+        }
+        return false;
     }
 }
