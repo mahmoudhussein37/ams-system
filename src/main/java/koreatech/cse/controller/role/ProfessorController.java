@@ -362,6 +362,7 @@ public class ProfessorController {
         searchable.setYear(year);
         searchable.setSemester(semester);
         searchable.setAdvisor(User.current().getId());
+        System.out.println("searchable = " + searchable);
 
         List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivisionProfId(searchable);
         ProfessorCourse firstCourse = null;

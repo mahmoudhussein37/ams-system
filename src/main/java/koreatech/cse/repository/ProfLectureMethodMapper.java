@@ -1,7 +1,6 @@
 package koreatech.cse.repository;
 
 
-import koreatech.cse.domain.role.professor.LectureFundamentals;
 import koreatech.cse.domain.role.professor.ProfLectureMethod;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -16,10 +15,12 @@ public interface ProfLectureMethodMapper {
             "`main_teaching2`,"+
             "`sub_teaching1`,"+
             "`sub_teaching2`,"+
-            "`sub_teaching3`,"+
-            "`sub_teaching4`,"+
-            "`sub_teaching5`,"+
-            "`sub_teaching6`,"+
+            "`ref1`,"+
+            "`ref2`,"+
+            "`ref3`,"+
+            "`ref4`,"+
+            "`ref5`,"+
+            "`ref6`,"+
             "`note`"+
             ")VALUES("+
             "#{profCourseId},"+
@@ -29,10 +30,12 @@ public interface ProfLectureMethodMapper {
             "#{mainTeaching2},"+
             "#{subTeaching1},"+
             "#{subTeaching2},"+
-            "#{subTeaching3},"+
-            "#{subTeaching4},"+
-            "#{subTeaching5},"+
-            "#{subTeaching6},"+
+            "#{ref1},"+
+            "#{ref2},"+
+            "#{ref3},"+
+            "#{ref4},"+
+            "#{ref5},"+
+            "#{ref6},"+
             "#{note}"+
             ")")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
@@ -53,10 +56,12 @@ public interface ProfLectureMethodMapper {
             "`main_teaching2` = #{mainTeaching2},"+
             "`sub_teaching1` = #{subTeaching1},"+
             "`sub_teaching2` = #{subTeaching2},"+
-            "`sub_teaching3` = #{subTeaching3},"+
-            "`sub_teaching4` = #{subTeaching4},"+
-            "`sub_teaching5` = #{subTeaching5},"+
-            "`sub_teaching6` = #{subTeaching6},"+
+            "`ref1` = #{ref1},"+
+            "`ref2` = #{ref2},"+
+            "`ref3` = #{ref3},"+
+            "`ref4` = #{ref4},"+
+            "`ref5` = #{ref5},"+
+            "`ref6` = #{ref6},"+
             "`note` = #{note} "+
             "WHERE `id` = #{id}")
     @Options(flushCache = true)

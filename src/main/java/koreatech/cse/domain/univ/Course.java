@@ -1,7 +1,5 @@
 package koreatech.cse.domain.univ;
 
-import koreatech.cse.domain.User;
-import koreatech.cse.domain.role.professor.LectureFundamentals;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
@@ -46,18 +44,6 @@ public class Course implements Serializable {
     private String lang;
     private String lectureTime;
     private String compCategory;
-
-    private int profUserId;
-    private int maxStudent;
-
-
-    private User profUser;
-    private LectureFundamentals lectureFundamentals;
-
-
-
-
-
 
 
     public int getId() {
@@ -156,44 +142,12 @@ public class Course implements Serializable {
         this.subjCategory = subjCategory;
     }
 
-    public int getProfUserId() {
-        return profUserId;
-    }
-
-    public void setProfUserId(int profUserId) {
-        this.profUserId = profUserId;
-    }
-
-    public int getMaxStudent() {
-        return maxStudent;
-    }
-
-    public void setMaxStudent(int maxStudent) {
-        this.maxStudent = maxStudent;
-    }
-
-    public User getProfUser() {
-        return profUser;
-    }
-
-    public void setProfUser(User profUser) {
-        this.profUser = profUser;
-    }
-
     public Division getDivision() {
         return division;
     }
 
     public void setDivision(Division division) {
         this.division = division;
-    }
-
-    public LectureFundamentals getLectureFundamentals() {
-        return lectureFundamentals;
-    }
-
-    public void setLectureFundamentals(LectureFundamentals lectureFundamentals) {
-        this.lectureFundamentals = lectureFundamentals;
     }
 
     public int getLec() {

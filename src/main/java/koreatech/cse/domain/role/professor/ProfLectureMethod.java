@@ -15,11 +15,12 @@ public class ProfLectureMethod implements Serializable {
 
     private String subTeaching1;
     private String subTeaching2;
-    private String subTeaching3;
-    private String subTeaching4;
-    private String subTeaching5;
-    private String subTeaching6;
-
+    private String ref1;
+    private String ref2;
+    private String ref3;
+    private String ref4;
+    private String ref5;
+    private String ref6;
     private String note;
 
     public int getId() {
@@ -86,36 +87,52 @@ public class ProfLectureMethod implements Serializable {
         this.subTeaching2 = subTeaching2;
     }
 
-    public String getSubTeaching3() {
-        return subTeaching3;
+    public String getRef1() {
+        return ref1;
     }
 
-    public void setSubTeaching3(String subTeaching3) {
-        this.subTeaching3 = subTeaching3;
+    public void setRef1(String ref1) {
+        this.ref1 = ref1;
     }
 
-    public String getSubTeaching4() {
-        return subTeaching4;
+    public String getRef2() {
+        return ref2;
     }
 
-    public void setSubTeaching4(String subTeaching4) {
-        this.subTeaching4 = subTeaching4;
+    public void setRef2(String ref2) {
+        this.ref2 = ref2;
     }
 
-    public String getSubTeaching5() {
-        return subTeaching5;
+    public String getRef3() {
+        return ref3;
     }
 
-    public void setSubTeaching5(String subTeaching5) {
-        this.subTeaching5 = subTeaching5;
+    public void setRef3(String ref3) {
+        this.ref3 = ref3;
     }
 
-    public String getSubTeaching6() {
-        return subTeaching6;
+    public String getRef4() {
+        return ref4;
     }
 
-    public void setSubTeaching6(String subTeaching6) {
-        this.subTeaching6 = subTeaching6;
+    public void setRef4(String ref4) {
+        this.ref4 = ref4;
+    }
+
+    public String getRef5() {
+        return ref5;
+    }
+
+    public void setRef5(String ref5) {
+        this.ref5 = ref5;
+    }
+
+    public String getRef6() {
+        return ref6;
+    }
+
+    public void setRef6(String ref6) {
+        this.ref6 = ref6;
     }
 
     public String getNote() {

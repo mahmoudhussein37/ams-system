@@ -1,11 +1,12 @@
-<form class="form">
+<form:form class="form" modelAttribute="profLectureMethod" id="profLectureMethodForm" action="${baseUrl}/professor/classProgress/syllabus/courseDetail/profLectureMethod?profCourseId=${pc.courseId}" method="post">
+    <form:hidden path="courseId" value="${pc.courseId}"/>
     <div class="card-body">
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
                     <label><spring:message code="common.teachingMaterials.main"/></label>
-                    <input type="text" class="form-control"/><br/>
-                    <input type="text" class="form-control"/>
+                    <form:input type="text" path="mainTeaching1" class="form-control"/><br/>
+                    <form:input type="text" path="mainTeaching2" class="form-control"/>
                     <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                 </div>
             </div>
@@ -15,8 +16,8 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label><spring:message code="common.teachingMaterials.sub"/></label>
-                    <input type="text" class="form-control"/><br/>
-                    <input type="text" class="form-control"/>
+                    <form:input type="text" path="subTeaching1" class="form-control"/><br/>
+                    <form:input type="text" path="subTeaching2" class="form-control"/>
                     <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                 </div>
             </div>
@@ -26,12 +27,12 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label><spring:message code="common.reference"/></label>
-                    <input type="text" class="form-control"/><br/>
-                    <input type="text" class="form-control"/><br/>
-                    <input type="text" class="form-control"/><br/>
-                    <input type="text" class="form-control"/><br/>
-                    <input type="text" class="form-control"/><br/>
-                    <input type="text" class="form-control"/><br/>
+                    <form:input type="text" path="ref1" class="form-control"/><br/>
+                    <form:input type="text" path="ref2" class="form-control"/><br/>
+                    <form:input type="text" path="ref3" class="form-control"/><br/>
+                    <form:input type="text" path="ref4" class="form-control"/><br/>
+                    <form:input type="text" path="ref5" class="form-control"/><br/>
+                    <form:input type="text" path="ref6" class="form-control"/><br/>
                     <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                 </div>
             </div>
@@ -266,6 +267,16 @@
             </div>
 
         </div>
+        <br/><br/>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label><spring:message code="common.note"/></label>
+                    <form:textarea path="note"></form:textarea>
+                </div>
+            </div>
+
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group" style="text-align:right">
@@ -277,4 +288,4 @@
 
     </div>
 
-</form>
+</form:form>

@@ -41,7 +41,7 @@
             </td>
 
             <td>
-                    ${pc.course.maxStudent}
+                    ${pc.limitStudent}
             </td>
             <td>
                     ${pc.course.enabled ? 'Y' : 'N'}

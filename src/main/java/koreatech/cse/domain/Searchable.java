@@ -1,6 +1,8 @@
 package koreatech.cse.domain;
 
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import java.util.List;
 
 public class Searchable {
@@ -141,5 +143,11 @@ public class Searchable {
 
     public void setUserIds(List<Integer> userIds) {
         this.userIds = userIds;
+    }
+
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }
