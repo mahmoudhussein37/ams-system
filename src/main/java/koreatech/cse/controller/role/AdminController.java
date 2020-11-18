@@ -1101,7 +1101,7 @@ public class AdminController {
 
 
     @RequestMapping("/courseManagement/syllabus/courseDetail")
-    public String courseDetail(Model model, @RequestParam int profCourseId) {
+    public String courseDetail(Model model, @RequestParam int profCourseId, @RequestParam(defaultValue = "false", required=false) String print) {
         ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         model.addAttribute("pc", pc);
         LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(pc.getId());
@@ -1122,6 +1122,8 @@ public class AdminController {
 
         List<Equipment> equipments = equipmentMapper.findAll();
         model.addAttribute("equipments", equipments);
+        if(print.equals("true"))
+            return "role/admin/syllabus/courseDetailForPrint";
         return "role/admin/syllabus/courseDetail";
     }
 
@@ -1380,26 +1382,16 @@ public class AdminController {
     }
 
     @RequestMapping("/academicManagement/assessmentResult/courseDetail")
-    public String assessmentResultCourseDetail(Model model, @RequestParam int courseId) {
+    public String assessmentResultCourseDetail(Model model, @RequestParam int courseId, @RequestParam(defaultValue = "false", required=false) String print) {
         ProfessorCourse pc = professorCourseMapper.findOne(courseId);
         model.addAttribute("pc", pc);
         List<Assessment> assessments = assessmentMapper.findByProfCourseId(courseId);
         model.addAttribute("assessments", assessments);
         List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(pc.getCourseId());
         model.addAttribute("assessmentFactors", assessmentFactors);
+        if(print.equals("true"))
+            return "role/admin/assessmentResult/courseDetailForPrint";
         return "role/admin/assessmentResult/courseDetail";
-    }
-
-    @RequestMapping("/academicManagement/assessmentResult/courseDetailForPrint")
-    public String assessmentResultCourseDetailForPrint(Model model,
-                                                       @RequestParam int courseId) {
-        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
-        model.addAttribute("pc", pc);
-        List<Assessment> assessments = assessmentMapper.findByProfCourseId(courseId);
-        model.addAttribute("assessments", assessments);
-        List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(pc.getCourseId());
-        model.addAttribute("assessmentFactors", assessmentFactors);
-        return "role/admin/assessmentResult/courseDetailForPrint";
     }
 
     @RequestMapping("/academicManagement/cqi")

@@ -9,7 +9,8 @@
         <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span>
-
+        <th style=""><span class="text-primary"><spring:message code="common.professor"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.divide"/></span>
         <th style=""><span class="text-primary"><spring:message code="admin.maxStudent"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.opening"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.syllabus"/></span>
@@ -33,13 +34,15 @@
             <td>
                     ${pc.course.title}
             </td>
-            <%--<td>
-                <spring:message code="comp.category.${pc.course.compCategory}"/>
-            </td>--%>
             <td>
                 <spring:message code="subj.category.${pc.course.subjCategory}"/>
             </td>
-
+            <td>
+                ${pc.professorUser.getFullName()}
+            </td>
+            <td>
+                    ${pc.divide}
+            </td>
             <td>
                     ${pc.limitStudent}
             </td>
