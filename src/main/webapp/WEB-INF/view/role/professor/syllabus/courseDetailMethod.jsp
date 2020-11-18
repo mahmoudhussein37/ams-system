@@ -511,8 +511,10 @@
 
 
     </div>
+    <c:if test="${menuAccess.syllabus}">
     <div class="card-footer">
         <button type="button" id="prof-lecture-method-save" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
             <%--<button type="reset" class="btn btn-secondary">Cancel</button>--%>
     </div>
+    </c:if>
 </form:form>

@@ -362,6 +362,33 @@ public class ProfessorController {
 
         User user = User.current();
         lectureFundamentals.setUserId(user.getId());
+
+
+        String[] ref1Checkbox = lectureFundamentals.getRef1Checkbox();
+        String ref1CheckboxStr = checkboxToStr(ref1Checkbox);
+        lectureFundamentals.setReflect1(ref1CheckboxStr);
+
+        String[] ref2Checkbox = lectureFundamentals.getRef2Checkbox();
+        String ref2CheckboxStr = checkboxToStr(ref2Checkbox);
+        lectureFundamentals.setReflect2(ref2CheckboxStr);
+
+        String[] ref3Checkbox = lectureFundamentals.getRef3Checkbox();
+        String ref3CheckboxStr = checkboxToStr(ref3Checkbox);
+        lectureFundamentals.setReflect3(ref3CheckboxStr);
+
+        String[] ref4Checkbox = lectureFundamentals.getRef4Checkbox();
+        String ref4CheckboxStr = checkboxToStr(ref4Checkbox);
+        lectureFundamentals.setReflect4(ref4CheckboxStr);
+
+        String[] ref5Checkbox = lectureFundamentals.getRef5Checkbox();
+        String ref5CheckboxStr = checkboxToStr(ref5Checkbox);
+        lectureFundamentals.setReflect5(ref5CheckboxStr);
+
+        String[] ref6Checkbox = lectureFundamentals.getRef6Checkbox();
+        String ref6CheckboxStr = checkboxToStr(ref6Checkbox);
+        lectureFundamentals.setReflect6(ref6CheckboxStr);
+
+
         if (lectureFundamentals.getId() == 0) {
             lectureFundamentalsMapper.insert(lectureFundamentals);
         } else {
