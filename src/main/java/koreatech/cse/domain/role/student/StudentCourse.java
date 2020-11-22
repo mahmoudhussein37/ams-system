@@ -18,6 +18,16 @@ public class StudentCourse implements Serializable {
     private Course course;
     private User studentUser;
 
+    private int scoreAttendance;
+    private int scoreAssignment;
+    private int scoreMid;
+    private int scoreFinal;
+    private int scoreOptions;
+
+    private int scoreTotal;
+    private String grade;
+
+
     private int acquire; //TODO: 수강중, 수강완료
 
     public int getId() {
@@ -82,6 +92,62 @@ public class StudentCourse implements Serializable {
 
     public void setStudentUser(User studentUser) {
         this.studentUser = studentUser;
+    }
+
+    public int getScoreAttendance() {
+        return scoreAttendance;
+    }
+
+    public void setScoreAttendance(int scoreAttendance) {
+        this.scoreAttendance = scoreAttendance;
+    }
+
+    public int getScoreAssignment() {
+        return scoreAssignment;
+    }
+
+    public void setScoreAssignment(int scoreAssignment) {
+        this.scoreAssignment = scoreAssignment;
+    }
+
+    public int getScoreMid() {
+        return scoreMid;
+    }
+
+    public void setScoreMid(int scoreMid) {
+        this.scoreMid = scoreMid;
+    }
+
+    public int getScoreFinal() {
+        return scoreFinal;
+    }
+
+    public void setScoreFinal(int scoreFinal) {
+        this.scoreFinal = scoreFinal;
+    }
+
+    public int getScoreOptions() {
+        return scoreOptions;
+    }
+
+    public void setScoreOptions(int scoreOptions) {
+        this.scoreOptions = scoreOptions;
+    }
+
+    public int getScoreTotal() {
+        return scoreTotal;
+    }
+
+    public void setScoreTotal(int scoreTotal) {
+        this.scoreTotal = scoreTotal;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 
     @Override

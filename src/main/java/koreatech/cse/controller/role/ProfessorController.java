@@ -3,9 +3,11 @@ package koreatech.cse.controller.role;
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.role.professor.*;
+import koreatech.cse.domain.role.student.StudentCourse;
 import koreatech.cse.domain.univ.*;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.UserService;
+import koreatech.cse.util.SystemUtil;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -54,6 +56,8 @@ public class ProfessorController {
     private EquipmentMapper equipmentMapper;
     @Inject
     private MenuAccessMapper menuAccessMapper;
+    @Inject
+    private StudentCourseMapper studentCourseMapper;
 
 
 
@@ -513,6 +517,23 @@ public class ProfessorController {
         return "role/professor/registerGrade/registerGrade";
     }
 
+    @RequestMapping(value = "/classProgress/registerGrade/gradeEditable", method = RequestMethod.POST)
+    @ResponseBody
+    public String gradeEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
+        StudentCourse sc = studentCourseMapper.findOne(pk);
+        String result = Integer.toString(pk);
+
+        switch (name) {
+            default:
+                SystemUtil.setObjectFieldValue(sc, name, value);
+        }
+        int total = sc.getScoreAssignment() + sc.getScoreAttendance() + sc.getScoreMid() + sc.getScoreFinal() + sc.getScoreOptions();
+        sc.setScoreTotal(total);
+        studentCourseMapper.update(sc);
+
+        return result + "_" + total;
+    }
+
     @RequestMapping("/classProgress/registerGrade/courseTable")
     public String registerGradeCourseTable(Model model,
                                       @RequestParam(defaultValue = "0", required=false) int year,
@@ -522,11 +543,12 @@ public class ProfessorController {
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
-        searchable.setUserId(User.current().getId());
+        searchable.setAdvisor(User.current().getId());
+        System.out.println("searchable = " + searchable);
 
-        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
-        Course firstCourse = null;
-        for(Course course: courseList) {
+        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivisionProfId(searchable);
+        ProfessorCourse firstCourse = null;
+        for(ProfessorCourse course: courseList) {
             firstCourse = course;
             break;
         }
@@ -538,8 +560,14 @@ public class ProfessorController {
 
     @RequestMapping("/classProgress/registerGrade/courseDetail")
     public String registerGradeCourseDetail(Model model, @RequestParam int courseId) {
-        Course course = courseMapper.findOne(courseId);
-        model.addAttribute("course", course);
+        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+        model.addAttribute("pc", pc);
+
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
+        model.addAttribute("lectureFundamentals", lectureFundamentals);
+
+        List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(pc.getId());
+        model.addAttribute("studentCourses", studentCourses);
 
         return "role/professor/registerGrade/courseDetail";
     }

@@ -1,7 +1,6 @@
 package koreatech.cse.repository;
 
 
-import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.role.student.StudentCourse;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -13,7 +12,31 @@ import java.util.List;
 public interface StudentCourseMapper {
 
 
-    @Insert("INSERT INTO student_course (user_id, course_id, acquire, prof_course_id) VALUES (#{userId}, #{courseId}, #{acquire}, #{profCourseId})")
+    @Insert("INSERT INTO `student_course`("+
+            "`user_id`,"+
+            "`course_id`,"+
+            "`prof_course_id`,"+
+            "`acquire`,"+
+            "`score_attendance`,"+
+            "`score_assignment`,"+
+            "`score_mid`,"+
+            "`score_final`,"+
+            "`score_options`,"+
+            "`score_total`,"+
+            "`grade`"+
+            ")VALUES("+
+            "#{userId},"+
+            "#{courseId},"+
+            "#{profCourseId},"+
+            "#{acquire},"+
+            "#{scoreAttendance},"+
+            "#{scoreAssignment},"+
+            "#{scoreMid},"+
+            "#{scoreFinal},"+
+            "#{scoreOptions},"+
+            "#{scoreTotal},"+
+            "#{grade}"+
+            ")")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(StudentCourse studentCourse);
 
@@ -52,7 +75,14 @@ public interface StudentCourseMapper {
             "`user_id` = #{userId},"+
             "`course_id` = #{courseId},"+
             "`prof_course_id` = #{profCourseId},"+
-            "`acquire` = #{acquire} "+
+            "`acquire` = #{acquire},"+
+            "`score_attendance` = #{scoreAttendance},"+
+            "`score_assignment` = #{scoreAssignment},"+
+            "`score_mid` = #{scoreMid},"+
+            "`score_final` = #{scoreFinal},"+
+            "`score_options` = #{scoreOptions},"+
+            "`score_total` = #{scoreTotal},"+
+            "`grade` = #{grade} "+
             "WHERE `id` = #{id}")
     @Options(flushCache = true)
     void update(StudentCourse studentCourse);
