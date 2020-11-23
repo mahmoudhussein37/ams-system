@@ -104,6 +104,8 @@
 
     $(document).ready(function() {
         $(".table-div").load("${baseUrl}/professor/classProgress/registerGrade/courseTable");
+
+
     });
 
 </script>

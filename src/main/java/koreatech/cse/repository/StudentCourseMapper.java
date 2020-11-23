@@ -82,6 +82,7 @@ public interface StudentCourseMapper {
             "`score_final` = #{scoreFinal},"+
             "`score_options` = #{scoreOptions},"+
             "`score_total` = #{scoreTotal},"+
+            "`valid` = #{valid},"+
             "`grade` = #{grade} "+
             "WHERE `id` = #{id}")
     @Options(flushCache = true)

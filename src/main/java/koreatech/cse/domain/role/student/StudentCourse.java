@@ -26,6 +26,7 @@ public class StudentCourse implements Serializable {
 
     private int scoreTotal;
     private String grade;
+    private boolean valid;
 
 
     private int acquire; //TODO: 수강중, 수강완료
@@ -148,6 +149,14 @@ public class StudentCourse implements Serializable {
 
     public void setGrade(String grade) {
         this.grade = grade;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
     @Override

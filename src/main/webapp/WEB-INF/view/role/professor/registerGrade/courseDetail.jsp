@@ -2,9 +2,6 @@
 <link href="${resources}/vendor/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" type="text/css"/>
 <div class="print-div">
     <a href="#" class="btn btn-sm btn-light font-weight-bold">
-        <spring:message code="common.save"/>
-    </a>
-    <a href="#" class="btn btn-sm btn-light font-weight-bold">
         <spring:message code="common.print"/>
     </a>
 </div>
@@ -63,7 +60,7 @@
                     </thead>
                     <tbody>
                     <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
-                        <tr class="table-light text-center">
+                        <tr class="table-light text-center" style="${not sc.valid? 'color:red' : ''}">
                             <td>${varStatus.count}</td>
                             <td>
                                 ${sc.course.code}
@@ -125,19 +122,25 @@
 
                     </tbody>
                 </table>
+                <div id="ratio-div">
 
+                </div>
 
             </div>
         </div>
     </div>
 
 </div>
-
+<div class="card-footer">
+    <button type="submit" id="lecture-fundamental-save" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
+    <%--<button type="reset" class="btn btn-secondary">Cancel</button>--%>
+</div>
 
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
     $.fn.editable.defaults.mode = 'inline';
 $(document).ready(function() {
+    $("#ratio-div").load("${baseUrl}/professor/classProgress/registerGrade/ratioDetail?courseId=${pc.id}");
 
     $('.course-editable').editable({
         success: function(response, newValue) {
@@ -151,12 +154,22 @@ $(document).ready(function() {
         var id = $(this).attr("data-sc-id");
         var selected = $(this).children("option:selected").val();
         $.post("${baseUrl}/professor/classProgress/registerGrade/gradeEditable?pk=" + id + "&name=grade&value=" + selected, function() {
+            $("#ratio-div").load("${baseUrl}/professor/classProgress/registerGrade/ratioDetail?courseId=${pc.id}");
         });
     });
    $("#lecture-fundamental-save").click(function(e) {
      e.preventDefault();
-       $.post('${baseUrl}/professor/classProgress/classAssessment/courseDetail?courseId=${course.id}', $('#lectureFundamentalsForm').serialize(), function() {
-         alert("<spring:message code="common.success"/>");
+       $.post('${baseUrl}/professor/classProgress/registerGrade/courseDetail?courseId=${pc.id}', function(result) {
+
+           if(result) {
+              alert("<spring:message code="common.success"/>");
+           } else {
+               alert("<spring:message code="professor.checkGrades"/>");
+
+           }
+           $(".detail-div").load("${baseUrl}/professor/classProgress/registerGrade/courseDetail?courseId=${pc.id}");
+
+
        });
    });
 });

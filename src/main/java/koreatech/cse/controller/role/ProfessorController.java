@@ -572,6 +572,58 @@ public class ProfessorController {
         return "role/professor/registerGrade/courseDetail";
     }
 
+    @RequestMapping(value = "/classProgress/registerGrade/courseDetail", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean registerGradeCourseDetail(@RequestParam int courseId) {
+        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
+
+        List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(pc.getId());
+
+        boolean valid = true;
+        for(StudentCourse sc: studentCourses) {
+            boolean studentValid = true;
+
+            if (sc.getScoreAttendance() > lectureFundamentals.getRateAttendance())
+                studentValid = false;
+            if (sc.getScoreAssignment() > lectureFundamentals.getRateAssignment())
+                studentValid = false;
+            if (sc.getScoreMid() > lectureFundamentals.getRateMid())
+                studentValid = false;
+            if (sc.getScoreFinal() > lectureFundamentals.getRateFinal())
+                studentValid = false;
+            if (sc.getScoreOptions() > lectureFundamentals.getRateOptional())
+                studentValid = false;
+
+
+            int total = sc.getScoreAssignment() + sc.getScoreAttendance() + sc.getScoreMid() + sc.getScoreFinal() + sc.getScoreOptions();
+            if(total > 100) {
+                studentValid = false;
+            }
+            if(!studentValid)
+                valid = false;
+
+            sc.setValid(studentValid);
+            studentCourseMapper.update(sc);
+        }
+
+        return valid;
+    }
+
+    @RequestMapping("/classProgress/registerGrade/ratioDetail")
+    public String registerGradeRatioDetail(Model model, @RequestParam int courseId) {
+        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+        model.addAttribute("pc", pc);
+
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
+        model.addAttribute("lectureFundamentals", lectureFundamentals);
+
+        List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(pc.getId());
+        model.addAttribute("studentCourses", studentCourses);
+
+        return "role/professor/registerGrade/ratioDetail";
+    }
+
     @RequestMapping("/classProgress/cqiReport")
     public String cqiReport(Model model) {
 
