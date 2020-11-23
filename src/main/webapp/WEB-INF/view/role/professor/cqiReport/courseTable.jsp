@@ -42,7 +42,7 @@
             </td>
 
             <td>
-                    ${course.maxStudent}
+                    <%--${course.maxStudent}--%>
             </td>
             <td>
                     ${course.enabled ? 'Y' : 'N'}
