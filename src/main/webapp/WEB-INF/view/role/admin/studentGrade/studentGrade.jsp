@@ -99,7 +99,7 @@
     function search() {
         var year = $("#search-year").children("option:selected").val().trim();
         var semester = $("#search-semester").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/admin/classProgress/registerGrade/courseTable?year=" + year + "&semester=" + semester);
+        $(".table-div").load("${baseUrl}/admin/academicManagement/studentGrade/courseTable?year=" + year + "&semester=" + semester);
     }
 
     $(".input-enter").keydown(function(key) {
@@ -109,7 +109,7 @@
     });
 
     $(document).ready(function() {
-        $(".table-div").load("${baseUrl}/admin/classProgress/registerGrade/courseTable");
+        $(".table-div").load("${baseUrl}/admin/academicManagement/studentGrade/courseTable");
     });
 
 </script>

@@ -24,7 +24,9 @@
             </td>
 
             <td>
+                <a href="#" class="course-detail" data-course-id="${pc.id}">
                     ${pc.course.code}
+                </a>
             </td>
             <td>
                     ${pc.course.title}

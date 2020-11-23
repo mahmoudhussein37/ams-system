@@ -1158,7 +1158,7 @@ public class AdminController {
         return "role/admin/studentGrade/studentGrade";
     }
 
-    @RequestMapping("/classProgress/registerGrade/courseTable")
+    @RequestMapping("/academicManagement/studentGrade/courseTable")
     public String academicManagementCourseTable(Model model,
                                                 @RequestParam(defaultValue = "0", required=false) int year,
                                                 @RequestParam(defaultValue = "0", required=false) int semester) {
@@ -1168,24 +1168,44 @@ public class AdminController {
         searchable.setYear(year);
         searchable.setSemester(semester);
 
-        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
-        Course firstCourse = null;
-        for(Course course: courseList) {
-            firstCourse = course;
+        List<ProfessorCourse> professorCourses = professorCourseMapper.findByYearSemesterDivision(searchable);
+        ProfessorCourse firstCourse = null;
+        for(ProfessorCourse pc: professorCourses) {
+            firstCourse = pc;
             break;
         }
 
         model.addAttribute("firstCourse", firstCourse);
-        model.addAttribute("courseList", courseList);
+        model.addAttribute("courseList", professorCourses);
         return "role/admin/studentGrade/courseTable";
     }
 
-    @RequestMapping("/classProgress/registerGrade/courseDetail")
+    @RequestMapping("/academicManagement/studentGrade/courseDetail")
     public String academicManagementCourseDetail(Model model, @RequestParam int courseId) {
-        Course course = courseMapper.findOne(courseId);
-        model.addAttribute("course", course);
+        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+        model.addAttribute("pc", pc);
+
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
+        model.addAttribute("lectureFundamentals", lectureFundamentals);
+
+        List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(pc.getId());
+        model.addAttribute("studentCourses", studentCourses);
 
         return "role/admin/studentGrade/courseDetail";
+    }
+
+    @RequestMapping("/academicManagement/studentGrade/courseDetailForPrint")
+    public String registerGradeCourseDetailForPrint(Model model, @RequestParam int courseId) {
+        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+        model.addAttribute("pc", pc);
+
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
+        model.addAttribute("lectureFundamentals", lectureFundamentals);
+
+        List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(pc.getId());
+        model.addAttribute("studentCourses", studentCourses);
+
+        return "role/admin/studentGrade/courseDetailForPrint";
     }
 
     @RequestMapping("/academicManagement/graduationCriteria")
