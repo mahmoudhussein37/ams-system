@@ -568,8 +568,23 @@ public class ProfessorController {
 
         List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(pc.getId());
         model.addAttribute("studentCourses", studentCourses);
-
+        MenuAccess menuAccess = menuAccessMapper.findOne();
+        model.addAttribute("menuAccess", menuAccess);
         return "role/professor/registerGrade/courseDetail";
+    }
+
+    @RequestMapping("/classProgress/registerGrade/courseDetailForPrint")
+    public String registerGradeCourseDetailForPrint(Model model, @RequestParam int courseId) {
+        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+        model.addAttribute("pc", pc);
+
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
+        model.addAttribute("lectureFundamentals", lectureFundamentals);
+
+        List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(pc.getId());
+        model.addAttribute("studentCourses", studentCourses);
+
+        return "role/professor/registerGrade/courseDetailForPrint";
     }
 
     @RequestMapping(value = "/classProgress/registerGrade/courseDetail", method = RequestMethod.POST)

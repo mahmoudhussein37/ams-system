@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <link href="${resources}/vendor/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" type="text/css"/>
 <div class="print-div">
-    <a href="#" class="btn btn-sm btn-light font-weight-bold">
+    <a href="#" class="btn btn-sm btn-light font-weight-bold print">
         <spring:message code="common.print"/>
     </a>
 </div>
@@ -82,39 +82,80 @@
                                 <spring:message code="student.status.${sc.studentUser.status}"/>
                             </td>
 
-                            <td>
-                                <a href="#" class="course-editable" data-type="number" data-name="scoreAttendance" data-url="${baseUrl}/professor/classProgress/registerGrade/gradeEditable" data-pk="${sc.id}" data-original-title="<spring:message code="professor.grade.attendance"/>">${sc.scoreAttendance}</a>
-                            </td>
-                            <td>
-                                <a href="#" class="course-editable" data-type="number" data-name="scoreAssignment" data-url="${baseUrl}/professor/classProgress/registerGrade/gradeEditable" data-pk="${sc.id}" data-original-title="<spring:message code="professor.grade.assignment"/>">${sc.scoreAssignment}</a>
-                            </td>
-                            <td>
-                                <a href="#" class="course-editable" data-type="number" data-name="scoreMid" data-url="${baseUrl}/professor/classProgress/registerGrade/gradeEditable" data-pk="${sc.id}" data-original-title="<spring:message code="professor.grade.midTerm"/>">${sc.scoreMid}</a>
-                            </td>
-                            <td>
-                                <a href="#" class="course-editable" data-type="number" data-name="scoreFinal" data-url="${baseUrl}/professor/classProgress/registerGrade/gradeEditable" data-pk="${sc.id}" data-original-title="<spring:message code="professor.grade.finalTerm"/>">${sc.scoreFinal}</a>
-                            </td>
-                            <td>
-                                <a href="#" class="course-editable" data-type="number" data-name="scoreOptions" data-url="${baseUrl}/professor/classProgress/registerGrade/gradeEditable" data-pk="${sc.id}" data-original-title="<spring:message code="professor.grade.options"/>">${sc.scoreOptions}</a>
-                            </td>
-                            <td>
-                                <input type="number" class="form-control grade-total${sc.id}" value="${sc.scoreTotal}" disabled/>
-                            </td>
-                            <td style="width:100px;">
-                                <select name="grade" data-sc-id="${sc.id}" class="select-grade form-control">
-                                    <option value="Ap" ${sc.grade eq 'Ap' ? 'selected' : ''}>A+</option>
-                                    <option value="A0" ${sc.grade eq 'A0' ? 'selected' : ''}>A0</option>
-                                    <option value="Bp" ${sc.grade eq 'Bp' ? 'selected' : ''}>B+</option>
-                                    <option value="B0" ${sc.grade eq 'B0' ? 'selected' : ''}>B0</option>
-                                    <option value="Cp" ${sc.grade eq 'Cp' ? 'selected' : ''}>C+</option>
-                                    <option value="C0" ${sc.grade eq 'C0' ? 'selected' : ''}>C0</option>
-                                    <option value="Dp" ${sc.grade eq 'Dp' ? 'selected' : ''}>D+</option>
-                                    <option value="D0" ${sc.grade eq 'D0' ? 'selected' : ''}>D0</option>
-                                    <option value="F" ${sc.grade eq 'F' ? 'selected' : ''}>F</option>
-                                    <option value="S" ${sc.grade eq 'S' ? 'selected' : ''}>S</option>
-                                    <option value="U" ${sc.grade eq 'U' ? 'selected' : ''}>U</option>
-                                </select>
-                            </td>
+                            <c:choose>
+                                <c:when test="${menuAccess.grade}">
+                                    <td>
+                                        <a href="#" class="course-editable" data-type="number" data-name="scoreAttendance" data-url="${baseUrl}/professor/classProgress/registerGrade/gradeEditable" data-pk="${sc.id}" data-original-title="<spring:message code="professor.grade.attendance"/>">${sc.scoreAttendance}</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="course-editable" data-type="number" data-name="scoreAssignment" data-url="${baseUrl}/professor/classProgress/registerGrade/gradeEditable" data-pk="${sc.id}" data-original-title="<spring:message code="professor.grade.assignment"/>">${sc.scoreAssignment}</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="course-editable" data-type="number" data-name="scoreMid" data-url="${baseUrl}/professor/classProgress/registerGrade/gradeEditable" data-pk="${sc.id}" data-original-title="<spring:message code="professor.grade.midTerm"/>">${sc.scoreMid}</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="course-editable" data-type="number" data-name="scoreFinal" data-url="${baseUrl}/professor/classProgress/registerGrade/gradeEditable" data-pk="${sc.id}" data-original-title="<spring:message code="professor.grade.finalTerm"/>">${sc.scoreFinal}</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="course-editable" data-type="number" data-name="scoreOptions" data-url="${baseUrl}/professor/classProgress/registerGrade/gradeEditable" data-pk="${sc.id}" data-original-title="<spring:message code="professor.grade.options"/>">${sc.scoreOptions}</a>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control grade-total${sc.id}" value="${sc.scoreTotal}" disabled/>
+                                    </td>
+                                    <td style="width:100px;">
+                                        <select name="grade" data-sc-id="${sc.id}" class="select-grade form-control">
+                                            <option value="Ap" ${sc.grade eq 'Ap' ? 'selected' : ''}>A+</option>
+                                            <option value="A0" ${sc.grade eq 'A0' ? 'selected' : ''}>A0</option>
+                                            <option value="Bp" ${sc.grade eq 'Bp' ? 'selected' : ''}>B+</option>
+                                            <option value="B0" ${sc.grade eq 'B0' ? 'selected' : ''}>B0</option>
+                                            <option value="Cp" ${sc.grade eq 'Cp' ? 'selected' : ''}>C+</option>
+                                            <option value="C0" ${sc.grade eq 'C0' ? 'selected' : ''}>C0</option>
+                                            <option value="Dp" ${sc.grade eq 'Dp' ? 'selected' : ''}>D+</option>
+                                            <option value="D0" ${sc.grade eq 'D0' ? 'selected' : ''}>D0</option>
+                                            <option value="F" ${sc.grade eq 'F' ? 'selected' : ''}>F</option>
+                                            <option value="S" ${sc.grade eq 'S' ? 'selected' : ''}>S</option>
+                                            <option value="U" ${sc.grade eq 'U' ? 'selected' : ''}>U</option>
+                                        </select>
+                                    </td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td>
+                                            ${sc.scoreAttendance}
+                                    </td>
+                                    <td>
+                                            ${sc.scoreAssignment}
+                                    </td>
+                                    <td>
+                                            ${sc.scoreMid}
+                                    </td>
+                                    <td>
+                                            ${sc.scoreFinal}
+                                    </td>
+                                    <td>
+                                            ${sc.scoreOptions}
+                                    </td>
+                                    <td>
+                                            ${sc.scoreTotal}
+                                    </td>
+                                    <td style="width:100px;">
+
+                                        <select name="grade" data-sc-id="${sc.id}" class="select-grade form-control" disabled>
+                                            <option value="Ap" ${sc.grade eq 'Ap' ? 'selected' : ''}>A+</option>
+                                            <option value="A0" ${sc.grade eq 'A0' ? 'selected' : ''}>A0</option>
+                                            <option value="Bp" ${sc.grade eq 'Bp' ? 'selected' : ''}>B+</option>
+                                            <option value="B0" ${sc.grade eq 'B0' ? 'selected' : ''}>B0</option>
+                                            <option value="Cp" ${sc.grade eq 'Cp' ? 'selected' : ''}>C+</option>
+                                            <option value="C0" ${sc.grade eq 'C0' ? 'selected' : ''}>C0</option>
+                                            <option value="Dp" ${sc.grade eq 'Dp' ? 'selected' : ''}>D+</option>
+                                            <option value="D0" ${sc.grade eq 'D0' ? 'selected' : ''}>D0</option>
+                                            <option value="F" ${sc.grade eq 'F' ? 'selected' : ''}>F</option>
+                                            <option value="S" ${sc.grade eq 'S' ? 'selected' : ''}>S</option>
+                                            <option value="U" ${sc.grade eq 'U' ? 'selected' : ''}>U</option>
+                                        </select>
+                                    </td>
+                                </c:otherwise>
+                            </c:choose>
+
                         </tr>
                     </c:forEach>
 
@@ -131,10 +172,12 @@
     </div>
 
 </div>
+<c:if test="${menuAccess.grade}">
 <div class="card-footer">
     <button type="submit" id="lecture-fundamental-save" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
     <%--<button type="reset" class="btn btn-secondary">Cancel</button>--%>
 </div>
+</c:if>
 
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
@@ -172,5 +215,11 @@ $(document).ready(function() {
 
        });
    });
+
+
+    $("body").on('click', '.print', function (e) {
+        e.preventDefault();
+        openPage("${baseUrl}/professor/classProgress/registerGrade/courseDetailForPrint?courseId=${pc.id}");
+    });
 });
 </script>
