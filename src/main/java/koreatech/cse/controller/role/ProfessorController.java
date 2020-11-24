@@ -658,9 +658,9 @@ public class ProfessorController {
         searchable.setSemester(semester);
         searchable.setUserId(User.current().getId());
 
-        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
-        Course firstCourse = null;
-        for(Course course: courseList) {
+        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivisionProfId(searchable);
+        ProfessorCourse firstCourse = null;
+        for(ProfessorCourse course: courseList) {
             firstCourse = course;
             break;
         }
@@ -672,8 +672,8 @@ public class ProfessorController {
 
     @RequestMapping("/classProgress/cqiReport/courseDetail")
     public String cqiReportCourseDetail(Model model, @RequestParam int courseId) {
-        Course course = courseMapper.findOne(courseId);
-        model.addAttribute("course", course);
+        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+        model.addAttribute("pc", pc);
 
         return "role/professor/cqiReport/courseDetail";
     }

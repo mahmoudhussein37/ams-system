@@ -25,7 +25,7 @@
                     <spring:message code="common.professor"/>
                 </td>
                 <td colspan="3">
-                    ${user.contact.getFullName()}
+                    ${pc.professorUser.getFullName()}
                 </td>
 
             </tr>
@@ -58,7 +58,7 @@
                     <spring:message code="common.department"/>
                 </td>
                 <td colspan="2">
-                    ${course.division.name}
+                    ${pc.course.division.name}
                 </td>
                 <td>
                     <spring:message code="common.schoolYear"/>
@@ -70,7 +70,7 @@
                     <spring:message code="common.subjCategory"/>
                 </td>
                 <td>
-                    <spring:message code="subj.category.${course.subjCategory}"/>
+                    <spring:message code="subj.category.${pc.course.subjCategory}"/>
                 </td>
 
             </tr>
