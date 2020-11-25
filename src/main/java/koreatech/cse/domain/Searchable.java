@@ -15,6 +15,7 @@ public class Searchable {
     private int userId;
     private int schoolYear;
     private int advisor;
+    private int courseId;
     private String code;
     private String title;
     private boolean enabled;
@@ -145,6 +146,13 @@ public class Searchable {
         this.userIds = userIds;
     }
 
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
 
     @Override
     public String toString() {

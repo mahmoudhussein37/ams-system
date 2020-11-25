@@ -152,29 +152,23 @@
                 <td width="100px">
                     <spring:message code="common.year"/>
                 </td>
-                <td>
-                    2018
-                </td>
-                <td>
-                    2019
-                </td>
-                <td>
-                    2020
-                </td>
+                <c:forEach var="entry" items="${averageAssignedMap}">
+                    <td>
+                        ${entry.key}
+                    </td>
+                </c:forEach>
+
             </tr>
             <tr>
                 <td width="100px">
                     <spring:message code="professor.course.numStudent"/>
                 </td>
-                <td>
-                    12
-                </td>
-                <td>
-                    9
-                </td>
-                <td>
-                    3
-                </td>
+                <c:forEach var="entry" items="${averageAssignedMap}">
+                    <td>
+                            ${entry.value}
+                    </td>
+                </c:forEach>
+
             </tr>
         </table>
 
@@ -192,36 +186,21 @@
                 </td>
 
             </tr>
-            <tr>
+            <c:forEach var="d" items="${professorCourseList}">
+                <tr>
 
-                <td>
-                    01
-                </td>
-                <td>
-                    25
-                </td>
+                    <td>
+                            ${d.divide}
+                    </td>
+                    <td>
+                            ${d.numStudent}
+                    </td>
 
-            </tr>
-            <tr>
+                </tr>
 
-                <td>
-                    02
-                </td>
-                <td>
-                    25
-                </td>
+            </c:forEach>
 
-            </tr>
-            <tr>
 
-                <td>
-                    03
-                </td>
-                <td>
-                    25
-                </td>
-
-            </tr>
         </table>
 
 
@@ -421,38 +400,51 @@ last data...
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['2018', '2019', '2020'],
-            datasets: [{
-                label: 'Assigned Divide Avg.',
-                data: [12, 19, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132)',
-                    'rgba(255, 99, 132)',
-                    'rgba(255, 99, 132)',
+            labels: [
+                <c:forEach var="entry" items="${averageAssignedMap}">
+                '${entry.key}',
+                </c:forEach>
 
-
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-
-                ],
-                borderWidth: 1
-            },
+            ],
+            datasets: [
                 {
-                    label: 'Division Avg.',
-                    data: [5, 2, 3],
+                    label: 'Assigned  Division Avg.',
+                    data: [0, 0, ${pc.numStudent}],
                     backgroundColor: [
-                        'rgba(54, 162, 235)',
-                        'rgba(54, 162, 235)',
-                        'rgba(54, 162, 235)',
+                        'rgba(255, 99, 132)',
+                        'rgba(255, 99, 132)',
+                        'rgba(255, 99, 132)',
 
                     ],
                     borderColor: [
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 99, 132)',
+                        'rgba(255, 99, 132)',
+                        'rgba(255, 99, 132)',
+                    ],
+                    borderWidth: 1
+                },
+                {
+                    label: 'Divide Avg.',
+                    data: [
+                        <c:forEach var="entry" items="${averageAssignedMap}">
+                        ${entry.value},
+                        </c:forEach>
+                    ],
+                    backgroundColor: [
+                        <c:forEach var="entry" items="${averageAssignedMap}">
+                        'rgba(54, 162, 235)',
+
+                        </c:forEach>
+
+
+
+
+                    ],
+                    borderColor: [
+                        <c:forEach var="entry" items="${averageAssignedMap}">
+                        'rgba(54, 162, 235)',
+                        </c:forEach>
+
                     ],
                     borderWidth: 1
                 }]
@@ -472,21 +464,32 @@ last data...
     var myChart2 = new Chart(ctx2, {
         type: 'bar',
         data: {
-            labels: ['01', '02', '03'],
+            labels: [
+                <c:forEach var="d" items="${professorCourseList}">
+                '${d.divide}',
+                </c:forEach>
+
+            ],
             datasets: [{
                 label: 'Divide Avg.',
-                data: [12, 19, 3],
+                data: [
+                    <c:forEach var="d" items="${professorCourseList}">
+                    ${d.numStudent},
+                    </c:forEach>
+                ],
                 backgroundColor: [
+                    <c:forEach var="d" items="${professorCourseList}">
                     'rgba(255, 99, 132)',
-                    'rgba(255, 99, 132)',
-                    'rgba(255, 99, 132)',
+                    </c:forEach>
+
+
 
 
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
+                    <c:forEach var="d" items="${professorCourseList}">
+                    'rgba(255, 99, 132)',
+                    </c:forEach>
 
                 ],
                 borderWidth: 1

@@ -58,6 +58,8 @@ public interface ProfessorCourseMapper {
 
 
 
+
+
     @ResultMap("findOne-int")
     //@formatter off
     @Select("<script>"
@@ -72,6 +74,19 @@ public interface ProfessorCourseMapper {
             + "</script>")
     //@formatter on
     List<ProfessorCourse> findByYearSemesterDivisionProfId(Searchable searchable);
+
+    @ResultMap("findOne-int")
+    //@formatter off
+    @Select("<script>"
+            + "SELECT * FROM professor_course pc join course c on pc.course_id=c.id join semester s on pc.semester_id = s.id where 1=1 "
+            + "<if test='year != 0'> and s.year = #{year}</if>"
+            + "<if test='courseId != 0'> and c.id = #{courseId}</if>"
+            + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
+            + "</script>")
+        //@formatter on
+    List<ProfessorCourse> findByYearSemesterCourseId(Searchable searchable);
+
+
 
     @Update("UPDATE `professor_course` SET "+
             "`user_id` = #{userId},"+

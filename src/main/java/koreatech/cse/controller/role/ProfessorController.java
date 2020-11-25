@@ -16,10 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @SessionAttributes({"lectureFundamentals", "counseling", "lectureContents", "profLectureMethod"})
@@ -677,6 +674,37 @@ public class ProfessorController {
 
         List<ProfessorCourse> professorCourseList = professorCourseMapper.findByCourseId(pc.getCourseId());
         model.addAttribute("professorCourseList", professorCourseList);
+
+        int currentYear = pc.getSemester().getYear();
+
+        Map<Integer, Double> averageAssignedMap = new HashMap<>();
+        for(int i=(currentYear - 2); i<=currentYear; i++) {
+            Searchable searchable = new Searchable();
+            searchable.setCourseId(pc.getCourseId());
+            searchable.setYear(i);
+            List<ProfessorCourse> professorCourses = professorCourseMapper.findByYearSemesterCourseId(searchable);
+
+            double avg = 0.0;
+            int total = 0;
+
+            for(ProfessorCourse p: professorCourses) {
+                total += p.getNumStudent();
+            }
+            System.out.println("total = " + total);
+            System.out.println("professorCourses = " + professorCourses.size());
+            if(total == 0 || professorCourses.size() == 0)
+                avg = 0.0;
+            else {
+                avg = (double)total / (double)professorCourses.size();
+            }
+
+
+            System.out.println("i = " + i);
+            System.out.println("avg = " + avg);
+            averageAssignedMap.put(i, avg);
+        }
+        model.addAttribute("averageAssignedMap", averageAssignedMap);
+
 
         return "role/professor/cqiReport/courseDetail";
     }
