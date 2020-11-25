@@ -32,7 +32,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label><spring:message code="common.lectureLanguage"/></label>
-                    <input type="text" class="form-control" value="${pc.course.lang}" disabled/>
+                    <input type="text" class="form-control" value="${pc.language}" disabled/>
                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                 </div>
 
@@ -49,7 +49,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label><spring:message code="common.engAccreditation"/></label>
-                    <input type="text" class="form-control" disabled/>
+                    <input type="text" class="form-control" value="${pc.engAccreditation eq true ? 'Y' : 'N'}" disabled/>
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
 
@@ -66,7 +66,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label><spring:message code="common.supervisor"/></label>
-                    <input type="text" class="form-control" disabled/>
+                    <input type="text" class="form-control" value="${not empty pc.professorUser ? pc.professorUser.getFullName() : ''}" disabled/>
                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                 </div>
             </div>
@@ -102,7 +102,7 @@
             <div class="col-md-2">
                 <div class="form-group">
                     <label><spring:message code="common.classRoom"/></label>
-                    <input type="text" class="form-control" disabled/>
+                    <input type="text" class="form-control" value="${not empty pc.classroomObj ? pc.classroomObj.code : ''}" disabled/>
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
 

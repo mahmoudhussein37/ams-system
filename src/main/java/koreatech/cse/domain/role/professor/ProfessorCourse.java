@@ -2,6 +2,7 @@ package koreatech.cse.domain.role.professor;
 
 import koreatech.cse.domain.UploadedFile;
 import koreatech.cse.domain.User;
+import koreatech.cse.domain.univ.Classroom;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Semester;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -26,6 +27,13 @@ public class ProfessorCourse implements Serializable {
     private int lateness;
     private int absence;
     private boolean enabled;
+
+    private int schoolYear;
+    private int classroom; //classroom id
+    private boolean engAccreditation;
+    private String language;
+
+    private Classroom classroomObj;
 
     private UploadedFile attendanceFile;
 
@@ -149,6 +157,46 @@ public class ProfessorCourse implements Serializable {
 
     public void setAttendanceFile(UploadedFile attendanceFile) {
         this.attendanceFile = attendanceFile;
+    }
+
+    public int getSchoolYear() {
+        return schoolYear;
+    }
+
+    public void setSchoolYear(int schoolYear) {
+        this.schoolYear = schoolYear;
+    }
+
+    public int getClassroom() {
+        return classroom;
+    }
+
+    public void setClassroom(int classroom) {
+        this.classroom = classroom;
+    }
+
+    public boolean isEngAccreditation() {
+        return engAccreditation;
+    }
+
+    public void setEngAccreditation(boolean engAccreditation) {
+        this.engAccreditation = engAccreditation;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public Classroom getClassroomObj() {
+        return classroomObj;
+    }
+
+    public void setClassroomObj(Classroom classroomObj) {
+        this.classroomObj = classroomObj;
     }
 
     @Override

@@ -13,13 +13,13 @@
                     <spring:message code="common.year"/>
                 </td>
                 <td>
-                    2020
+                    ${pc.semester.year}
                 </td>
                 <td>
                     <spring:message code="common.semester"/>
                 </td>
                 <td>
-                    2nd
+                    ${pc.semester.semester}
                 </td>
                 <td>
                     <spring:message code="common.professor"/>
@@ -34,19 +34,19 @@
                     <spring:message code="common.courseTitle"/>
                 </td>
                 <td colspan="3">
-                    Control Programming
+                    ${pc.course.title}
                 </td>
                 <td>
                     <spring:message code="common.courseCode"/>
                 </td>
                 <td>
-                    MAE850
+                    ${pc.course.code}
                 </td>
                 <td>
                     <spring:message code="professor.course.ltlp"/>
                 </td>
                 <td>
-                    3-2-1-0
+                    ${pc.course.lec}-${pc.course.tut}-${pc.course.lab}-${pc.course.ws}
                 </td>
 
             </tr>

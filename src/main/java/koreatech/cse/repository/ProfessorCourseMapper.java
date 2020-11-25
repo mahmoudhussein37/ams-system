@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface ProfessorCourseMapper {
 
-    @Insert("INSERT INTO professor_course (user_id, course_id, semester_id, limit_student, num_student, attendance, lateness, absence, divide) VALUES (#{userId}, #{courseId}, #{semesterId}, #{limitStudent}, #{numStudent}, #{attendance}, #{lateness}, #{absence}, #{divide})")
+    @Insert("INSERT INTO professor_course (user_id, course_id, semester_id, limit_student, num_student, attendance, lateness, absence, divide, school_year, classroom, eng_accreditation, language) VALUES (#{userId}, #{courseId}, #{semesterId}, #{limitStudent}, #{numStudent}, #{attendance}, #{lateness}, #{absence}, #{divide}, #{schoolYear}, #{classroom}, #{engAccreditation}, #{language})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(ProfessorCourse professorCourse);
 
@@ -21,11 +21,13 @@ public interface ProfessorCourseMapper {
             @Result(column = "id", property = "id"),
             @Result(column = "course_id", property = "courseId"),
             @Result(column = "user_id", property = "userId"),
+            @Result(column = "classroom", property = "classroom"),
             @Result(column = "semester_id", property = "semesterId"),
             @Result(column = "course_id", property = "course", one = @One(select = "koreatech.cse.repository.CourseMapper.findOne")),
             @Result(column = "user_id", property = "professorUser", one = @One(select = "koreatech.cse.repository.UserMapper.findOne")),
             @Result(column = "semester_id", property = "semester", one = @One(select = "koreatech.cse.repository.SemesterMapper.findOne")),
-            @Result(column = "id", property = "attendanceFile", one = @One(select = "koreatech.cse.repository.UploadedFileMapper.findAttendanceFile")),
+            @Result(column = "classroom", property = "classroomObj", one = @One(select = "koreatech.cse.repository.ClassroomMapper.findOne")),
+
 
     })
     @Select("SELECT * FROM professor_course where id=#{id}")
@@ -81,6 +83,10 @@ public interface ProfessorCourseMapper {
             "`lateness` = #{lateness},"+
             "`enabled` = #{enabled},"+
             "`divide` = #{divide},"+
+            "`school_year` = #{schoolYear},"+
+            "`eng_accreditation` = #{engAccreditation},"+
+            "`classroom` = #{classroom},"+
+            "`language` = #{language},"+
             "`absence` = #{absence} "+
             "WHERE `id` = #{id}")
     @Options(flushCache = true)

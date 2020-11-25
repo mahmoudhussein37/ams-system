@@ -871,15 +871,45 @@ public class AdminController {
         List<ProfessorCourse> professorCourseList = professorCourseMapper.findByCourseId(courseId);
         model.addAttribute("professorCourseList", professorCourseList);
         model.addAttribute("profCourse", new ProfessorCourse());
+        List<Classroom> classroomList = classroomMapper.findAllEnabled();
+        model.addAttribute("classroomList", classroomList);
         model.addAttribute("result", result);
         return "role/admin/cOpen/manageDivide";
     }
+
 
     @RequestMapping(value = "/courseManagement/cOpen/manageDivide", method = RequestMethod.POST)
     public String manageDivide(@ModelAttribute ProfessorCourse professorCourse,
                                @RequestParam int courseId) {
         professorCourseMapper.insert(professorCourse);
         return "redirect:/admin/courseManagement/cOpen/manageDivide?courseId=" + courseId + "&result=success";
+    }
+
+    @RequestMapping("/courseManagement/cOpen/editDivide")
+    public String editDivide(Model model, @RequestParam int profCourseId, @RequestParam(required=false) String result) {
+        ProfessorCourse professorCourse = professorCourseMapper.findOne(profCourseId);
+        model.addAttribute("profCourse", professorCourse);
+        List<Division> divisions = divisionMapper.findAll();
+        model.addAttribute("divisions", divisions);
+        model.addAttribute("yearList", getYearList());
+        model.addAttribute("subjCategoryList", SubjCategory.values());
+        List<Semester> semesters = semesterMapper.findAll();
+        model.addAttribute("semesters", semesters);
+        List<User> professors = userMapper.findProfessorsByDivision(professorCourse.getCourse().getDivisionId());
+        model.addAttribute("professors", professors);
+        List<Classroom> classroomList = classroomMapper.findAllEnabled();
+        model.addAttribute("classroomList", classroomList);
+        model.addAttribute("result", result);
+        return "role/admin/cOpen/editDivide";
+    }
+
+    @RequestMapping(value = "/courseManagement/cOpen/editDivide", method = RequestMethod.POST)
+    public String editDivide(@ModelAttribute("profCourse") ProfessorCourse profCourse, SessionStatus sessionStatus,
+                               @RequestParam int profCourseId) {
+        System.out.println("profCourse = " + profCourse);
+        professorCourseMapper.update(profCourse);
+        sessionStatus.setComplete();
+        return "redirect:/admin/courseManagement/cOpen/manageDivide?courseId=" + profCourse.getCourseId() + "&result=success";
     }
 
     @RequestMapping(value = "/courseManagement/cOpen/manageDivide/deleteDivide", method = RequestMethod.POST)
