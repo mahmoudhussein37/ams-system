@@ -968,7 +968,8 @@ public class AdminController {
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            List<Integer> userIds = studentCourseMapper.findUserIdsByProfCourseId(profCourseId);
+            ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
+            List<Integer> userIds = studentCourseMapper.findUserIdsByCourseId(pc.getCourseId());
             searchable.setUserIds(userIds);
             userList = userMapper.findStudentsByAdvisorSchoolYearDivisionExceptRegistered(userIds, number, name, division);
         }

@@ -675,6 +675,9 @@ public class ProfessorController {
         ProfessorCourse pc = professorCourseMapper.findOne(courseId);
         model.addAttribute("pc", pc);
 
+        List<ProfessorCourse> professorCourseList = professorCourseMapper.findByCourseId(pc.getCourseId());
+        model.addAttribute("professorCourseList", professorCourseList);
+
         return "role/professor/cqiReport/courseDetail";
     }
 

@@ -63,6 +63,9 @@ public interface StudentCourseMapper {
     @Select("SELECT user_id FROM student_course where prof_course_id = #{profCourseId}")
     List<Integer> findUserIdsByProfCourseId(@Param("profCourseId") int profCourseId);
 
+    @Select("SELECT user_id FROM student_course where course_id = #{courseId}")
+    List<Integer> findUserIdsByCourseId(@Param("courseId") int courseId);
+
     @ResultMap("findOne-int")
     @Select("SELECT * FROM student_course where user_id = #{userId} and prof_course_id = #{profCourseId} limit 1")
     StudentCourse findByUserIdProfCourseId(@Param("userId") int userId, @Param("profCourseId") int profCourseId);

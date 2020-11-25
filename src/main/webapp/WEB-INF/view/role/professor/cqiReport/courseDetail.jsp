@@ -64,7 +64,7 @@
                     <spring:message code="common.schoolYear"/>
                 </td>
                             <td>
-                            3
+                            ${pc.schoolYear}
                             </td>
                 <td>
                     <spring:message code="common.subjCategory"/>
@@ -91,7 +91,7 @@
                     <spring:message code="professor.engAccreditation"/>
                 </td>
                 <td colspan="3">
-                    Y
+                    ${pc.engAccreditation eq true ? 'Y' : 'N'}
                 </td>
     <td colspan="4">
     </td>
@@ -105,12 +105,12 @@
                 <td style="width:150px">
                     <spring:message code="common.divide2"/>
                 </td>
-                <c:forEach var="d" begin="1" end="3">
+                <c:forEach var="d" items="${professorCourseList}">
                     <td>
-                        ${d}
+                        ${d.divide}
                     </td>
                 </c:forEach>
-                <c:forEach var="d" begin="1" end="9">
+                <c:forEach var="d" begin="1" end="${12 - fn:length(professorCourseList)}">
                     <td>
                     </td>
                 </c:forEach>
@@ -119,12 +119,12 @@
                 <td style="width:150px">
                     <spring:message code="professor.course.numStudent"/>
                 </td>
-                <c:forEach var="d" begin="1" end="3">
+                <c:forEach var="d" items="${professorCourseList}">
                     <td>
-                            25
+                            ${d.numStudent}
                     </td>
                 </c:forEach>
-                <c:forEach var="d" begin="1" end="9">
+                <c:forEach var="d" begin="1" end="${12 - fn:length(professorCourseList)}">
                     <td>
                     </td>
                 </c:forEach>
