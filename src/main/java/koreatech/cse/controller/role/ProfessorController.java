@@ -55,7 +55,10 @@ public class ProfessorController {
     private MenuAccessMapper menuAccessMapper;
     @Inject
     private StudentCourseMapper studentCourseMapper;
-
+    @Inject
+    private AssessmentFactorMapper assessmentFactorMapper;
+    @Inject
+    private AssessmentMapper assessmentMapper;
 
 
     @RequestMapping("/studentGuidance/studentLookup")
@@ -670,9 +673,15 @@ public class ProfessorController {
     @RequestMapping("/classProgress/cqiReport/courseDetail")
     public String cqiReportCourseDetail(Model model, @RequestParam int courseId) {
         ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+        List<Assessment> assessmentList = assessmentMapper.findByProfCourseId(pc.getId());
+        pc.setAssessmentList(assessmentList);
         model.addAttribute("pc", pc);
 
         List<ProfessorCourse> professorCourseList = professorCourseMapper.findByCourseId(pc.getCourseId());
+        for(ProfessorCourse professorCourse: professorCourseList) {
+            List<Assessment> assessments = assessmentMapper.findByProfCourseId(professorCourse.getId());
+            professorCourse.setAssessmentList(assessments);
+        }
         model.addAttribute("professorCourseList", professorCourseList);
 
         int currentYear = pc.getSemester().getYear();
@@ -704,6 +713,8 @@ public class ProfessorController {
             averageAssignedMap.put(i, avg);
         }
         model.addAttribute("averageAssignedMap", averageAssignedMap);
+        List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(courseId);
+        model.addAttribute("assessmentFactors", assessmentFactors);
 
 
         return "role/professor/cqiReport/courseDetail";

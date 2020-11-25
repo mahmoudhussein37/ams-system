@@ -2,12 +2,17 @@ package koreatech.cse.domain.role.professor;
 
 import koreatech.cse.domain.UploadedFile;
 import koreatech.cse.domain.User;
+import koreatech.cse.domain.univ.AssessmentFactor;
 import koreatech.cse.domain.univ.Classroom;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Semester;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.springframework.security.access.method.P;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProfessorCourse implements Serializable {
     private static final long serialVersionUID = 4349L;
@@ -36,6 +41,8 @@ public class ProfessorCourse implements Serializable {
     private Classroom classroomObj;
 
     private UploadedFile attendanceFile;
+
+    private List<Assessment> assessmentList;
 
 
     public int getId() {
@@ -197,6 +204,46 @@ public class ProfessorCourse implements Serializable {
 
     public void setClassroomObj(Classroom classroomObj) {
         this.classroomObj = classroomObj;
+    }
+
+    public List<Assessment> getAssessmentList() {
+        return assessmentList;
+    }
+
+    public void setAssessmentList(List<Assessment> assessmentList) {
+        this.assessmentList = assessmentList;
+    }
+
+    public List<AssessmentFactor> getFilteredAssessmentFactors(List<AssessmentFactor> assessmentFactors) {
+        if(CollectionUtils.isEmpty(this.assessmentList))
+            return new ArrayList<>();
+        Assessment assessment = assessmentList.get(0);
+        List<AssessmentFactor> filtered = new ArrayList<>();
+
+        for(AssessmentFactor assessmentFactor: assessmentFactors) {
+            for(int i=1; i<=20; i++) {
+                int id = assessment.getItem(i);
+                if(assessmentFactor.getId() == id)
+                    filtered.add(assessmentFactor);
+            }
+        }
+        return filtered;
+    }
+
+    public double getAssessmentFactorAverage(AssessmentFactor assessmentFactor) {
+        if(CollectionUtils.isEmpty(this.assessmentList))
+            return 0.0;
+        int total = 0;
+        for(Assessment assessment: assessmentList) {
+            int score = assessment.getScoreByItemId(assessmentFactor.getId());
+            total += score;
+        }
+
+        if (total == 0)
+            return 0.0;
+        else {
+            return (double)total / (double)assessmentList.size();
+        }
     }
 
     @Override

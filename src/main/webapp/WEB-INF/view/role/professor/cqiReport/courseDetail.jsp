@@ -379,6 +379,7 @@ last data...
                     <textarea rows="6"  dir="rtl" class="form-control" >
 
                     </textarea>
+
                 </td>
             </tr>
 
@@ -396,6 +397,7 @@ last data...
 </div>
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
+    var colors = ['rgba(255, 99, 132)','rgba(54, 162, 235)', "#5a9997","#8950FC","#FFA800",'rgb(235,217,54)','rgb(217,200,136)','#1BC5BD', '#3699FF', '#1BC5BD'];
     var ctx = document.getElementById('chart1').getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bar',
@@ -510,30 +512,40 @@ last data...
     var myChart3 = new Chart(ctx3, {
         type: 'bar',
         data: {
-            labels: ['Design/Materials', 'Method/Difficulty', 'Evaluation/Feedback', 'Interaction', 'General'],
-            datasets: [{
-                label: '01',
-                data: [4.5, 3.8, 4.3, 2.2, 3.8],
-                backgroundColor: [
-                    'rgba(255, 99, 132)',
-                    'rgba(255, 99, 132)',
-                    'rgba(255, 99, 132)',
-                    'rgba(255, 99, 132)',
-                    'rgba(255, 99, 132)',
+            labels: [
+                <c:forEach var="af" items="${pc.getFilteredAssessmentFactors(assessmentFactors)}">
+                    '${af.title}',
+                </c:forEach>
 
-
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-
-                ],
-                borderWidth: 1
-            },
+            ],
+            datasets: [
+                <c:forEach var="profCourse" items="${professorCourseList}">
                 {
+                    label: '0${profCourse.divide}',
+                    data: [
+                        <c:forEach var="af" items="${pc.getFilteredAssessmentFactors(assessmentFactors)}">
+                        ${profCourse.getAssessmentFactorAverage(af)},
+                        </c:forEach>
+                    ],
+                    backgroundColor: [
+                        <c:forEach var="af" items="${pc.getFilteredAssessmentFactors(assessmentFactors)}">
+                        colors[${profCourse.divide-1}],
+                        </c:forEach>
+
+
+
+                    ],
+                    borderColor: [
+                        <c:forEach var="af" items="${pc.getFilteredAssessmentFactors(assessmentFactors)}">
+                        colors[${profCourse.divide-1}],
+                        </c:forEach>
+
+                    ],
+                    borderWidth: 1
+                },
+                </c:forEach>
+
+                /*{
                     label: '02',
                     data: [4.7, 3.9, 4.4, 2.2, 3.8],
                     backgroundColor: [
@@ -572,7 +584,7 @@ last data...
                         'rgb(217,200,136)',
                     ],
                     borderWidth: 1
-                }
+                }*/
             ]
         },
         options: {
