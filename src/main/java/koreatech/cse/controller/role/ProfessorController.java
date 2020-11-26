@@ -676,7 +676,7 @@ public class ProfessorController {
 
 
     @RequestMapping("/classProgress/cqiReport/courseDetail")
-    public String cqiReportCourseDetail(Model model, @RequestParam int courseId) {
+    public String cqiReportCourseDetail(Model model, @RequestParam int courseId, @RequestParam(defaultValue = "false", required=false) String print) {
         MenuAccess menuAccess = menuAccessMapper.findOne();
         model.addAttribute("menuAccess", menuAccess);
 
@@ -684,12 +684,10 @@ public class ProfessorController {
         List<Assessment> assessmentList = assessmentMapper.findByProfCourseId(pc.getId());
         pc.setAssessmentList(assessmentList);
 
-
         model.addAttribute("pc", pc);
         Searchable s = new Searchable();
         s.setCourseId(pc.getCourseId());
         s.setYear(pc.getSemester().getYear());
-        /*List<ProfessorCourse> professorCourses = professorCourseMapper.findByYearSemesterCourseId(searchable);*/
         List<ProfessorCourse> professorCourseList = professorCourseMapper.findByYearSemesterCourseId(s);
         for(ProfessorCourse professorCourse: professorCourseList) {
             List<Assessment> assessments = assessmentMapper.findByProfCourseId(professorCourse.getId());
@@ -743,24 +741,20 @@ public class ProfessorController {
             for(ProfessorCourse p: professorCourses) {
                 total += p.getNumStudent();
             }
-            System.out.println("total = " + total);
-            System.out.println("professorCourses = " + professorCourses.size());
             if(total == 0 || professorCourses.size() == 0)
                 avg = 0.0;
             else {
                 avg = (double)total / (double)professorCourses.size();
             }
 
-
-            System.out.println("i = " + i);
-            System.out.println("avg = " + avg);
             averageAssignedMap.put(i, avg);
         }
         model.addAttribute("averageAssignedMap", averageAssignedMap);
         List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(courseId);
         model.addAttribute("assessmentFactors", assessmentFactors);
 
-
+        if(print.equals("true"))
+            return "role/professor/cqiReport/courseDetailForPrint";
         return "role/professor/cqiReport/courseDetail";
     }
 

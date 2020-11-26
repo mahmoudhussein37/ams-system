@@ -1,6 +1,6 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <div class="print-div">
-    <a href="#" class="btn btn-sm btn-light font-weight-bold">
+    <a href="#" class="btn btn-sm btn-light font-weight-bold print">
         <spring:message code="common.print"/>
     </a>
 </div>
@@ -350,7 +350,7 @@
                 </td>
 
                 <td colspan="3" style="text-align:center">
-                    <spring:message code="professor.achievementScore"/><br/>
+                    <spring:message code="professor.achievementScore"/> (1 ~ 5)<br/>
 
                 </td>
 
@@ -362,7 +362,7 @@
                     </td>
                 </c:forEach>
                 <td>
-                    ${currentYear} (1 ~ 5)
+                    ${currentYear}
                 </td>
 
             </tr>
@@ -381,7 +381,7 @@
                     </c:forEach>
 
                     <td style="background-color:#37a94b">
-                        <input class="form-control" type="number" min="1" max="5" name="score${d}" value="${cqi.getScore(d)}"/>
+                        <input class="form-control" type="number" min="1" max="5" name="score${d}" value="${cqi.getScore(d)}" ${menuAccess.cqi ? '' : 'disabled'}/>
                     </td>
                 </tr>
             </c:forEach>
@@ -395,10 +395,10 @@
     <div class="col-md-12">
         <table class="table table-bordered">
             <tr>
-                <td>
+                <td style="width:50%">
                     <spring:message code="professor.previousImprovePlan"/>
                 </td>
-                <td>
+                <td style="width:50%">
                     <spring:message code="professor.improvementResult"/>
                 </td>
             </tr>
@@ -410,7 +410,7 @@ ${prevCqi.plan}
 </textarea>
                 </td>
                 <td>
-<form:textarea path="problem" rows="6"  dir="rtl" class="form-control" />
+<form:textarea path="problem" rows="6"  dir="rtl" class="form-control" disabled="${menuAccess.cqi ? false : true}"/>
 
                 </td>
             </tr>
@@ -422,7 +422,7 @@ ${prevCqi.plan}
 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="professor.comprehensiveLecture"/></h3>
 <div class="row">
     <div class="col-md-12">
-<form:textarea path="plan" rows="6" dir="rtl"  class="form-control" />
+<form:textarea path="plan" rows="6" dir="rtl"  class="form-control" disabled="${menuAccess.cqi ? false : true}"/>
     </div>
 </div>
 
@@ -704,6 +704,10 @@ ${prevCqi.plan}
                 alert("<spring:message code="professor.checkScores"/>");
             }
 
+        });
+        $("body").on('click', '.print', function (e) {
+            e.preventDefault();
+            openPage("${baseUrl}/professor/classProgress/cqiReport/courseDetail?print=true&courseId=${pc.id}");
         });
     });
 </script>

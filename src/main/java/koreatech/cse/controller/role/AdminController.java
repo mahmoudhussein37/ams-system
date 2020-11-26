@@ -10,6 +10,7 @@ import koreatech.cse.domain.role.student.GraduationResearchPlan;
 import koreatech.cse.domain.role.student.StudentCourse;
 import koreatech.cse.domain.univ.*;
 import koreatech.cse.repository.*;
+import koreatech.cse.repository.provider.CqiMapper;
 import koreatech.cse.service.AuthorityService;
 import koreatech.cse.service.FileService;
 import koreatech.cse.service.UserService;
@@ -34,11 +35,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
-@SessionAttributes({"studentUser", "profUser", "adminUser", "course", "division", "semester", "menuAccess", "assessmentFactor", "profCourse", "graduationCriteria"})
+@SessionAttributes({"studentUser", "profUser", "adminUser", "course", "division", "semester", "menuAccess", "assessmentFactor", "profCourse", "graduationCriteria", "cqi"})
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
@@ -98,6 +100,8 @@ public class AdminController {
     private ProfLectureMethodMapper profLectureMethodMapper;
     @Inject
     private LectureContentsMapper lectureContentsMapper;
+    @Inject
+    private CqiMapper cqiMapper;
 
 
     @RequestMapping("/studentManagement/studentRegistration")
@@ -1160,17 +1164,21 @@ public class AdminController {
 
     @RequestMapping("/courseManagement/syllabus/courseTable")
     public String syllabusCourseTable(Model model,
+                                      @RequestParam(required=false) String code,
+                                      @RequestParam(required=false) String title,
+                                      @RequestParam(defaultValue = "0", required=false) int division,
                                       @RequestParam(defaultValue = "0", required=false) int year,
-                                      @RequestParam(defaultValue = "0", required=false) int semester,
-                                      @RequestParam(defaultValue = "0", required=false) int division) {
+                                      @RequestParam(defaultValue = "0", required=false) int semester) {
 
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
+        searchable.setCode(code);
+        searchable.setTitle(title);
         searchable.setDivision(division);
 
 
-        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivision(searchable);
+        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivisionCodeTitle(searchable);
 
         ProfessorCourse firstCourse = null;
         for(ProfessorCourse course: courseList) {
@@ -1447,12 +1455,18 @@ public class AdminController {
 
     @RequestMapping("/academicManagement/cqi")
     public String cqi(Model model) {
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
         return "role/admin/cqi/cqi";
     }
 
     @RequestMapping("/academicManagement/cqi/courseTable")
     public String cqiReportCourseTable(Model model,
+                                       @RequestParam(required=false) String code,
+                                       @RequestParam(required=false) String title,
+                                       @RequestParam(defaultValue = "0", required=false) int division,
                                        @RequestParam(defaultValue = "0", required=false) int year,
                                        @RequestParam(defaultValue = "0", required=false) int semester) {
 
@@ -1460,8 +1474,11 @@ public class AdminController {
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
+        searchable.setCode(code);
+        searchable.setTitle(title);
+        searchable.setDivision(division);
 
-        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivisionProfId(searchable);
+        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivisionCodeTitle(searchable);
         ProfessorCourse firstCourse = null;
         for(ProfessorCourse course: courseList) {
             firstCourse = course;
@@ -1474,9 +1491,81 @@ public class AdminController {
     }
 
     @RequestMapping("/academicManagement/cqi/courseDetail")
-    public String cqiReportCourseDetail(Model model, @RequestParam int courseId) {
+    public String cqiReportCourseDetail(Model model, @RequestParam int courseId, @RequestParam(defaultValue = "false", required=false) String print) {
         ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+        List<Assessment> assessmentList = assessmentMapper.findByProfCourseId(pc.getId());
+        pc.setAssessmentList(assessmentList);
+
         model.addAttribute("pc", pc);
+        Searchable s = new Searchable();
+        s.setCourseId(pc.getCourseId());
+        s.setYear(pc.getSemester().getYear());
+        List<ProfessorCourse> professorCourseList = professorCourseMapper.findByYearSemesterCourseId(s);
+        for(ProfessorCourse professorCourse: professorCourseList) {
+            List<Assessment> assessments = assessmentMapper.findByProfCourseId(professorCourse.getId());
+            professorCourse.setAssessmentList(assessments);
+            List<StudentCourse> studentCourseList = studentCourseMapper.findByProfCourseIdValid(professorCourse.getId());
+            System.out.println("studentCourseList = " + studentCourseList.size());
+            professorCourse.setStudentCourseList(studentCourseList);
+        }
+        model.addAttribute("professorCourseList", professorCourseList);
+
+        int currentYear = pc.getSemester().getYear();
+        model.addAttribute("currentYear", currentYear);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(pc.getId());
+        model.addAttribute("lectureFundamentals", lectureFundamentals);
+        Map<Integer, Double> averageAssignedMap = new LinkedHashMap<>();
+        Map<Integer, Cqi> cqiMap = new LinkedHashMap<>();
+        for(int i=(currentYear - 2); i<currentYear; i++) {
+            Cqi cqi = cqiMapper.findByYearCourseIdDivide(i, pc.getCourseId(), pc.getDivide());
+
+            if (cqi == null) {
+                cqi = new Cqi();
+            }
+            cqiMap.put(i, cqi);
+            if(i == currentYear - 1) {
+                model.addAttribute("prevCqi", cqi);
+            }
+        }
+        model.addAttribute("cqiMap", cqiMap);
+
+        Cqi cqi = cqiMapper.findByProfCourseId(pc.getId());
+        if(cqi == null) {
+            cqi = new Cqi();
+            cqi.setSemesterId(pc.getSemesterId());
+            cqi.setCourseId(pc.getCourseId());
+            cqi.setDivide(pc.getDivide());
+            cqi.setProfCourseId(pc.getId());
+        }
+        model.addAttribute("cqi", cqi);
+
+        for(int i=(currentYear - 2); i<=currentYear; i++) {
+
+            Searchable searchable = new Searchable();
+            searchable.setCourseId(pc.getCourseId());
+            searchable.setYear(i);
+            List<ProfessorCourse> professorCourses = professorCourseMapper.findByYearSemesterCourseId(searchable);
+
+            double avg;
+            int total = 0;
+
+            for(ProfessorCourse p: professorCourses) {
+                total += p.getNumStudent();
+            }
+            if(total == 0 || professorCourses.size() == 0)
+                avg = 0.0;
+            else {
+                avg = (double)total / (double)professorCourses.size();
+            }
+
+            averageAssignedMap.put(i, avg);
+        }
+        model.addAttribute("averageAssignedMap", averageAssignedMap);
+        List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(courseId);
+        model.addAttribute("assessmentFactors", assessmentFactors);
+
+        if(print.equals("true"))
+            return "role/admin/cqi/courseDetailForPrint";
 
         return "role/admin/cqi/courseDetail";
     }

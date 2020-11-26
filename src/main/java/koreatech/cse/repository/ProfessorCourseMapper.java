@@ -57,7 +57,19 @@ public interface ProfessorCourseMapper {
     List<ProfessorCourse> findByYearSemesterDivision(Searchable searchable);
 
 
-
+    @ResultMap("findOne-int")
+    //@formatter off
+    @Select("<script>"
+            + "SELECT * FROM professor_course p join course c on p.course_id=c.id where 1=1 "
+            + "<if test='year != 0'> and s.year = #{year}</if>"
+            + "<if test='semester != 0'> and s.semester = #{semester}</if>"
+            + "<if test='division != 0'> and c.division_id = #{division}</if>"
+            + "<if test='code != null'> and c.code LIKE CONCAT('%', #{code}, '%')</if>"
+            + "<if test='title != null'> and c.title LIKE CONCAT('%', #{title}, '%')</if>"
+            + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
+            + "</script>")
+        //@formatter on
+    List<ProfessorCourse> findByYearSemesterDivisionCodeTitle(Searchable searchable);
 
 
     @ResultMap("findOne-int")

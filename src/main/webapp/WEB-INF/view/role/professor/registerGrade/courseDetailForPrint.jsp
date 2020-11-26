@@ -305,6 +305,9 @@
 
     $(document).ready(function() {
         window.print();
+        window.onafterprint = function(){
+            window.close();
+        }
 
 
     });

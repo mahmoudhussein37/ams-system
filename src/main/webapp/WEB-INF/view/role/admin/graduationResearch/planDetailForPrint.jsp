@@ -227,5 +227,8 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
     window.print();
+        window.onafterprint = function(){
+            window.close();
+        }
 
 </script>
