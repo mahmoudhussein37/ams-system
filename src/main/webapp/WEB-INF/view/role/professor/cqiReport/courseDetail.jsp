@@ -242,28 +242,89 @@
             <td>
                 F
             </td>
+            <td>
+                S
+            </td>
+            <td>
+                U
+            </td>
 
         </tr>
-        <c:forEach var="d" begin="1" end="3">
+        <c:forEach var="professorCourse" items="${professorCourseList}">
             <tr>
 
                 <td>
-                    0${d}
+                    0${professorCourse.divide}
                 </td>
                 <td>
-                    25
+                    <c:set var="count" value="0"/>
+                    <c:forEach var="sc" items="${professorCourse.studentCourseList}">
+                        <c:if test="${sc.grade eq 'Ap' or sc.grade eq 'A0'}">
+                            <c:set var="count" value="${count + 1}"/>
+                        </c:if>
+
+                    </c:forEach>
+                    ${count}
                 </td>
                 <td>
-                    50
+                    <c:set var="count" value="0"/>
+                    <c:forEach var="sc" items="${professorCourse.studentCourseList}">
+                        <c:if test="${sc.grade eq 'Bp' or sc.grade eq 'B0'}">
+                            <c:set var="count" value="${count + 1}"/>
+                        </c:if>
+
+                    </c:forEach>
+                        ${count}
                 </td>
                 <td>
-                    20
+                    <c:set var="count" value="0"/>
+                    <c:forEach var="sc" items="${professorCourse.studentCourseList}">
+                        <c:if test="${sc.grade eq 'Cp' or sc.grade eq 'c0'}">
+                            <c:set var="count" value="${count + 1}"/>
+                        </c:if>
+
+                    </c:forEach>
+                        ${count}
                 </td>
                 <td>
-                    0
+                    <c:set var="count" value="0"/>
+                    <c:forEach var="sc" items="${professorCourse.studentCourseList}">
+                        <c:if test="${sc.grade eq 'Dp' or sc.grade eq 'D0'}">
+                            <c:set var="count" value="${count + 1}"/>
+                        </c:if>
+
+                    </c:forEach>
+                        ${count}
                 </td>
                 <td>
-                    0
+                    <c:set var="count" value="0"/>
+                    <c:forEach var="sc" items="${professorCourse.studentCourseList}">
+                        <c:if test="${sc.grade eq 'F'}">
+                            <c:set var="count" value="${count + 1}"/>
+                        </c:if>
+
+                    </c:forEach>
+                        ${count}
+                </td>
+                <td>
+                    <c:set var="count" value="0"/>
+                    <c:forEach var="sc" items="${professorCourse.studentCourseList}">
+                        <c:if test="${sc.grade eq 'S'}">
+                            <c:set var="count" value="${count + 1}"/>
+                        </c:if>
+
+                    </c:forEach>
+                        ${count}
+                </td>
+                <td>
+                    <c:set var="count" value="0"/>
+                    <c:forEach var="sc" items="${professorCourse.studentCourseList}">
+                        <c:if test="${sc.grade eq 'U'}">
+                            <c:set var="count" value="${count + 1}"/>
+                        </c:if>
+
+                    </c:forEach>
+                        ${count}
                 </td>
 
             </tr>
@@ -603,69 +664,45 @@ last data...
     var myChart4 = new Chart(ctx4, {
         type: 'bar',
         data: {
-            labels: ['A', 'B', 'C', 'D', 'F'],
-            datasets: [{
-                label: '01',
-                data: [45, 38, 43, 22, 38],
-                backgroundColor: [
-                    'rgba(255, 99, 132)',
-                    'rgba(255, 99, 132)',
-                    'rgba(255, 99, 132)',
-                    'rgba(255, 99, 132)',
-                    'rgba(255, 99, 132)',
+            labels: [
+                <c:forEach var="professorCourse" items="${professorCourseList}" varStatus="varStatus">
+                <c:if test="${varStatus.count eq 1}">
+                <c:forEach var="entry" items="${professorCourse.getNumGradeMap()}">
+                '${entry.key}',
+                </c:forEach>
+                </c:if>
+                </c:forEach>
 
-
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-
-                ],
-                borderWidth: 1
-            },
+            ],
+            datasets: [
+                <c:forEach var="professorCourse" items="${professorCourseList}">
                 {
-                    label: '02',
-                    data: [47, 39, 44, 22, 38],
+                    label: '0${professorCourse.divide}',
+                    data: [
+
+                        <c:forEach var="entry" items="${professorCourse.getNumGradeMap()}">
+                        ${entry.value},
+                        </c:forEach>
+
+
+                    ],
                     backgroundColor: [
-                        'rgba(54, 162, 235)',
-                        'rgba(54, 162, 235)',
-                        'rgba(54, 162, 235)',
-                        'rgba(54, 162, 235)',
-                        'rgba(54, 162, 235)',
+                        <c:forEach var="entry" items="${professorCourse.getNumGradeMap()}">
+                        colors[${professorCourse.divide - 1}],
+                        </c:forEach>
+
+
 
                     ],
                     borderColor: [
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(54, 162, 235, 1)',
+                        <c:forEach var="entry" items="${professorCourse.getNumGradeMap()}">
+                        colors[${professorCourse.divide - 1}],
+                        </c:forEach>
+
                     ],
                     borderWidth: 1
                 },
-                {
-                    label: '03',
-                    data: [45, 39, 24, 22, 38],
-                    backgroundColor: [
-                        'rgb(235,217,54)',
-                        'rgb(235,217,54)',
-                        'rgb(235,217,54)',
-                        'rgb(235,217,54)',
-                        'rgb(235,217,54)',
-
-                    ],
-                    borderColor: [
-                        'rgb(217,200,136)',
-                        'rgb(217,200,136)',
-                        'rgb(217,200,136)',
-                        'rgb(217,200,136)',
-                        'rgb(217,200,136)',
-                    ],
-                    borderWidth: 1
-                }
+                </c:forEach>
             ]
         },
         options: {

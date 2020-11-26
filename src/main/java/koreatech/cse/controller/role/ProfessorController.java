@@ -675,12 +675,20 @@ public class ProfessorController {
         ProfessorCourse pc = professorCourseMapper.findOne(courseId);
         List<Assessment> assessmentList = assessmentMapper.findByProfCourseId(pc.getId());
         pc.setAssessmentList(assessmentList);
-        model.addAttribute("pc", pc);
 
-        List<ProfessorCourse> professorCourseList = professorCourseMapper.findByCourseId(pc.getCourseId());
+
+        model.addAttribute("pc", pc);
+        Searchable s = new Searchable();
+        s.setCourseId(pc.getCourseId());
+        s.setYear(pc.getSemester().getYear());
+        /*List<ProfessorCourse> professorCourses = professorCourseMapper.findByYearSemesterCourseId(searchable);*/
+        List<ProfessorCourse> professorCourseList = professorCourseMapper.findByYearSemesterCourseId(s);
         for(ProfessorCourse professorCourse: professorCourseList) {
             List<Assessment> assessments = assessmentMapper.findByProfCourseId(professorCourse.getId());
             professorCourse.setAssessmentList(assessments);
+            List<StudentCourse> studentCourseList = studentCourseMapper.findByProfCourseIdValid(professorCourse.getId());
+            System.out.println("studentCourseList = " + studentCourseList.size());
+            professorCourse.setStudentCourseList(studentCourseList);
         }
         model.addAttribute("professorCourseList", professorCourseList);
 

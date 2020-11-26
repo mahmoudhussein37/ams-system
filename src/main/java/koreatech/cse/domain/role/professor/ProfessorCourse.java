@@ -2,6 +2,7 @@ package koreatech.cse.domain.role.professor;
 
 import koreatech.cse.domain.UploadedFile;
 import koreatech.cse.domain.User;
+import koreatech.cse.domain.role.student.StudentCourse;
 import koreatech.cse.domain.univ.AssessmentFactor;
 import koreatech.cse.domain.univ.Classroom;
 import koreatech.cse.domain.univ.Course;
@@ -11,8 +12,7 @@ import org.springframework.security.access.method.P;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ProfessorCourse implements Serializable {
     private static final long serialVersionUID = 4349L;
@@ -43,6 +43,8 @@ public class ProfessorCourse implements Serializable {
     private UploadedFile attendanceFile;
 
     private List<Assessment> assessmentList;
+
+    private List<StudentCourse> studentCourseList;
 
 
     public int getId() {
@@ -244,6 +246,60 @@ public class ProfessorCourse implements Serializable {
         else {
             return (double)total / (double)assessmentList.size();
         }
+    }
+
+    public Map<String, Integer> getNumGradeMap() {
+        Map<String, Integer> grades = new LinkedHashMap<>();
+        grades.put("A", 0);
+        grades.put("B", 0);
+        grades.put("C", 0);
+        grades.put("D", 0);
+        grades.put("F", 0);
+        grades.put("S", 0);
+        grades.put("U", 0);
+        if(CollectionUtils.isEmpty(studentCourseList)) {
+            return grades;
+        }
+
+        for(StudentCourse sc: studentCourseList) {
+            if(sc.getGrade().equals("Ap") || sc.getGrade().equals("A0")) {
+                Integer count = grades.get("A");
+                grades.put("A", count + 1);
+            }
+            if(sc.getGrade().equals("Bp") || sc.getGrade().equals("B0")) {
+                Integer count = grades.get("B");
+                grades.put("B", count + 1);
+            }
+            if(sc.getGrade().equals("Cp") || sc.getGrade().equals("C0")) {
+                Integer count = grades.get("C");
+                grades.put("C", count + 1);
+            }
+            if(sc.getGrade().equals("Dp") || sc.getGrade().equals("D0")) {
+                Integer count = grades.get("D");
+                grades.put("D", count + 1);
+            }
+            if(sc.getGrade().equals("F")) {
+                Integer count = grades.get("F");
+                grades.put("F", count + 1);
+            }
+            if(sc.getGrade().equals("S")) {
+                Integer count = grades.get("S");
+                grades.put("S", count + 1);
+            }
+            if(sc.getGrade().equals("U")) {
+                Integer count = grades.get("U");
+                grades.put("U", count + 1);
+            }
+        }
+        return grades;
+    }
+
+    public List<StudentCourse> getStudentCourseList() {
+        return studentCourseList;
+    }
+
+    public void setStudentCourseList(List<StudentCourse> studentCourseList) {
+        this.studentCourseList = studentCourseList;
     }
 
     @Override

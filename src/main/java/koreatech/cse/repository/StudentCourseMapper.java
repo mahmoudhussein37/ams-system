@@ -60,6 +60,10 @@ public interface StudentCourseMapper {
     @Select("SELECT * FROM student_course where prof_course_id = #{profCourseId}")
     List<StudentCourse> findByProfCourseId(@Param("profCourseId") int profCourseId);
 
+    @ResultMap("findOne-int")
+    @Select("SELECT * FROM student_course where prof_course_id = #{profCourseId} and valid = 1")
+    List<StudentCourse> findByProfCourseIdValid(@Param("profCourseId") int profCourseId);
+
     @Select("SELECT user_id FROM student_course where prof_course_id = #{profCourseId}")
     List<Integer> findUserIdsByProfCourseId(@Param("profCourseId") int profCourseId);
 
