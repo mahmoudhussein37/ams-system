@@ -6,6 +6,7 @@ import koreatech.cse.domain.role.professor.*;
 import koreatech.cse.domain.role.student.StudentCourse;
 import koreatech.cse.domain.univ.*;
 import koreatech.cse.repository.*;
+import koreatech.cse.repository.provider.CqiMapper;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.SystemUtil;
 import org.apache.commons.lang.StringUtils;
@@ -19,7 +20,7 @@ import javax.inject.Inject;
 import java.util.*;
 
 @Controller
-@SessionAttributes({"lectureFundamentals", "counseling", "lectureContents", "profLectureMethod"})
+@SessionAttributes({"lectureFundamentals", "counseling", "lectureContents", "profLectureMethod", "cqi"})
 @PreAuthorize("hasRole('ROLE_PROFESSOR')")
 @RequestMapping("/professor")
 public class ProfessorController {
@@ -59,6 +60,8 @@ public class ProfessorController {
     private AssessmentFactorMapper assessmentFactorMapper;
     @Inject
     private AssessmentMapper assessmentMapper;
+    @Inject
+    private CqiMapper cqiMapper;
 
 
     @RequestMapping("/studentGuidance/studentLookup")
@@ -670,8 +673,13 @@ public class ProfessorController {
         return "role/professor/cqiReport/courseTable";
     }
 
+
+
     @RequestMapping("/classProgress/cqiReport/courseDetail")
     public String cqiReportCourseDetail(Model model, @RequestParam int courseId) {
+        MenuAccess menuAccess = menuAccessMapper.findOne();
+        model.addAttribute("menuAccess", menuAccess);
+
         ProfessorCourse pc = professorCourseMapper.findOne(courseId);
         List<Assessment> assessmentList = assessmentMapper.findByProfCourseId(pc.getId());
         pc.setAssessmentList(assessmentList);
@@ -693,15 +701,43 @@ public class ProfessorController {
         model.addAttribute("professorCourseList", professorCourseList);
 
         int currentYear = pc.getSemester().getYear();
+        model.addAttribute("currentYear", currentYear);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(pc.getId());
+        model.addAttribute("lectureFundamentals", lectureFundamentals);
+        Map<Integer, Double> averageAssignedMap = new LinkedHashMap<>();
+        Map<Integer, Cqi> cqiMap = new LinkedHashMap<>();
+        for(int i=(currentYear - 2); i<currentYear; i++) {
+            Cqi cqi = cqiMapper.findByYearCourseIdDivide(i, pc.getCourseId(), pc.getDivide());
 
-        Map<Integer, Double> averageAssignedMap = new HashMap<>();
+            if (cqi == null) {
+                cqi = new Cqi();
+            }
+            cqiMap.put(i, cqi);
+            if(i == currentYear - 1) {
+                model.addAttribute("prevCqi", cqi);
+            }
+        }
+        model.addAttribute("cqiMap", cqiMap);
+
+        Cqi cqi = cqiMapper.findByProfCourseId(pc.getId());
+        if(cqi == null) {
+            cqi = new Cqi();
+            cqi.setSemesterId(pc.getSemesterId());
+            cqi.setCourseId(pc.getCourseId());
+            cqi.setUserId(User.current().getId());
+            cqi.setDivide(pc.getDivide());
+            cqi.setProfCourseId(pc.getId());
+        }
+        model.addAttribute("cqi", cqi);
+
         for(int i=(currentYear - 2); i<=currentYear; i++) {
+
             Searchable searchable = new Searchable();
             searchable.setCourseId(pc.getCourseId());
             searchable.setYear(i);
             List<ProfessorCourse> professorCourses = professorCourseMapper.findByYearSemesterCourseId(searchable);
 
-            double avg = 0.0;
+            double avg;
             int total = 0;
 
             for(ProfessorCourse p: professorCourses) {
@@ -726,6 +762,20 @@ public class ProfessorController {
 
 
         return "role/professor/cqiReport/courseDetail";
+    }
+
+    @RequestMapping(value = "/classProgress/cqiReport/courseDetail", method = RequestMethod.POST)
+    @ResponseBody
+    public String cqiReportCourseDetail(@ModelAttribute("cqi") Cqi cqi, @RequestParam int courseId) {
+
+        System.out.println("cqi = " + cqi);
+        if(cqi.getId() == 0) {
+            cqiMapper.insert(cqi);
+        } else {
+            cqiMapper.update(cqi);
+        }
+
+        return "true";
     }
 
     @RequestMapping("/classProgress/graduationResearchPlan")

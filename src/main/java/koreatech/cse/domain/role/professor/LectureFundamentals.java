@@ -554,6 +554,27 @@ public class LectureFundamentals implements Serializable {
         this.ref6Checkbox = ref6Checkbox;
     }
 
+
+    public String getClo(int id) {
+        switch (id) {
+            case 1:
+                return clo1;
+            case 2:
+                return clo2;
+            case 3:
+                return clo3;
+            case 4:
+                return clo4;
+            case 5:
+                return clo5;
+            case 6:
+                return clo6;
+
+            default:
+                return "";
+        }
+    }
+
     public List<String> toStringList(String str) {
         List<String> splitList = new ArrayList<>();
         try {

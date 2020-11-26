@@ -270,7 +270,7 @@
                                 <spring:message code="professor.courseLearningObjectives"/>
                             </td>
                             <td>
-                                <spring:message code="professor.learningObjectives"/>
+                                <spring:message code="professor.learningAchievement"/>
                             </td>
                             <td>
                                 <spring:message code="professor.reflectType"/>

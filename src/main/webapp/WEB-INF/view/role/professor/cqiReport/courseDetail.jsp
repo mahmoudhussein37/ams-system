@@ -335,83 +335,56 @@
     </div>
 </div>
 <br/><br/>
+
+<form:form class="form" modelAttribute="cqi" id="cqiForm" action="${baseUrl}/professor/classProgress/cqiReport/courseDetail?courseId=${pc.id}" method="post">
 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="professor.courseLearningObjectives"/></h3>
 <div class="row">
     <div class="col-md-12">
         <table class="table table-bordered">
             <tr>
-                <td>
+                <td rowspan="2" style="text-align:center">
                     <spring:message code="common.no"/>
                 </td>
-                <td>
+                <td rowspan="2" style="text-align:center">
                     <spring:message code="professor.courseLearningObjectives"/>
                 </td>
-                <td>
-                    2018
-                </td>
-                <td>
+
+                <td colspan="3" style="text-align:center">
                     <spring:message code="professor.achievementScore"/><br/>
-                    2019
 
                 </td>
-                <td>
-                    2020
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    1
-                </td>
-                <td>
-                    General Review of...
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    4
 
-                </td>
-                <td style="background-color:#37a94b">
-                    5
-                </td>
             </tr>
-            <tr>
+            <tr style="text-align:center">
+                <c:forEach var="entry" items="${cqiMap}">
+                    <td>
+                        ${entry.key}
+                    </td>
+                </c:forEach>
                 <td>
-                    2
+                    ${currentYear} (1 ~ 5)
                 </td>
-                <td>
-                    Concept of pointers...
-                </td>
-                <td>
-                    4
-                </td>
-                <td>
-                    4
 
-                </td>
-                <td style="background-color:#37a94b">
-                    4
-                </td>
             </tr>
-            <tr>
-                <td>
-                    3
-                </td>
-                <td>
-                    Handling data using...
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    4
+            <c:forEach var="d" begin="1" end="6">
+                <tr style="text-align:center">
+                    <td>
+                        ${d}
+                    </td>
+                    <td>
+                            ${lectureFundamentals.getClo(d)}
+                    </td>
+                    <c:forEach var="entry" items="${cqiMap}">
+                        <td>
+                                ${entry.value.getScore(d)}
+                        </td>
+                    </c:forEach>
 
-                </td>
-                <td style="background-color:#37a94b">
-                    5
-                </td>
-            </tr>
+                    <td style="background-color:#37a94b">
+                        <input class="form-control" type="number" min="1" max="5" name="score${d}" value="${cqi.getScore(d)}"/>
+                    </td>
+                </tr>
+            </c:forEach>
 
         </table>
     </div>
@@ -432,14 +405,12 @@
             <tr>
                 <td>
 <textarea rows="6" dir="rtl" class="form-control" disabled>
-last data...
+${prevCqi.plan}
 
 </textarea>
                 </td>
                 <td>
-                    <textarea rows="6"  dir="rtl" class="form-control" >
-
-                    </textarea>
+<form:textarea path="problem" rows="6"  dir="rtl" class="form-control" />
 
                 </td>
             </tr>
@@ -451,11 +422,17 @@ last data...
 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="professor.comprehensiveLecture"/></h3>
 <div class="row">
     <div class="col-md-12">
-        <textarea rows="6" dir="rtl"  class="form-control" >
-
-                    </textarea>
+<form:textarea path="plan" rows="6" dir="rtl"  class="form-control" />
     </div>
 </div>
+
+<c:if test="${menuAccess.cqi}">
+    <div class="card-footer">
+        <button type="button" id="cqi-save-btn" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
+            <%--<button type="reset" class="btn btn-secondary">Cancel</button>--%>
+    </div>
+</c:if>
+</form:form>
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
     var colors = ['rgba(255, 99, 132)','rgba(54, 162, 235)', "#5a9997","#8950FC","#FFA800",'rgb(235,217,54)','rgb(217,200,136)','#1BC5BD', '#3699FF', '#1BC5BD'];
@@ -708,5 +685,25 @@ last data...
         options: {
             maintainAspectRatio: false
         }
+    });
+    $(document).ready(function() {
+        $("#cqi-save-btn").click(function(e) {
+            e.preventDefault();
+            var i, valid = true;
+            for(i=1; i<=6; i++) {
+                var score = $("input[name=score" + i + "]").val();
+                if(Number(score) > 5) {
+                    valid = false;
+                }
+            }
+            if(valid) {
+                $.post('${baseUrl}/professor/classProgress/cqiReport/courseDetail?courseId=${pc.id}', $('#cqiForm').serialize(), function() {
+                    alert("<spring:message code="common.success"/>");
+                });
+            } else {
+                alert("<spring:message code="professor.checkScores"/>");
+            }
+
+        });
     });
 </script>
