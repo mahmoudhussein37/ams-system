@@ -21,46 +21,40 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-2">
-                                    <button class="btn btn-secondary" style="width:100%;" onclick="search()"><spring:message code="common.search"/></button>
-                                </div>
-                                <div class="col-md-2">
-                                    <button class="btn btn-secondary" style="width:100%;" ><spring:message code="common.new"/></button>
-                                </div>
-                                <div class="col-md-2">
+
+
+                                <%--<div class="col-md-2">
                                     <button class="btn btn-secondary" style="width:100%;" ><spring:message code="common.delete"/></button>
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-secondary" style="width:100%;" ><spring:message code="common.save"/></button>
-                                </div>
+                                </div>--%>
                             </div>
                             <br/>
                             <div class="row">
                                 <div class="col-md-3">
                                     <spring:message code="common.year"/><br/>
                                     <select id="search-year" class="form-control" style="margin-top:10px;">
+<option value="0">-</option>
                                         <c:forEach var="y" items="${yearList}">
-                                            <option value="${y}">${y}</option>
-                                        </c:forEach>
-                                    </select>
 
-                                </div>
-                                <div class="col-md-3">
-                                    <spring:message code="common.grade"/><br/>
-                                    <select id="search-grade" class="form-control" style="margin-top:10px;">
-                                        <c:forEach var="y" begin="1" end="4">
-                                            <option value="${y}">${y}</option>
+<option value="${y}">${y}</option>
                                         </c:forEach>
-                                    </select>
+                                        </select>
 
                                 </div>
                                 <div class="col-md-3">
                                     <spring:message code="common.studentsName"/><br/>
                                     <input type="text" id="search-name" class="form-control input-enter"  value="" style="margin-top:10px;"/>
                                 </div>
-
-
-
+                                <div class="col-md-2">
+                                    <br/>
+                                    <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
+                                </div>
+                                <div class="col-md-1">
+                                    <br/>
+                                    <button class="btn btn-light print" style="width:100%;margin-top:10px;"> <spring:message code="common.print"/></button>
+                                </div>
                             </div>
                             <br/><br/>
 
@@ -108,7 +102,6 @@
     function search() {
         var year = $("#search-year").children("option:selected").val().trim();
         var name = $("#search-name").val().trim();
-
         $(".table-div").load("${baseUrl}/admin/studentManagement/studentCounseling/counselingTable?year=" + year + "&name=" + name);
     }
 

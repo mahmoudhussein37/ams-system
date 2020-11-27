@@ -126,7 +126,6 @@ public class UserService implements UserDetailsService {
         }
         List<Authority> authorities = authorityMapper.findByUserId(user.getId());
         user.setAuthorities(authorities);
-        System.out.println("user = " + user);
         return user;
     }
 

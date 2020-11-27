@@ -84,6 +84,11 @@
                     <spring:message code="menu.admin.main5"/>
                 </a>
             </li>
+            <%--<li class="nav-item mr-2">
+                <a href="#" class="nav-link btn btn-clean ${fn:contains(requestUri, '/admin/boardManagement') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_5" role="tab">
+                    <spring:message code="menu.admin.main6"/>
+                </a>
+            </li>--%>
         </ul>
     </c:when>
 </c:choose>

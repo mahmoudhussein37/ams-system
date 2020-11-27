@@ -4,7 +4,7 @@
     <thead>
     <tr class="text-uppercase">
 
-        <th></th>
+        <th class="pl-0" style=""><input type="checkbox" class="table-checkbox-all" name="tableCheckboxAll" onClick="setTableCheckboxAll()"></th>
         <th class="pl-0" style=""><spring:message code="common.no"/></th>
         <th style=""><span class="text-primary"><spring:message code="common.year"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.date"/></span></th>
@@ -17,8 +17,8 @@
     <tbody>
     <c:forEach var="counseling" items="${counselingList}" varStatus="varStatus">
         <tr>
-            <td>
-                <input type="checkbox"/>
+            <td class="pl-0">
+                <input type="checkbox" class="counseling-checkbox" name="tableCheckbox" value="${counseling.id}">
             </td>
             <td class="pl-0">
                     ${varStatus.count}
@@ -48,15 +48,36 @@
     </tbody>
 </table>
 <script>
-    $("#student-list").DataTable();
+    function setTableCheckboxAll() {
+        var checked = $("input[name=tableCheckboxAll]").is(":checked");
+        var checkboxes = $("input[name=tableCheckbox]");
+        setCheckboxAll(checked, checkboxes);
+    }
+    $(document).ready(function() {
+        $("#student-list").DataTable();
 
-    <c:if test="${not empty firstCounseling}">
+        <c:if test="${not empty firstCounseling}">
         $(".detail-div").load("${baseUrl}/admin/studentManagement/studentCounseling/counselingDetail?counselingId=${firstCounseling.id}");
-    </c:if>
-    $("body").on('click', '.student-detail', function (e) {
-        e.preventDefault();
-        var counselingId = $(this).attr("data-counseling-id");
-        $(".detail-div").load("${baseUrl}/admin/studentManagement/studentCounseling/counselingDetail?counselingId=" + counselingId);
+        </c:if>
+        $("body").on('click', '.student-detail', function (e) {
+            e.preventDefault();
+            var counselingId = $(this).attr("data-counseling-id");
+            $(".detail-div").load("${baseUrl}/admin/studentManagement/studentCounseling/counselingDetail?counselingId=" + counselingId);
 
+        });
+
+        $("body").on('click', '.print', function (e) {
+            e.preventDefault();
+            var checkedAll = $("input[name=tableCheckboxAll]").is(":checked");
+            var year = $("#search-year").children("option:selected").val().trim();
+            var name = $("#search-name").val().trim();
+            var size = $("input[name=tableCheckbox]:checked").length;
+            if (!checkedAll && size == 0) {
+                alert("<spring:message code="common.pleaseSelectItems"/>");
+            } else {
+                openPage("${baseUrl}/admin/studentManagement/studentCounseling/counselingDetailForPrint?checkAll=" + checkedAll + "&year=" + year + "&name=" + name + "&" + parameterize("tableCheckbox"));
+            }
+        });
     });
+
 </script>

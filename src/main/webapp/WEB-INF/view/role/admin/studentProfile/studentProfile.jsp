@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <spring:message code="common.department"/><br/>
-                                    <select id="search-division" class="form-control" style="margin-top:10px;">
+                                    <select id="search-division" class="form-control" style="margin-top:10px;"><option value="0">-</option>
                                         <c:forEach var="division" items="${divisions}">
                                             <option value="${division.id}">${division.name}</option>
                                         </c:forEach>
@@ -113,13 +113,11 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
-    var studentMap = new CustomMap();
     function search() {
         var schoolYear = $("#search-school-year").children("option:selected").val().trim();
         var advisor = $("#search-advisor").children("option:selected").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
         //var major = $("#search-major").children("option:selected").val().trim();
-        studentMap = new CustomMap();
         $(".table-div").load("${baseUrl}/admin/studentManagement/studentProfile/studentTable?schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division);
     }
 

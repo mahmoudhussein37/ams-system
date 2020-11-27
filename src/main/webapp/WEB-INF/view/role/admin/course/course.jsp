@@ -31,7 +31,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <spring:message code="common.department"/><br/>
-                                    <select id="search-division" class="form-control" style="margin-top:10px;">
+                                    <select id="search-division" class="form-control" style="margin-top:10px;"><option value="0">-</option>
                                         <c:forEach var="division" items="${divisions}">
                                             <option value="${division.id}">${division.name}</option>
                                         </c:forEach>
@@ -119,11 +119,11 @@
                                             </div>
                                         </div>
 
-<%--                                        <div class="col-md-3">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label><spring:message code="common.credit"/></label>
                                                 <form:input path="credit" type="number" class="form-control"/>
-                                                    &lt;%&ndash;<span class="form-text text-muted">Please enter your full name</span>&ndash;%&gt;
+                                                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -136,7 +136,7 @@
                                                     <form:input type="number" path="ws" class="form-control" style="width:29%;display:inline" placeholder="Workshop/Practice"/>
                                                 </div>
                                             </div>
-                                        </div>--%>
+                                        </div>
                                     </div>
 
                                     <div class="row">

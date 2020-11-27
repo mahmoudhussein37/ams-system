@@ -1,7 +1,5 @@
 package koreatech.cse.domain.univ;
 
-import koreatech.cse.domain.User;
-import koreatech.cse.domain.role.professor.LectureFundamentals;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
@@ -38,34 +36,14 @@ public class Course implements Serializable {
 
 
 
-    private int semesterId;
-    private Semester semester;
 
     private String category;
 
-    private boolean retake;
-    private String retakeCode;
-    private String retakeTitle;
-
-
-    private int divide;
 
     private int schoolYear;
     private String lang;
     private String lectureTime;
     private String compCategory;
-
-    private int profUserId;
-    private int maxStudent;
-
-
-    private User profUser;
-    private LectureFundamentals lectureFundamentals;
-
-
-
-
-
 
 
     public int getId() {
@@ -74,22 +52,6 @@ public class Course implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getSemesterId() {
-        return semesterId;
-    }
-
-    public void setSemesterId(int semesterId) {
-        this.semesterId = semesterId;
-    }
-
-    public Semester getSemester() {
-        return semester;
-    }
-
-    public void setSemester(Semester semester) {
-        this.semester = semester;
     }
 
     public String getCode() {
@@ -122,30 +84,6 @@ public class Course implements Serializable {
 
     public void setCredit(int credit) {
         this.credit = credit;
-    }
-
-    public boolean isRetake() {
-        return retake;
-    }
-
-    public void setRetake(boolean retake) {
-        this.retake = retake;
-    }
-
-    public String getRetakeCode() {
-        return retakeCode;
-    }
-
-    public void setRetakeCode(String retakeCode) {
-        this.retakeCode = retakeCode;
-    }
-
-    public String getRetakeTitle() {
-        return retakeTitle;
-    }
-
-    public void setRetakeTitle(String retakeTitle) {
-        this.retakeTitle = retakeTitle;
     }
 
     public int getDivisionId() {
@@ -204,52 +142,12 @@ public class Course implements Serializable {
         this.subjCategory = subjCategory;
     }
 
-    public int getProfUserId() {
-        return profUserId;
-    }
-
-    public void setProfUserId(int profUserId) {
-        this.profUserId = profUserId;
-    }
-
-    public int getMaxStudent() {
-        return maxStudent;
-    }
-
-    public void setMaxStudent(int maxStudent) {
-        this.maxStudent = maxStudent;
-    }
-
-    public User getProfUser() {
-        return profUser;
-    }
-
-    public void setProfUser(User profUser) {
-        this.profUser = profUser;
-    }
-
     public Division getDivision() {
         return division;
     }
 
     public void setDivision(Division division) {
         this.division = division;
-    }
-
-    public LectureFundamentals getLectureFundamentals() {
-        return lectureFundamentals;
-    }
-
-    public void setLectureFundamentals(LectureFundamentals lectureFundamentals) {
-        this.lectureFundamentals = lectureFundamentals;
-    }
-
-    public int getDivide() {
-        return divide;
-    }
-
-    public void setDivide(int divide) {
-        this.divide = divide;
     }
 
     public int getLec() {

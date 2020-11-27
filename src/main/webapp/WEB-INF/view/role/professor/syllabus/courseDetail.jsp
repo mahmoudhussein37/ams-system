@@ -32,12 +32,39 @@
 
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
-$(document).ready(function() {
-   $("#lecture-fundamental-save").click(function(e) {
-     e.preventDefault();
-       $.post('${baseUrl}/professor/classProgress/syllabus/courseDetail?courseId=${course.id}', $('#lectureFundamentalsForm').serialize(), function() {
-         alert("<spring:message code="common.success"/>");
-       });
-   });
-});
+    $(document).ready(function() {
+        $("#lecture-fundamental-save").click(function(e) {
+            e.preventDefault();
+            var rateAttendance = Number($("input[name=rateAttendance]").val());
+            var rateAssignment = Number($("input[name=rateAssignment]").val());
+            var rateMid = Number($("input[name=rateMid]").val());
+            var rateFinal = Number($("input[name=rateFinal]").val());
+            var rateOptional = Number($("input[name=rateOptional]").val());
+
+            var total = rateAttendance + rateAssignment + rateMid + rateFinal + rateOptional;
+
+            if(total == 100) {
+                $.post('${baseUrl}/professor/classProgress/syllabus/courseDetail/lectureFundamentals?profCourseId=${pc.course.id}', $('#lectureFundamentalsForm').serialize(), function() {
+                    alert("<spring:message code="common.success"/>");
+                });
+            } else {
+                alert("<spring:message code="professor.checkRates"/>");
+            }
+
+
+        });
+
+        $("#prof-lecture-method-save").click(function(e) {
+            e.preventDefault();
+            $.post('${baseUrl}/professor/classProgress/syllabus/courseDetail/profLectureMethod?profCourseId=${pc.course.id}', $('#profLectureMethodForm').serialize(), function() {
+                alert("<spring:message code="common.success"/>");
+            });
+        });
+        $("#lecture-contents-save").click(function(e) {
+            e.preventDefault();
+            $.post('${baseUrl}/professor/classProgress/syllabus/courseDetail/lectureContents?profCourseId=${pc.course.id}', $('#lectureContentsForm').serialize(), function() {
+                alert("<spring:message code="common.success"/>");
+            });
+        });
+    });
 </script>

@@ -14,7 +14,7 @@ public final class DateHelper {
     }
 
     public static Date now() {
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"));
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Egypt"));
         return calendar.getTime();
     }
 
@@ -25,8 +25,8 @@ public final class DateHelper {
 
     public static String format(String dateFormat, Date date) {
         if(date == null || dateFormat == null) return "";
-        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.KOREA);
-        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.ENGLISH);
+        sdf.setTimeZone(TimeZone.getTimeZone("Egypt"));
         return sdf.format(date);
     }
 
@@ -37,8 +37,8 @@ public final class DateHelper {
 
     public static Date parse(String dateFormat, String dateString) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.KOREA);
-            sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+            SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.ENGLISH);
+            sdf.setTimeZone(TimeZone.getTimeZone("Egypt"));
             return sdf.parse(dateString);
         } catch (Exception e) {
             return null;
@@ -58,8 +58,8 @@ public final class DateHelper {
     }
 
     public static SimpleDateFormat getDateFormat(String dateFormat) {
-        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.KOREA);
-        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.ENGLISH);
+        sdf.setTimeZone(TimeZone.getTimeZone("Egypt"));
         return sdf;
     }
 

@@ -1,6 +1,10 @@
 package koreatech.cse.domain;
 
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
+import java.util.List;
+
 public class Searchable {
     private String name;
     private String number;
@@ -11,13 +15,16 @@ public class Searchable {
     private int userId;
     private int schoolYear;
     private int advisor;
+    private int courseId;
     private String code;
     private String title;
+    private boolean enabled;
 
 
     private String orderParam;
     private String orderDir;
 
+    private List<Integer> userIds;
 
     public String getName() {
         return name;
@@ -121,5 +128,34 @@ public class Searchable {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public List<Integer> getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(List<Integer> userIds) {
+        this.userIds = userIds;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

@@ -3,11 +3,14 @@ package koreatech.cse.controller.role;
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.role.professor.LectureFundamentals;
+import koreatech.cse.domain.role.student.GraduationResearchPlan;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.AuthorityService;
 import koreatech.cse.service.UserService;
+import koreatech.cse.util.DateHelper;
+import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -31,8 +35,6 @@ public class StudentController {
     @Inject
     private AuthorityService authorityService;
     @Inject
-    private MajorMapper majorMapper;
-    @Inject
     private UserService userService;
     @Inject
     private CourseMapper courseMapper;
@@ -42,6 +44,8 @@ public class StudentController {
     private LectureFundamentalsMapper lectureFundamentalsMapper;
     @Inject
     private SemesterMapper semesterMapper;
+    @Inject
+    private GraduationResearchPlanMapper graduationResearchPlanMapper;
 
 
     @RequestMapping("/courseGuide/yearlyCurriculum")
@@ -63,7 +67,7 @@ public class StudentController {
         searchable.setYear(year);
         searchable.setDivision(division);
 
-        List<Course> courseList = courseMapper.findByMakeupClass(searchable);
+        List<Course> courseList = courseMapper.findByYearSemester(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -91,7 +95,7 @@ public class StudentController {
         searchable.setCode(code);
         searchable.setTitle(title);
 
-        List<Course> courseList = courseMapper.findByMakeupClass(searchable);
+        List<Course> courseList = courseMapper.findByYearSemester(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -125,7 +129,7 @@ public class StudentController {
         searchable.setCode(code);
         searchable.setTitle(title);
 
-        List<Course> courseList = courseMapper.findByMakeupClass(searchable);
+        List<Course> courseList = courseMapper.findByYearSemester(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -186,7 +190,6 @@ public class StudentController {
                                       @RequestParam(defaultValue = "0", required=false) int year,
                                       @RequestParam(defaultValue = "0", required=false) int semester) {
 
-        System.out.println("ddd");
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
@@ -207,7 +210,7 @@ public class StudentController {
     public String courseDetail(Model model, @RequestParam int courseId) {
         Course course = courseMapper.findOne(courseId);
         model.addAttribute("course", course);
-        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByCourseId(courseId);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
         model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
         return "role/student/syllabus/courseDetail";
     }
@@ -335,7 +338,7 @@ public class StudentController {
     public String classAssessmentCourseDetail(Model model, @RequestParam int courseId) {
         Course course = courseMapper.findOne(courseId);
         model.addAttribute("course", course);
-        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByCourseId(courseId);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
         model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
         return "role/student/classAssessment/courseDetail";
     }
@@ -368,13 +371,38 @@ public class StudentController {
     }
 
     @RequestMapping("/graduation/graduationResearchPlan")
-    public String graduationResearchPlan(Model model) {
+    public String graduationResearchPlan(Model model, @RequestParam(required=false) String result) {
         User studentUser = User.current();
         model.addAttribute("studentUser", studentUser);
-        return "role/student/graduationResearchPlan/graduationResearchPlan";
+
+        GraduationResearchPlan stored = graduationResearchPlanMapper.findByUserId(studentUser.getId());
+        model.addAttribute("stored", stored);
+        model.addAttribute("graduationResearchPlan", new GraduationResearchPlan());
+        model.addAttribute("result", result);
+        if (stored == null)
+            return "role/student/graduationResearchPlan/newGraduationResearchPlan";
+        else
+            return "role/student/graduationResearchPlan/graduationResearchPlan";
     }
 
+    @RequestMapping(value = "/graduation/graduationResearchPlan", method = RequestMethod.POST)
+    public String graduationResearchPlan(@ModelAttribute("graduationResearchPlan") GraduationResearchPlan graduationResearchPlan, SessionStatus sessionStatus) {
 
+        User studentUser = User.current();
+        graduationResearchPlan.setUserId(studentUser.getId());
+        try {
+            String submitDate = graduationResearchPlan.getSubmitDate();
+            Date d = DateHelper.parse("yyyy-MM-dd", submitDate);
+            DateTime dt = new DateTime(d);
+            graduationResearchPlan.setYear(dt.getYear());
+
+        } catch(Exception e) {
+
+        }
+
+        graduationResearchPlanMapper.insert(graduationResearchPlan);
+        return "redirect:/student/graduation/graduationResearchPlan?result=success";
+    }
 
 
 

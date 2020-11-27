@@ -77,28 +77,10 @@
                     <th>
                         <spring:message code="common.credit"/>
                     </th>
-                    <th>
-                        <spring:message code="common.retake"/>
-                    </th>
-                    <th>
-                        <spring:message code="common.retakeCode"/>
-                    </th>
-                    <th>
-                        <spring:message code="common.retakeTitle"/>
-                    </th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
                     <td>
 
                     </td>

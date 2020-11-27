@@ -18,6 +18,7 @@
                         <div class="card-header">
                             <h3 class="card-title font-weight-bolder"><spring:message code="menu.student.sub5_2"/></h3>
                         </div>
+<form:form modelAttribute="stored" class="form">
                         <div class="card-body">
 
                             <div class="row">
@@ -85,7 +86,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label><spring:message code="common.schoolYear"/></label>
-                                        <input type="text" class="form-control" value="" disabled/>
+                                        <input type="text" class="form-control" value="${studentUser.schoolYear}" disabled/>
                                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                     </div>
                                 </div>
@@ -96,7 +97,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label><spring:message code="common.approve"/></label>
-                                        <input type="text" class="form-control" value="AAA" disabled/>
+                                        <input type="text" class="form-control" value="${stored.enabled ? 'Y' : 'N'}" disabled/>
                                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                     </div>
                                 </div>
@@ -112,10 +113,10 @@
 
                                         <tr>
                                             <td>
-                                                <spring:message code="professor.researchPlan"/>
+                                                <spring:message code="professor.researchTitle"/>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control" disabled/>
+                                                <form:input type="text" path="title" class="form-control" disabled="true"/>
                                             </td>
 
 
@@ -125,7 +126,7 @@
                                                 <spring:message code="professor.outcomeType"/>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control" disabled/>
+                                                <form:input type="text" path="type" class="form-control" disabled="true"/>
                                             </td>
 
 
@@ -135,9 +136,9 @@
                                                 <spring:message code="professor.studyPeriod"/>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control date-picker" style="width:49%;display:inline"/> ~
+                                                <form:input type="text" path="startDate" class="form-control date-picker" style="width:49%;display:inline" disabled="true"/> ~
 
-                                                <input type="text" class="form-control date-picker" style="width:49%;display:inline"/>
+                                                <form:input type="text" path="endDate" class="form-control date-picker" style="width:49%;display:inline" disabled="true"/>
 
                                             </td>
                                         </tr>
@@ -146,7 +147,7 @@
                                                 <spring:message code="professor.studyPurpose"/>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control" disabled/>
+                                                <form:input type="text" path="purpose" class="form-control" disabled="true"/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -154,7 +155,7 @@
                                                 <spring:message code="professor.scopeOfStudy"/>
                                             </td>
                                             <td>
-                                                <textarea rows="5" class="form-control"></textarea>
+                                                <form:textarea path="scope" class="form-control" dir="rtl" rows="6" disabled="true"></form:textarea>
                                             </td>
                                         </tr>
                                         <tr>
@@ -162,7 +163,7 @@
                                                 <spring:message code="professor.processAndMethodOfResearch"/>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control" disabled/>
+                                                <form:input type="text" path="method" class="form-control" disabled="true"/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -170,7 +171,7 @@
                                                 <spring:message code="professor.projectImplementation"/>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control" disabled/>
+                                                <form:input type="text" path="impl" class="form-control" disabled="true"/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -178,7 +179,7 @@
                                                 <spring:message code="common.schedule"/>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control" disabled/>
+                                                <form:input type="text" path="schedule" class="form-control" disabled="true"/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -186,7 +187,7 @@
                                                 <spring:message code="professor.references"/>
                                             </td>
                                             <td>
-                                                <textarea rows="5" class="form-control"></textarea>
+                                                <form:textarea path="ref" class="form-control" dir="rtl" rows="6" disabled="true"></form:textarea>
                                             </td>
                                         </tr>
                                         <tr>
@@ -194,7 +195,7 @@
                                                 <spring:message code="professor.etc"/>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control" disabled/>
+                                                <form:input type="text" path="etc" class="form-control" disabled="true"/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -202,7 +203,7 @@
                                                 <spring:message code="professor.dateOfSubmission"/>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control date-picker"/>
+                                                <form:input type="text" path="submitDate" class="form-control date-picker" disabled="true"/>
                                             </td>
                                         </tr>
                                     </table>
@@ -210,9 +211,8 @@
                             </div>
 
                         </div>
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.submit"/></button>
-                        </div>
+
+</form:form>
                     </div>
                     <!--end::Card-->
                 </div>
@@ -234,6 +234,10 @@
 
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
+    <c:if test="${not empty result}">
+    alert("<spring:message code='common.success'/>");
+    location.href="${baseUrl}/student/graduation/graduationResearchPlan";
+    </c:if>
     var KTBootstrapDatepicker = function () {
 
         var arrows;

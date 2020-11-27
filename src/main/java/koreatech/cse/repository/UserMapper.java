@@ -6,6 +6,7 @@ import koreatech.cse.domain.User;
 import koreatech.cse.repository.provider.UserSqlProvider;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -81,6 +82,10 @@ public interface UserMapper {
     List<User> findAllProfessors();
 
     @ResultMap("findOne-int")
+    @Select("SELECT * FROM USER u join authority a on u.id = a.user_id where a.role = 'ROLE_PROFESSOR' and u.division_id=#{divisionId}")
+    List<User> findProfessorsByDivision(@Param("divisionId") int divisionId);
+
+    @ResultMap("findOne-int")
     @Select("SELECT * FROM USER u join authority a on u.id = a.user_id where a.role = 'ROLE_ADMIN'")
     List<User> findAllAdmins();
 
@@ -91,6 +96,10 @@ public interface UserMapper {
     @ResultMap("findOne-int")
     @Select("select * from user where number = #{number}")
     User findByNumber(@Param("number") String number);
+
+    @ResultMap("findOne-int")
+    @Select("select * from user u join authority a on u.id = a.user_id where a.role = 'ROLE_STUDENT' and u.number = #{number}")
+    User findStudentByNumber(@Param("number") String number);
 
     @Delete("DELETE FROM USER WHERE ID = #{id}")
     void delete(User user);
@@ -108,7 +117,7 @@ public interface UserMapper {
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
     //@formatter on
-    List<User> findByStudentLookup(Searchable searchable);
+    List<User> findByNameNumberDivision(Searchable searchable);
 
     @ResultMap("findOne-int")
     //@formatter off
@@ -125,6 +134,18 @@ public interface UserMapper {
     @ResultMap("findOne-int")
     //@formatter off
     @Select("<script>"
+            + "SELECT * FROM USER u join contact c on u.id=c.user_id join authority a on u.id = a.user_id where a.role = 'ROLE_STUDENT' "
+            + "<if test='name != null'> and (c.last_name LIKE CONCAT('%', #{name}, '%') or c.first_name LIKE CONCAT('%', #{name}, '%'))</if>"
+            + "<if test='number != null'> and u.number LIKE CONCAT('%', #{number}, '%')</if>"
+            + "<if test='division != 0'> and u.division_id = #{division}</if>"
+            + "<if test='userIds != null and !userIds.empty'> AND u.id not in <foreach item='item' collection='userIds' open='(' separator=',' close=')'>#{item}</foreach></if>"
+            + "</script>")
+    //@formatter on
+    List<User> findStudentsByAdvisorSchoolYearDivisionExceptRegistered(@Param("userIds") List<Integer> userIds, @Param("number") String number, @Param("name") String name, @Param("division") int division);
+
+    @ResultMap("findOne-int")
+    //@formatter off
+    @Select("<script>"
             + "SELECT * FROM USER u join contact c on u.id=c.user_id join authority a on u.id = a.user_id where a.role = 'ROLE_PROFESSOR' "
             + "<if test='name != null'> and (c.last_name LIKE CONCAT('%', #{name}, '%') or c.first_name LIKE CONCAT('%', #{name}, '%'))</if>"
             + "<if test='number != null'> and u.number LIKE CONCAT('%', #{number}, '%')</if>"
@@ -132,7 +153,7 @@ public interface UserMapper {
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
         //@formatter on
-    List<User> findByProfLookup(Searchable searchable);
+    List<User> findProfessorsByNameNumberDivision(Searchable searchable);
 
     @ResultMap("findOne-int")
     //@formatter:off

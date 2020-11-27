@@ -2,6 +2,7 @@ package koreatech.cse.repository;
 
 
 import koreatech.cse.domain.Searchable;
+import koreatech.cse.domain.User;
 import koreatech.cse.domain.role.professor.Counseling;
 import koreatech.cse.domain.univ.Course;
 import org.apache.ibatis.annotations.*;
@@ -15,12 +16,18 @@ public interface CounselingMapper {
             "`student_user_id`,"+
             "`prof_user_id`,"+
             "`number`,"+
+            "`place`,"+
+            "`contents`,"+
+            "`suggestions`,"+
             "`year`,"+
             "`date`"+
             ")VALUES("+
             "#{studentUserId},"+
             "#{profUserId},"+
             "#{number},"+
+            "#{place},"+
+            "#{contents},"+
+            "#{suggestions},"+
             "#{year},"+
             "#{date}"+
             ")")
@@ -28,9 +35,11 @@ public interface CounselingMapper {
     void insert(Counseling counseling);
 
     @Update("UPDATE `counseling` SET"+
-            "`student_user_id` = #{studentUserId},"+
-            "`prof_user_id` = #{profUserId},"+
+
             "`year` = #{year},"+
+            "`contents` = #{contents},"+
+            "`suggestions` = #{suggestions},"+
+            "`place` = #{place},"+
             "`date` = #{date} "+
             "WHERE `id` = #{id}")
     @Options(flushCache = true)
@@ -61,6 +70,15 @@ public interface CounselingMapper {
             + "</script>")
         //@formatter on
     List<Counseling> findByCounseling(Searchable searchable);
+
+    @ResultMap("findOne-int")
+    //@formatter:off
+    @Select("<script>"
+            + "SELECT * FROM counseling WHERE 1=1"
+            + "<if test='ids != null and !ids.empty'> AND id IN <foreach item='item' collection='ids' open='(' separator=',' close=')'>#{item}</foreach></if>"
+            + "</script>")
+        //@formatter:on
+    List<Counseling> findByIds(@Param("ids") List<Integer> ids);
 
 
 

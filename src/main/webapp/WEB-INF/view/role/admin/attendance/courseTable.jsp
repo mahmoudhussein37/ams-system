@@ -5,38 +5,38 @@
     <tr class="text-uppercase">
 
         <th class="pl-0" style=""><spring:message code="common.no"/></th>
+        <th style=""><span class="text-primary"><spring:message code="common.semester"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span></th>
-        <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span></th>
-        <th style=""></th>
+        <th style=""><span class="text-primary"><spring:message code="common.professor"/></span></th>
+        <th style=""><span class="text-primary"><spring:message code="common.download"/></span></th>
     </tr>
     </thead>
     <tbody>
 
-    <c:forEach var="courseElement" items="${courseList}" varStatus="varStatus">
+    <c:forEach var="pc" items="${profCourseList}" varStatus="varStatus">
         <tr>
 
             <td class="pl-0">
                     ${varStatus.count}
             </td>
             <td>
-                <a href="#" class="course-detail" data-course-id="${courseElement.id}">
-                        ${courseElement.code}
-                </a>
+                    ${pc.semester.year} - ${pc.semester.semester}
             </td>
             <td>
-                <a href="#" class="course-editable" data-type="text" data-name="title" data-url="${baseUrl}/admin/courseManagement/courseEditable" data-pk="${courseElement.id}" data-original-title="<spring:message code="common.courseTitle"/>">${courseElement.title}</a>
+                    ${pc.course.code}
+            </td>
+            <td>
+                    ${pc.course.title}
 
             </td>
-
-            <%--<td>
-                <spring:message code="comp.category.${courseElement.compCategory}"/>
-            </td>--%>
             <td>
-                <spring:message code="subj.category.${courseElement.subjCategory}"/>
+                ${pc.professorUser.getFullName()}
             </td>
             <td>
-                <a href="#"><spring:message code="common.download"/></a>
+                <c:if test="${not empty pc.attendanceFile}">
+                    <a href="${baseUrl}/download?uploadedFileId=${pc.attendanceFile.id}"><spring:message code="common.download"/></a>
+                </c:if>
             </td>
 
 

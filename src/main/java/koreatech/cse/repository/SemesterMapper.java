@@ -20,7 +20,7 @@ public interface SemesterMapper {
     Semester findOne(@Param("id") int id);
 
     @Select("SELECT * FROM semester where year=#{year} and semester=#{semester} limit 1")
-    Semester findByYearAndSemester(@Param("year") int year, @Param("semester") int semester);
+    Semester findByYearSemester(@Param("year") int year, @Param("semester") int semester);
 
     @Select("SELECT distinct year FROM semester order by year desc")
     List<Integer> findYears();

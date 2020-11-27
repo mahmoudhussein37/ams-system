@@ -13,7 +13,10 @@ public class Counseling implements Serializable {
     private int studentUserId;
     private int profUserId;
     private int year;
+    private String place;
     private String date;
+    private String contents;
+    private String suggestions;
 
     private User studentUser;
     private User profUser;
@@ -82,6 +85,30 @@ public class Counseling implements Serializable {
 
     public void setProfUser(User profUser) {
         this.profUser = profUser;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
+    public String getSuggestions() {
+        return suggestions;
+    }
+
+    public void setSuggestions(String suggestions) {
+        this.suggestions = suggestions;
     }
 
     @Override

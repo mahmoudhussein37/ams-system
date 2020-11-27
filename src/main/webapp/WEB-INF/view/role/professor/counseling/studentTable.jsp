@@ -8,7 +8,6 @@
         <th style="min-width: 120px"><span class="text-primary"><spring:message code="common.studentNumber"/></span></th>
         <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.name"/></span>
         <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.department"/></span>
-        <%--<th style="min-width: 150px"><span class="text-primary"><spring:message code="common.major"/></span>--%>
 
     </tr>
     </thead>
@@ -30,9 +29,7 @@
             <td>
                     ${studentUser.division.name}
             </td>
-            <%--<td>
-                    ${studentUser.major.name}
-            </td>--%>
+
         </tr>
     </c:forEach>
 
@@ -43,12 +40,12 @@
     $("#student-list").DataTable();
 
     <c:if test="${not empty firstUser}">
-        $(".detail-div").load("${baseUrl}/admin/profManagement/graduationResearch/studentDetail?studentId=${firstUser.id}");
+        $(".detail-div").load("${baseUrl}/professor/studentGuidance/counseling/newCounselingDetail?studentId=${firstUser.id}");
     </c:if>
     $("body").on('click', '.student-detail', function (e) {
         e.preventDefault();
         var studentId = $(this).attr("data-student-id");
-        $(".detail-div").load("${baseUrl}/admin/profManagement/graduationResearch/studentDetail?studentId=" + studentId);
+        $(".detail-div").load("${baseUrl}/professor/studentGuidance/counseling/newCounselingDetail?studentId=" + studentId);
 
     });
 </script>

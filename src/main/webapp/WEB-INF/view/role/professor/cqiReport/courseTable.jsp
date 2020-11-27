@@ -17,38 +17,38 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="course" items="${courseList}" varStatus="varStatus">
+    <c:forEach var="pc" items="${courseList}" varStatus="varStatus">
         <tr>
 
             <td class="pl-0">
                     ${varStatus.count}
             </td>
             <td class="pl-0">
-                    ${course.division.name}
+                    ${pc.course.division.name}
             </td>
             <td>
 
-                    ${course.code}
+                    ${pc.course.code}
 
             </td>
             <td>
-                    ${course.title}
+                    ${pc.course.title}
             </td>
             <%--<td>
                 <spring:message code="comp.category.${course.compCategory}"/>
             </td>--%>
             <td>
-                <spring:message code="subj.category.${course.subjCategory}"/>
+                <spring:message code="subj.category.${pc.course.subjCategory}"/>
             </td>
 
             <td>
-                    ${course.maxStudent}
+                    ${pc.limitStudent}
             </td>
             <td>
-                    ${course.enabled ? 'Y' : 'N'}
+                    ${pc.course.enabled ? 'Y' : 'N'}
             </td>
             <td>
-                <a href="#" class="course-detail" data-course-id="${course.id}">
+                <a href="#" class="course-detail" data-course-id="${pc.id}">
                     <i class="far fa-file-alt"></i>
                 </a>
             </td>

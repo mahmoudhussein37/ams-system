@@ -20,36 +20,44 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-2">
-                                    <button class="btn btn-secondary" style="width:100%;" onclick="search()"><spring:message code="common.search"/></button>
-                                </div>
-                                <div class="col-md-2">
-                                    <button class="btn btn-secondary" style="width:100%;" ><spring:message code="common.new"/></button>
-                                </div>
-                                <div class="col-md-2">
+
+
+                                <%--<div class="col-md-2">
                                     <button class="btn btn-secondary" style="width:100%;" ><spring:message code="common.delete"/></button>
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-secondary" style="width:100%;" ><spring:message code="common.save"/></button>
-                                </div>
+                                </div>--%>
                             </div>
                             <br/>
                             <div class="row">
                                 <div class="col-md-3">
                                     <spring:message code="common.year"/><br/>
                                     <select id="search-year" class="form-control" style="margin-top:10px;">
+<option value="0">-</option>
                                         <c:forEach var="y" items="${yearList}">
-                                            <option value="${y}">${y}</option>
+
+<option value="${y}">${y}</option>
                                         </c:forEach>
-                                    </select>
+                                        </select>
 
                                 </div>
                                 <div class="col-md-3">
                                     <spring:message code="common.studentsName"/><br/>
                                     <input type="text" id="search-name" class="form-control input-enter"  value="" style="margin-top:10px;"/>
                                 </div>
-
-
+                                <div class="col-md-2">
+                                    <br/>
+                                    <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
+                                </div>
+<%--                                <div class="col-md-2">
+                                    <br/>
+                                    <button class="btn btn-light" style="width:100%;margin-top:10px;" onclick="javascript:location.reload()"><spring:message code="common.reset"/></button>
+                                </div>--%>
+                                <div class="col-md-2">
+                                    <br/>
+                                    <a href="/professor/studentGuidance/counseling/newCounseling" class="btn btn-secondary" style="width:100%;margin-top:10px;" ><spring:message code="common.new"/></a>
+                                </div>
 
                             </div>
                             <br/><br/>

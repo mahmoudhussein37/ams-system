@@ -57,7 +57,7 @@
                             </div>
                             <br/>
                             <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.register"/></button>
-                            </form:form>.
+                            </form:form>
                         </div>
 
                     </div>

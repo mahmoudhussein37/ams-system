@@ -8,7 +8,6 @@
         <th style="min-width: 120px"><span class="text-primary"><spring:message code="common.studentNumber"/></span></th>
         <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.name"/></span>
         <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.department"/></span>
-        <th style="min-width: 150px"><span class="text-primary"><spring:message code="common.major"/></span>
 
     </tr>
     </thead>
@@ -29,9 +28,6 @@
             </td>
             <td>
                     ${studentUser.division.name}
-            </td>
-            <td>
-                    ${studentUser.major.name}
             </td>
         </tr>
     </c:forEach>

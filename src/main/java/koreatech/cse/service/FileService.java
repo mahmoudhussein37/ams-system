@@ -10,6 +10,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -90,5 +91,9 @@ public class FileService {
 
         fileName = fileName.replace(" ", "_");
         return fileName;
+    }
+
+    public String getTempPath(HttpServletRequest request) {
+        return request.getSession().getServletContext().getRealPath("/") + "temp";
     }
 }

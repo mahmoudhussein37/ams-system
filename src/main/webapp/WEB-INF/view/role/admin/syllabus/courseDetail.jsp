@@ -1,6 +1,6 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <div class="print-div">
-    <a href="#" class="btn btn-sm btn-light font-weight-bold">
+    <a href="#" class="btn btn-sm btn-light font-weight-bold print">
         <spring:message code="common.print"/>
     </a>
 </div>
@@ -32,5 +32,8 @@
 
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
-
+    $("body").on('click', '.print', function (e) {
+        e.preventDefault();
+        openPage("${baseUrl}/admin/courseManagement/syllabus/courseDetail?print=true&profCourseId=${pc.id}");
+    });
 </script>

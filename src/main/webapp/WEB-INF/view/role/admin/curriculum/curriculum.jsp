@@ -32,7 +32,7 @@
 
                                 <%--<div class="col-md-4">
                                     <spring:message code="common.department"/><br/>
-                                    <select id="search-division" class="form-control" style="margin-top:10px;">
+                                    <select id="search-division" class="form-control" style="margin-top:10px;"><option value="0">-</option>
                                         <c:forEach var="division" items="${divisions}">
                                             <option value="${division.id}">${division.name}</option>
                                         </c:forEach>
@@ -149,7 +149,6 @@
         var year = $("#search-year").val().trim();
         location.href="${baseUrl}/admin/courseManagement/curriculum?year=" + year;
 
-        /*$(".table-div").load("${baseUrl}/admin/courseManagement/curriculum/courseTable?year=" + year + "&division=" + division);*/
     }
 
 

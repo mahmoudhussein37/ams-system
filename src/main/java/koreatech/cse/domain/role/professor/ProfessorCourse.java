@@ -1,9 +1,18 @@
 package koreatech.cse.domain.role.professor;
 
+import koreatech.cse.domain.UploadedFile;
+import koreatech.cse.domain.User;
+import koreatech.cse.domain.role.student.StudentCourse;
+import koreatech.cse.domain.univ.AssessmentFactor;
+import koreatech.cse.domain.univ.Classroom;
 import koreatech.cse.domain.univ.Course;
+import koreatech.cse.domain.univ.Semester;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.springframework.security.access.method.P;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
+import java.util.*;
 
 public class ProfessorCourse implements Serializable {
     private static final long serialVersionUID = 4349L;
@@ -11,22 +20,31 @@ public class ProfessorCourse implements Serializable {
     private int id;
     private int userId;
     private int courseId;
+    private int divide;
+    private int semesterId;
     private Course course;
+    private User professorUser;
+    private Semester semester;
 
     private int limitStudent;
     private int numStudent;
     private int attendance;
     private int lateness;
     private int absence;
+    private boolean enabled;
 
-    private int credit;
-    private int lec;
-    private int tut;
-    private int lab;
-    private int ws;
+    private int schoolYear;
+    private int classroom; //classroom id
+    private boolean engAccreditation;
+    private String language;
 
-    private String alternative;
-    private String prerequisite;
+    private Classroom classroomObj;
+
+    private UploadedFile attendanceFile;
+
+    private List<Assessment> assessmentList;
+
+    private List<StudentCourse> studentCourseList;
 
 
     public int getId() {
@@ -102,60 +120,186 @@ public class ProfessorCourse implements Serializable {
         this.absence = absence;
     }
 
-    public int getCredit() {
-        return credit;
+    public int getSemesterId() {
+        return semesterId;
     }
 
-    public void setCredit(int credit) {
-        this.credit = credit;
+    public void setSemesterId(int semesterId) {
+        this.semesterId = semesterId;
     }
 
-    public int getLec() {
-        return lec;
+    public User getProfessorUser() {
+        return professorUser;
     }
 
-    public void setLec(int lec) {
-        this.lec = lec;
+    public void setProfessorUser(User professorUser) {
+        this.professorUser = professorUser;
     }
 
-    public int getTut() {
-        return tut;
+    public int getDivide() {
+        return divide;
     }
 
-    public void setTut(int tut) {
-        this.tut = tut;
+    public void setDivide(int divide) {
+        this.divide = divide;
     }
 
-    public int getLab() {
-        return lab;
+    public Semester getSemester() {
+        return semester;
     }
 
-    public void setLab(int lab) {
-        this.lab = lab;
+    public void setSemester(Semester semester) {
+        this.semester = semester;
     }
 
-    public int getWs() {
-        return ws;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setWs(int ws) {
-        this.ws = ws;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
-    public String getAlternative() {
-        return alternative;
+    public UploadedFile getAttendanceFile() {
+        return attendanceFile;
     }
 
-    public void setAlternative(String alternative) {
-        this.alternative = alternative;
+    public void setAttendanceFile(UploadedFile attendanceFile) {
+        this.attendanceFile = attendanceFile;
     }
 
-    public String getPrerequisite() {
-        return prerequisite;
+    public int getSchoolYear() {
+        return schoolYear;
     }
 
-    public void setPrerequisite(String prerequisite) {
-        this.prerequisite = prerequisite;
+    public void setSchoolYear(int schoolYear) {
+        this.schoolYear = schoolYear;
+    }
+
+    public int getClassroom() {
+        return classroom;
+    }
+
+    public void setClassroom(int classroom) {
+        this.classroom = classroom;
+    }
+
+    public boolean isEngAccreditation() {
+        return engAccreditation;
+    }
+
+    public void setEngAccreditation(boolean engAccreditation) {
+        this.engAccreditation = engAccreditation;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public Classroom getClassroomObj() {
+        return classroomObj;
+    }
+
+    public void setClassroomObj(Classroom classroomObj) {
+        this.classroomObj = classroomObj;
+    }
+
+    public List<Assessment> getAssessmentList() {
+        return assessmentList;
+    }
+
+    public void setAssessmentList(List<Assessment> assessmentList) {
+        this.assessmentList = assessmentList;
+    }
+
+    public List<AssessmentFactor> getFilteredAssessmentFactors(List<AssessmentFactor> assessmentFactors) {
+        if(CollectionUtils.isEmpty(this.assessmentList))
+            return new ArrayList<>();
+        Assessment assessment = assessmentList.get(0);
+        List<AssessmentFactor> filtered = new ArrayList<>();
+
+        for(AssessmentFactor assessmentFactor: assessmentFactors) {
+            for(int i=1; i<=20; i++) {
+                int id = assessment.getItem(i);
+                if(assessmentFactor.getId() == id)
+                    filtered.add(assessmentFactor);
+            }
+        }
+        return filtered;
+    }
+
+    public double getAssessmentFactorAverage(AssessmentFactor assessmentFactor) {
+        if(CollectionUtils.isEmpty(this.assessmentList))
+            return 0.0;
+        int total = 0;
+        for(Assessment assessment: assessmentList) {
+            int score = assessment.getScoreByItemId(assessmentFactor.getId());
+            total += score;
+        }
+
+        if (total == 0)
+            return 0.0;
+        else {
+            return (double)total / (double)assessmentList.size();
+        }
+    }
+
+    public Map<String, Integer> getNumGradeMap() {
+        Map<String, Integer> grades = new LinkedHashMap<>();
+        grades.put("A", 0);
+        grades.put("B", 0);
+        grades.put("C", 0);
+        grades.put("D", 0);
+        grades.put("F", 0);
+        grades.put("S", 0);
+        grades.put("U", 0);
+        if(CollectionUtils.isEmpty(studentCourseList)) {
+            return grades;
+        }
+
+        for(StudentCourse sc: studentCourseList) {
+            if(sc.getGrade().equals("Ap") || sc.getGrade().equals("A0")) {
+                Integer count = grades.get("A");
+                grades.put("A", count + 1);
+            }
+            if(sc.getGrade().equals("Bp") || sc.getGrade().equals("B0")) {
+                Integer count = grades.get("B");
+                grades.put("B", count + 1);
+            }
+            if(sc.getGrade().equals("Cp") || sc.getGrade().equals("C0")) {
+                Integer count = grades.get("C");
+                grades.put("C", count + 1);
+            }
+            if(sc.getGrade().equals("Dp") || sc.getGrade().equals("D0")) {
+                Integer count = grades.get("D");
+                grades.put("D", count + 1);
+            }
+            if(sc.getGrade().equals("F")) {
+                Integer count = grades.get("F");
+                grades.put("F", count + 1);
+            }
+            if(sc.getGrade().equals("S")) {
+                Integer count = grades.get("S");
+                grades.put("S", count + 1);
+            }
+            if(sc.getGrade().equals("U")) {
+                Integer count = grades.get("U");
+                grades.put("U", count + 1);
+            }
+        }
+        return grades;
+    }
+
+    public List<StudentCourse> getStudentCourseList() {
+        return studentCourseList;
+    }
+
+    public void setStudentCourseList(List<StudentCourse> studentCourseList) {
+        this.studentCourseList = studentCourseList;
     }
 
     @Override

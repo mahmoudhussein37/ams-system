@@ -32,13 +32,8 @@ public interface CourseMapper {
 
     @Results({
             @Result(column = "id", property = "id"),
-            @Result(column = "prof_user_id", property = "profUserId"),
             @Result(column = "division_id", property = "divisionId"),
-            @Result(column = "semester_id", property = "semesterId"),
             @Result(column = "division_id", property = "division", one = @One(select = "koreatech.cse.repository.DivisionMapper.findOne")),
-            @Result(column = "prof_user_id", property = "profUser", one = @One(select = "koreatech.cse.repository.UserMapper.findOne")),
-            @Result(column = "id", property = "lectureFundamentals", one = @One(select = "koreatech.cse.repository.LectureFundamentalsMapper.findByCourseId")),
-            @Result(column = "semester_id", property = "semester", one = @One(select = "koreatech.cse.repository.SemesterMapper.findOne")),
     })
     @Select("SELECT * FROM course where id=#{id}")
     Course findOne(@Param("id") int id);
@@ -53,7 +48,7 @@ public interface CourseMapper {
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
         //@formatter on
-    List<Course> findByMakeupClass(Searchable searchable);
+    List<Course> findByYearSemester(Searchable searchable);
 
     @ResultMap("findOne-int")
     //@formatter off
@@ -75,6 +70,7 @@ public interface CourseMapper {
             + "<if test='year != 0'> and s.year = #{year}</if>"
             + "<if test='semester != 0'> and s.semester = #{semester}</if>"
             + "<if test='division != 0'> and c.division_id = #{division}</if>"
+            + "<if test='enabled != false'> and c.enabled = #{enabled}</if>"
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
         //@formatter on

@@ -20,44 +20,7 @@
 
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <spring:message code="common.year"/><br/>
-                                    <select id="search-year" class="form-control" style="">
-                                        <c:forEach var="y" items="${yearList}">
-                                            <option value="${y}">${y}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <spring:message code="common.semester"/><br/>
-                                    <select id="search-semester" class="form-control" style="">
-                                        <option value="1"><spring:message code="common.sem1"/></option>
-                                        <option value="2"><spring:message code="common.sem2"/></option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <spring:message code="common.department"/><br/>
-                                    <select id="search-division" class="form-control" style="">
-                                        <c:forEach var="division" items="${divisions}">
-                                            <option value="${division.id}">${division.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <%--<div class="col-md-2">
-                                    <spring:message code="common.major"/><br/>
-                                    <select id="search-major" class="form-control" style="">
-                                        &lt;%&ndash;<c:forEach var="major" items="${majors}">
-                                            <option value="${major.id}">${major.name}</option>
-                                        </c:forEach>&ndash;%&gt;
-                                    </select>
-                                </div>
---%>
-                                <div class="col-md-2">
-                                    <br/>
-                                    <button class="btn btn-primary" style="width:100%;" onclick="search()"><spring:message code="common.search"/></button>
-                                </div>
-                            </div>
+                            <%@include file="/WEB-INF/view/include/yearSemesterDivisionSearchDiv.jsp" %>
                             <br/><br/>
 
 
@@ -75,7 +38,42 @@
                             <div class="separator separator-solid my-5"></div>
                             <br/><br/>
                             <div class="detail-div">
+                                <%--<form:form modelAttribute="profCourse" action="${baseUrl}/admin/courseManagement/cOpen" method="post" class="form">
+                                    <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.createCourse"/></h3>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label><spring:message code="common.courseCode"/></label>
+                                                <input name="code" type="text" class="form-control"/>
+                                                    &lt;%&ndash;<span class="form-text text-muted">Please enter your full name</span>&ndash;%&gt;
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
 
+                                            <div class="form-group">
+                                                <label><spring:message code="common.divide"/></label>
+                                                <form:select path="divide" class="form-control">
+                                                    <c:forEach var="d" begin="1" end="5">
+                                                        <form:option value="${d}">${d}</form:option>
+                                                    </c:forEach>
+                                                </form:select>
+                                                    &lt;%&ndash;<span class="form-text text-muted">We'll never share your email with anyone else</span>&ndash;%&gt;
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label><spring:message code="common.department"/></label>
+                                                <form:select path="userId" class="form-control" >
+                                                    <c:forEach var="s" items="${professors}">
+                                                        <form:option value="${s.id}">${s.contact.getFullName()}</form:option>
+                                                    </c:forEach>
+                                                </form:select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.create"/></button>
+                                </form:form>--%>
                             </div>
 
                         </div>
