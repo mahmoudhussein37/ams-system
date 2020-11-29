@@ -832,6 +832,7 @@ public class AdminController {
         model.addAttribute("result", result);
         model.addAttribute("profCourse", new ProfessorCourse());
 
+
         return "role/admin/cOpen/cOpen";
     }
 
@@ -1609,8 +1610,14 @@ public class AdminController {
             default:
                 SystemUtil.setObjectFieldValue(semester, name, value);
         }
-        semesterMapper.update(semester);
-        return true;
+
+        Semester stored = semesterMapper.findByYearSemester(semester.getYear(), semester.getSemester());
+        if(stored == null) {
+
+            semesterMapper.update(semester);
+            return true;
+        } else
+            return false;
     }
 
     @RequestMapping("/systemManagement/yearSemester/semesterTable")
@@ -1731,19 +1738,16 @@ public class AdminController {
     public Boolean deleteLectureMethod(@RequestParam int id) {
         LectureMethod lectureMethod = lectureMethodMapper.findOne(id);
 
-        //TODO:
-        lectureMethodMapper.delete(lectureMethod);
+        ProfLectureMethod stored = profLectureMethodMapper.findByLectureMethodId(Integer.toString(id));
 
-        /*List<Course> courses = courseMapper.findByLectureMethod(id);
-        if(CollectionUtils.isEmpty(courses)) {
+        if(stored == null) {
             lectureMethodMapper.delete(lectureMethod);
             return true;
         } else {
             lectureMethod.setEnabled(false);
             lectureMethodMapper.update(lectureMethod);
             return false;
-        }*/
-        return true;
+        }
     }
 
     @RequestMapping(value = "/systemManagement/lectureMethod/enableLectureMethod", method = RequestMethod.POST)
@@ -1798,19 +1802,16 @@ public class AdminController {
     public Boolean deleteEvaluationMethod(@RequestParam int id) {
         EvaluationMethod evaluationMethod = evaluationMethodMapper.findOne(id);
 
-        //TODO:
+        ProfLectureMethod stored = profLectureMethodMapper.findByEvaluationMethodId(Integer.toString(id));
         evaluationMethodMapper.delete(evaluationMethod);
-
-        /*List<Course> courses = courseMapper.findByEvaluationMethod(id);
-        if(CollectionUtils.isEmpty(courses)) {
+        if(stored == null) {
             evaluationMethodMapper.delete(evaluationMethod);
             return true;
         } else {
             evaluationMethod.setEnabled(false);
             evaluationMethodMapper.update(evaluationMethod);
             return false;
-        }*/
-        return true;
+        }
     }
 
     @RequestMapping(value = "/systemManagement/evaluationMethod/enableEvaluationMethod", method = RequestMethod.POST)

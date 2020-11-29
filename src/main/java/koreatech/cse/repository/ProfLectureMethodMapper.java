@@ -63,6 +63,12 @@ public interface ProfLectureMethodMapper {
     @Select("SELECT * FROM `prof_lecture_method` where prof_course_id=#{profCourseId} limit 1")
     ProfLectureMethod findByProfCourseId(@Param("profCourseId") int profCourseId);
 
+    @Select("SELECT * FROM `prof_lecture_method` where lecture_methods LIKE CONCAT('%', #{lectureMethodId}, ',%') limit 1")
+    ProfLectureMethod findByLectureMethodId(@Param("lectureMethodId") String lectureMethodId);
+
+    @Select("SELECT * FROM `prof_lecture_method` where evaluation_methods LIKE CONCAT('%', #{evaluationMethodId}, ',%') limit 1")
+    ProfLectureMethod findByEvaluationMethodId(@Param("evaluationMethodId") String evaluationMethodId);
+
 
     @Update("UPDATE `prof_lecture_method` SET"+
             "`prof_course_id` = #{profCourseId},"+
