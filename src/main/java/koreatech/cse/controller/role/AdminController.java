@@ -1379,19 +1379,15 @@ public class AdminController {
     public Boolean deleteAf(@RequestParam int id) {
         AssessmentFactor assessmentFactor = assessmentFactorMapper.findOne(id);
 
-        //TODO:
-        assessmentFactorMapper.delete(assessmentFactor);
-
-        /*List<Course> courses = courseMapper.findByClassroom(id);
-        if(CollectionUtils.isEmpty(courses)) {
-            classroomMapper.delete(classroom);
+        List<Assessment> assessments = assessmentMapper.findByAssessmentFactorId(id);
+        if(CollectionUtils.isEmpty(assessments)) {
+            assessmentFactorMapper.delete(assessmentFactor);
             return true;
         } else {
-            classroom.setEnabled(false);
-            classroomMapper.update(classroom);
+            assessmentFactor.setEnabled(false);
+            assessmentFactorMapper.update(assessmentFactor);
             return false;
-        }*/
-        return true;
+        }
     }
 
     @RequestMapping(value = "/academicManagement/assessmentFactor/manageAf/changeStatus", method = RequestMethod.POST)
@@ -1865,19 +1861,16 @@ public class AdminController {
     public Boolean deleteEducationalMedium(@RequestParam int id) {
         EducationalMedium educationalMedium = educationalMediumMapper.findOne(id);
 
-        //TODO:
-        educationalMediumMapper.delete(educationalMedium);
+        ProfLectureMethod stored = profLectureMethodMapper.findByEducationalMediumId(Integer.toString(id));
 
-        /*List<Course> courses = courseMapper.findByEducationalMedium(id);
-        if(CollectionUtils.isEmpty(courses)) {
+        if(stored == null) {
             educationalMediumMapper.delete(educationalMedium);
             return true;
         } else {
             educationalMedium.setEnabled(false);
             educationalMediumMapper.update(educationalMedium);
             return false;
-        }*/
-        return true;
+        }
     }
 
     @RequestMapping(value = "/systemManagement/educationalMedium/enableEducationalMedium", method = RequestMethod.POST)
@@ -1932,19 +1925,16 @@ public class AdminController {
     public Boolean deleteEquipment(@RequestParam int id) {
         Equipment equipment = equipmentMapper.findOne(id);
 
-        //TODO:
-        equipmentMapper.delete(equipment);
+        ProfLectureMethod stored = profLectureMethodMapper.findByEquipmentId(Integer.toString(id));
 
-        /*List<Course> courses = courseMapper.findByEquipment(id);
-        if(CollectionUtils.isEmpty(courses)) {
+        if(stored == null) {
             equipmentMapper.delete(equipment);
             return true;
         } else {
             equipment.setEnabled(false);
             equipmentMapper.update(equipment);
             return false;
-        }*/
-        return true;
+        }
     }
 
     @RequestMapping(value = "/systemManagement/equipment/enableEquipment", method = RequestMethod.POST)
@@ -1999,18 +1989,14 @@ public class AdminController {
     public Boolean deleteClassroom(@RequestParam int id) {
         Classroom classroom = classroomMapper.findOne(id);
 
-        //TODO:
-        classroomMapper.delete(classroom);
+        List<ProfessorCourse> stored = professorCourseMapper.findByClassroomId(id);
 
-        /*List<Course> courses = courseMapper.findByClassroom(id);
-        if(CollectionUtils.isEmpty(courses)) {
+        if(CollectionUtils.isEmpty(stored)) {
             classroomMapper.delete(classroom);
-            return true;
         } else {
             classroom.setEnabled(false);
             classroomMapper.update(classroom);
-            return false;
-        }*/
+        }
         return true;
     }
 
