@@ -555,7 +555,7 @@ public class AdminController {
         return "role/admin/graduationResearch/planDetailForPrint";
     }
 
-    @RequestMapping("/profManagement/studentEnrolment")
+/*    @RequestMapping("/profManagement/studentEnrolment")
     public String studentEnrolment(Model model) {
 
         List<Division> divisions = divisionMapper.findAll();
@@ -595,7 +595,7 @@ public class AdminController {
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);
         return "role/admin/studentEnrolment/courseTable";
-    }
+    }*/
 
     @RequestMapping("/courseManagement/curriculum")
     public String curriculum(Model model, @RequestParam(defaultValue = "0", required=false) int year) {
