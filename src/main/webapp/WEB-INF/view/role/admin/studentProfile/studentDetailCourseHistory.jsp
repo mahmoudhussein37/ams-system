@@ -22,7 +22,7 @@
                     <%--<td><spring:message code="common.require"/></td>--%>
                     <td>${graduationCriteria.liberal}</td>
                     <td>${liberalCount}</td>
-                    <td>${liberalCount - graduationCriteria.liberal}</td>
+                    <td style="${(liberalCount - graduationCriteria.liberal) < 0 ? 'color:red' : ''}">${liberalCount - graduationCriteria.liberal}</td>
                 </tr>
 
                 <tr>
@@ -30,7 +30,7 @@
                     <%--<td><spring:message code="common.require"/></td>--%>
                     <td>${graduationCriteria.msc}</td>
                     <td>${mscCount}</td>
-                    <td>${mscCount - graduationCriteria.msc}</td>
+                    <td style="${(mscCount - graduationCriteria.msc) < 0 ? 'color:red' : ''}">${mscCount - graduationCriteria.msc}</td>
                 </tr>
 
                 <tr class="table-light">
@@ -38,7 +38,7 @@
                     <%--<td><spring:message code="common.require"/></td>--%>
                     <td>${graduationCriteria.major}</td>
                     <td>${majorCount}</td>
-                    <td>${majorCount - graduationCriteria.major}</td>
+                    <td style="${(majorCount - graduationCriteria.major) < 0 ? 'color:red' : ''}">${majorCount - graduationCriteria.major}</td>
                 </tr>
 
 
