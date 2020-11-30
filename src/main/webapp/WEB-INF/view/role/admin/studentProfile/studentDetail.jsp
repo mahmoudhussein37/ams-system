@@ -44,7 +44,7 @@
 
         <div class="form-group">
             <label><spring:message code="common.status"/></label>
-            <input type="text" class="form-control" value="${studentUser.status}" disabled/>
+            <input type="text" class="form-control" value="<spring:message code="student.status.${studentUser.status}"/>" disabled/>
             <%--<span class="form-text text-muted">Please enter your full name</span>--%>
         </div>
     </div>

@@ -178,6 +178,12 @@
             e.preventDefault();
             var id = $(this).attr("data-id");
             $.post("${baseUrl}/admin/academicManagement/assessmentFactor/manageAf/deleteAf?id=" + id, function(result) {
+                if(result == false) {
+                    alert("<spring:message code="admin.usingItem"/>");
+                } else {
+                    alert("<spring:message code="common.success"/>");
+
+                }
                 location.reload();
             });
         });

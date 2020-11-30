@@ -12,8 +12,8 @@
         <spring:message code="common.semester"/><br/>
         <select id="search-semester" class="form-control" style="">
             <option value="0">-</option>
-            <option value="1" ${semester eq 1 ? 'selected' : ''}><spring:message code="common.sem1"/></option>
-            <option value="2" ${semester eq 2 ? 'selected' : ''}><spring:message code="common.sem2"/></option>
+            <option value="1" ${s eq 1 ? 'selected' : ''}><spring:message code="common.sem1"/></option>
+            <option value="2" ${s eq 2 ? 'selected' : ''}><spring:message code="common.sem2"/></option>
         </select>
     </div>
     <div class="col-md-3">

@@ -107,6 +107,30 @@ public interface AssessmentMapper {
     @Select("SELECT * FROM `assessment` where prof_course_id=#{profCourseId}")
     List<Assessment> findByProfCourseId(@Param("profCourseId") int profCourseId);
 
+    @Select("SELECT * FROM `assessment` where (" +
+            "item1=#{assessmentFactorId} or " +
+            "item2=#{assessmentFactorId} or " +
+            "item3=#{assessmentFactorId} or " +
+            "item4=#{assessmentFactorId} or " +
+            "item5=#{assessmentFactorId} or " +
+            "item6=#{assessmentFactorId} or " +
+            "item7=#{assessmentFactorId} or " +
+            "item8=#{assessmentFactorId} or " +
+            "item9=#{assessmentFactorId} or " +
+            "item10=#{assessmentFactorId} or " +
+            "item11=#{assessmentFactorId} or " +
+            "item12=#{assessmentFactorId} or " +
+            "item13=#{assessmentFactorId} or " +
+            "item14=#{assessmentFactorId} or " +
+            "item15=#{assessmentFactorId} or " +
+            "item16=#{assessmentFactorId} or " +
+            "item17=#{assessmentFactorId} or " +
+            "item18=#{assessmentFactorId} or " +
+            "item19=#{assessmentFactorId} or " +
+            "item20=#{assessmentFactorId} " +
+            ")")
+    List<Assessment> findByAssessmentFactorId(@Param("assessmentFactorId") int assessmentFactorId);
+
     @Select("SELECT * FROM `assessment` where id=#{id}")
     Assessment findOne(@Param("id") int id);
 

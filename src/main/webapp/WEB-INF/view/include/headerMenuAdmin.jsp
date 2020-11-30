@@ -185,7 +185,7 @@
             <li class="menu-item ${fn:contains(requestUri, '/admin/systemManagement/yearSemester') ? 'menu-item-active' : ''}"  aria-haspopup="true">
                 <a  href="/admin/systemManagement/yearSemester" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub5_1"/></span></a>
             </li>
-            <li class="menu-item  ${fn:contains(requestUri, '//admin/systemManagement/divisionMajor') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+            <li class="menu-item  ${fn:contains(requestUri, '/admin/systemManagement/divisionMajor') ? 'menu-item-active' : ''}"  aria-haspopup="true">
                 <a  href="/admin/systemManagement/divisionMajor" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub5_2"/></span></a>
             </li>
             <li class="menu-item  ${fn:contains(requestUri, '/admin/systemManagement/lectureMethod') ? 'menu-item-active' : ''}"  aria-haspopup="true">

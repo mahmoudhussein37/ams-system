@@ -49,6 +49,10 @@ public interface GraduationCriteriaMapper {
         //@formatter on
     List<GraduationCriteria> findByYearDivision(Searchable searchable);
 
+    @ResultMap("findOne-int")
+    @Select("SELECT * FROM `graduation_criteria` where year=#{year} and division_id = #{divisionId} limit 1")
+    GraduationCriteria findOneByYearDivision(@Param("year") int year, @Param("divisionId") int divisionId);
+
     @Update("UPDATE `graduation_criteria` SET"+
             "`division_id` = #{divisionId},"+
             "`year` = #{year},"+

@@ -20,25 +20,25 @@
                 <tr class="table-light">
                     <td class="table-light"><spring:message code="common.liberal"/></td>
                     <%--<td><spring:message code="common.require"/></td>--%>
-                    <td>10</td>
-                    <td>8</td>
-                    <td>-2</td>
+                    <td>${graduationCriteria.liberal}</td>
+                    <td>${liberalCount}</td>
+                    <td style="${(liberalCount - graduationCriteria.liberal) < 0 ? 'color:red' : ''}">${liberalCount - graduationCriteria.liberal}</td>
                 </tr>
 
                 <tr>
                     <td >MSC</td>
                     <%--<td><spring:message code="common.require"/></td>--%>
-                    <td>10</td>
-                    <td>8</td>
-                    <td>-2</td>
+                    <td>${graduationCriteria.msc}</td>
+                    <td>${mscCount}</td>
+                    <td style="${(mscCount - graduationCriteria.msc) < 0 ? 'color:red' : ''}">${mscCount - graduationCriteria.msc}</td>
                 </tr>
 
                 <tr class="table-light">
                     <td class="table-light"><spring:message code="common.major"/></td>
                     <%--<td><spring:message code="common.require"/></td>--%>
-                    <td>10</td>
-                    <td>8</td>
-                    <td>-2</td>
+                    <td>${graduationCriteria.major}</td>
+                    <td>${majorCount}</td>
+                    <td style="${(majorCount - graduationCriteria.major) < 0 ? 'color:red' : ''}">${majorCount - graduationCriteria.major}</td>
                 </tr>
 
 
@@ -80,6 +80,31 @@
                 </tr>
                 </thead>
                 <tbody>
+                <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
+                    <tr>
+                        <td>
+${varStatus.count}
+                        </td>
+                        <td>
+${sc.professorCourse.semester.year}
+                        </td>
+                        <td>
+                                ${sc.professorCourse.semester.semester}
+                        </td>
+                        <td>
+                                ${sc.course.code}
+                        </td>
+                        <td>
+                                ${sc.course.title}
+                        </td>
+                        <td>
+                            <spring:message code="subj.category.${sc.course.subjCategory}"/>
+                        </td>
+                        <td>
+                                ${sc.course.credit}
+                        </td>
+                    </tr>
+                </c:forEach>
                 <tr>
                     <td>
 

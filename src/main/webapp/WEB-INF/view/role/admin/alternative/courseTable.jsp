@@ -57,7 +57,7 @@
 </table>
 <script>
     $("#course-list").DataTable();
-    $('.course-editable').editable();
+    $('.course-editable').editable({});
     <%--<c:if test="${not empty firstCourse}">
         $(".detail-div").load("${baseUrl}/admin/courseManagement/courseDetail?courseId=${firstCourse.id}");
     </c:if>

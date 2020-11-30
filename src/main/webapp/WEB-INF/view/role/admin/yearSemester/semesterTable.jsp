@@ -38,7 +38,15 @@
 <script>
     $(document).ready(function() {
         $("#student-list").DataTable();
-        $('.course-editable').editable();
+        $('.course-editable').editable({
+            success: function(response) {
+                if(response == false) {
+                    alert("<spring:message code="common.duplicated"/>");
+                    location.reload();
+                }
+
+            }
+        });
         $("body").on("click", ".delete-semester", function(e) {
             e.preventDefault();
             var id = $(this).attr("data-id");

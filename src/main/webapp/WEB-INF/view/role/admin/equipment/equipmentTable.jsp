@@ -69,7 +69,12 @@
             e.preventDefault();
             var id = $(this).attr("data-id");
             $.post("${baseUrl}/admin/systemManagement/equipment/deleteEquipment?id=" + id, function(result) {
-                alert("<spring:message code="common.success"/>");
+                if(result == false) {
+                    alert("<spring:message code="admin.usingItem"/>");
+                } else {
+                    alert("<spring:message code="common.success"/>");
+
+                }
                 location.reload();
             });
         });

@@ -41,6 +41,10 @@ public interface ProfessorCourseMapper {
     @Select("SELECT * FROM professor_course where course_id = #{courseId}")
     List<ProfessorCourse> findByCourseId(@Param("courseId") int courseId);
 
+    @ResultMap("findOne-int")
+    @Select("SELECT * FROM professor_course where classroom = #{classroomId}")
+    List<ProfessorCourse> findByClassroomId(@Param("classroomId") int classroomId);
+
     @Select("SELECT count(*) FROM professor_course where course_id = #{courseId}")
     Integer countByCourseId(@Param("courseId") int courseId);
 

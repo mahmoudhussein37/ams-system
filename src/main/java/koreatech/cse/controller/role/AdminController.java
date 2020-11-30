@@ -240,6 +240,35 @@ public class AdminController {
         model.addAttribute("studentUser", studentUser);
         User advisor = userMapper.findOne(studentUser.getAdvisorId());
         model.addAttribute("advisor", advisor);
+        int admissionYear = studentUser.getContact().getAdmissionYear();
+        int divisionId = studentUser.getDivisionId();
+
+        GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear, divisionId);
+        model.addAttribute("graduationCriteria", graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
+
+        List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(studentId);
+        model.addAttribute("studentCourses", studentCourses);
+
+        int mscCount = 0;
+        int liberalCount = 0;
+        int majorCount = 0;
+        for(StudentCourse studentCourse: studentCourses) {
+            Course course = studentCourse.getCourse();
+            if(course.getSubjCategory() == null)
+                continue;
+
+            if(course.getSubjCategory().equals("major"))
+                majorCount++;
+            if(course.getSubjCategory().equals("msc"))
+                mscCount++;
+            if(course.getSubjCategory().equals("liberal"))
+                liberalCount++;
+        }
+        model.addAttribute("majorCount", majorCount);
+        model.addAttribute("mscCount", mscCount);
+        model.addAttribute("liberalCount", liberalCount);
+
+
 
         return "role/admin/studentProfile/studentDetail";
     }
@@ -526,7 +555,7 @@ public class AdminController {
         return "role/admin/graduationResearch/planDetailForPrint";
     }
 
-    @RequestMapping("/profManagement/studentEnrolment")
+/*    @RequestMapping("/profManagement/studentEnrolment")
     public String studentEnrolment(Model model) {
 
         List<Division> divisions = divisionMapper.findAll();
@@ -566,7 +595,7 @@ public class AdminController {
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);
         return "role/admin/studentEnrolment/courseTable";
-    }
+    }*/
 
     @RequestMapping("/courseManagement/curriculum")
     public String curriculum(Model model, @RequestParam(defaultValue = "0", required=false) int year) {
@@ -831,6 +860,7 @@ public class AdminController {
         model.addAttribute("subjCategoryList", SubjCategory.values());
         model.addAttribute("result", result);
         model.addAttribute("profCourse", new ProfessorCourse());
+
 
         return "role/admin/cOpen/cOpen";
     }
@@ -1378,19 +1408,15 @@ public class AdminController {
     public Boolean deleteAf(@RequestParam int id) {
         AssessmentFactor assessmentFactor = assessmentFactorMapper.findOne(id);
 
-        //TODO:
-        assessmentFactorMapper.delete(assessmentFactor);
-
-        /*List<Course> courses = courseMapper.findByClassroom(id);
-        if(CollectionUtils.isEmpty(courses)) {
-            classroomMapper.delete(classroom);
+        List<Assessment> assessments = assessmentMapper.findByAssessmentFactorId(id);
+        if(CollectionUtils.isEmpty(assessments)) {
+            assessmentFactorMapper.delete(assessmentFactor);
             return true;
         } else {
-            classroom.setEnabled(false);
-            classroomMapper.update(classroom);
+            assessmentFactor.setEnabled(false);
+            assessmentFactorMapper.update(assessmentFactor);
             return false;
-        }*/
-        return true;
+        }
     }
 
     @RequestMapping(value = "/academicManagement/assessmentFactor/manageAf/changeStatus", method = RequestMethod.POST)
@@ -1609,8 +1635,14 @@ public class AdminController {
             default:
                 SystemUtil.setObjectFieldValue(semester, name, value);
         }
-        semesterMapper.update(semester);
-        return true;
+
+        Semester stored = semesterMapper.findByYearSemester(semester.getYear(), semester.getSemester());
+        if(stored == null) {
+
+            semesterMapper.update(semester);
+            return true;
+        } else
+            return false;
     }
 
     @RequestMapping("/systemManagement/yearSemester/semesterTable")
@@ -1731,19 +1763,16 @@ public class AdminController {
     public Boolean deleteLectureMethod(@RequestParam int id) {
         LectureMethod lectureMethod = lectureMethodMapper.findOne(id);
 
-        //TODO:
-        lectureMethodMapper.delete(lectureMethod);
+        ProfLectureMethod stored = profLectureMethodMapper.findByLectureMethodId(Integer.toString(id));
 
-        /*List<Course> courses = courseMapper.findByLectureMethod(id);
-        if(CollectionUtils.isEmpty(courses)) {
+        if(stored == null) {
             lectureMethodMapper.delete(lectureMethod);
             return true;
         } else {
             lectureMethod.setEnabled(false);
             lectureMethodMapper.update(lectureMethod);
             return false;
-        }*/
-        return true;
+        }
     }
 
     @RequestMapping(value = "/systemManagement/lectureMethod/enableLectureMethod", method = RequestMethod.POST)
@@ -1798,19 +1827,16 @@ public class AdminController {
     public Boolean deleteEvaluationMethod(@RequestParam int id) {
         EvaluationMethod evaluationMethod = evaluationMethodMapper.findOne(id);
 
-        //TODO:
+        ProfLectureMethod stored = profLectureMethodMapper.findByEvaluationMethodId(Integer.toString(id));
         evaluationMethodMapper.delete(evaluationMethod);
-
-        /*List<Course> courses = courseMapper.findByEvaluationMethod(id);
-        if(CollectionUtils.isEmpty(courses)) {
+        if(stored == null) {
             evaluationMethodMapper.delete(evaluationMethod);
             return true;
         } else {
             evaluationMethod.setEnabled(false);
             evaluationMethodMapper.update(evaluationMethod);
             return false;
-        }*/
-        return true;
+        }
     }
 
     @RequestMapping(value = "/systemManagement/evaluationMethod/enableEvaluationMethod", method = RequestMethod.POST)
@@ -1864,19 +1890,16 @@ public class AdminController {
     public Boolean deleteEducationalMedium(@RequestParam int id) {
         EducationalMedium educationalMedium = educationalMediumMapper.findOne(id);
 
-        //TODO:
-        educationalMediumMapper.delete(educationalMedium);
+        ProfLectureMethod stored = profLectureMethodMapper.findByEducationalMediumId(Integer.toString(id));
 
-        /*List<Course> courses = courseMapper.findByEducationalMedium(id);
-        if(CollectionUtils.isEmpty(courses)) {
+        if(stored == null) {
             educationalMediumMapper.delete(educationalMedium);
             return true;
         } else {
             educationalMedium.setEnabled(false);
             educationalMediumMapper.update(educationalMedium);
             return false;
-        }*/
-        return true;
+        }
     }
 
     @RequestMapping(value = "/systemManagement/educationalMedium/enableEducationalMedium", method = RequestMethod.POST)
@@ -1931,19 +1954,16 @@ public class AdminController {
     public Boolean deleteEquipment(@RequestParam int id) {
         Equipment equipment = equipmentMapper.findOne(id);
 
-        //TODO:
-        equipmentMapper.delete(equipment);
+        ProfLectureMethod stored = profLectureMethodMapper.findByEquipmentId(Integer.toString(id));
 
-        /*List<Course> courses = courseMapper.findByEquipment(id);
-        if(CollectionUtils.isEmpty(courses)) {
+        if(stored == null) {
             equipmentMapper.delete(equipment);
             return true;
         } else {
             equipment.setEnabled(false);
             equipmentMapper.update(equipment);
             return false;
-        }*/
-        return true;
+        }
     }
 
     @RequestMapping(value = "/systemManagement/equipment/enableEquipment", method = RequestMethod.POST)
@@ -1998,18 +2018,14 @@ public class AdminController {
     public Boolean deleteClassroom(@RequestParam int id) {
         Classroom classroom = classroomMapper.findOne(id);
 
-        //TODO:
-        classroomMapper.delete(classroom);
+        List<ProfessorCourse> stored = professorCourseMapper.findByClassroomId(id);
 
-        /*List<Course> courses = courseMapper.findByClassroom(id);
-        if(CollectionUtils.isEmpty(courses)) {
+        if(CollectionUtils.isEmpty(stored)) {
             classroomMapper.delete(classroom);
-            return true;
         } else {
             classroom.setEnabled(false);
             classroomMapper.update(classroom);
-            return false;
-        }*/
+        }
         return true;
     }
 
