@@ -62,7 +62,8 @@ public class ProfessorController {
     private AssessmentMapper assessmentMapper;
     @Inject
     private CqiMapper cqiMapper;
-
+    @Inject
+    private GraduationCriteriaMapper graduationCriteriaMapper;
 
     @RequestMapping("/studentGuidance/studentLookup")
     public String studentLookup(Model model) {
@@ -106,6 +107,36 @@ public class ProfessorController {
     public String studentDetail(Model model, @RequestParam int studentId) {
         User studentUser = userMapper.findOne(studentId);
         model.addAttribute("studentUser", studentUser);
+
+        User advisor = userMapper.findOne(studentUser.getAdvisorId());
+        model.addAttribute("advisor", advisor);
+        int admissionYear = studentUser.getContact().getAdmissionYear();
+        int divisionId = studentUser.getDivisionId();
+
+        GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear, divisionId);
+        model.addAttribute("graduationCriteria", graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
+
+        List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(studentId);
+        model.addAttribute("studentCourses", studentCourses);
+
+        int mscCount = 0;
+        int liberalCount = 0;
+        int majorCount = 0;
+        for(StudentCourse studentCourse: studentCourses) {
+            Course course = studentCourse.getCourse();
+            if(course.getSubjCategory() == null)
+                continue;
+
+            if(course.getSubjCategory().equals("major"))
+                majorCount++;
+            if(course.getSubjCategory().equals("msc"))
+                mscCount++;
+            if(course.getSubjCategory().equals("liberal"))
+                liberalCount++;
+        }
+        model.addAttribute("majorCount", majorCount);
+        model.addAttribute("mscCount", mscCount);
+        model.addAttribute("liberalCount", liberalCount);
         return "role/professor/studentLookup/studentDetail";
     }
 
@@ -205,6 +236,38 @@ public class ProfessorController {
     public String counselingStudentDetail(Model model, @RequestParam int counselingId) {
         Counseling counseling = counselingMapper.findOne(counselingId);
         model.addAttribute("counseling", counseling);
+
+        User studentUser = counseling.getStudentUser();
+        int studentId = studentUser.getId();
+        User advisor = userMapper.findOne(studentUser.getAdvisorId());
+        model.addAttribute("advisor", advisor);
+        int admissionYear = studentUser.getContact().getAdmissionYear();
+        int divisionId = studentUser.getDivisionId();
+
+        GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear, divisionId);
+        model.addAttribute("graduationCriteria", graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
+
+        List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(studentId);
+        model.addAttribute("studentCourses", studentCourses);
+
+        int mscCount = 0;
+        int liberalCount = 0;
+        int majorCount = 0;
+        for(StudentCourse studentCourse: studentCourses) {
+            Course course = studentCourse.getCourse();
+            if(course.getSubjCategory() == null)
+                continue;
+
+            if(course.getSubjCategory().equals("major"))
+                majorCount++;
+            if(course.getSubjCategory().equals("msc"))
+                mscCount++;
+            if(course.getSubjCategory().equals("liberal"))
+                liberalCount++;
+        }
+        model.addAttribute("majorCount", majorCount);
+        model.addAttribute("mscCount", mscCount);
+        model.addAttribute("liberalCount", liberalCount);
         return "role/professor/counseling/counselingDetail";
     }
 
@@ -304,24 +367,47 @@ public class ProfessorController {
         searchable.setSemester(semester);
         searchable.setDivision(division);
 
-        List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
-        Course firstCourse = null;
-        for(Course course: courseList) {
+
+        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivision(searchable);
+
+        ProfessorCourse firstCourse = null;
+        for(ProfessorCourse course: courseList) {
             firstCourse = course;
             break;
         }
 
         model.addAttribute("firstCourse", firstCourse);
-        model.addAttribute("courseList", courseList);
+        model.addAttribute("profCourseList", courseList);
         return "role/professor/inquiryCourse/courseTable";
     }
 
     @RequestMapping("/classProgress/inquiryCourse/courseDetail")
-    public String inCourseDetail(Model model, @RequestParam int courseId) {
-        Course course = courseMapper.findOne(courseId);
-        model.addAttribute("course", course);
-        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
+    public String inCourseDetail(Model model, @RequestParam int courseId, @RequestParam(defaultValue = "false", required=false) String print) {
+        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+        model.addAttribute("pc", pc);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(pc.getId());
         model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
+        ProfLectureMethod profLectureMethod = profLectureMethodMapper.findByProfCourseId(pc.getId());
+        model.addAttribute("profLectureMethod", profLectureMethod == null ? new ProfLectureMethod() : profLectureMethod);
+        LectureContents lectureContents = lectureContentsMapper.findByProfCourseId(pc.getId());
+        model.addAttribute("lectureContents", lectureContents == null ? new LectureContents() : lectureContents);
+
+        List<LectureMethod> lectureMethods = lectureMethodMapper.findAll();
+        model.addAttribute("lectureMethods", lectureMethods);
+
+        List<EducationalMedium> educationalMediums = educationalMediumMapper.findAll();
+        model.addAttribute("educationalMediums", educationalMediums);
+
+        List<EvaluationMethod> evaluationMethods = evaluationMethodMapper.findAll();
+        model.addAttribute("evaluationMethods", evaluationMethods);
+
+        List<Equipment> equipments = equipmentMapper.findAll();
+        model.addAttribute("equipments", equipments);
+
+        MenuAccess menuAccess = menuAccessMapper.findOne();
+        model.addAttribute("menuAccess", menuAccess);
+        if(print.equals("true"))
+            return "role/admin/syllabus/courseDetailForPrint";
         return "role/professor/inquiryCourse/courseDetail";
     }
 

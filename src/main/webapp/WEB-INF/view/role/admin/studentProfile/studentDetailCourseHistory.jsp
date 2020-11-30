@@ -105,29 +105,7 @@ ${sc.professorCourse.semester.year}
                         </td>
                     </tr>
                 </c:forEach>
-                <tr>
-                    <td>
 
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                </tr>
                 </tbody>
             </table>
         </div>
