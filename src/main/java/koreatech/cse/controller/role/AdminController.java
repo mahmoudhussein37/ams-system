@@ -240,6 +240,35 @@ public class AdminController {
         model.addAttribute("studentUser", studentUser);
         User advisor = userMapper.findOne(studentUser.getAdvisorId());
         model.addAttribute("advisor", advisor);
+        int admissionYear = studentUser.getContact().getAdmissionYear();
+        int divisionId = studentUser.getDivisionId();
+
+        GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear, divisionId);
+        model.addAttribute("graduationCriteria", graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
+
+        List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(studentId);
+        model.addAttribute("studentCourses", studentCourses);
+
+        int mscCount = 0;
+        int liberalCount = 0;
+        int majorCount = 0;
+        for(StudentCourse studentCourse: studentCourses) {
+            Course course = studentCourse.getCourse();
+            if(course.getSubjCategory() == null)
+                continue;
+
+            if(course.getSubjCategory().equals("major"))
+                majorCount++;
+            if(course.getSubjCategory().equals("msc"))
+                mscCount++;
+            if(course.getSubjCategory().equals("liberal"))
+                liberalCount++;
+        }
+        model.addAttribute("majorCount", majorCount);
+        model.addAttribute("mscCount", mscCount);
+        model.addAttribute("liberalCount", liberalCount);
+
+
 
         return "role/admin/studentProfile/studentDetail";
     }

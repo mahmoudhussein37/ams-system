@@ -57,6 +57,10 @@ public interface StudentCourseMapper {
     List<StudentCourse> findByUserId(@Param("userId") int userId);
 
     @ResultMap("findOne-int")
+    @Select("SELECT * FROM student_course sc join professor_course pc on sc.prof_course_id = pc.id join semester s on pc.semester_id = s.id where sc.user_id = #{userId} and sc.valid = 1 order by s.year desc, s.semester desc")
+    List<StudentCourse> findByUserIdValid(@Param("userId") int userId);
+
+    @ResultMap("findOne-int")
     @Select("SELECT * FROM student_course where prof_course_id = #{profCourseId}")
     List<StudentCourse> findByProfCourseId(@Param("profCourseId") int profCourseId);
 
