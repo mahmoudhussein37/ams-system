@@ -1,6 +1,6 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <div class="print-div">
-    <a href="#" class="btn btn-sm btn-light font-weight-bold">
+    <a href="#" class="btn btn-sm btn-light font-weight-bold print">
         <spring:message code="common.print"/>
     </a>
 </div>
@@ -65,6 +65,10 @@
             $.post('${baseUrl}/professor/classProgress/syllabus/courseDetail/lectureContents?profCourseId=${pc.course.id}', $('#lectureContentsForm').serialize(), function() {
                 alert("<spring:message code="common.success"/>");
             });
+        });
+        $("body").on('click', '.print', function (e) {
+            e.preventDefault();
+            openPage("${baseUrl}/professor/classProgress/inquiryCourse/courseDetail?print=true&courseId=${pc.id}");
         });
     });
 </script>

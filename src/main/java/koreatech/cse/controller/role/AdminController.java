@@ -1188,7 +1188,7 @@ public class AdminController {
         List<Equipment> equipments = equipmentMapper.findAll();
         model.addAttribute("equipments", equipments);
         if(print.equals("true"))
-            return "role/admin/syllabus/courseDetailForPrint";
+            return "role/common/syllabus/courseDetailForPrint";
         return "role/admin/syllabus/courseDetail";
     }
 
@@ -1475,7 +1475,7 @@ public class AdminController {
         List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(pc.getCourseId());
         model.addAttribute("assessmentFactors", assessmentFactors);
         if(print.equals("true"))
-            return "role/admin/assessmentResult/courseDetailForPrint";
+            return "role/common/assessment/courseDetailForPrint";
         return "role/admin/assessmentResult/courseDetail";
     }
 

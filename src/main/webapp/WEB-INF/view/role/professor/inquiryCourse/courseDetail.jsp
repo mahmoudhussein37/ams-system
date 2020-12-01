@@ -17,13 +17,13 @@
 </ul>
 <div class="tab-content mt-5" id="myTabContent">
     <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_1">
-        <%@include file="/WEB-INF/view/role/admin/syllabus/courseDetailFundamentals.jsp" %>
+        <%@include file="/WEB-INF/view/role/common/syllabus/courseDetailFundamentals.jsp" %>
     </div>
     <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
-        <%@include file="/WEB-INF/view/role/admin/syllabus/courseDetailMethod.jsp" %>
+        <%@include file="/WEB-INF/view/role/common/syllabus/courseDetailMethod.jsp" %>
     </div>
     <div class="tab-pane fade" id="kt_tab_pane_3" role="tabpanel" aria-labelledby="kt_tab_pane_3">
-        <%@include file="/WEB-INF/view/role/admin/syllabus/courseDetailContents.jsp" %>
+        <%@include file="/WEB-INF/view/role/common/syllabus/courseDetailContents.jsp" %>
     </div>
 
 </div>

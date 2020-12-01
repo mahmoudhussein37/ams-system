@@ -65,10 +65,10 @@
 
                             <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.result"/></h3>
 
-                            <%@include file="/WEB-INF/view/role/admin/assessmentResult/result.jsp" %>
+                            <%@include file="/WEB-INF/view/role/common/assessment/result.jsp" %>
                             <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.comment"/></h3>
 
-                            <%@include file="/WEB-INF/view/role/admin/assessmentResult/comment.jsp" %>
+                            <%@include file="/WEB-INF/view/role/common/assessment/comment.jsp" %>
 
 
                         </div>
