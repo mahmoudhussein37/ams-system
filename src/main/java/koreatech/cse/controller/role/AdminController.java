@@ -294,6 +294,8 @@ public class AdminController {
             searchable.setSchoolYear(schoolYear);
             searchable.setDivision(division);
             studentList = userMapper.findStudentsByAdvisorSchoolYearDivision(searchable);
+
+
         } else {
             params.entrySet().stream().filter(entry -> entry.getKey().equals("tableCheckbox")).forEach(entry -> {
                 String value = entry.getValue();
@@ -315,6 +317,15 @@ public class AdminController {
         for(User u:studentList) {
             User advisorUser = userMapper.findOne(u.getAdvisorId());
             u.setAdvisor(advisorUser);
+
+            int admissionYear = u.getContact().getAdmissionYear();
+            int divisionId = u.getDivisionId();
+
+            GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear, divisionId);
+            u.setGraduationCriteria(graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
+
+            List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(u.getId());
+            u.setStudentCourses(studentCourses);
         }
 
         model.addAttribute("studentList", studentList);

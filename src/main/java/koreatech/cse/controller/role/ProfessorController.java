@@ -123,7 +123,7 @@ public class ProfessorController {
     }
 
     @RequestMapping("/studentGuidance/studentLookup/studentDetail")
-    public String studentDetail(Model model, @RequestParam int studentId) {
+    public String studentDetail(Model model, @RequestParam int studentId, @RequestParam(defaultValue = "false", required=false) String print) {
         User studentUser = userMapper.findOne(studentId);
         model.addAttribute("studentUser", studentUser);
 
@@ -156,6 +156,8 @@ public class ProfessorController {
         model.addAttribute("majorCount", majorCount);
         model.addAttribute("mscCount", mscCount);
         model.addAttribute("liberalCount", liberalCount);
+        if(print.equals("true"))
+            return "role/professor/studentLookup/studentDetailForPrint";
         return "role/professor/studentLookup/studentDetail";
     }
 
