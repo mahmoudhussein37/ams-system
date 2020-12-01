@@ -1,6 +1,6 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <div class="print-div">
-    <a href="#" class="btn btn-sm btn-light font-weight-bold">
+    <a href="#" class="btn btn-sm btn-light font-weight-bold print">
         <spring:message code="common.print"/>
     </a>
 </div>
@@ -23,103 +23,7 @@
 
 <div class="tab-content mt-5" id="myTabContent">
     <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_1">
-        <div class="row">
-            <div class="col-md-3">
-
-                <div class="form-group">
-                    <label><spring:message code="common.counselingNumber"/></label>
-                    <input type="text" class="form-control" value="${counseling.number}" disabled/>
-                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label><spring:message code="common.year"/></label>
-                    <input type="text" class="form-control"  value="${counseling.year}" disabled/>
-                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
-                </div>
-
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label><spring:message code="common.date"/></label>
-                    <input type="text" class="form-control" value="${counseling.date}" disabled/>
-                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
-                </div>
-
-            </div>
-
-        </div>
-        <div class="row">
-
-            <div class="col-md-3">
-
-                <div class="form-group">
-                    <label><spring:message code="common.studentsName"/></label>
-                    <input type="text" class="form-control" value="${counseling.studentUser.getFullName()}" disabled/>
-                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label><spring:message code="common.department"/></label>
-                    <input type="text" class="form-control" value="${counseling.studentUser.division.name}" disabled/>
-                    <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
-                </div>
-
-            </div>
-            <%--<div class="col-md-3">
-
-                <div class="form-group">
-                    <label><spring:message code="common.major"/></label>
-                    <input type="text" class="form-control" value="${counseling.studentUser.major.name}" disabled/>
-                    &lt;%&ndash;<span class="form-text text-muted">We'll never share your email with anyone else</span>&ndash;%&gt;
-                </div>
-            </div>--%>
-            <div class="col-md-3">
-
-                <div class="form-group">
-                    <label><spring:message code="common.place"/></label>
-                    <input type="text" class="form-control" value="${counseling.place}" disabled/>
-                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                </div>
-            </div>
-            <div class="col-md-3">
-
-
-            </div>
-        </div>
-        <div class="row">
-
-
-
-            <div class="col-md-3">
-
-
-            </div>
-        </div>
-        <div class="row">
-
-            <div class="col-md-12">
-
-                <div class="form-group">
-                    <label><spring:message code="professor.consultingContents"/></label>
-                    <textarea class="form-control" dir="rtl" rows="6" disabled>${counseling.contents}</textarea>
-                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-
-            <div class="col-md-12">
-
-                <div class="form-group">
-                    <label><spring:message code="professor.suggestions"/></label>
-                    <textarea class="form-control" dir="rtl" rows="6" disabled>${counseling.suggestions}</textarea>
-                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                </div>
-            </div>
-        </div>
+        <%@include file="/WEB-INF/view/role/professor/counseling/consulting.jsp" %>
     </div>
     <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
         <%@include file="/WEB-INF/view/role/professor/studentLookup/studentDetailCourseHistory.jsp" %>
@@ -141,5 +45,8 @@
 
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
-
+    $("body").on('click', '.print', function (e) {
+        e.preventDefault();
+        openPage("${baseUrl}/professor/studentGuidance/counseling/counselingDetail?print=true&counselingId=${counseling.id}");
+    });
 </script>

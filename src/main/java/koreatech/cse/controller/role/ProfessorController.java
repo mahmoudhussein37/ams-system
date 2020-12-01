@@ -125,7 +125,7 @@ public class ProfessorController {
     @RequestMapping("/studentGuidance/studentLookup/studentDetail")
     public String studentDetail(Model model, @RequestParam int studentId, @RequestParam(defaultValue = "false", required=false) String print) {
         User studentUser = userMapper.findOne(studentId);
-        model.addAttribute("studentUser", studentUser);
+
 
         User advisor = userMapper.findOne(studentUser.getAdvisorId());
         model.addAttribute("advisor", advisor);
@@ -133,29 +133,13 @@ public class ProfessorController {
         int divisionId = studentUser.getDivisionId();
 
         GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear, divisionId);
-        model.addAttribute("graduationCriteria", graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
+        studentUser.setGraduationCriteria(graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
+
 
         List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(studentId);
-        model.addAttribute("studentCourses", studentCourses);
+        studentUser.setStudentCourses(studentCourses);
 
-        int mscCount = 0;
-        int liberalCount = 0;
-        int majorCount = 0;
-        for(StudentCourse studentCourse: studentCourses) {
-            Course course = studentCourse.getCourse();
-            if(course.getSubjCategory() == null)
-                continue;
-
-            if(course.getSubjCategory().equals("major"))
-                majorCount++;
-            if(course.getSubjCategory().equals("msc"))
-                mscCount++;
-            if(course.getSubjCategory().equals("liberal"))
-                liberalCount++;
-        }
-        model.addAttribute("majorCount", majorCount);
-        model.addAttribute("mscCount", mscCount);
-        model.addAttribute("liberalCount", liberalCount);
+        model.addAttribute("studentUser", studentUser);
         if(print.equals("true"))
             return "role/professor/studentLookup/studentDetailForPrint";
         return "role/professor/studentLookup/studentDetail";
@@ -254,11 +238,12 @@ public class ProfessorController {
     }
 
     @RequestMapping("/studentGuidance/counseling/counselingDetail")
-    public String counselingStudentDetail(Model model, @RequestParam int counselingId) {
+    public String counselingStudentDetail(Model model, @RequestParam int counselingId, @RequestParam(defaultValue = "false", required=false) String print) {
         Counseling counseling = counselingMapper.findOne(counselingId);
         model.addAttribute("counseling", counseling);
 
         User studentUser = counseling.getStudentUser();
+
         int studentId = studentUser.getId();
         User advisor = userMapper.findOne(studentUser.getAdvisorId());
         model.addAttribute("advisor", advisor);
@@ -266,29 +251,13 @@ public class ProfessorController {
         int divisionId = studentUser.getDivisionId();
 
         GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear, divisionId);
-        model.addAttribute("graduationCriteria", graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
-
+        studentUser.setGraduationCriteria(graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
         List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(studentId);
-        model.addAttribute("studentCourses", studentCourses);
+        studentUser.setStudentCourses(studentCourses);
+        model.addAttribute("studentUser", studentUser);
 
-        int mscCount = 0;
-        int liberalCount = 0;
-        int majorCount = 0;
-        for(StudentCourse studentCourse: studentCourses) {
-            Course course = studentCourse.getCourse();
-            if(course.getSubjCategory() == null)
-                continue;
-
-            if(course.getSubjCategory().equals("major"))
-                majorCount++;
-            if(course.getSubjCategory().equals("msc"))
-                mscCount++;
-            if(course.getSubjCategory().equals("liberal"))
-                liberalCount++;
-        }
-        model.addAttribute("majorCount", majorCount);
-        model.addAttribute("mscCount", mscCount);
-        model.addAttribute("liberalCount", liberalCount);
+        if(print.equals("true"))
+            return "role/professor/counseling/counselingDetailForPrint";
         return "role/professor/counseling/counselingDetail";
     }
 
@@ -682,6 +651,8 @@ public class ProfessorController {
         model.addAttribute("assessments", assessments);
         List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(pc.getCourseId());
         model.addAttribute("assessmentFactors", assessmentFactors);
+        MenuAccess menuAccess = menuAccessMapper.findOne();
+        model.addAttribute("menuAccess", menuAccess);
         if(print.equals("true"))
             return "role/common/assessment/courseDetailForPrint";
 
@@ -836,7 +807,7 @@ public class ProfessorController {
         Searchable searchable = new Searchable();
         searchable.setYear(year);
         searchable.setSemester(semester);
-        searchable.setUserId(User.current().getId());
+        searchable.setAdvisor(User.current().getId());
 
         List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivisionProfId(searchable);
         ProfessorCourse firstCourse = null;

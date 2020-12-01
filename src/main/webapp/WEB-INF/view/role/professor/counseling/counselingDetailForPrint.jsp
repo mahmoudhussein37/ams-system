@@ -17,13 +17,10 @@
                         <div class="card-header">
                         </div>
                         <div class="card-body">
-                            <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.information"/></h3>
+                            <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="menu.professor.sub1_2"/></h3>
                             <div class="card-body">
-                            <%@include file="/WEB-INF/view/role/common/studentProfile/studentDetailBasic.jsp" %>
+                            <%@include file="/WEB-INF/view/role/professor/counseling/consulting.jsp" %>
                             </div>
-
-                            <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.profile"/></h3>
-                            <%@include file="/WEB-INF/view/role/common/studentProfile/studentDetailProfile.jsp" %>
                             <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.courseHistory"/></h3>
                             <%@include file="/WEB-INF/view/role/professor/studentLookup/studentDetailCourseHistory.jsp" %>
                             <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.language"/></h3>
@@ -31,11 +28,6 @@
                             <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.certificate"/></h3>
                             <%@include file="/WEB-INF/view/role/professor/studentLookup/studentDetailCertificate.jsp" %>
 
-
-
-                            <br/>
-                            <div class="separator separator-solid my-5"></div>
-                            <br/>
 
                         </div>
                     </div>
@@ -53,7 +45,9 @@
 
 
 
+
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
+
 <script>
     window.print();
     window.onafterprint = function(){
@@ -61,3 +55,5 @@
     }
 
 </script>
+</body>
+</html>
