@@ -1,26 +1,36 @@
 package koreatech.cse.controller.role;
 
 import koreatech.cse.domain.Searchable;
+import koreatech.cse.domain.UploadedFile;
 import koreatech.cse.domain.User;
+import koreatech.cse.domain.constant.Designation;
+import koreatech.cse.domain.constant.SubjCategory;
 import koreatech.cse.domain.role.professor.*;
 import koreatech.cse.domain.role.student.StudentCourse;
 import koreatech.cse.domain.univ.*;
 import koreatech.cse.repository.*;
 import koreatech.cse.repository.provider.CqiMapper;
+import koreatech.cse.service.FileService;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.SystemUtil;
+import koreatech.cse.view.StudentListExcelView;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
-@SessionAttributes({"lectureFundamentals", "counseling", "lectureContents", "profLectureMethod", "cqi"})
+@SessionAttributes({"lectureFundamentals", "counseling", "lectureContents", "profLectureMethod", "cqi", "uploadedFile"})
 @PreAuthorize("hasRole('ROLE_PROFESSOR')")
 @RequestMapping("/professor")
 public class ProfessorController {
@@ -64,6 +74,12 @@ public class ProfessorController {
     private CqiMapper cqiMapper;
     @Inject
     private GraduationCriteriaMapper graduationCriteriaMapper;
+    @Inject
+    private UploadedFileMapper uploadedFileMapper;
+    @Inject
+    private FileService fileService;
+    @Inject
+    private MessageSource messageSource;
 
     @RequestMapping("/studentGuidance/studentLookup")
     public String studentLookup(Model model) {
@@ -312,10 +328,33 @@ public class ProfessorController {
     @RequestMapping("/classProgress/attendance")
     public String attendance(Model model) {
 
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
+        model.addAttribute("course", new Course());
+        model.addAttribute("subjCategoryList", SubjCategory.values());
 
         return "role/professor/attendance/attendance";
     }
+
+    @RequestMapping("/classProgress/attendance/studentListExcel")
+    public ModelAndView institutionExcel(HttpServletResponse response, @RequestParam int courseId, Locale locale) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        sdf.setTimeZone(TimeZone.getTimeZone("Egypt"));
+        String todayDateString = sdf.format(new Date());
+        Map<String, Object> objectMap = new HashMap<>();
+        List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(courseId);
+
+        objectMap.put("studentCourses", studentCourses);
+        objectMap.put("messageSource", messageSource);
+        objectMap.put("locale", locale);
+        response.setContentType( "application/ms-excel" );
+        String fileName = "attendance_" + todayDateString;
+        response.setHeader( "Content-disposition", String.format("attachment; filename=%s.xls", fileName));
+        return new ModelAndView(new StudentListExcelView(), objectMap);
+    }
+
 
     @RequestMapping("/classProgress/attendance/courseTable")
     public String professorCourseTable(Model model,
@@ -326,24 +365,51 @@ public class ProfessorController {
         searchable.setYear(year);
         searchable.setSemester(semester);
 
-        List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
-        Course firstCourse = null;
-        for(Course course: courseList) {
+        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivision(searchable);
+
+        ProfessorCourse firstCourse = null;
+        for(ProfessorCourse course: courseList) {
             firstCourse = course;
             break;
         }
 
         model.addAttribute("firstCourse", firstCourse);
-        model.addAttribute("courseList", courseList);
+        model.addAttribute("profCourseList", courseList);
         return "role/professor/attendance/courseTable";
     }
 
     @RequestMapping("/classProgress/attendance/courseDetail")
     public String attendanceCourseDetail(Model model, @RequestParam int courseId) {
-        Course course = courseMapper.findOne(courseId);
-        model.addAttribute("course", course);
+        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+        model.addAttribute("pc", pc);
+        model.addAttribute("uploadedFile", new UploadedFile());
+
 
         return "role/professor/attendance/courseDetail";
+    }
+
+    @RequestMapping(value = "/classProgress/attendance/courseDetail", method = RequestMethod.POST)
+    public String attendanceCourseDetail(@ModelAttribute UploadedFile uploadedFile, @RequestParam int courseId) {
+        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+        User user = User.current();
+        Semester semester = pc.getSemester();
+
+        System.out.println("courseId = " + courseId);
+        List<UploadedFile> uploadedFiles = uploadedFileMapper.findByDesignationProfCourseId(Designation.attendance, courseId);
+
+        for(UploadedFile stored: uploadedFiles) {
+            uploadedFileMapper.delete(stored);
+        }
+        MultipartFile multipartFile = uploadedFile.getFile();
+        if(multipartFile != null) {
+            try {
+                System.out.println("multipartFile = " + multipartFile);
+                fileService.processUploadedFile(multipartFile, user, Designation.attendance, pc.getCourse().getDivisionId(), courseId, semester.getYear());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "redirect:/professor/classProgress/attendance";
     }
 
     @RequestMapping("/classProgress/inquiryCourse")
@@ -920,5 +986,7 @@ public class ProfessorController {
         }
         return str;
     }
+
+
 
 }

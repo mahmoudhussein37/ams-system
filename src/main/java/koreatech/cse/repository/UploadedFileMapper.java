@@ -36,8 +36,10 @@ public interface UploadedFileMapper {
     List<UploadedFile> findByDesignation(@Param("designation") Designation designation);
 
     @Select("SELECT * FROM `uploaded_file` where designation = #{designation} and year = #{year}")
-    List<UploadedFile> findByDesignationAndYear(@Param("designation") Designation designation, @Param("year") int year);
+    List<UploadedFile> findByDesignationYear(@Param("designation") Designation designation, @Param("year") int year);
 
+    @Select("SELECT * FROM `uploaded_file` where designation = #{designation} and prof_course_id = #{profCourseId}")
+    List<UploadedFile> findByDesignationProfCourseId(@Param("designation") Designation designation, @Param("profCourseId") int profCourseId);
 
     @Select("SELECT * FROM `uploaded_file` where id=#{id}")
     UploadedFile findOne(@Param("id") int id);

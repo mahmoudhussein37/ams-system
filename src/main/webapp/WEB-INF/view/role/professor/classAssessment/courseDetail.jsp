@@ -27,13 +27,6 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
 $(document).ready(function() {
-   $("#lecture-fundamental-save").click(function(e) {
-     e.preventDefault();
-       $.post('${baseUrl}/professor/classProgress/classAssessment/courseDetail?courseId=${course.id}', $('#lectureFundamentalsForm').serialize(), function() {
-         alert("<spring:message code="common.success"/>");
-       });
-   });
-
     $("body").on('click', '.print', function (e) {
         e.preventDefault();
         openPage("${baseUrl}/professor/classProgress/classAssessment/courseDetail?print=true&courseId=${pc.id}");

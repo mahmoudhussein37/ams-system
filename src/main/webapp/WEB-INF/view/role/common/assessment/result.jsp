@@ -9,28 +9,19 @@
 
                         <td><spring:message code="common.no"/></td>
                         <td>
-                            Analytical Standard
+                            <spring:message code="admin.analyticalStandard"/>
                         </td>
                         <td>
-                            Question
+                            <spring:message code="admin.question"/>
                         </td>
+                        <c:forEach var="s" begin="1" end="5">
+                            <td>
+                                <spring:message code="professor.assessment.score${s}"/>
+                            </td>
+                        </c:forEach>
+
                         <td>
-                            Very Negative (1pt)
-                        </td>
-                        <td>
-                            Negative (2pt)
-                        </td>
-                        <td>
-                            Normal (3pt)
-                        </td>
-                        <td>
-                            Positive (4pt)
-                        </td>
-                        <td>
-                            Very Positive (5pt)
-                        </td>
-                        <td>
-                            Total of response
+                            <spring:message code="professor.assessment.totalResponse"/>
                         </td>
                         <td>
                             <spring:message code="common.avg"/>

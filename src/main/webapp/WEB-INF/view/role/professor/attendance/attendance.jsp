@@ -42,17 +42,15 @@
                                         <br/>
                                         <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
                                     </div>
-                                    <div class="col-md-2">
 
-                                    </div>
-                                    <div class="col-md-2">
+                                    <%--<div class="col-md-2">
                                         <br/>
                                         <button class="btn btn-light" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="professor.course.attendanceBook"/></button>
-                                    </div>
-                                    <div class="col-md-2">
+                                    </div>--%>
+                                    <%--<div class="col-md-2">
                                         <br/>
                                         <button class="btn btn-light" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="professor.course.attendanceStatus"/></button>
-                                    </div>
+                                    </div>--%>
 
 
 

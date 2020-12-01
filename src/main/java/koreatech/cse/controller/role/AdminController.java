@@ -610,7 +610,7 @@ public class AdminController {
         model.addAttribute("year", year);
 
 
-        List<UploadedFile> uploadedFiles = uploadedFileMapper.findByDesignationAndYear(Designation.curriculum, year);
+        List<UploadedFile> uploadedFiles = uploadedFileMapper.findByDesignationYear(Designation.curriculum, year);
         model.addAttribute("uploadedFiles", uploadedFiles);
         List<Division> divisions = divisionMapper.findAll();
 
@@ -624,7 +624,7 @@ public class AdminController {
 
         model.addAttribute("year", year);
         model.addAttribute("divisionId", divisionId);
-        List<UploadedFile> uploadedFiles = uploadedFileMapper.findByDesignationAndYear(Designation.curriculum, year);
+        List<UploadedFile> uploadedFiles = uploadedFileMapper.findByDesignationYear(Designation.curriculum, year);
         model.addAttribute("uploadedFiles", uploadedFiles);
         model.addAttribute("uploadedFile", new UploadedFile());
         return "role/admin/curriculum/uploadCurriculum";
@@ -635,7 +635,7 @@ public class AdminController {
 
         User user = User.current();
 
-        List<UploadedFile> uploadedFiles = uploadedFileMapper.findByDesignationAndYear(Designation.curriculum, year);
+        List<UploadedFile> uploadedFiles = uploadedFileMapper.findByDesignationYear(Designation.curriculum, year);
 
         for(UploadedFile stored: uploadedFiles) {
             uploadedFileMapper.delete(stored);
@@ -1123,7 +1123,6 @@ public class AdminController {
         model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
         model.addAttribute("course", new Course());
-        model.addAttribute("compCategoryList", CompCategory.values());
         model.addAttribute("subjCategoryList", SubjCategory.values());
         model.addAttribute("result", result);
         return "role/admin/attendance/attendance";

@@ -27,6 +27,7 @@ public interface ProfessorCourseMapper {
             @Result(column = "user_id", property = "professorUser", one = @One(select = "koreatech.cse.repository.UserMapper.findOne")),
             @Result(column = "semester_id", property = "semester", one = @One(select = "koreatech.cse.repository.SemesterMapper.findOne")),
             @Result(column = "classroom", property = "classroomObj", one = @One(select = "koreatech.cse.repository.ClassroomMapper.findOne")),
+            @Result(column = "id", property = "attendanceFile", one = @One(select = "koreatech.cse.repository.UploadedFileMapper.findAttendanceFile")),
 
 
     })
