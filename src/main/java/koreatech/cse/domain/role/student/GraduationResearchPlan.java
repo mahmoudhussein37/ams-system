@@ -1,6 +1,7 @@
 package koreatech.cse.domain.role.student;
 
 import koreatech.cse.domain.User;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
 
@@ -23,6 +24,7 @@ public class GraduationResearchPlan implements Serializable {
     private String etc;
     private String submitDate;
     private boolean enabled;
+    private int approve;
 
     private User user;
     private int year;
@@ -161,5 +163,18 @@ public class GraduationResearchPlan implements Serializable {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public int getApprove() {
+        return approve;
+    }
+
+    public void setApprove(int approve) {
+        this.approve = approve;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

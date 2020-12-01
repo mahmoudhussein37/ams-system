@@ -31,13 +31,13 @@
                                         </c:forEach>
                                         </select>
                                     </div>
-                                    <div class="col-md-2">
+                                    <%--<div class="col-md-2">
                                         <spring:message code="common.semester"/><br/>
                                         <select id="search-semester" class="form-control" style="margin-top:10px;"><option value="0">-</option>
                                         <option value="1"><spring:message code="common.sem1"/></option>
                                         <option value="2"><spring:message code="common.sem2"/></option>
                                         </select>
-                                    </div>
+                                    </div>--%>
 
                                     <div class="col-md-2">
                                         <br/>
@@ -97,8 +97,8 @@
 
     function search() {
         var year = $("#search-year").children("option:selected").val().trim();
-        var semester = $("#search-semester").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/professor/classProgress/graduationResearchPlan/studentTable?year=" + year + "&semester=" + semester);
+        //var semester = $("#search-semester").children("option:selected").val().trim();
+        $(".table-div").load("${baseUrl}/professor/classProgress/graduationResearchPlan/studentTable?year=" + year);
     }
 
     $(".input-enter").keydown(function(key) {

@@ -6,6 +6,7 @@ import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.Designation;
 import koreatech.cse.domain.constant.SubjCategory;
 import koreatech.cse.domain.role.professor.*;
+import koreatech.cse.domain.role.student.GraduationResearchPlan;
 import koreatech.cse.domain.role.student.StudentCourse;
 import koreatech.cse.domain.univ.*;
 import koreatech.cse.repository.*;
@@ -74,6 +75,8 @@ public class ProfessorController {
     private CqiMapper cqiMapper;
     @Inject
     private GraduationCriteriaMapper graduationCriteriaMapper;
+    @Inject
+    private GraduationResearchPlanMapper graduationResearchPlanMapper;
     @Inject
     private UploadedFileMapper uploadedFileMapper;
     @Inject
@@ -953,34 +956,50 @@ public class ProfessorController {
     }
 
     @RequestMapping("/classProgress/graduationResearchPlan/studentTable")
-    public String graduationResearchPlanStudentTable(Model model, @RequestParam(required=false, defaultValue = "0") int year, @RequestParam(defaultValue = "0", required=false) int semester) {
-        User firstUser = null;
-        List<User> userList;
-        System.out.println("year = " + year);
+    public String graduationResearchPlanStudentTable(Model model, @RequestParam(required=false, defaultValue = "0") int year) {
+
+
+        GraduationResearchPlan firstOne = null;
+        List<GraduationResearchPlan> plans;
         if(year == 0) {
-            userList = new ArrayList<>();
+            plans = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
 
             searchable.setYear(year);
-            userList = userMapper.findByNameNumberDivision(searchable);
+            searchable.setAdvisor(User.current().getId());
+            plans = graduationResearchPlanMapper.findBySearchable(searchable);
 
 
-            for(User user: userList) {
-                firstUser = user;
+            for(GraduationResearchPlan graduationResearchPlan : plans) {
+                firstOne = graduationResearchPlan;
                 break;
             }
         }
-        model.addAttribute("userList", userList);
-        model.addAttribute("firstUser", firstUser);
+
+
+        model.addAttribute("plans", plans);
+        model.addAttribute("firstOne", firstOne);
         return "role/professor/graduationResearchPlan/studentTable";
     }
 
-    @RequestMapping("/classProgress/graduationResearchPlan/studentDetail")
-    public String graduationResearchPlanStudentDetail(Model model, @RequestParam int studentId) {
-        User studentUser = userMapper.findOne(studentId);
-        model.addAttribute("studentUser", studentUser);
-        return "role/professor/graduationResearchPlan/studentDetail";
+    @RequestMapping("/classProgress/graduationResearchPlan/planDetail")
+    public String graduationResearchPlanStudentDetail(Model model, @RequestParam int planId) {
+        GraduationResearchPlan graduationResearchPlan = graduationResearchPlanMapper.findOne(planId);
+        model.addAttribute("stored", graduationResearchPlan);
+        model.addAttribute("studentUser", graduationResearchPlan.getUser());
+        return "role/professor/graduationResearchPlan/planDetail";
+    }
+
+    @RequestMapping(value = "/classProgress/graduationResearchPlan/planDetail", method = RequestMethod.POST)
+    @ResponseBody
+    public String graduationResearchPlanStudentDetail(@RequestParam int planId, @RequestParam int type) {
+        GraduationResearchPlan graduationResearchPlan = graduationResearchPlanMapper.findOne(planId);
+        graduationResearchPlan.setApprove(type);
+        graduationResearchPlanMapper.update(graduationResearchPlan);
+        System.out.println("graduationResearchPlan = " + graduationResearchPlan);
+
+        return "true";
     }
 
     private List<Integer> getYearList() {

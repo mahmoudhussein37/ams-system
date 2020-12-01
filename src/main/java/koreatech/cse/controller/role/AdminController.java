@@ -219,16 +219,22 @@ public class AdminController {
                                              @RequestParam(defaultValue = "0", required=false) int division) {
         User firstUser = null;
         List<User> userList;
-        Searchable searchable = new Searchable();
-        searchable.setAdvisor(advisor);
-        searchable.setSchoolYear(schoolYear);
-        searchable.setDivision(division);
-        userList = userMapper.findStudentsByAdvisorSchoolYearDivision(searchable);
 
-        for(User user: userList) {
-            firstUser = user;
-            break;
+        if(schoolYear == 0 && advisor == 0 && division == 0) {
+            userList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setAdvisor(advisor);
+            searchable.setSchoolYear(schoolYear);
+            searchable.setDivision(division);
+            userList = userMapper.findStudentsByAdvisorSchoolYearDivision(searchable);
+
+            for(User user: userList) {
+                firstUser = user;
+                break;
+            }
         }
+
         model.addAttribute("userList", userList);
         model.addAttribute("firstUser", firstUser);
         return "role/admin/studentProfile/studentTable";
@@ -489,20 +495,28 @@ public class AdminController {
                                               @RequestParam(required=false) String number,
                                               @RequestParam(required=false) String name) {
         GraduationResearchPlan firstOne = null;
-        Searchable searchable = new Searchable();
-
-        searchable.setYear(year);
-        searchable.setDivision(division);
-        searchable.setAdvisor(advisor);
-        searchable.setNumber(number);
-        searchable.setName(name);
-        List<GraduationResearchPlan> plans = graduationResearchPlanMapper.findBySearchable(searchable);
+        List<GraduationResearchPlan> plans;
 
 
-        for(GraduationResearchPlan graduationResearchPlan : plans) {
-            firstOne = graduationResearchPlan;
-            break;
+        if(year == 0 && division == 0 && advisor == 0 && StringUtils.isBlank(number) & StringUtils.isBlank(name)) {
+            plans = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+
+            searchable.setYear(year);
+            searchable.setDivision(division);
+            searchable.setAdvisor(advisor);
+            searchable.setNumber(number);
+            searchable.setName(name);
+            plans = graduationResearchPlanMapper.findBySearchable(searchable);
+
+
+            for(GraduationResearchPlan graduationResearchPlan : plans) {
+                firstOne = graduationResearchPlan;
+                break;
+            }
         }
+
         model.addAttribute("plans", plans);
         model.addAttribute("firstOne", firstOne);
         return "role/admin/graduationResearch/researchTable";

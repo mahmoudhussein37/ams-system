@@ -95,7 +95,30 @@
             <div class="col-md-12">
                 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="professor.researchPlan"/></h3>
                 <table class="table">
+                    <tr>
+                        <td>
+                            <spring:message code="common.status"/>
+                        </td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${stored.approve eq -1}">
+                                <span style="color:red">
+                                <spring:message code="professor.graduateResearchPlan.status.returned"/>
+                                    </span>
+                                </c:when>
+                                <c:when test="${stored.approve eq 0}">
+                                    <spring:message code="professor.graduateResearchPlan.status.submitted"/>
+                                </c:when>
+                                <c:when test="${stored.approve eq 1}">
+                            <span style="color:green">
+                                <spring:message code="professor.graduateResearchPlan.status.approved"/>
+                            </span>
+                                </c:when>
+                            </c:choose>
+                        </td>
 
+
+                    </tr>
                     <tr>
                         <td>
                             <spring:message code="professor.researchTitle"/>
