@@ -9,6 +9,7 @@
         <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.divide"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.role.professor"/></span>
         <th style=""><span class="text-primary"><spring:message code="admin.maxStudent"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.syllabus"/></span>
@@ -35,6 +36,9 @@
 
             <td>
                 <spring:message code="subj.category.${pc.course.subjCategory}"/>
+            </td>
+            <td>
+                    ${pc.divide}
             </td>
             <td>
                 ${pc.professorUser.getFullName()}

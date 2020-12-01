@@ -4,6 +4,7 @@
         <spring:message code="common.print"/>
     </a>
 </div>
+<%@include file="/WEB-INF/view/role/common/professorCourse/basicInfo.jsp" %>
 <ul class="nav nav-tabs nav-tabs-line">
     <li class="nav-item">
         <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1"><spring:message code="common.result"/></a>

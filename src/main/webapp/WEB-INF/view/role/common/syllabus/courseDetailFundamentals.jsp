@@ -31,12 +31,22 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
+                    <label><spring:message code="common.subjCategory"/></label>
+                    <input type="text" class="form-control" value="<spring:message code='subj.category.${pc.course.subjCategory}'/>" disabled/>
+                        <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+                </div>
+
+
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
                     <label><spring:message code="common.lectureLanguage"/></label>
                     <input type="text" class="form-control" value="${pc.language}" disabled/>
                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                 </div>
 
             </div>
+
                 <%--            <div class="col-md-4">
                                 <div class="form-group">
                                     <label><spring:message code="common.lectureTime"/></label>
@@ -63,6 +73,14 @@
                         &lt;%&ndash;<span class="form-text text-muted">Please enter your full name</span>&ndash;%&gt;
                     </div>
                 </div>--%>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><spring:message code="common.divide"/></label>
+                            <input type="text" class="form-control" value="${pc.divide}" disabled/>
+                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                        </div>
+
+                    </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label><spring:message code="common.supervisor"/></label>
@@ -70,15 +88,7 @@
                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label><spring:message code="common.subjCategory"/></label>
-                    <input type="text" class="form-control" value="<spring:message code='subj.category.${pc.course.subjCategory}'/>" disabled/>
-                        <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
-                </div>
 
-
-            </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label><spring:message code="common.profEmail"/></label>

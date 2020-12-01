@@ -52,7 +52,7 @@ public interface ProfessorCourseMapper {
     @ResultMap("findOne-int")
     //@formatter off
     @Select("<script>"
-            + "SELECT * FROM professor_course p join course c on p.course_id=c.id where 1=1 "
+            + "SELECT * FROM professor_course pc join course c on pc.course_id=c.id join semester s on pc.semester_id = s.id where 1=1 "
             + "<if test='year != 0'> and s.year = #{year}</if>"
             + "<if test='semester != 0'> and s.semester = #{semester}</if>"
             + "<if test='division != 0'> and c.division_id = #{division}</if>"
@@ -65,7 +65,7 @@ public interface ProfessorCourseMapper {
     @ResultMap("findOne-int")
     //@formatter off
     @Select("<script>"
-            + "SELECT * FROM professor_course p join course c on p.course_id=c.id where 1=1 "
+            + "SELECT * FROM professor_course pc join course c on pc.course_id=c.id join semester s on pc.semester_id = s.id where 1=1 "
             + "<if test='year != 0'> and s.year = #{year}</if>"
             + "<if test='semester != 0'> and s.semester = #{semester}</if>"
             + "<if test='division != 0'> and c.division_id = #{division}</if>"

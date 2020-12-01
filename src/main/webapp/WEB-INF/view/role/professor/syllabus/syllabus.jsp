@@ -38,22 +38,7 @@
                                         <option value="2"><spring:message code="common.sem2"/></option>
                                     </select>
                                 </div>
-                                <div class="col-md-2">
-                                    <spring:message code="common.department"/><br/>
-                                    <select id="search-division" class="form-control" style="margin-top:10px;"><option value="0">-</option>
-                                        <c:forEach var="division" items="${divisions}">
-                                            <option value="${division.id}">${division.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <spring:message code="common.courseCode"/><br/>
-                                    <input type="text" id="search-code" class="form-control input-enter" value="" style="margin-top:10px;"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <spring:message code="common.courseTitle"/><br/>
-                                    <input type="text" id="search-title" class="form-control input-enter"  value="" style="margin-top:10px;"/>
-                                </div>
+
                                 <div class="col-md-2">
                                     <br/>
                                     <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
@@ -109,10 +94,7 @@
     function search() {
         var year = $("#search-year").children("option:selected").val().trim();
         var semester = $("#search-semester").children("option:selected").val().trim();
-        var code = $("#search-code").val().trim();
-        var title = $("#search-title").val().trim();
-        var division = $("#search-division").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/professor/classProgress/syllabus/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&code=" + code +"&title=" + title);
+        $(".table-div").load("${baseUrl}/professor/classProgress/syllabus/courseTable?year=" + year + "&semester=" + semester);
     }
 
     $(".input-enter").keydown(function(key) {

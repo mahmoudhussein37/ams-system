@@ -1590,7 +1590,7 @@ public class AdminController {
         model.addAttribute("assessmentFactors", assessmentFactors);
 
         if(print.equals("true"))
-            return "role/admin/cqi/courseDetailForPrint";
+            return "role/common/cqi/courseDetailForPrint";
 
         return "role/admin/cqi/courseDetail";
     }

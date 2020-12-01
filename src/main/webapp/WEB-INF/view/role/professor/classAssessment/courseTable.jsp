@@ -64,7 +64,7 @@
     </tbody>
 </table>
 <script>
-    /*$("#course-list").DataTable();*/
+    $("#course-list").DataTable();
 
     <c:if test="${not empty firstCourse}">
         $(".detail-div").load("${baseUrl}/professor/classProgress/classAssessment/courseDetail?courseId=${firstCourse.id}");
