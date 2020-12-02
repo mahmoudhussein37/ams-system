@@ -12,6 +12,7 @@ import koreatech.cse.repository.*;
 import koreatech.cse.service.AuthorityService;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.DateHelper;
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -100,15 +101,20 @@ public class StudentController {
                                   @RequestParam(required=false) String code,
                                   @RequestParam(required=false) String title) {
 
-        Searchable searchable = new Searchable();
-        searchable.setCode(code);
-        searchable.setTitle(title);
-
-        List<Course> courseList = courseMapper.findByYearSemester(searchable);
         Course firstCourse = null;
-        for(Course course: courseList) {
-            firstCourse = course;
-            break;
+        List<Course> courseList;
+        if(StringUtils.isBlank(code) && StringUtils.isBlank(title)) {
+            courseList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setCode(code);
+            searchable.setTitle(title);
+            courseList = courseMapper.findByCodeTitleOpened(searchable);
+
+            for(Course course: courseList) {
+                firstCourse = course;
+                break;
+            }
         }
 
         model.addAttribute("firstCourse", firstCourse);

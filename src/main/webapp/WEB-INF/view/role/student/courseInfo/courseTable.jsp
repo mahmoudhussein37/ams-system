@@ -7,8 +7,8 @@
         <th class="pl-0" style=""><spring:message code="common.no"/></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span>
-        <%--<th style=""><span class="text-primary"><spring:message code="common.compCategory"/></span>--%>
         <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.credit"/></span>
         <th style=""><span class="text-primary"><spring:message code="professor.course.ltlp"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.department"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.opened"/></span>
@@ -38,7 +38,10 @@
                 <spring:message code="subj.category.${courseElement.subjCategory}"/>
             </td>
             <td>
-
+                    ${courseElement.credit}
+            </td>
+            <td>
+                    ${courseElement.lec}-${courseElement.tut}-${courseElement.lab}-${courseElement.ws}
             </td>
             <td>
                 ${courseElement.division.name}
