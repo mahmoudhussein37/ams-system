@@ -24,7 +24,6 @@
                                     <div class="col-md-2">
                                         <spring:message code="common.year"/><br/>
                                         <select id="search-year" class="form-control" style="margin-top:10px;">
-<option value="0">-</option>
                                         <c:forEach var="y" items="${yearList}">
 
 <option value="${y}">${y}</option>

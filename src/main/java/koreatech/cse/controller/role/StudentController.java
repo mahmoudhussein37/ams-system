@@ -1,7 +1,9 @@
 package koreatech.cse.controller.role;
 
 import koreatech.cse.domain.Searchable;
+import koreatech.cse.domain.UploadedFile;
 import koreatech.cse.domain.User;
+import koreatech.cse.domain.constant.Designation;
 import koreatech.cse.domain.role.professor.LectureFundamentals;
 import koreatech.cse.domain.role.student.GraduationResearchPlan;
 import koreatech.cse.domain.univ.Course;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +49,8 @@ public class StudentController {
     private SemesterMapper semesterMapper;
     @Inject
     private GraduationResearchPlanMapper graduationResearchPlanMapper;
+    @Inject
+    private UploadedFileMapper uploadedFileMapper;
 
 
     @RequestMapping("/courseGuide/yearlyCurriculum")
@@ -63,19 +68,23 @@ public class StudentController {
                               @RequestParam(defaultValue = "0", required=false) int year,
                               @RequestParam(defaultValue = "0", required=false) int division) {
 
-        Searchable searchable = new Searchable();
-        searchable.setYear(year);
-        searchable.setDivision(division);
-
-        List<Course> courseList = courseMapper.findByYearSemester(searchable);
-        Course firstCourse = null;
-        for(Course course: courseList) {
-            firstCourse = course;
-            break;
+        List<Division> divisions = divisionMapper.findAll();
+        if(division != 0) {
+            divisions = divisionMapper.findAll();
+            List<Division> filtered = new ArrayList<>();
+            for(Division d: divisions) {
+                if(d.getId() == division) {
+                    filtered.add(d);
+                }
+            }
+            divisions = filtered;
         }
 
-        model.addAttribute("firstCourse", firstCourse);
-        model.addAttribute("courseList", courseList);
+
+        model.addAttribute("year", year);
+        List<UploadedFile> uploadedFiles = uploadedFileMapper.findByDesignationYear(Designation.curriculum, year);
+        model.addAttribute("uploadedFiles", uploadedFiles);
+        model.addAttribute("divisions", divisions);
         return "role/student/yearlyCurriculum/courseTable";
     }
 
