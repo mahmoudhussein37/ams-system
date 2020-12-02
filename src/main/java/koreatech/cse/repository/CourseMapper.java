@@ -53,13 +53,14 @@ public interface CourseMapper {
     @ResultMap("findOne-int")
     //@formatter off
     @Select("<script>"
-            + "SELECT * FROM course where enabled=1 "
+            + "SELECT * FROM course where 1=1 "
+            + "<if test='enabled == true'> and enabled = 1</if>"
             + "<if test='code != null'> and code LIKE CONCAT('%', #{code}, '%')</if>"
             + "<if test='title != null'> and title LIKE CONCAT('%', #{title}, '%')</if>"
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
         //@formatter on
-    List<Course> findByCodeTitleOpened(Searchable searchable);
+    List<Course> findByCodeTitle(Searchable searchable);
 
     @ResultMap("findOne-int")
     //@formatter off

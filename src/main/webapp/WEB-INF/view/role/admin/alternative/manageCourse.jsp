@@ -125,33 +125,6 @@
                                                     <c:set var="altCount" value="${altCount + 1}"/>
                                                 </c:if>
                                             </c:forEach>
-                                            <%--<tr class="table-light text-center">
-                                                <td>
-                                                    1
-                                                </td>
-                                                <td>
-                                                    IFA140
-                                                </td>
-                                                <td>
-                                                    Electronic circuit
-                                                </td>
-                                                <td>
-                                                    Major
-                                                </td>
-
-                                                <td>
-                                                    5-3-2-0
-                                                </td>
-                                                <td>
-                                                    YYYY-MM-dd
-                                                </td>
-                                                <td>
-                                                    Y
-                                                </td>
-
-                                            </tr>--%>
-
-
                                             </tbody>
                                         </table>
 
@@ -212,44 +185,9 @@
                                                     <c:set var="preCount" value="${preCount + 1}"/>
                                                 </c:if>
                                             </c:forEach>
-                                            <%--<tr class="table-light text-center">
-                                                <td>
-                                                    1
-                                                </td>
-                                                <td>
-                                                    IFA140
-                                                </td>
-                                                <td>
-                                                    Electronic circuit
-                                                </td>
-                                                <td>
-                                                    IFA130
-                                                </td>
-                                                <td>
-                                                    Electronic Circuit Practice
-                                                </td>
-                                                <td>
-                                                    Major
-                                                </td>
-
-                                                <td>
-                                                    5-3-2-0
-                                                </td>
-                                                <td>
-                                                    YYYY-MM-dd
-                                                </td>
-                                                <td>
-                                                    Y
-                                                </td>
-
-                                            </tr>--%>
-
-
                                             </tbody>
                                         </table>
                                     </div>
-
-
                                 </div>
                             </div>
 

@@ -6,6 +6,7 @@ import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.Designation;
 import koreatech.cse.domain.role.professor.LectureFundamentals;
 import koreatech.cse.domain.role.student.GraduationResearchPlan;
+import koreatech.cse.domain.univ.AltCourse;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
 import koreatech.cse.repository.*;
@@ -52,6 +53,8 @@ public class StudentController {
     private GraduationResearchPlanMapper graduationResearchPlanMapper;
     @Inject
     private UploadedFileMapper uploadedFileMapper;
+    @Inject
+    private AltCourseMapper altCourseMapper;
 
 
     @RequestMapping("/courseGuide/yearlyCurriculum")
@@ -109,7 +112,8 @@ public class StudentController {
             Searchable searchable = new Searchable();
             searchable.setCode(code);
             searchable.setTitle(title);
-            courseList = courseMapper.findByCodeTitleOpened(searchable);
+            searchable.setEnabled(true);
+            courseList = courseMapper.findByCodeTitle(searchable);
 
             for(Course course: courseList) {
                 firstCourse = course;
@@ -140,15 +144,20 @@ public class StudentController {
                                         @RequestParam(required=false) String code,
                                         @RequestParam(required=false) String title) {
 
-        Searchable searchable = new Searchable();
-        searchable.setCode(code);
-        searchable.setTitle(title);
-
-        List<Course> courseList = courseMapper.findByYearSemester(searchable);
         Course firstCourse = null;
-        for(Course course: courseList) {
-            firstCourse = course;
-            break;
+        List<Course> courseList;
+        if(StringUtils.isBlank(code) && StringUtils.isBlank(title)) {
+            courseList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setCode(code);
+            searchable.setTitle(title);
+            courseList = courseMapper.findByCodeTitle(searchable);
+
+            for(Course course: courseList) {
+                firstCourse = course;
+                break;
+            }
         }
 
         model.addAttribute("firstCourse", firstCourse);
@@ -160,7 +169,8 @@ public class StudentController {
     public String alternativeCourseDetail(Model model, @RequestParam int courseId) {
         Course course = courseMapper.findOne(courseId);
         model.addAttribute("course", course);
-
+        List<AltCourse> altCourses = altCourseMapper.findByTargetCourseId(courseId);
+        model.addAttribute("altCourses", altCourses);
         return "role/student/alternative/courseDetail";
     }
 
