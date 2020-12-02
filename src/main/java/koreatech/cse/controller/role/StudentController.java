@@ -11,6 +11,7 @@ import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.AuthorityService;
+import koreatech.cse.service.FileService;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.DateHelper;
 import org.apache.commons.lang.StringUtils;
@@ -20,8 +21,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,6 +60,9 @@ public class StudentController {
     private UploadedFileMapper uploadedFileMapper;
     @Inject
     private AltCourseMapper altCourseMapper;
+    @Inject
+    private FileService fileService;
+
 
 
     @RequestMapping("/courseGuide/yearlyCurriculum")
@@ -176,28 +184,40 @@ public class StudentController {
 
     @RequestMapping("/register/basic")
     public String basic(Model model) {
+
+        User studentUser = userMapper.findOne(User.current().getId());
+        model.addAttribute("studentUser", studentUser);
         return "role/student/basic/basic";
     }
 
     @RequestMapping(value = "/register/basic", method = RequestMethod.POST)
-    public String basic(@ModelAttribute("studentUser") User studentUser, SessionStatus sessionStatus) {
-        System.out.println("studentUser = " + studentUser);
+    public String basic(@ModelAttribute("studentUser") User studentUser, HttpServletRequest request, SessionStatus sessionStatus) throws IOException {
+        User user = User.current();
+        if (request instanceof MultipartHttpServletRequest) {
+            MultipartFile f = ((MultipartHttpServletRequest) request).getFile("file");
+            System.out.println("f = " + f.getSize());
+            if(f == null || f.getSize() == 0) {
+
+            } else {
+                uploadedFileMapper.deleteProfileByUser(user);
+                DateTime dt = new DateTime();
+                fileService.processUploadedFile(f, user, Designation.profile, 0, 0, dt.getYear());
+            }
+
+        }
 
 
         userMapper.update(studentUser);
         contactMapper.update(studentUser.getContact());
         authorityService.authenticateUserAndSetSession(studentUser);
+
+
+
         sessionStatus.setComplete();
 
         return "redirect:/student/register/basic";
     }
 
-    @RequestMapping("/register/basic/studentDetail")
-    public String studentDetail(Model model) {
-        User studentUser = User.current();
-        model.addAttribute("studentUser", studentUser);
-        return "role/student/basic/studentDetail";
-    }
 
 
     @RequestMapping("/classInformation/syllabus")

@@ -36,6 +36,8 @@ public class User implements UserDetails {
     private GraduationCriteria graduationCriteria;
     private List<StudentCourse> studentCourses;
 
+    private UploadedFile profile;
+
 
 
     private List<Authority> authorities;
@@ -229,6 +231,14 @@ public class User implements UserDetails {
 
 
         return Role.student.name();
+    }
+
+    public UploadedFile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(UploadedFile profile) {
+        this.profile = profile;
     }
 
     public String getFullName() {

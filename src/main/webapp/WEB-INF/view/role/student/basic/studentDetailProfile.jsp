@@ -1,4 +1,4 @@
-<form:form modelAttribute="studentUser" action="${baseUrl}/student/register/basic" method="post" class="form">
+<form:form modelAttribute="studentUser" action="${baseUrl}/student/register/basic" method="post" class="form" enctype="multipart/form-data">
     <div class="card-body">
         <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.personalInfo"/></h3>
         <div class="row">
@@ -18,12 +18,24 @@
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
             </div>
-            <div class="col-md-3"></div>
             <div class="col-md-3">
 
 
 
             </div>
+            <div class="col-md-3" style="text-align:center">
+                <c:choose>
+                    <c:when test="${not empty studentUser.profile}">
+                        <img src="${baseUrl}/download?uploadedFileId=${studentUser.profile.id}" style="max-width:100px"/>
+                    </c:when>
+                    <c:otherwise>
+                        <img src="${resources}/images/user.png" style="max-width:100px"/>
+                    </c:otherwise>
+                </c:choose>
+                <br/><br/>
+                <input type="file" name="file"/>
+            </div>
+
         </div>
         <div class="row">
             <div class="col-md-3">

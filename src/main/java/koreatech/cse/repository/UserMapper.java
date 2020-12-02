@@ -64,7 +64,8 @@ public interface UserMapper {
             @Result(column = "id", property = "contact", one = @One(select = "koreatech.cse.repository.ContactMapper.findByUserId")),
             @Result(column = "id", property = "authorities", many = @Many(select = "koreatech.cse.repository.AuthorityMapper.findByUserId")),
             @Result(column = "division_id", property = "division", one = @One(select = "koreatech.cse.repository.DivisionMapper.findOne")),
-            @Result(column = "advisor_id", property = "advisor", one = @One(select = "koreatech.cse.repository.UserMapper.findOne"))
+            @Result(column = "advisor_id", property = "advisor", one = @One(select = "koreatech.cse.repository.UserMapper.findOne")),
+            @Result(column = "id", property = "profile", one = @One(select = "koreatech.cse.repository.UploadedFileMapper.findProfileFile"))
     })
     @Select("SELECT * FROM USER WHERE ID = #{id}")
     User findOne(@Param("id") int id);

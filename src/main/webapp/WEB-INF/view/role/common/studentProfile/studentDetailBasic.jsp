@@ -25,7 +25,15 @@
     </div>
     <div class="col-md-3" style="text-align:center">
         <br/>
-        <img src="${resources}/images/user.png" style="max-width:100px"/>
+        <c:choose>
+            <c:when test="${not empty studentUser.profile}">
+                <img src="${baseUrl}/download?uploadedFileId=${studentUser.profile.id}" style="max-width:100px"/>
+            </c:when>
+            <c:otherwise>
+                <img src="${resources}/images/user.png" style="max-width:100px"/>
+            </c:otherwise>
+        </c:choose>
+
     </div>
 </div>
 <div class="row">
@@ -33,7 +41,7 @@
 
         <div class="form-group">
             <label><spring:message code="common.status"/></label>
-            <input type="text" class="form-control" value="${studentUser.status}" disabled/>
+            <input type="text" class="form-control" value="<spring:message code="student.status.${studentUser.status}"/>" disabled/>
             <%--<span class="form-text text-muted">Please enter your full name</span>--%>
         </div>
     </div>
