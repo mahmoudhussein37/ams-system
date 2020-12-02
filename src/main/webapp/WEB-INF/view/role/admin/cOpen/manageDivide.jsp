@@ -120,6 +120,7 @@
                                                 </td>
                                                 <td>
                                                     <a style="width:100%;margin-bottom:10px;" href="${baseUrl}/admin/courseManagement/cOpen/editDivide?profCourseId=${pc.id}" class="btn btn-light btm-sm" data-id="${pc.id}"><spring:message code="admin.editDivide"/></a><br/>
+                                                    <a style="width:100%;margin-bottom:10px;" href="${baseUrl}/admin/courseManagement/cOpen/manageTime?profCourseId=${pc.id}" class="btn btn-light btm-sm" data-id="${pc.id}"><spring:message code="admin.manageTimeTable"/></a><br/>
                                                     <a style="width:100%;margin-bottom:10px;" href="${baseUrl}/admin/courseManagement/cOpen/manageStudent?profCourseId=${pc.id}" class="btn btn-light btm-sm" data-id="${pc.id}"><spring:message code="admin.registerStudents"/></a><br/>
                                                     <button style="width:100%;margin-bottom:10px;" class="btn btn-light btm-sm change-status-row-btn" data-id="${pc.id}" data-to-status="false"><spring:message code="common.disable"/></button><br/>
                                                     <button style="width:100%;margin-bottom:10px;" class="btn btn-light btm-sm delete-row-btn" data-id="${pc.id}"><spring:message code="common.delete"/></button>

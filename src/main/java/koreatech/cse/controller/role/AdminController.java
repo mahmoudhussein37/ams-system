@@ -102,6 +102,8 @@ public class AdminController {
     private LectureContentsMapper lectureContentsMapper;
     @Inject
     private CqiMapper cqiMapper;
+    @Inject
+    private ClassTimeMapper classTimeMapper;
 
 
     @RequestMapping("/studentManagement/studentRegistration")
@@ -913,6 +915,37 @@ public class AdminController {
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);
         return "role/admin/cOpen/courseTable";
+    }
+
+    @RequestMapping("/courseManagement/cOpen/manageTime")
+    public String manageTime(Model model, @RequestParam int profCourseId, @RequestParam(required=false) String result) {
+        ProfessorCourse profCourse = professorCourseMapper.findOne(profCourseId);
+        Course course = profCourse.getCourse();
+        model.addAttribute("course", course);
+        model.addAttribute("profCourse", profCourse);
+        List<ClassTime> classTimes = classTimeMapper.findByProfCourseId(profCourseId);
+        model.addAttribute("classTimes", classTimes);
+        model.addAttribute("classTime", new ClassTime());
+        model.addAttribute("result", result);
+        return "role/admin/cOpen/manageTime";
+    }
+
+    @RequestMapping(value = "/courseManagement/cOpen/manageTime", method = RequestMethod.POST)
+    public String manageTime(@ModelAttribute ClassTime classTime,
+                               @RequestParam int profCourseId) {
+        System.out.println("profCourseId = " + profCourseId);
+
+        if(classTime.getE() > classTime.getS())
+            classTimeMapper.insert(classTime);
+        return "redirect:/admin/courseManagement/cOpen/manageTime?profCourseId=" + profCourseId + "&result=success";
+    }
+
+    @RequestMapping(value = "/courseManagement/cOpen/manageTime/deleteTime", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean deleteTime(@RequestParam int id) {
+        ClassTime classTime = classTimeMapper.findOne(id);
+        classTimeMapper.delete(classTime);
+        return true;
     }
 
     @RequestMapping("/courseManagement/cOpen/manageDivide")

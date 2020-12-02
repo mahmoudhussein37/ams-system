@@ -45,6 +45,7 @@ public class ProfessorCourse implements Serializable {
     private List<Assessment> assessmentList;
 
     private List<StudentCourse> studentCourseList;
+    private List<ClassTime> classTimeList;
 
 
     public int getId() {
@@ -300,6 +301,14 @@ public class ProfessorCourse implements Serializable {
 
     public void setStudentCourseList(List<StudentCourse> studentCourseList) {
         this.studentCourseList = studentCourseList;
+    }
+
+    public List<ClassTime> getClassTimeList() {
+        return classTimeList;
+    }
+
+    public void setClassTimeList(List<ClassTime> classTimeList) {
+        this.classTimeList = classTimeList;
     }
 
     @Override

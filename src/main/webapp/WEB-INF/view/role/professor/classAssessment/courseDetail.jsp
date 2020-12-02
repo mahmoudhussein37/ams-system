@@ -6,7 +6,7 @@
 </div>
 <%@include file="/WEB-INF/view/role/common/professorCourse/basicInfo.jsp" %>
 <c:choose>
-    <c:when test="${menuAccess.assessment}">
+    <c:when test="${!menuAccess.assessment}">
         <ul class="nav nav-tabs nav-tabs-line">
             <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1"><spring:message code="common.result"/></a>
@@ -39,7 +39,7 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
     <c:choose>
-    <c:when test="${menuAccess.assessment}">
+    <c:when test="${!menuAccess.assessment}">
     $(document).ready(function() {
         $("body").on('click', '.print', function (e) {
             e.preventDefault();
