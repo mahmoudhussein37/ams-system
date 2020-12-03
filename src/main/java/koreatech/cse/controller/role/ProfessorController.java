@@ -471,15 +471,23 @@ public class ProfessorController {
 
         List<LectureMethod> lectureMethods = lectureMethodMapper.findAll();
         model.addAttribute("lectureMethods", lectureMethods);
+        List<LectureMethod> lectureMethodsEnabled = lectureMethodMapper.findAllEnabled();
+        model.addAttribute("lectureMethodsEnabled", lectureMethodsEnabled);
 
         List<EducationalMedium> educationalMediums = educationalMediumMapper.findAll();
         model.addAttribute("educationalMediums", educationalMediums);
+        List<EducationalMedium> educationalMediumsEnabled = educationalMediumMapper.findAllEnabled();
+        model.addAttribute("educationalMediumsEnabled", educationalMediumsEnabled);
 
         List<EvaluationMethod> evaluationMethods = evaluationMethodMapper.findAll();
         model.addAttribute("evaluationMethods", evaluationMethods);
+        List<EvaluationMethod> evaluationMethodsEnabled = evaluationMethodMapper.findAllEnabled();
+        model.addAttribute("evaluationMethodsEnabled", evaluationMethodsEnabled);
 
         List<Equipment> equipments = equipmentMapper.findAll();
         model.addAttribute("equipments", equipments);
+        List<Equipment> equipmentsEnabled = equipmentMapper.findAllEnabled();
+        model.addAttribute("equipmentsEnabled", equipmentsEnabled);
 
         MenuAccess menuAccess = menuAccessMapper.findOne();
         model.addAttribute("menuAccess", menuAccess);
@@ -841,7 +849,6 @@ public class ProfessorController {
             List<Assessment> assessments = assessmentMapper.findByProfCourseId(professorCourse.getId());
             professorCourse.setAssessmentList(assessments);
             List<StudentCourse> studentCourseList = studentCourseMapper.findByProfCourseIdValid(professorCourse.getId());
-            System.out.println("studentCourseList = " + studentCourseList.size());
             professorCourse.setStudentCourseList(studentCourseList);
         }
         model.addAttribute("professorCourseList", professorCourseList);

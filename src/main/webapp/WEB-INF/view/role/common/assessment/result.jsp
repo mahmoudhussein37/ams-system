@@ -113,39 +113,6 @@
                             </td>
                         </tr>
                     </c:forEach>
-
-                    <%--<tr class="table-light text-center">
-                        <td>1</td>
-                        <td>
-                            Design/Material
-                        </td>
-                        <td>
-                            It proceed according to the proposed syllabus
-                        </td>
-                        <td>
-                            1
-                        </td>
-                        <td>
-                            3
-                        </td>
-                        <td>
-                            6
-                        </td>
-                        <td>
-                            16
-                        </td>
-                        <td>
-                            16
-                        </td>
-                        <td>
-                            42
-                        </td>
-                        <td>
-                            4.0
-                        </td>
-                    </tr>--%>
-
-
                     </tbody>
                 </table>
 

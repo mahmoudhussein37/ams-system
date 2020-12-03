@@ -29,6 +29,9 @@ public interface AssessmentFactorMapper {
     @Select("SELECT * FROM `assessment_factor` where course_id=#{id}")
     List<AssessmentFactor> findByCourseId(@Param("id") int id);
 
+    @Select("SELECT * FROM `assessment_factor` where course_id=#{id} and enabled = 1")
+    List<AssessmentFactor> findByCourseIdEnabled(@Param("id") int id);
+
     @Select("SELECT * FROM `assessment_factor` where enabled = 1")
     List<AssessmentFactor> findAllEnabled();
 

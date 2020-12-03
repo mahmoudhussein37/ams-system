@@ -4,11 +4,10 @@ import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.UploadedFile;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.Designation;
-import koreatech.cse.domain.role.professor.LectureFundamentals;
+import koreatech.cse.domain.role.professor.*;
 import koreatech.cse.domain.role.student.GraduationResearchPlan;
-import koreatech.cse.domain.univ.AltCourse;
-import koreatech.cse.domain.univ.Course;
-import koreatech.cse.domain.univ.Division;
+import koreatech.cse.domain.role.student.StudentCourse;
+import koreatech.cse.domain.univ.*;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.AuthorityService;
 import koreatech.cse.service.FileService;
@@ -16,6 +15,7 @@ import koreatech.cse.service.UserService;
 import koreatech.cse.util.DateHelper;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@SessionAttributes("studentUser")
+@SessionAttributes({"studentUser", "assessment"})
 @PreAuthorize("hasRole('ROLE_STUDENT')")
 @RequestMapping("/student")
 public class StudentController {
@@ -62,7 +62,26 @@ public class StudentController {
     private AltCourseMapper altCourseMapper;
     @Inject
     private FileService fileService;
-
+    @Inject
+    private ProfLectureMethodMapper profLectureMethodMapper;
+    @Inject
+    private LectureContentsMapper lectureContentsMapper;
+    @Inject
+    private LectureMethodMapper lectureMethodMapper;
+    @Inject
+    private EvaluationMethodMapper evaluationMethodMapper;
+    @Inject
+    private EducationalMediumMapper educationalMediumMapper;
+    @Inject
+    private EquipmentMapper equipmentMapper;
+    @Inject
+    private StudentCourseMapper studentCourseMapper;
+    @Inject
+    private MenuAccessMapper menuAccessMapper;
+    @Inject
+    private AssessmentFactorMapper assessmentFactorMapper;
+    @Inject
+    private AssessmentMapper assessmentMapper;
 
 
     @RequestMapping("/courseGuide/yearlyCurriculum")
@@ -233,30 +252,58 @@ public class StudentController {
     @RequestMapping("/classInformation/syllabus/courseTable")
     public String syllabusCourseTable(Model model,
                                       @RequestParam(defaultValue = "0", required=false) int year,
-                                      @RequestParam(defaultValue = "0", required=false) int semester) {
+                                      @RequestParam(defaultValue = "0", required=false) int semester,
+                                      @RequestParam(defaultValue = "0", required=false) int division,
+                                      @RequestParam(required=false) String title) {
+        ProfessorCourse firstCourse = null;
+        List<ProfessorCourse> courseList = null;
+        if(year == 0 && semester == 0 && division == 0 && StringUtils.isBlank(title)) {
+            courseList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setYear(year);
+            searchable.setSemester(semester);
+            searchable.setDivision(division);
+            searchable.setTitle(title);
 
-        Searchable searchable = new Searchable();
-        searchable.setYear(year);
-        searchable.setSemester(semester);
+            courseList = professorCourseMapper.findByYearSemesterDivisionCodeTitle(searchable);
 
-        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
-        Course firstCourse = null;
-        for(Course course: courseList) {
-            firstCourse = course;
-            break;
+            for(ProfessorCourse course: courseList) {
+                firstCourse = course;
+                break;
+            }
         }
 
         model.addAttribute("firstCourse", firstCourse);
-        model.addAttribute("courseList", courseList);
+        model.addAttribute("profCourseList", courseList);
         return "role/student/syllabus/courseTable";
     }
 
     @RequestMapping("/classInformation/syllabus/courseDetail")
-    public String courseDetail(Model model, @RequestParam int courseId) {
-        Course course = courseMapper.findOne(courseId);
-        model.addAttribute("course", course);
-        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
+    public String courseDetail(Model model, @RequestParam int profCourseId) {
+        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
+        model.addAttribute("pc", pc);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(pc.getId());
         model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
+        ProfLectureMethod profLectureMethod = profLectureMethodMapper.findByProfCourseId(pc.getId());
+        model.addAttribute("profLectureMethod", profLectureMethod == null ? new ProfLectureMethod() : profLectureMethod);
+        LectureContents lectureContents = lectureContentsMapper.findByProfCourseId(pc.getId());
+        model.addAttribute("lectureContents", lectureContents == null ? new LectureContents() : lectureContents);
+
+        List<LectureMethod> lectureMethods = lectureMethodMapper.findAll();
+        model.addAttribute("lectureMethods", lectureMethods);
+
+        List<EducationalMedium> educationalMediums = educationalMediumMapper.findAll();
+        model.addAttribute("educationalMediums", educationalMediums);
+
+        List<EvaluationMethod> evaluationMethods = evaluationMethodMapper.findAll();
+        model.addAttribute("evaluationMethods", evaluationMethods);
+
+        List<Equipment> equipments = equipmentMapper.findAll();
+        model.addAttribute("equipments", equipments);
+
+        MenuAccess menuAccess = menuAccessMapper.findOne();
+        model.addAttribute("menuAccess", menuAccess);
         return "role/student/syllabus/courseDetail";
     }
 
@@ -351,9 +398,10 @@ public class StudentController {
     }
 
     @RequestMapping("/classInformation/classAssessment")
-    public String assessment(Model model) {
+    public String assessment(Model model, @RequestParam(required=false) String result) {
 
         model.addAttribute("yearList", getYearList());
+        model.addAttribute("result", result);
         return "role/student/classAssessment/classAssessment";
     }
 
@@ -363,31 +411,63 @@ public class StudentController {
                                              @RequestParam(defaultValue = "0", required=false) int semester) {
 
 
-        Searchable searchable = new Searchable();
-        searchable.setYear(year);
-        searchable.setSemester(semester);
+        User user = User.current();
+        StudentCourse firstCourse = null;
+        List<StudentCourse> studentCourseList = null;
+        if(year == 0 && semester == 0) {
+            studentCourseList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setYear(year);
+            searchable.setSemester(semester);
+            searchable.setUserId(user.getId());
 
-        List<Course> courseList = courseMapper.findByYearSemesterDivisionProfId(searchable);
-        Course firstCourse = null;
-        for(Course course: courseList) {
-            firstCourse = course;
-            break;
+            studentCourseList = studentCourseMapper.findByUserIdYearSemester(searchable);
+
+            for(StudentCourse sc: studentCourseList) {
+                firstCourse = sc;
+                break;
+            }
         }
 
+
+
         model.addAttribute("firstCourse", firstCourse);
-        model.addAttribute("courseList", courseList);
+        model.addAttribute("courseList", studentCourseList);
         return "role/student/classAssessment/courseTable";
     }
 
     @RequestMapping("/classInformation/classAssessment/courseDetail")
     public String classAssessmentCourseDetail(Model model, @RequestParam int courseId) {
-        Course course = courseMapper.findOne(courseId);
-        model.addAttribute("course", course);
-        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
-        model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
+        User studentUser = User.current();
+        StudentCourse sc = studentCourseMapper.findOne(courseId);
+        model.addAttribute("sc", sc);
+
+        Assessment assessment = assessmentMapper.findByUserIdProfCourseId(studentUser.getId(), sc.getProfCourseId());
+        if(assessment == null) {
+            assessment = new Assessment();
+            assessment.setUserId(studentUser.getId());
+            assessment.setProfCourseId(sc.getProfCourseId());
+        }
+
+        model.addAttribute("assessment", assessment);
+        List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseIdEnabled(sc.getCourseId());
+        model.addAttribute("assessmentFactors", assessmentFactors);
+        List<AssessmentFactor> assessmentFactorsAll = assessmentFactorMapper.findByCourseId(sc.getCourseId());
+        model.addAttribute("assessmentFactorsAll", assessmentFactorsAll);
+        MenuAccess menuAccess = menuAccessMapper.findOne();
+        model.addAttribute("menuAccess", menuAccess);
+
         return "role/student/classAssessment/courseDetail";
     }
 
+    @RequestMapping(value = "/classInformation/classAssessment/courseDetail", method = RequestMethod.POST)
+    public String classAssessmentCourseDetail(@ModelAttribute("assessment") Assessment assessment, @RequestParam int courseId, SessionStatus sessionStatus) {
+        System.out.println("courseId = " + courseId);
+
+        assessmentMapper.insert(assessment);
+        return "redirect:/student/classInformation/classAssessment?result=success";
+    }
     @RequestMapping("/grades/inquiryGrade")
     public String inquiryGrade(Model model) {
         User studentUser = User.current();

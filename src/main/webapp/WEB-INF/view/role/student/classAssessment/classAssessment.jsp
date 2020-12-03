@@ -89,14 +89,14 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
-
+    <c:if test="${not empty result}">
+    alert("<spring:message code='common.success'/>");
+    location.href="${baseUrl}/student/classInformation/classAssessment";
+    </c:if>
     function search() {
-        var number = $("#search-number").val().trim();
-        var name = $("#search-name").val().trim();
-        var division = $("#search-division").children("option:selected").val().trim();
-        //var major = $("#search-major").children("option:selected").val().trim();
-
-        $(".table-div").load("${baseUrl}/student/classInformation/classAssessment/courseTable?number=" + number + "&name=" + name + "&division=" + division);
+        var year = $("#search-year").children("option:selected").val().trim();
+        var semester = $("#search-semester").children("option:selected").val().trim();
+        $(".table-div").load("${baseUrl}/student/classInformation/classAssessment/courseTable?year=" + year + "&semester=" + semester);
     }
 
     $(".input-enter").keydown(function(key) {

@@ -8,52 +8,45 @@
         <th style=""><span class="text-primary"><spring:message code="common.department"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.professor"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.divide"/></span>
-        <th style=""><span class="text-primary"><spring:message code="professor.course.lectureCategory"/></span>
-        <th style=""><span class="text-primary"><spring:message code="professor.course.ctlp"/></span>
-        <th style=""><span class="text-primary"><spring:message code="professor.course.numStudent"/></span>
-        <th style=""><span class="text-primary"><spring:message code="professor.course.numResponse"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.avg"/></span>
-
-
+        <th style=""><span class="text-primary"><spring:message code="common.opening"/></span>
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="course" items="${courseList}" varStatus="varStatus">
+    <c:forEach var="sc" items="${courseList}" varStatus="varStatus">
         <tr>
 
             <td class="pl-0">
                     ${varStatus.count}
             </td>
             <td class="pl-0">
-                    ${course.division.name}
+                    ${sc.course.division.name}
             </td>
             <td>
-                <a href="#" class="course-detail" data-course-id="${course.id}">
-                        ${course.code}
+                <a href="#" class="course-detail" data-course-id="${sc.course.id}">
+                    ${sc.course.code}
                 </a>
 
-
             </td>
             <td>
-                    ${course.title}
+                    ${sc.course.title}
             </td>
             <td>
-                1
+                <spring:message code="subj.category.${sc.course.subjCategory}"/>
             </td>
             <td>
-
+                    ${sc.professorCourse.professorUser.getFullName()}
+            </td>
+            <td>
+                    ${sc.professorCourse.divide}
             </td>
 
             <td>
-
+                    ${sc.course.enabled ? 'Y' : 'N'}
             </td>
-            <td>
 
-            </td>
-            <td>
-
-            </td>
         </tr>
     </c:forEach>
 

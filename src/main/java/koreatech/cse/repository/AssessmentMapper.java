@@ -107,6 +107,9 @@ public interface AssessmentMapper {
     @Select("SELECT * FROM `assessment` where prof_course_id=#{profCourseId}")
     List<Assessment> findByProfCourseId(@Param("profCourseId") int profCourseId);
 
+    @Select("SELECT * FROM `assessment` where user_id = #{userId} and prof_course_id=#{profCourseId} limit 1")
+    Assessment findByUserIdProfCourseId(@Param("userId") int userId, @Param("profCourseId") int profCourseId);
+
     @Select("SELECT * FROM `assessment` where (" +
             "item1=#{assessmentFactorId} or " +
             "item2=#{assessmentFactorId} or " +

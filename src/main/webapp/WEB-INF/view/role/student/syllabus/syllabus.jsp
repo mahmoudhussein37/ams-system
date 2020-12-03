@@ -102,12 +102,13 @@
 <script>
 
     function search() {
-        var number = $("#search-number").val().trim();
-        var name = $("#search-name").val().trim();
+        var year = $("#search-year").children("option:selected").val().trim();
+        var semester = $("#search-semester").children("option:selected").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
+        var title = $("#search-title").val().trim();
         //var major = $("#search-major").children("option:selected").val().trim();
 
-        $(".table-div").load("${baseUrl}/student/classInformation/syllabus/courseTable?number=" + number + "&name=" + name + "&division=" + division);
+        $(".table-div").load("${baseUrl}/student/classInformation/syllabus/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&title=" + title);
     }
 
     $(".input-enter").keydown(function(key) {

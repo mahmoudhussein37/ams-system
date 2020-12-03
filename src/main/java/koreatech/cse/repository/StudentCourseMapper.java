@@ -1,6 +1,8 @@
 package koreatech.cse.repository;
 
 
+import koreatech.cse.domain.Searchable;
+import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.role.student.StudentCourse;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -59,6 +61,17 @@ public interface StudentCourseMapper {
     @ResultMap("findOne-int")
     @Select("SELECT * FROM student_course sc join professor_course pc on sc.prof_course_id = pc.id join semester s on pc.semester_id = s.id where sc.user_id = #{userId} and sc.valid = 1 order by s.year desc, s.semester desc")
     List<StudentCourse> findByUserIdValid(@Param("userId") int userId);
+
+    @ResultMap("findOne-int")
+    //@formatter off
+    @Select("<script>"
+            + "SELECT * FROM student_course sc join professor_course pc on sc.prof_course_id=pc.id join semester s on pc.semester_id = s.id where sc.user_id = #{userId} "
+            + "<if test='year != 0'> and s.year = #{year}</if>"
+            + "<if test='semester != 0'> and s.semester = #{semester}</if>"
+            + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
+            + "</script>")
+        //@formatter on
+    List<StudentCourse> findByUserIdYearSemester(Searchable searchable);
 
     @ResultMap("findOne-int")
     @Select("SELECT * FROM student_course where prof_course_id = #{profCourseId}")
