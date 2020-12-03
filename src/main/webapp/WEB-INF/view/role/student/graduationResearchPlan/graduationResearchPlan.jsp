@@ -56,7 +56,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label><spring:message code="common.completeSemester"/></label>
-                                        <input type="text" class="form-control" value="" disabled/>
+                                        <input type="text" class="form-control" value="${completeSemester}" disabled/>
                                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                     </div>
                                 </div>

@@ -34,10 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @SessionAttributes({"studentUser", "profUser", "adminUser", "course", "division", "semester", "menuAccess", "assessmentFactor", "profCourse", "graduationCriteria", "cqi"})
@@ -540,6 +537,8 @@ public class AdminController {
         GraduationResearchPlan graduationResearchPlan = graduationResearchPlanMapper.findOne(planId);
         model.addAttribute("stored", graduationResearchPlan);
         model.addAttribute("studentUser", graduationResearchPlan.getUser());
+        LinkedHashSet<Integer> semesterSet = studentCourseMapper.findSemesterIdByUserIdValid(graduationResearchPlan.getUser().getId());
+        model.addAttribute("completeSemester", semesterSet == null ? 0 : semesterSet.size());
         return "role/admin/graduationResearch/planDetail";
     }
 
@@ -578,7 +577,12 @@ public class AdminController {
                 planList = graduationResearchPlanMapper.findByIds(integerIds);
         }
 
+        for(GraduationResearchPlan graduationResearchPlan: planList) {
+            LinkedHashSet<Integer> semesterSet = studentCourseMapper.findSemesterIdByUserIdValid(graduationResearchPlan.getUserId());
+            graduationResearchPlan.setCompleteSemester(semesterSet == null ? 0 : semesterSet.size());
+        }
         model.addAttribute("planList", planList);
+
         return "role/admin/graduationResearch/planDetailForPrint";
     }
 

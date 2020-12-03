@@ -261,44 +261,6 @@ public class ProfessorController {
         return "role/professor/counseling/counselingDetail";
     }
 
-    @RequestMapping("/studentGuidance/coCourseEnrolment")
-    public String counselingEnrolment(Model model) {
-
-        model.addAttribute("yearList", getYearList());
-
-        return "role/professor/coCourseEnrolment/coCourseEnrolment";
-    }
-
-    @RequestMapping("/studentGuidance/coCourseEnrolment/studentTable")
-    public String coCourseEnrolmentStudentTable(Model model, @RequestParam(required=false, defaultValue = "0") int year, @RequestParam(defaultValue = "0", required=false) int semester) {
-        User firstUser = null;
-        List<User> userList;
-        if(year == 0) {
-            userList = new ArrayList<>();
-        } else {
-            Searchable searchable = new Searchable();
-
-            searchable.setYear(year);
-            userList = userMapper.findByNameNumberDivision(searchable);
-
-
-            for(User user: userList) {
-                firstUser = user;
-                break;
-            }
-        }
-        model.addAttribute("userList", userList);
-        model.addAttribute("firstUser", firstUser);
-        return "role/professor/coCourseEnrolment/studentTable";
-    }
-
-    @RequestMapping("/studentGuidance/coCourseEnrolment/studentDetail")
-    public String coCourseEnrolmentStudentDetail(Model model, @RequestParam int studentId) {
-        User studentUser = userMapper.findOne(studentId);
-        model.addAttribute("studentUser", studentUser);
-        return "role/professor/coCourseEnrolment/studentDetail";
-    }
-
     @RequestMapping("/classProgress/attendance")
     public String attendance(Model model) {
 
@@ -970,6 +932,8 @@ public class ProfessorController {
         GraduationResearchPlan graduationResearchPlan = graduationResearchPlanMapper.findOne(planId);
         model.addAttribute("stored", graduationResearchPlan);
         model.addAttribute("studentUser", graduationResearchPlan.getUser());
+        LinkedHashSet<Integer> semesterSet = studentCourseMapper.findSemesterIdByUserIdValid(graduationResearchPlan.getUser().getId());
+        model.addAttribute("completeSemester", semesterSet == null ? 0 : semesterSet.size());
         return "role/professor/graduationResearchPlan/planDetail";
     }
 

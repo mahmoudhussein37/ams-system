@@ -43,6 +43,8 @@ public class StudentController {
     @Inject
     private AuthorityService authorityService;
     @Inject
+    private GraduationCriteriaMapper graduationCriteriaMapper;
+    @Inject
     private UserService userService;
     @Inject
     private CourseMapper courseMapper;
@@ -506,6 +508,20 @@ public class StudentController {
 
     @RequestMapping("/graduation/graduationRequirements")
     public String graduationRequirements(Model model) {
+        User studentUser = User.current();
+        User advisor = userMapper.findOne(studentUser.getAdvisorId());
+        model.addAttribute("advisor", advisor);
+        int admissionYear = studentUser.getContact().getAdmissionYear();
+        int divisionId = studentUser.getDivisionId();
+
+        GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear, divisionId);
+        studentUser.setGraduationCriteria(graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
+
+
+        List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(studentUser.getId());
+        studentUser.setStudentCourses(studentCourses);
+        model.addAttribute("studentUser", studentUser);
+
 
         return "role/student/graduationRequirements/graduationRequirements";
     }
@@ -514,6 +530,8 @@ public class StudentController {
     public String requiredGradeDetail(Model model) {
         User studentUser = User.current();
         model.addAttribute("studentUser", studentUser);
+        LinkedHashSet<Integer> semesterSet = studentCourseMapper.findSemesterIdByUserIdValid(studentUser.getId());
+        model.addAttribute("completeSemester", semesterSet == null ? 0 : semesterSet.size());
         return "role/student/graduationRequirements/gradeDetail";
     }
 
@@ -526,6 +544,10 @@ public class StudentController {
         model.addAttribute("stored", stored);
         model.addAttribute("graduationResearchPlan", new GraduationResearchPlan());
         model.addAttribute("result", result);
+
+        LinkedHashSet<Integer> semesterSet = studentCourseMapper.findSemesterIdByUserIdValid(studentUser.getId());
+        model.addAttribute("completeSemester", semesterSet == null ? 0 : semesterSet.size());
+
         if (stored == null)
             return "role/student/graduationResearchPlan/newGraduationResearchPlan";
         else

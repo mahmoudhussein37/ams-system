@@ -24,6 +24,7 @@ public class GraduationResearchPlan implements Serializable {
     private String etc;
     private String submitDate;
     private boolean enabled;
+    private int completeSemester;
     private int approve;
 
     private User user;
@@ -171,6 +172,14 @@ public class GraduationResearchPlan implements Serializable {
 
     public void setApprove(int approve) {
         this.approve = approve;
+    }
+
+    public int getCompleteSemester() {
+        return completeSemester;
+    }
+
+    public void setCompleteSemester(int completeSemester) {
+        this.completeSemester = completeSemester;
     }
 
     @Override
