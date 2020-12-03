@@ -102,51 +102,83 @@
                                                 <td>
                                                     <spring:message code="common.complete"/>
                                                 </td>
-                                                <td>
+                                                <%--<td>
                                                     <spring:message code="common.score"/>
-                                                </td>
+                                                </td>--%>
                                                 <td>
                                                     <spring:message code="common.grade"/>
                                                 </td>
-                                                <td>
+                                                <%--<td>
                                                     <spring:message code="common.percentile"/>
                                                 </td>
                                                 <td>
                                                     <spring:message code="common.warning"/>
-                                                </td>
+                                                </td>--%>
 
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr class="table-light text-center">
-                                                <td>1</td>
-                                                <td>
-                                                    2011
-                                                </td>
-                                                <td>
-                                                    2
-                                                </td>
-                                                <td>
-                                                    4
-                                                </td>
-                                                <td>
-                                                    17
-                                                </td>
-                                                <td>
-                                                    17
-                                                </td>
-                                                <td>
-                                                    72.5
-                                                </td>
-                                                <td>
-                                                    4.26
-                                                </td>
-                                                <td>
-                                                    87.12
-                                                </td>
-                                                <td>
-                                                </td>
-                                            </tr>
+
+                                            <c:forEach var="entry" items="${courseMap}" varStatus="varStatus">
+                                                <c:set var="semester" value="${entry.key}"/>
+                                                <tr class="table-light text-center">
+                                                    <td>${varStatus.count}</td>
+                                                    <td>
+                                                        ${entry.key.year}
+                                                    </td>
+                                                    <td>
+                                                            ${entry.key.semester}
+                                                    </td>
+                                                    <td>
+                                                        <c:set var="schoolYear" value="0"/>
+                                                        <c:forEach var="sc" items="${entry.value}">
+                                                            <c:set var="schoolYear" value="${sc.schoolYear}"/>
+                                                        </c:forEach>
+                                                        ${schoolYear}
+                                                    </td>
+                                                    <td>
+                                                        <c:set var="applyCount" value="0"/>
+                                                        <c:forEach var="sc" items="${courseMap.get(entry.key)}">
+                                                            <c:set var="applyCount" value="${applyCount + sc.course.credit}"/>
+                                                        </c:forEach>
+                                                        ${applyCount}
+                                                    </td>
+                                                    <td>
+                                                        <c:set var="completeCount" value="0"/>
+                                                        <c:forEach var="sc" items="${courseMap.get(entry.key)}">
+                                                            <c:if test="${sc.valid and sc.grade ne 'U' and sc.grade ne 'F'}">
+                                                                <c:set var="completeCount" value="${completeCount + sc.course.credit}"/>
+                                                            </c:if>
+
+                                                        </c:forEach>
+                                                            ${completeCount}
+                                                    </td>
+
+                                                    <td>
+                                                        <c:set var="gradeCount" value="0"/>
+                                                        <c:set var="gradeTotal" value="0.0"/>
+                                                        <c:forEach var="sc" items="${courseMap.get(entry.key)}">
+                                                            <c:if test="${sc.valid and sc.grade ne 'U' and sc.grade ne 'S'}">
+                                                                <c:set var="currentGrade" value="${sc.course.credit * sc.getGradeScore()}"/>
+                                                                <c:set var="gradeTotal" value="${gradeTotal + currentGrade}"/>
+                                                                <c:set var="gradeCount" value="${gradeCount + sc.course.credit}"/>
+                                                            </c:if>
+
+                                                        </c:forEach>
+                                                        <c:choose>
+                                                            <c:when test="${gradeCount == 0 or gradeTotal == 0.0}">
+                                                                0.0
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                               ${gradeTotal / gradeCount}
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+
+                                                </tr>
+
+                                            </c:forEach>
+
 
 
                                             </tbody>
@@ -184,7 +216,17 @@
 
 <script>
     $(document).ready(function() {
-        $(".detail-div").load("${baseUrl}/student/grades/inquiryGrade/gradeDetail");
+        <c:if test="${not empty firstSemester}">
+        $(".detail-div").load("${baseUrl}/student/grades/inquiryGrade/gradeDetail?semesterId=${firstSemester.id}");
+        </c:if>
+        $("body").on('click', '.course-detail', function (e) {
+            e.preventDefault();
+            var courseId = $(this).attr("data-semester-id");
+            $(".detail-div").load("${baseUrl}/student/grades/inquiryGrade/gradeDetail?semesterId=" + courseId);
+
+        });
+
+
     });
 </script>
 </body>

@@ -778,6 +778,8 @@ public class ProfessorController {
                 valid = false;
 
             sc.setValid(studentValid);
+            User studentUser = sc.getStudentUser();
+            sc.setSchoolYear(studentUser.getSchoolYear());
             studentCourseMapper.update(sc);
         }
 

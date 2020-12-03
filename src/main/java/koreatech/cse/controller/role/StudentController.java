@@ -27,9 +27,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @SessionAttributes({"studentUser", "assessment"})
@@ -472,13 +470,37 @@ public class StudentController {
     public String inquiryGrade(Model model) {
         User studentUser = User.current();
         model.addAttribute("studentUser", studentUser);
+        Semester firstSemester = null;
+        LinkedHashSet<Integer> semesterSet = studentCourseMapper.findSemesterIdByUserIdValid(studentUser.getId());
+        for(Integer semesterId: semesterSet) {
+            firstSemester = semesterMapper.findOne(semesterId);
+            break;
+        }
+        model.addAttribute("firstSemester", firstSemester);
+        Map<Semester, List<StudentCourse>> map = new HashMap<>();
+        for(Integer semesterId: semesterSet) {
+            Semester semester = semesterMapper.findOne(semesterId);
+            Searchable searchable = new Searchable();
+            searchable.setYear(semester.getYear());
+            searchable.setSemester(semester.getSemester());
+            searchable.setUserId(studentUser.getId());
+            List<StudentCourse> courses = studentCourseMapper.findByUserIdYearSemester(searchable);
+            map.put(semester, courses);
+        }
+
+        model.addAttribute("courseMap", map);
+
+
         return "role/student/inquiryGrade/inquiryGrade";
     }
 
     @RequestMapping("/grades/inquiryGrade/gradeDetail")
-    public String gradeDetail(Model model) {
+    public String inquiryGradeDetail(Model model, @RequestParam int semesterId) {
         User studentUser = User.current();
+
+        List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdSemesterIdValid(studentUser.getId(), semesterId);
         model.addAttribute("studentUser", studentUser);
+        model.addAttribute("studentCourses", studentCourses);
         return "role/student/inquiryGrade/gradeDetail";
     }
 

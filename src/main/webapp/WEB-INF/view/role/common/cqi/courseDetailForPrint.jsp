@@ -626,10 +626,13 @@
         }
     });
     $(document).ready(function() {
-        window.print();
-        window.onafterprint = function(){
-            window.close();
-        }
+        setTimeout(function(){
+            window.print();
+            window.onafterprint = function(){
+                window.close();
+            }
+        }, 2000);
+
     });
 </script>
 </body>

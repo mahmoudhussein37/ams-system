@@ -3,6 +3,7 @@ package koreatech.cse.domain.role.student;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.univ.Course;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
@@ -26,6 +27,7 @@ public class StudentCourse implements Serializable {
 
     private int scoreTotal;
     private String grade;
+    private int schoolYear;
     private boolean valid;
 
 
@@ -152,11 +154,35 @@ public class StudentCourse implements Serializable {
     }
 
     public boolean isValid() {
+        if(StringUtils.isBlank(grade))
+            return false;
         return valid;
     }
 
     public void setValid(boolean valid) {
         this.valid = valid;
+    }
+
+
+    public int getSchoolYear() {
+        return schoolYear;
+    }
+
+    public void setSchoolYear(int schoolYear) {
+        this.schoolYear = schoolYear;
+    }
+
+    public double getGradeScore() {
+        if(StringUtils.isBlank(grade)) return 0.0;
+        if(grade.equals("Ap")) return 4.5;
+        if(grade.equals("A0")) return 4;
+        if(grade.equals("Bp")) return 3.5;
+        if(grade.equals("B0")) return 3;
+        if(grade.equals("Cp")) return 2.5;
+        if(grade.equals("C0")) return 2;
+        if(grade.equals("F")) return 0;
+        return 0.0;
+
     }
 
     @Override
