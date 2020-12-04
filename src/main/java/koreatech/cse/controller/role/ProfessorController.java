@@ -301,7 +301,7 @@ public class ProfessorController {
         searchable.setYear(year);
         searchable.setSemester(semester);
 
-        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivision(searchable);
+        List<ProfessorCourse> courseList = professorCourseMapper.findBy(searchable);
 
         ProfessorCourse firstCourse = null;
         for(ProfessorCourse course: courseList) {
@@ -367,7 +367,7 @@ public class ProfessorController {
             Searchable searchable = new Searchable();
             searchable.setYear(year);
             searchable.setSemester(semester);
-            courseList = professorCourseMapper.findByYearSemesterDivision(searchable);
+            courseList = professorCourseMapper.findBy(searchable);
 
 
             for(ProfessorCourse course: courseList) {
@@ -561,7 +561,7 @@ public class ProfessorController {
             searchable.setAdvisor(User.current().getId());
             System.out.println("searchable = " + searchable);
 
-            courseList = professorCourseMapper.findByYearSemesterDivisionProfId(searchable);
+            courseList = professorCourseMapper.findBy(searchable);
 
             for(ProfessorCourse course: courseList) {
                 firstCourse = course;
@@ -598,7 +598,7 @@ public class ProfessorController {
             searchable.setSemester(semester);
             searchable.setAdvisor(User.current().getId());
 
-            courseList = professorCourseMapper.findByYearSemesterDivisionProfId(searchable);
+            courseList = professorCourseMapper.findBy(searchable);
 
             for(ProfessorCourse course: courseList) {
                 firstCourse = course;
@@ -667,7 +667,7 @@ public class ProfessorController {
         searchable.setAdvisor(User.current().getId());
         System.out.println("searchable = " + searchable);
 
-        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivisionProfId(searchable);
+        List<ProfessorCourse> courseList = professorCourseMapper.findBy(searchable);
         ProfessorCourse firstCourse = null;
         for(ProfessorCourse course: courseList) {
             firstCourse = course;
@@ -781,7 +781,7 @@ public class ProfessorController {
         searchable.setSemester(semester);
         searchable.setAdvisor(User.current().getId());
 
-        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivisionProfId(searchable);
+        List<ProfessorCourse> courseList = professorCourseMapper.findBy(searchable);
         ProfessorCourse firstCourse = null;
         for(ProfessorCourse course: courseList) {
             firstCourse = course;
@@ -808,7 +808,7 @@ public class ProfessorController {
         Searchable s = new Searchable();
         s.setCourseId(pc.getCourseId());
         s.setYear(pc.getSemester().getYear());
-        List<ProfessorCourse> professorCourseList = professorCourseMapper.findByYearSemesterCourseId(s);
+        List<ProfessorCourse> professorCourseList = professorCourseMapper.findBy(s);
         for(ProfessorCourse professorCourse: professorCourseList) {
             List<Assessment> assessments = assessmentMapper.findByProfCourseId(professorCourse.getId());
             professorCourse.setAssessmentList(assessments);
@@ -852,7 +852,7 @@ public class ProfessorController {
             Searchable searchable = new Searchable();
             searchable.setCourseId(pc.getCourseId());
             searchable.setYear(i);
-            List<ProfessorCourse> professorCourses = professorCourseMapper.findByYearSemesterCourseId(searchable);
+            List<ProfessorCourse> professorCourses = professorCourseMapper.findBy(searchable);
 
             double avg;
             int total = 0;
@@ -932,8 +932,7 @@ public class ProfessorController {
         GraduationResearchPlan graduationResearchPlan = graduationResearchPlanMapper.findOne(planId);
         model.addAttribute("stored", graduationResearchPlan);
         model.addAttribute("studentUser", graduationResearchPlan.getUser());
-        LinkedHashSet<Integer> semesterSet = studentCourseMapper.findSemesterIdByUserIdValid(graduationResearchPlan.getUser().getId());
-        model.addAttribute("completeSemester", semesterSet == null ? 0 : semesterSet.size());
+        model.addAttribute("completeSemester", userService.getCompleteSemesterCount(graduationResearchPlan.getUser().getId()));
         return "role/professor/graduationResearchPlan/planDetail";
     }
 

@@ -537,8 +537,7 @@ public class AdminController {
         GraduationResearchPlan graduationResearchPlan = graduationResearchPlanMapper.findOne(planId);
         model.addAttribute("stored", graduationResearchPlan);
         model.addAttribute("studentUser", graduationResearchPlan.getUser());
-        LinkedHashSet<Integer> semesterSet = studentCourseMapper.findSemesterIdByUserIdValid(graduationResearchPlan.getUser().getId());
-        model.addAttribute("completeSemester", semesterSet == null ? 0 : semesterSet.size());
+        model.addAttribute("completeSemester", userService.getCompleteSemesterCount(graduationResearchPlan.getUser().getId()));
         return "role/admin/graduationResearch/planDetail";
     }
 
@@ -578,8 +577,7 @@ public class AdminController {
         }
 
         for(GraduationResearchPlan graduationResearchPlan: planList) {
-            LinkedHashSet<Integer> semesterSet = studentCourseMapper.findSemesterIdByUserIdValid(graduationResearchPlan.getUserId());
-            graduationResearchPlan.setCompleteSemester(semesterSet == null ? 0 : semesterSet.size());
+            graduationResearchPlan.setCompleteSemester(userService.getCompleteSemesterCount(graduationResearchPlan.getUserId()));
         }
         model.addAttribute("planList", planList);
 
@@ -736,7 +734,7 @@ public class AdminController {
         searchable.setTitle(title);
         searchable.setDivision(division);
 
-        List<Course> courseList = courseMapper.findByCodeTitleDivision(searchable);
+        List<Course> courseList = courseMapper.findBy(searchable);
 
         Course firstCourse = null;
         for(Course course: courseList) {
@@ -825,7 +823,7 @@ public class AdminController {
         searchable.setTitle(title);
         searchable.setDivision(division);
 
-        List<Course> courseList = courseMapper.findByCodeTitleDivision(searchable);
+        List<Course> courseList = courseMapper.findBy(searchable);
 
 
         Course firstCourse = null;
@@ -851,7 +849,7 @@ public class AdminController {
         searchable.setTitle(title);
         searchable.setDivision(division);
 
-        List<Course> courseList = courseMapper.findByCodeTitleDivision(searchable);
+        List<Course> courseList = courseMapper.findBy(searchable);
 
 
         Course firstCourse = null;
@@ -908,7 +906,7 @@ public class AdminController {
         searchable.setEnabled(true);
 
 
-        List<Course> courseList = courseMapper.findByYearSemesterDivision(searchable);
+        List<Course> courseList = courseMapper.findBy(searchable);
 
         Course firstCourse = null;
         for(Course course: courseList) {
@@ -1202,7 +1200,7 @@ public class AdminController {
         searchable.setDivision(division);
 
 
-        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivision(searchable);
+        List<ProfessorCourse> courseList = professorCourseMapper.findBy(searchable);
 
         ProfessorCourse firstCourse = null;
         for(ProfessorCourse course: courseList) {
@@ -1269,7 +1267,7 @@ public class AdminController {
         searchable.setDivision(division);
 
 
-        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivisionCodeTitle(searchable);
+        List<ProfessorCourse> courseList = professorCourseMapper.findBy(searchable);
 
         ProfessorCourse firstCourse = null;
         for(ProfessorCourse course: courseList) {
@@ -1298,7 +1296,7 @@ public class AdminController {
         searchable.setYear(year);
         searchable.setSemester(semester);
 
-        List<ProfessorCourse> professorCourses = professorCourseMapper.findByYearSemesterDivision(searchable);
+        List<ProfessorCourse> professorCourses = professorCourseMapper.findBy(searchable);
         ProfessorCourse firstCourse = null;
         for(ProfessorCourse pc: professorCourses) {
             firstCourse = pc;
@@ -1432,7 +1430,7 @@ public class AdminController {
         searchable.setTitle(title);
         searchable.setDivision(division);
 
-        List<Course> courseList = courseMapper.findByCodeTitleDivision(searchable);
+        List<Course> courseList = courseMapper.findBy(searchable);
         Course firstCourse = null;
         for(Course course: courseList) {
             firstCourse = course;
@@ -1515,7 +1513,7 @@ public class AdminController {
         searchable.setAdvisor(advisor);
 
 
-        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivisionProfId(searchable);
+        List<ProfessorCourse> courseList = professorCourseMapper.findBy(searchable);
         ProfessorCourse firstCourse = null;
         for(ProfessorCourse course: courseList) {
             firstCourse = course;
@@ -1565,7 +1563,7 @@ public class AdminController {
         searchable.setTitle(title);
         searchable.setDivision(division);
 
-        List<ProfessorCourse> courseList = professorCourseMapper.findByYearSemesterDivisionCodeTitle(searchable);
+        List<ProfessorCourse> courseList = professorCourseMapper.findBy(searchable);
         ProfessorCourse firstCourse = null;
         for(ProfessorCourse course: courseList) {
             firstCourse = course;
@@ -1587,7 +1585,7 @@ public class AdminController {
         Searchable s = new Searchable();
         s.setCourseId(pc.getCourseId());
         s.setYear(pc.getSemester().getYear());
-        List<ProfessorCourse> professorCourseList = professorCourseMapper.findByYearSemesterCourseId(s);
+        List<ProfessorCourse> professorCourseList = professorCourseMapper.findBy(s);
         for(ProfessorCourse professorCourse: professorCourseList) {
             List<Assessment> assessments = assessmentMapper.findByProfCourseId(professorCourse.getId());
             professorCourse.setAssessmentList(assessments);
@@ -1631,7 +1629,7 @@ public class AdminController {
             Searchable searchable = new Searchable();
             searchable.setCourseId(pc.getCourseId());
             searchable.setYear(i);
-            List<ProfessorCourse> professorCourses = professorCourseMapper.findByYearSemesterCourseId(searchable);
+            List<ProfessorCourse> professorCourses = professorCourseMapper.findBy(searchable);
 
             double avg;
             int total = 0;

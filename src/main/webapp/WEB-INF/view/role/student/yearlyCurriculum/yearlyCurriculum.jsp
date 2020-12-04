@@ -35,7 +35,7 @@
                                         <spring:message code="common.department"/><br/>
                                         <select id="search-division" class="form-control" style="margin-top:10px;"><option value="0">-</option>
                                         <c:forEach var="division" items="${divisions}">
-                                            <option value="${division.id}">${division.name}</option>
+                                            <option value="${division.id}">${division.name} <c:if test="${not division.enabled}">(<spring:message code="common.closed"/>)</c:if></option>
                                         </c:forEach>
                                     </select>
                                     </div>
@@ -104,7 +104,8 @@
     });
 
     $(document).ready(function() {
-        $(".table-div").load("${baseUrl}/student/courseGuide/yearlyCurriculum/courseTable");
+        var year = $("#search-year").val().trim();
+        $(".table-div").load("${baseUrl}/student/courseGuide/yearlyCurriculum/courseTable?year=" + year);
 
     });
 

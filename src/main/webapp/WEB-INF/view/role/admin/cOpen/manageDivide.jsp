@@ -187,6 +187,13 @@
                                                     <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                             </div>
                                         </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label><spring:message code="common.schoolYear"/></label>
+                                                <form:input type="text" path="schoolYear" class="form-control" disabled="true" value="${course.schoolYear}"/>
+                                                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3">
@@ -221,12 +228,12 @@
                                                 </form:select>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+<%--                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label><spring:message code="common.schoolYear"/></label>
                                                 <form:input type="number" path="schoolYear" class="form-control"/>
                                             </div>
-                                        </div>
+                                        </div>--%>
                                     </div>
                                 <div class="row">
 

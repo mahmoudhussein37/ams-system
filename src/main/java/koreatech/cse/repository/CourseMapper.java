@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface CourseMapper {
 
-    @Insert("INSERT INTO course (code, title, credit, division_id, school_year, subj_category, learning_objective, overview, lec, tut, lab, ws, prerequisite, alternative) VALUES " +
-            "(#{code}, #{title}, #{credit}, #{divisionId}, #{schoolYear}, #{subjCategory}, #{learningObjective}, #{overview}, #{lec}, #{tut}, #{lab}, #{ws}, #{prerequisite}, #{alternative})")
+    @Insert("INSERT INTO course (code, title, credit, division_id, school_year, subj_category, learning_objective, overview, lec, tut, lab, ws) VALUES " +
+            "(#{code}, #{title}, #{credit}, #{divisionId}, #{schoolYear}, #{subjCategory}, #{learningObjective}, #{overview}, #{lec}, #{tut}, #{lab}, #{ws})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(Course course);
 
@@ -42,66 +42,17 @@ public interface CourseMapper {
     @ResultMap("findOne-int")
     //@formatter off
     @Select("<script>"
-            + "SELECT * FROM course where 1=1 "
-            + "<if test='year != 0'> and year = #{year}</if>"
-            + "<if test='semester != 0'> and semester = #{semester}</if>"
-            + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
-            + "</script>")
-        //@formatter on
-    List<Course> findByYearSemester(Searchable searchable);
-
-    @ResultMap("findOne-int")
-    //@formatter off
-    @Select("<script>"
-            + "SELECT * FROM course where 1=1 "
-            + "<if test='enabled == true'> and enabled = 1</if>"
-            + "<if test='code != null'> and code LIKE CONCAT('%', #{code}, '%')</if>"
-            + "<if test='title != null'> and title LIKE CONCAT('%', #{title}, '%')</if>"
-            + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
-            + "</script>")
-        //@formatter on
-    List<Course> findByCodeTitle(Searchable searchable);
-
-    @ResultMap("findOne-int")
-    //@formatter off
-    @Select("<script>"
-            + "SELECT * FROM course where 1=1 "
-            + "<if test='division != 0'> and division_id = #{division}</if>"
-            + "<if test='code != null'> and code LIKE CONCAT('%', #{code}, '%')</if>"
-            + "<if test='title != null'> and title LIKE CONCAT('%', #{title}, '%')</if>"
-            + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
-            + "</script>")
-        //@formatter on
-    List<Course> findByCodeTitleDivision(Searchable searchable);
-
-
-    @ResultMap("findOne-int")
-    //@formatter off
-    @Select("<script>"
             + "SELECT * FROM course c join semester s on c.semester_id = s.id where 1=1 "
             + "<if test='year != 0'> and s.year = #{year}</if>"
             + "<if test='semester != 0'> and s.semester = #{semester}</if>"
             + "<if test='division != 0'> and c.division_id = #{division}</if>"
             + "<if test='enabled != false'> and c.enabled = #{enabled}</if>"
+            + "<if test='code != null'> and c.code LIKE CONCAT('%', #{code}, '%')</if>"
+            + "<if test='title != null'> and c.title LIKE CONCAT('%', #{title}, '%')</if>"
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
         //@formatter on
-    List<Course> findByYearSemesterDivision(Searchable searchable);
-
-    @ResultMap("findOne-int")
-    //@formatter off
-    @Select("<script>"
-            + "SELECT * FROM course c join semester s on c.semester_id = s.id where 1=1 "
-
-            + "<if test='year != 0'> and s.year = #{year}</if>"
-            + "<if test='semester != 0'> and s.semester = #{semester}</if>"
-            + "<if test='division != 0'> and c.division_id = #{division}</if>"
-            + "<if test='userId != 0'> and c.prof_user_id = #{userId}</if>"
-
-            + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
-            + "</script>")
-        //@formatter on
-    List<Course> findByYearSemesterDivisionProfId(Searchable searchable);
+    List<Course> findBy(Searchable searchable);
 
     @Update("UPDATE `course` SET"+
             "`code` = #{code},"+
@@ -111,8 +62,6 @@ public interface CourseMapper {
             "`tut` = #{tut},"+
             "`lab` = #{lab},"+
             "`ws` = #{ws},"+
-            "`prerequisite` = #{prerequisite},"+
-            "`alternative` = #{alternative},"+
             "`division_id` = #{divisionId},"+
             "`school_year` = #{schoolYear},"+
             "`subj_category` = #{subjCategory},"+

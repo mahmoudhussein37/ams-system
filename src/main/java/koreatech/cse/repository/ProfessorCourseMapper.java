@@ -3,7 +3,6 @@ package koreatech.cse.repository;
 
 import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.role.professor.ProfessorCourse;
-import koreatech.cse.domain.univ.Course;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -55,53 +54,15 @@ public interface ProfessorCourseMapper {
             + "<if test='year != 0'> and s.year = #{year}</if>"
             + "<if test='semester != 0'> and s.semester = #{semester}</if>"
             + "<if test='division != 0'> and c.division_id = #{division}</if>"
-            + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
-            + "</script>")
-        //@formatter on
-    List<ProfessorCourse> findByYearSemesterDivision(Searchable searchable);
-
-
-    @ResultMap("findOne-int")
-    //@formatter off
-    @Select("<script>"
-            + "SELECT * FROM professor_course pc join course c on pc.course_id=c.id join semester s on pc.semester_id = s.id where 1=1 "
-            + "<if test='year != 0'> and s.year = #{year}</if>"
-            + "<if test='semester != 0'> and s.semester = #{semester}</if>"
-            + "<if test='division != 0'> and c.division_id = #{division}</if>"
+            + "<if test='courseId != 0'> and c.id = #{courseId}</if>"
             + "<if test='code != null'> and c.code LIKE CONCAT('%', #{code}, '%')</if>"
             + "<if test='title != null'> and c.title LIKE CONCAT('%', #{title}, '%')</if>"
-            + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
-            + "</script>")
-        //@formatter on
-    List<ProfessorCourse> findByYearSemesterDivisionCodeTitle(Searchable searchable);
-
-
-    @ResultMap("findOne-int")
-    //@formatter off
-    @Select("<script>"
-            + "SELECT * FROM professor_course pc join course c on pc.course_id=c.id join semester s on pc.semester_id = s.id where 1=1 "
-
-            + "<if test='year != 0'> and s.year = #{year}</if>"
-            + "<if test='semester != 0'> and s.semester = #{semester}</if>"
-            + "<if test='division != 0'> and c.division_id = #{division}</if>"
             + "<if test='advisor != 0'> and pc.user_id = #{advisor}</if>"
-
-            + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
-            + "</script>")
-    //@formatter on
-    List<ProfessorCourse> findByYearSemesterDivisionProfId(Searchable searchable);
-
-    @ResultMap("findOne-int")
-    //@formatter off
-    @Select("<script>"
-            + "SELECT * FROM professor_course pc join course c on pc.course_id=c.id join semester s on pc.semester_id = s.id where 1=1 "
-            + "<if test='year != 0'> and s.year = #{year}</if>"
-            + "<if test='courseId != 0'> and c.id = #{courseId}</if>"
+            + "<if test='enabled == true'> and enabled = 1</if>"
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
         //@formatter on
-    List<ProfessorCourse> findByYearSemesterCourseId(Searchable searchable);
-
+    List<ProfessorCourse> findBy(Searchable searchable);
 
 
     @Update("UPDATE `professor_course` SET "+
