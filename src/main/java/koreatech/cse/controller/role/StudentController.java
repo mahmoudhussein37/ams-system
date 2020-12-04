@@ -323,7 +323,7 @@ public class StudentController {
 
         User user = User.current();
         StudentCourse firstCourse = null;
-        List<StudentCourse> studentCourseList = null;
+        List<StudentCourse> studentCourseList;
         if(year == 0 && semester == 0) {
             studentCourseList = new ArrayList<>();
         } else {

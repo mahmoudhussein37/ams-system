@@ -106,7 +106,7 @@ public class ProfessorController {
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            userList = userMapper.findByNameNumberDivision(searchable);
+            userList = userMapper.findStudentBy(searchable);
 
 
             for(User user: userList) {
@@ -199,7 +199,7 @@ public class ProfessorController {
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            userList = userMapper.findByNameNumberDivision(searchable);
+            userList = userMapper.findStudentBy(searchable);
 
 
             for(User user: userList) {

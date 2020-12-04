@@ -115,22 +115,12 @@ public interface UserMapper {
             + "<if test='name != null'> and (c.last_name LIKE CONCAT('%', #{name}, '%') or c.first_name LIKE CONCAT('%', #{name}, '%'))</if>"
             + "<if test='number != null'> and u.number LIKE CONCAT('%', #{number}, '%')</if>"
             + "<if test='division != 0'> and u.division_id = #{division}</if>"
+            + "<if test='advisor != 0'> and u.advisor_id = #{advisor}</if>"
+            + "<if test='schoolYear != 0'> and u.school_year = #{schoolYear}</if>"
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
     //@formatter on
-    List<User> findByNameNumberDivision(Searchable searchable);
-
-    @ResultMap("findOne-int")
-    //@formatter off
-    @Select("<script>"
-            + "SELECT * FROM USER u join authority a on u.id = a.user_id where a.role = 'ROLE_STUDENT' "
-            + "<if test='advisor != 0'> and u.advisor_id = #{advisor}</if>"
-            + "<if test='schoolYear != 0'> and u.school_year = #{schoolYear}</if>"
-            + "<if test='division != 0'> and u.division_id = #{division}</if>"
-            + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
-            + "</script>")
-        //@formatter on
-    List<User> findStudentsByAdvisorSchoolYearDivision(Searchable searchable);
+    List<User> findStudentBy(Searchable searchable);
 
     @ResultMap("findOne-int")
     //@formatter off
@@ -154,7 +144,7 @@ public interface UserMapper {
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
         //@formatter on
-    List<User> findProfessorsByNameNumberDivision(Searchable searchable);
+    List<User> findProfessorBy(Searchable searchable);
 
     @ResultMap("findOne-int")
     //@formatter:off

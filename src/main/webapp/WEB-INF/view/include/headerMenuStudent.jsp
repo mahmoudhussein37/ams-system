@@ -45,12 +45,6 @@
             <li class="menu-item ${fn:contains(requestUri, '/student/classInformation/syllabus') ? 'menu-item-active' : ''} "  aria-haspopup="true">
                 <a  href="/student/classInformation/syllabus" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub3_1"/></span></a>
             </li>
-            <%--<li class="menu-item  ${fn:contains(requestUri, '/student/classInformation/enrolment') ? 'menu-item-active' : ''} "  aria-haspopup="true">
-                <a  href="/student/classInformation/enrolment" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub3_2"/></span></a>
-            </li>--%>
-            <%--<li class="menu-item  ${fn:contains(requestUri, '/student/classInformation/counselingCourseEnrolment') ? 'menu-item-active' : ''}"  aria-haspopup="true">
-                <a  href="/student/classInformation/counselingCourseEnrolment" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub3_3"/></span></a>
-            </li>--%>
             <li class="menu-item  ${fn:contains(requestUri, '/student/classInformation/classAssessment') ? 'menu-item-active' : ''}"  aria-haspopup="true">
                 <a  href="/student/classInformation/classAssessment" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub3_4"/></span></a>
             </li>

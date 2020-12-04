@@ -145,7 +145,7 @@ public class AdminController {
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            userList = userMapper.findByNameNumberDivision(searchable);
+            userList = userMapper.findStudentBy(searchable);
 
 
             for(User user: userList) {
@@ -226,7 +226,7 @@ public class AdminController {
             searchable.setAdvisor(advisor);
             searchable.setSchoolYear(schoolYear);
             searchable.setDivision(division);
-            userList = userMapper.findStudentsByAdvisorSchoolYearDivision(searchable);
+            userList = userMapper.findStudentBy(searchable);
 
             for(User user: userList) {
                 firstUser = user;
@@ -292,7 +292,7 @@ public class AdminController {
             searchable.setAdvisor(advisor);
             searchable.setSchoolYear(schoolYear);
             searchable.setDivision(division);
-            studentList = userMapper.findStudentsByAdvisorSchoolYearDivision(searchable);
+            studentList = userMapper.findStudentBy(searchable);
 
 
         } else {
@@ -447,7 +447,7 @@ public class AdminController {
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            userList = userMapper.findProfessorsByNameNumberDivision(searchable);
+            userList = userMapper.findProfessorBy(searchable);
 
 
             for(User user: userList) {
