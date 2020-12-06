@@ -105,6 +105,19 @@
                         <div class="form-group">
                             <input class="form-control form-control-solid h-auto rounded" type="text" placeholder="<spring:message code="common.username"/>" name="username" autocomplete="off"/>
                         </div>
+                        <div class="form-group">
+                            <c:set var="labelFirstName">
+                                <spring:message code="common.firstName"/>
+                            </c:set>
+                            <form:input class="form-control form-control-solid h-auto rounded" type="text" placeholder="${labelFirstName}" path="contact.firstName" autocomplete="off"/>
+                        </div>
+                        <!--end::Form group-->
+                        <div class="form-group">
+                            <c:set var="labelLastName">
+                                <spring:message code="common.lastName"/>
+                            </c:set>
+                            <form:input class="form-control form-control-solid h-auto rounded" type="text" placeholder="${labelLastName}" path="contact.lastName" autocomplete="off"/>
+                        </div>
                         <!--end::Form group-->
                         <!--begin::Form group-->
                         <div class="form-group">
@@ -120,19 +133,7 @@
 
                         <!--begin::Form group-->
 
-                        <div class="form-group">
-                            <c:set var="labelFirstName">
-                                <spring:message code="common.firstName"/>
-                            </c:set>
-                            <form:input class="form-control form-control-solid h-auto rounded" type="text" placeholder="${labelFirstName}" path="contact.firstName" autocomplete="off"/>
-                        </div>
-                        <!--end::Form group-->
-                        <div class="form-group">
-                            <c:set var="labelLastName">
-                                <spring:message code="common.lastName"/>
-                            </c:set>
-                            <form:input class="form-control form-control-solid h-auto rounded" type="text" placeholder="${labelLastName}" path="contact.lastName" autocomplete="off"/>
-                        </div>
+
 
 
 
@@ -287,24 +288,24 @@
                         username: {
                             validators: {
                                 notEmpty: {
-                                    message: 'Username is required'
+                                    message: '<spring:message code="common.signup.required.username"/>'
                                 },
                                 emailAddress: {
-                                    message: 'The value is not a valid email address'
+                                    message: '<spring:message code="common.signup.required.email"/>'
                                 }
                             }
                         },
                         number: {
                             validators: {
                                 notEmpty: {
-                                    message: 'Number is required'
+                                    message: '<spring:message code="common.signup.required.number"/>'
                                 }
                             }
                         },
                         password: {
                             validators: {
                                 notEmpty: {
-                                    message: 'Password is required'
+                                    message: '<spring:message code="common.signup.required.password"/>'
                                 }
                             }
                         },
@@ -315,21 +316,21 @@
                                         var form = document.getElementById('signup-form');
                                         return form.querySelector('[name="password"]').value;
                                     },
-                                    message: 'The password and its confirm are not the same'
+                                    message: '<spring:message code="common.signup.required.passwordRe"/>'
                                 }
                             }
                         },
                         "contact.firstName": {
                             validators: {
                                 notEmpty: {
-                                    message: 'First name is required'
+                                    message: '<spring:message code="common.signup.required.firstName"/>'
                                 }
                             }
                         },
                         "contact.lastName": {
                             validators: {
                                 notEmpty: {
-                                    message: 'Last name is required'
+                                    message: '<spring:message code="common.signup.required.lastName"/>'
                                 }
                             }
                         },
