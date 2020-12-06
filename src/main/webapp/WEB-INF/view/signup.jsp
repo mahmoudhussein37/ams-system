@@ -89,7 +89,7 @@
                         </div>
                         <!--end::Title-->
                         <div class="form-group">
-                            <select name="role" id="search-division" class="form-control form-control-solid " style="margin-top:10px;">
+                            <select name="role" id="select-role" class="form-control form-control-solid " style="margin-top:10px;">
                                 <option value=""><spring:message code="common.selectRole"/></option>
                                 <option value="student"><spring:message code="common.role.student"/></option>
                                 <option value="professor"><spring:message code="common.role.professor"/></option>
@@ -117,6 +117,14 @@
                                 <spring:message code="common.lastName"/>
                             </c:set>
                             <form:input class="form-control form-control-solid h-auto rounded" type="text" placeholder="${labelLastName}" path="contact.lastName" autocomplete="off"/>
+                        </div>
+                        <div class="form-group school-year-div">
+                            <form:select path="schoolYear" class="form-control form-control-solid " style="margin-top:10px;">
+                                <option value="0"><spring:message code="common.schoolYear"/></option>
+                                <c:forEach var="d" begin="1" end="4">
+                                    <form:option value="${d}">${d}</form:option>
+                                </c:forEach>
+                            </form:select>
                         </div>
                         <!--end::Form group-->
                         <!--begin::Form group-->
@@ -373,6 +381,22 @@
 
     jQuery(document).ready(function() {
         KTFormControls.init();
+        var role = $("#select-role").children("option:selected").val().trim();
+        if(role == 'student') {
+            $(".school-year-div").show("normal");
+        } else {
+            $(".school-year-div").hide("normal");
+        }
+
+        $("#select-role").change(function() {
+            var role = $(this).children("option:selected").val().trim();
+            if(role == 'student') {
+                $(".school-year-div").show("normal");
+            } else {
+                $(".school-year-div").hide("normal");
+            }
+        });
+
     });
 
 </script>
