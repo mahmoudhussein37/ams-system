@@ -275,12 +275,12 @@ public class ProfessorController {
     }
 
     @RequestMapping("/classProgress/attendance/studentListExcel")
-    public ModelAndView institutionExcel(HttpServletResponse response, @RequestParam int courseId, Locale locale) {
+    public ModelAndView institutionExcel(HttpServletResponse response, @RequestParam int profCourseId, Locale locale) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         sdf.setTimeZone(TimeZone.getTimeZone("Egypt"));
         String todayDateString = sdf.format(new Date());
         Map<String, Object> objectMap = new HashMap<>();
-        List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(courseId);
+        List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(profCourseId);
 
         objectMap.put("studentCourses", studentCourses);
         objectMap.put("messageSource", messageSource);
@@ -315,22 +315,21 @@ public class ProfessorController {
     }
 
     @RequestMapping("/classProgress/attendance/courseDetail")
-    public String attendanceCourseDetail(Model model, @RequestParam int courseId) {
-        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+    public String attendanceCourseDetail(Model model, @RequestParam int profCourseId) {
+        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         model.addAttribute("pc", pc);
         model.addAttribute("uploadedFile", new UploadedFile());
-
 
         return "role/professor/attendance/courseDetail";
     }
 
     @RequestMapping(value = "/classProgress/attendance/courseDetail", method = RequestMethod.POST)
-    public String attendanceCourseDetail(@ModelAttribute UploadedFile uploadedFile, @RequestParam int courseId) {
-        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+    public String attendanceCourseDetail(@ModelAttribute UploadedFile uploadedFile, @RequestParam int profCourseId) {
+        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         User user = User.current();
         Semester semester = pc.getSemester();
 
-        List<UploadedFile> uploadedFiles = uploadedFileMapper.findByDesignationProfCourseId(Designation.attendance, courseId);
+        List<UploadedFile> uploadedFiles = uploadedFileMapper.findByDesignationProfCourseId(Designation.attendance, profCourseId);
 
         for(UploadedFile stored: uploadedFiles) {
             uploadedFileMapper.delete(stored);
@@ -338,7 +337,7 @@ public class ProfessorController {
         MultipartFile multipartFile = uploadedFile.getFile();
         if(multipartFile != null) {
             try {
-                fileService.processUploadedFile(multipartFile, user, Designation.attendance, pc.getCourse().getDivisionId(), courseId, semester.getYear());
+                fileService.processUploadedFile(multipartFile, user, Designation.attendance, pc.getCourse().getDivisionId(), profCourseId, semester.getYear());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -383,8 +382,8 @@ public class ProfessorController {
     }
 
     @RequestMapping("/classProgress/inquiryCourse/courseDetail")
-    public String inCourseDetail(Model model, @RequestParam int courseId, @RequestParam(defaultValue = "false", required=false) String print) {
-        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+    public String inCourseDetail(Model model, @RequestParam int profCourseId, @RequestParam(defaultValue = "false", required=false) String print) {
+        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         model.addAttribute("pc", pc);
         LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(pc.getId());
         model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
@@ -632,10 +631,10 @@ public class ProfessorController {
     }
 
     @RequestMapping("/classProgress/classAssessment/courseDetail")
-    public String classAssessmentCourseDetail(Model model, @RequestParam int courseId, @RequestParam(defaultValue = "false", required=false) String print) {
-        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+    public String classAssessmentCourseDetail(Model model, @RequestParam int profCourseId, @RequestParam(defaultValue = "false", required=false) String print) {
+        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         model.addAttribute("pc", pc);
-        List<Assessment> assessments = assessmentMapper.findByProfCourseId(courseId);
+        List<Assessment> assessments = assessmentMapper.findByProfCourseId(profCourseId);
         model.addAttribute("assessments", assessments);
         List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(pc.getCourseId());
         model.addAttribute("assessmentFactors", assessmentFactors);
@@ -704,11 +703,11 @@ public class ProfessorController {
     }
 
     @RequestMapping("/classProgress/registerGrade/courseDetail")
-    public String registerGradeCourseDetail(Model model, @RequestParam int courseId) {
-        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+    public String registerGradeCourseDetail(Model model, @RequestParam int profCourseId) {
+        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         model.addAttribute("pc", pc);
 
-        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(profCourseId);
         if(lectureFundamentals == null)
             return "role/common/syllabus/requiredSyllabus";
 
@@ -722,11 +721,11 @@ public class ProfessorController {
     }
 
     @RequestMapping("/classProgress/registerGrade/courseDetailForPrint")
-    public String registerGradeCourseDetailForPrint(Model model, @RequestParam int courseId) {
-        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+    public String registerGradeCourseDetailForPrint(Model model, @RequestParam int profCourseId) {
+        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         model.addAttribute("pc", pc);
 
-        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(profCourseId);
         if(lectureFundamentals == null) {
             return "redirect:/professor/classProgress/syllabus";
         }
@@ -740,9 +739,9 @@ public class ProfessorController {
 
     @RequestMapping(value = "/classProgress/registerGrade/courseDetail", method = RequestMethod.POST)
     @ResponseBody
-    public Boolean registerGradeCourseDetail(@RequestParam int courseId) {
-        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
-        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
+    public Boolean registerGradeCourseDetail(@RequestParam int profCourseId) {
+        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(profCourseId);
         if(lectureFundamentals == null) {
             return false;
         }
@@ -781,11 +780,11 @@ public class ProfessorController {
     }
 
     @RequestMapping("/classProgress/registerGrade/ratioDetail")
-    public String registerGradeRatioDetail(Model model, @RequestParam int courseId) {
-        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+    public String registerGradeRatioDetail(Model model, @RequestParam int profCourseId) {
+        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         model.addAttribute("pc", pc);
 
-        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(profCourseId);
         model.addAttribute("lectureFundamentals", lectureFundamentals);
 
         List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(pc.getId());
@@ -836,11 +835,11 @@ public class ProfessorController {
 
 
     @RequestMapping("/classProgress/cqiReport/courseDetail")
-    public String cqiReportCourseDetail(Model model, @RequestParam int courseId, @RequestParam(defaultValue = "false", required=false) String print) {
+    public String cqiReportCourseDetail(Model model, @RequestParam int profCourseId, @RequestParam(defaultValue = "false", required=false) String print) {
         MenuAccess menuAccess = menuAccessMapper.findOne();
         model.addAttribute("menuAccess", menuAccess);
 
-        ProfessorCourse pc = professorCourseMapper.findOne(courseId);
+        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         List<Assessment> assessmentList = assessmentMapper.findByProfCourseId(pc.getId());
         pc.setAssessmentList(assessmentList);
 
@@ -909,7 +908,7 @@ public class ProfessorController {
             averageAssignedMap.put(i, avg);
         }
         model.addAttribute("averageAssignedMap", averageAssignedMap);
-        List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(courseId);
+        List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(pc.getCourseId());
         model.addAttribute("assessmentFactors", assessmentFactors);
 
         if(print.equals("true"))
@@ -919,7 +918,7 @@ public class ProfessorController {
 
     @RequestMapping(value = "/classProgress/cqiReport/courseDetail", method = RequestMethod.POST)
     @ResponseBody
-    public String cqiReportCourseDetail(@ModelAttribute("cqi") Cqi cqi, @RequestParam int courseId) {
+    public String cqiReportCourseDetail(@ModelAttribute("cqi") Cqi cqi, @RequestParam int profCourseId) {
 
         System.out.println("cqi = " + cqi);
         if(cqi.getId() == 0) {

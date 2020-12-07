@@ -26,7 +26,9 @@
                     ${pc.semester.year} - ${pc.semester.semester}
             </td>
             <td>
+                <a href="#" class="course-detail" data-course-id="${pc.id}">
                     ${pc.course.code}
+                </a>
             </td>
             <td>
                     ${pc.course.title}
@@ -39,7 +41,7 @@
                     ${pc.divide}
             </td>
             <td>
-                <a href="${baseUrl}/professor/classProgress/attendance/studentListExcel?courseId=${pc.id}"><spring:message code="common.download"/></a>
+                <a href="${baseUrl}/professor/classProgress/attendance/studentListExcel?profCourseId=${pc.id}"><spring:message code="common.download"/></a>
             </td>
             <td>
                 <c:if test="${not empty pc.attendanceFile}">
@@ -58,12 +60,12 @@
     $("#course-list").DataTable();
 
     <c:if test="${not empty firstCourse}">
-        $(".detail-div").load("${baseUrl}/professor/classProgress/attendance/courseDetail?courseId=${firstCourse.id}");
+        $(".detail-div").load("${baseUrl}/professor/classProgress/attendance/courseDetail?profCourseId=${firstCourse.id}");
     </c:if>
     $("body").on('click', '.course-detail', function (e) {
         e.preventDefault();
         var courseId = $(this).attr("data-course-id");
-        $(".detail-div").load("${baseUrl}/professor/classProgress/attendance/courseDetail?courseId=" + courseId);
+        $(".detail-div").load("${baseUrl}/professor/classProgress/attendance/courseDetail?profCourseId=" + courseId);
 
     });
 </script>

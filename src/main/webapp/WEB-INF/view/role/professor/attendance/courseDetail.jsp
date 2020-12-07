@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 
 <div class="card-body">
-<form:form id="file-form" commandName="uploadedFile" action="${baseUrl}/professor/classProgress/attendance/courseDetail?courseId=${pc.id}" cssClass="form-horizontal" enctype="multipart/form-data">
+<form:form id="file-form" commandName="uploadedFile" action="${baseUrl}/professor/classProgress/attendance/courseDetail?profCourseId=${pc.id}" cssClass="form-horizontal" enctype="multipart/form-data">
 
     <%@include file="/WEB-INF/view/role/common/professorCourse/basicInfo.jsp" %>
 

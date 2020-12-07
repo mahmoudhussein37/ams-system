@@ -1,5 +1,5 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
-<form:form class="form" modelAttribute="assessment" id="assessmentForm" action="${baseUrl}/student/classInformation/classAssessment/courseDetail?courseId=${sc.id}" method="post">
+<form:form class="form" modelAttribute="assessment" id="assessmentForm" action="${baseUrl}/student/classInformation/classAssessment/courseDetail?studentCourseId=${sc.id}" method="post">
     <form:hidden path="id"/>
 <div class="card-body">
 
@@ -100,11 +100,6 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
 $(document).ready(function() {
-/*   $("#assessment-save").click(function(e) {
-     e.preventDefault();
-       $.post('${baseUrl}/student/classInformation/classAssessment/courseDetail?courseId=${sc.id}', $('#assessmentForm').serialize(), function() {
-         alert("<spring:message code="common.success"/>");
-       });
-   });*/
+
 });
 </script>

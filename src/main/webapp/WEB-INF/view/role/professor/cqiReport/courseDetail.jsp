@@ -7,7 +7,7 @@
 <%@include file="/WEB-INF/view/role/common/cqi/chartDiv.jsp" %>
 
 
-<form:form class="form" modelAttribute="cqi" id="cqiForm" action="${baseUrl}/professor/classProgress/cqiReport/courseDetail?courseId=${pc.id}" method="post">
+<form:form class="form" modelAttribute="cqi" id="cqiForm" action="${baseUrl}/professor/classProgress/cqiReport/courseDetail?profCourseId=${pc.id}" method="post">
 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="professor.courseLearningObjectives"/></h3>
 <div class="row">
     <div class="col-md-12">
@@ -118,7 +118,7 @@ ${prevCqi.plan}
                 }
             }
             if(valid) {
-                $.post('${baseUrl}/professor/classProgress/cqiReport/courseDetail?courseId=${pc.id}', $('#cqiForm').serialize(), function() {
+                $.post('${baseUrl}/professor/classProgress/cqiReport/courseDetail?profCourseId=${pc.id}', $('#cqiForm').serialize(), function() {
                     alert("<spring:message code="common.success"/>");
                 });
             } else {
@@ -128,7 +128,7 @@ ${prevCqi.plan}
         });
         $("body").on('click', '.print', function (e) {
             e.preventDefault();
-            openPage("${baseUrl}/professor/classProgress/cqiReport/courseDetail?print=true&courseId=${pc.id}");
+            openPage("${baseUrl}/professor/classProgress/cqiReport/courseDetail?print=true&profCourseId=${pc.id}");
         });
     });
 </script>

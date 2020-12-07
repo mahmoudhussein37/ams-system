@@ -348,9 +348,9 @@ public class StudentController {
     }
 
     @RequestMapping("/classInformation/classAssessment/courseDetail")
-    public String classAssessmentCourseDetail(Model model, @RequestParam int courseId) {
+    public String classAssessmentCourseDetail(Model model, @RequestParam int studentCourseId) {
         User studentUser = User.current();
-        StudentCourse sc = studentCourseMapper.findOne(courseId);
+        StudentCourse sc = studentCourseMapper.findOne(studentCourseId);
         model.addAttribute("sc", sc);
 
         Assessment assessment = assessmentMapper.findByUserIdProfCourseId(studentUser.getId(), sc.getProfCourseId());
@@ -372,9 +372,7 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/classInformation/classAssessment/courseDetail", method = RequestMethod.POST)
-    public String classAssessmentCourseDetail(@ModelAttribute("assessment") Assessment assessment, @RequestParam int courseId, SessionStatus sessionStatus) {
-        System.out.println("courseId = " + courseId);
-
+    public String classAssessmentCourseDetail(@ModelAttribute("assessment") Assessment assessment, @RequestParam int studentCourseId) {
         assessmentMapper.insert(assessment);
         return "redirect:/student/classInformation/classAssessment?result=success";
     }
