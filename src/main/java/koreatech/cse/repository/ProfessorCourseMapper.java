@@ -58,7 +58,7 @@ public interface ProfessorCourseMapper {
             + "<if test='code != null'> and c.code LIKE CONCAT('%', #{code}, '%')</if>"
             + "<if test='title != null'> and c.title LIKE CONCAT('%', #{title}, '%')</if>"
             + "<if test='advisor != 0'> and pc.user_id = #{advisor}</if>"
-            + "<if test='enabled == true'> and enabled = 1</if>"
+            + "<if test='enabled == true'> and pc.enabled = 1</if>"
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
         //@formatter on

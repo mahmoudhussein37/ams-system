@@ -104,6 +104,7 @@
                                     </td>
                                     <td style="width:100px;">
                                         <select name="grade" data-sc-id="${sc.id}" class="select-grade form-control">
+                                            <option value="">-</option>
                                             <option value="Ap" ${sc.grade eq 'Ap' ? 'selected' : ''}>A+</option>
                                             <option value="A0" ${sc.grade eq 'A0' ? 'selected' : ''}>A0</option>
                                             <option value="Bp" ${sc.grade eq 'Bp' ? 'selected' : ''}>B+</option>
@@ -140,6 +141,7 @@
                                     <td style="width:100px;">
 
                                         <select name="grade" data-sc-id="${sc.id}" class="select-grade form-control" disabled>
+                                            <option value="">-</option>
                                             <option value="Ap" ${sc.grade eq 'Ap' ? 'selected' : ''}>A+</option>
                                             <option value="A0" ${sc.grade eq 'A0' ? 'selected' : ''}>A0</option>
                                             <option value="Bp" ${sc.grade eq 'Bp' ? 'selected' : ''}>B+</option>

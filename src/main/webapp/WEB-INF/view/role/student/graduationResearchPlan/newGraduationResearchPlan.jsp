@@ -56,7 +56,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label><spring:message code="common.completeSemester"/></label>
-                                        <input type="text" class="form-control" value="${copmpleteSemester}" disabled/>
+                                        <input type="text" class="form-control" value="${completeSemester}" disabled/>
                                             <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                     </div>
                                 </div>
@@ -72,13 +72,13 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label><spring:message code="common.advisor"/></label>
-                                        <input type="text" class="form-control" value="AAA" disabled/>
+                                        <input type="text" class="form-control" value="${studentUser.advisor.getFullName()}" disabled/>
                                             <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label><spring:message code="common.academicYear"/></label>
+                                        <label><spring:message code="common.admissionYear"/></label>
                                         <input type="text" class="form-control" value="${studentUser.contact.admissionYear}" disabled/>
                                             <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                     </div>

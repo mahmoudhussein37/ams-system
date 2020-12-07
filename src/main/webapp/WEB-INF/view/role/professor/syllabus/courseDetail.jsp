@@ -44,7 +44,7 @@
             var total = rateAttendance + rateAssignment + rateMid + rateFinal + rateOptional;
 
             if(total == 100) {
-                $.post('${baseUrl}/professor/classProgress/syllabus/courseDetail/lectureFundamentals?profCourseId=${pc.course.id}', $('#lectureFundamentalsForm').serialize(), function() {
+                $.post('${baseUrl}/professor/classProgress/syllabus/courseDetail/lectureFundamentals?profCourseId=${pc.id}', $('#lectureFundamentalsForm').serialize(), function() {
                     alert("<spring:message code="common.success"/>");
                 });
             } else {
@@ -56,13 +56,13 @@
 
         $("#prof-lecture-method-save").click(function(e) {
             e.preventDefault();
-            $.post('${baseUrl}/professor/classProgress/syllabus/courseDetail/profLectureMethod?profCourseId=${pc.course.id}', $('#profLectureMethodForm').serialize(), function() {
+            $.post('${baseUrl}/professor/classProgress/syllabus/courseDetail/profLectureMethod?profCourseId=${pc.id}', $('#profLectureMethodForm').serialize(), function() {
                 alert("<spring:message code="common.success"/>");
             });
         });
         $("#lecture-contents-save").click(function(e) {
             e.preventDefault();
-            $.post('${baseUrl}/professor/classProgress/syllabus/courseDetail/lectureContents?profCourseId=${pc.course.id}', $('#lectureContentsForm').serialize(), function() {
+            $.post('${baseUrl}/professor/classProgress/syllabus/courseDetail/lectureContents?profCourseId=${pc.id}', $('#lectureContentsForm').serialize(), function() {
                 alert("<spring:message code="common.success"/>");
             });
         });

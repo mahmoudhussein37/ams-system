@@ -465,7 +465,7 @@ public class ProfessorController {
 
         User user = User.current();
         lectureFundamentals.setUserId(user.getId());
-
+        lectureFundamentals.setProfCourseId(profCourseId);
 
         String[] ref1Checkbox = lectureFundamentals.getRef1Checkbox();
         String ref1CheckboxStr = checkboxToStr(ref1Checkbox);
@@ -505,6 +505,7 @@ public class ProfessorController {
     public String profLectureMethod(@RequestParam int profCourseId, @ModelAttribute ProfLectureMethod profLectureMethod) {
         User user = User.current();
         profLectureMethod.setUserId(user.getId());
+        profLectureMethod.setProfCourseId(profCourseId);
         String[] lectureMethodCheckbox = profLectureMethod.getLectureMethodCheckbox();
         String lectureMethodCheckboxStr = checkboxToStr(lectureMethodCheckbox);
         profLectureMethod.setLectureMethods(lectureMethodCheckboxStr);
@@ -536,6 +537,7 @@ public class ProfessorController {
     public String lectureContents(@RequestParam int profCourseId, @ModelAttribute LectureContents lectureContents) {
         User user = User.current();
         lectureContents.setUserId(user.getId());
+        lectureContents.setProfCourseId(profCourseId);
         if (lectureContents.getId() == 0) {
             lectureContentsMapper.insert(lectureContents);
         } else {
@@ -661,18 +663,24 @@ public class ProfessorController {
                                       @RequestParam(defaultValue = "0", required=false) int semester) {
 
 
-        Searchable searchable = new Searchable();
-        searchable.setYear(year);
-        searchable.setSemester(semester);
-        searchable.setAdvisor(User.current().getId());
-        System.out.println("searchable = " + searchable);
-
-        List<ProfessorCourse> courseList = professorCourseMapper.findBy(searchable);
+        List<ProfessorCourse> courseList;
         ProfessorCourse firstCourse = null;
-        for(ProfessorCourse course: courseList) {
-            firstCourse = course;
-            break;
+        if(year == 0 && semester == 0) {
+            courseList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setYear(year);
+            searchable.setSemester(semester);
+            searchable.setAdvisor(User.current().getId());
+
+            courseList = professorCourseMapper.findBy(searchable);
+            for(ProfessorCourse course: courseList) {
+                firstCourse = course;
+                break;
+            }
         }
+
+
 
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);
@@ -776,17 +784,25 @@ public class ProfessorController {
                                       @RequestParam(defaultValue = "0", required=false) int semester) {
 
 
-        Searchable searchable = new Searchable();
-        searchable.setYear(year);
-        searchable.setSemester(semester);
-        searchable.setAdvisor(User.current().getId());
-
-        List<ProfessorCourse> courseList = professorCourseMapper.findBy(searchable);
+        List<ProfessorCourse> courseList;
         ProfessorCourse firstCourse = null;
-        for(ProfessorCourse course: courseList) {
-            firstCourse = course;
-            break;
+
+        if(year == 0 && semester == 0) {
+            courseList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setYear(year);
+            searchable.setSemester(semester);
+            searchable.setAdvisor(User.current().getId());
+
+            courseList = professorCourseMapper.findBy(searchable);
+
+            for(ProfessorCourse course: courseList) {
+                firstCourse = course;
+                break;
+            }
         }
+
 
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);

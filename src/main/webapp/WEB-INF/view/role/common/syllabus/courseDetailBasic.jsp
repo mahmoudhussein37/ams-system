@@ -1,6 +1,29 @@
 <div class="row">
     <div class="col-md-4">
         <div class="form-group">
+            <label><spring:message code="common.department"/></label>
+            <input type="text" class="form-control" value="${pc.course.division.name}" disabled/>
+            <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label><spring:message code="common.year"/></label>
+            <input type="text" class="form-control" value="${pc.semester.year}" disabled/>
+            <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label><spring:message code="common.semester"/></label>
+            <input type="text" class="form-control" value="${pc.semester.semester}" disabled/>
+            <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
             <label><spring:message code="common.courseCode"/></label>
             <input type="text" class="form-control" value="${pc.course.code}" disabled/>
             <%--<span class="form-text text-muted">Please enter your full name</span>--%>

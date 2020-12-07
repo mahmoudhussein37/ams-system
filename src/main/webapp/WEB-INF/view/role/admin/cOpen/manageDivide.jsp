@@ -228,12 +228,13 @@
                                                 </form:select>
                                             </div>
                                         </div>
-<%--                                        <div class="col-md-3">
+                                        <div class="col-md-3">
                                             <div class="form-group">
-                                                <label><spring:message code="common.schoolYear"/></label>
-                                                <form:input type="number" path="schoolYear" class="form-control"/>
+                                                <label><spring:message code="common.lectureLanguage"/></label>
+                                                <form:input type="text" path="language" class="form-control"/>
+                                                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                             </div>
-                                        </div>--%>
+                                        </div>
                                     </div>
                                 <div class="row">
 
@@ -246,7 +247,7 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label><spring:message code="common.classRoom"/></label>
-                                            <form:select path="userId" class="form-control" >
+                                            <form:select path="classroom" class="form-control" >
                                                 <form:option value="0">-</form:option>
                                                 <c:forEach var="c" items="${classroomList}">
                                                     <form:option value="${c.id}">${c.code}</form:option>

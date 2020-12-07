@@ -255,7 +255,7 @@ public class StudentController {
                                       @RequestParam(defaultValue = "0", required=false) int division,
                                       @RequestParam(required=false) String title) {
         ProfessorCourse firstCourse = null;
-        List<ProfessorCourse> courseList = null;
+        List<ProfessorCourse> courseList;
         if(year == 0 && semester == 0 && division == 0 && StringUtils.isBlank(title)) {
             courseList = new ArrayList<>();
         } else {

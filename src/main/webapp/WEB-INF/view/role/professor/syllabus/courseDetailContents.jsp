@@ -1,4 +1,4 @@
-<form:form class="form" modelAttribute="lectureContents" id="lectureContentsForm" action="${baseUrl}/professor/classProgress/syllabus/courseDetail/lectureContents?profCourseId=${pc.courseId}" method="post">
+<form:form class="form" modelAttribute="lectureContents" id="lectureContentsForm" action="${baseUrl}/professor/classProgress/syllabus/courseDetail/lectureContents?profCourseId=${pc.id}" method="post">
     <div class="card-body">
             <%--<div class="row">
                 <div class="col-md-10">

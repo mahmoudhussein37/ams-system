@@ -43,7 +43,7 @@
         </div>
         <div class="col-md-3">
             <div class="form-group">
-                <label><spring:message code="common.academicYear"/></label>
+                <label><spring:message code="common.admissionYear"/></label>
                 <input type="text" class="form-control" value="${studentUser.contact.admissionYear}" disabled/>
                 <%--<span class="form-text text-muted">Please enter your full name</span>--%>
             </div>

@@ -62,7 +62,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label><spring:message code="common.advisor"/></label>
-                                        <input type="text" class="form-control" value="AAA" disabled/>
+                                        <input type="text" class="form-control" value="${studentUser.advisor.getFullName()}" disabled/>
                                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                     </div>
                                 </div>

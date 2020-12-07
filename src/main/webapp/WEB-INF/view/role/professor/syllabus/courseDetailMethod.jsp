@@ -1,4 +1,4 @@
-<form:form class="form" modelAttribute="profLectureMethod" id="profLectureMethodForm" action="${baseUrl}/professor/classProgress/syllabus/courseDetail/profLectureMethod?profCourseId=${pc.courseId}" method="post">
+<form:form class="form" modelAttribute="profLectureMethod" id="profLectureMethodForm" action="${baseUrl}/professor/classProgress/syllabus/courseDetail/profLectureMethod?profCourseId=${pc.id}" method="post">
     <form:hidden path="courseId" value="${pc.courseId}"/>
     <div class="card-body">
         <div class="row">
