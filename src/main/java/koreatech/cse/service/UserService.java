@@ -117,6 +117,10 @@ public class UserService implements UserDetailsService {
     }
 
     public Boolean register(User user) {
+        String number = user.getNumber();
+        User stored = userMapper.findByNumber(number);
+        if(stored != null)
+            return false;
         userMapper.insert(user);
         user.getContact().setUserId(user.getId());
         Contact contact = user.getContact();

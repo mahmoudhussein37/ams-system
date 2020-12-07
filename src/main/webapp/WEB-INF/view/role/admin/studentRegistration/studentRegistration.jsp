@@ -182,7 +182,14 @@
     $(document).ready(function() {
         KTBootstrapDatepicker.init();
         <c:if test="${not empty result}">
+        <c:choose>
+        <c:when test="${result eq 'success'}">
         alert("<spring:message code='common.success'/>");
+        </c:when>
+        <c:otherwise>
+        alert("<spring:message code='admin.duplicatedStudentNumber'/>");
+        </c:otherwise>
+        </c:choose>
         location.href="${baseUrl}/admin/studentManagement/studentRegistration";
         </c:if>
 

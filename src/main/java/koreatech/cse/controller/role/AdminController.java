@@ -126,10 +126,10 @@ public class AdminController {
 
         studentUser.setEnabled(false);
         studentUser.setConfirm(false);
-        userService.register(studentUser);
+        boolean result = userService.register(studentUser);
         sessionStatus.setComplete();
 
-        return "redirect:/admin/studentManagement/studentRegistration?result=success";
+        return "redirect:/admin/studentManagement/studentRegistration?result=" + (result ? "success" : "fail");
     }
 
     @RequestMapping("/studentManagement/studentInformation/studentTable")
@@ -419,9 +419,9 @@ public class AdminController {
     public String profRegistration(@ModelAttribute("profUser") User profUser, SessionStatus sessionStatus) {
         profUser.setEnabled(false);
         profUser.setConfirm(false);
-        userService.register(profUser);
+        boolean result = userService.register(profUser);
         sessionStatus.setComplete();
-        return "redirect:/admin/profManagement/profRegistration?result=success";
+        return "redirect:/admin/profManagement/profRegistration?result=" + (result ? "success" : "fail");
     }
 
     @RequestMapping("/profManagement/profInformation")

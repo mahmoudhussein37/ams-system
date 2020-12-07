@@ -51,6 +51,7 @@ public interface UserMapper {
     @Update("UPDATE `user` SET"+
             "`username` = #{username},"+
             "`password` = #{password},"+
+            "`school_year` = #{schoolYear},"+
             "`enabled` = #{enabled},"+
             "`confirm` = #{confirm} "+
             "WHERE `id` = #{id}")
@@ -95,7 +96,7 @@ public interface UserMapper {
     User findByUsername(@Param("username") String username);
 
     @ResultMap("findOne-int")
-    @Select("select * from user where number = #{number}")
+    @Select("select * from user where number = #{number} limit 1")
     User findByNumber(@Param("number") String number);
 
     @ResultMap("findOne-int")

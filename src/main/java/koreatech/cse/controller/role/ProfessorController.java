@@ -510,17 +510,33 @@ public class ProfessorController {
         String lectureMethodCheckboxStr = checkboxToStr(lectureMethodCheckbox);
         profLectureMethod.setLectureMethods(lectureMethodCheckboxStr);
 
+        if(!profLectureMethod.hasValue(profLectureMethod.getLectureMethods(), 100)) {
+            profLectureMethod.setLectureMethodOther(null);
+        }
+
         String[] evaluationMethodCheckbox = profLectureMethod.getEvaluationMethodCheckbox();
         String evaluationMethodCheckboxStr = checkboxToStr(evaluationMethodCheckbox);
         profLectureMethod.setEvaluationMethods(evaluationMethodCheckboxStr);
+
+        if(!profLectureMethod.hasValue(profLectureMethod.getEvaluationMethods(), 100)) {
+            profLectureMethod.setEvaluationMethodOther(null);
+        }
 
         String[] educationalMediumCheckbox = profLectureMethod.getEducationalMediumCheckbox();
         String educationalMediumCheckboxStr = checkboxToStr(educationalMediumCheckbox);
         profLectureMethod.setEducationalMediums(educationalMediumCheckboxStr);
 
+        if(!profLectureMethod.hasValue(profLectureMethod.getEducationalMediums(), 100)) {
+            profLectureMethod.setEducationalMediumOther(null);
+        }
+
         String[] equipmentCheckbox = profLectureMethod.getEquipmentCheckbox();
         String equipmentCheckboxStr = checkboxToStr(equipmentCheckbox);
         profLectureMethod.setEquipments(equipmentCheckboxStr);
+
+        if(!profLectureMethod.hasValue(profLectureMethod.getEquipments(), 100)) {
+            profLectureMethod.setEquipmentOther(null);
+        }
 
 
 
@@ -693,6 +709,9 @@ public class ProfessorController {
         model.addAttribute("pc", pc);
 
         LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
+        if(lectureFundamentals == null)
+            return "role/common/syllabus/requiredSyllabus";
+
         model.addAttribute("lectureFundamentals", lectureFundamentals);
 
         List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(pc.getId());
@@ -708,6 +727,9 @@ public class ProfessorController {
         model.addAttribute("pc", pc);
 
         LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
+        if(lectureFundamentals == null) {
+            return "redirect:/professor/classProgress/syllabus";
+        }
         model.addAttribute("lectureFundamentals", lectureFundamentals);
 
         List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(pc.getId());
@@ -721,7 +743,9 @@ public class ProfessorController {
     public Boolean registerGradeCourseDetail(@RequestParam int courseId) {
         ProfessorCourse pc = professorCourseMapper.findOne(courseId);
         LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(courseId);
-
+        if(lectureFundamentals == null) {
+            return false;
+        }
         List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(pc.getId());
 
         boolean valid = true;
