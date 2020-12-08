@@ -14,9 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.*;
 
 @Service
 public class FileService {
@@ -45,8 +48,9 @@ public class FileService {
             pathBuilder.append(File.separator);
         }
         File originDir = new File(pathBuilder.toString());
-        if (!originDir.exists())
-            originDir.mkdirs();
+        createFolder(pathBuilder.toString());
+//        if (!originDir.exists())
+//            originDir.mkdirs();
         String originalFilename = file.getOriginalFilename();
         if(this.isValidFileType(originalFilename)) {
             String validFilename = changeToValidFilename(originalFilename);
@@ -66,6 +70,31 @@ public class FileService {
             return true;
         } else
             return false;
+    }
+
+    private void createFolder(String pathString) {
+        Set<PosixFilePermission> fullPermission = new HashSet<PosixFilePermission>();
+        fullPermission.add(PosixFilePermission.OWNER_EXECUTE);
+        fullPermission.add(PosixFilePermission.OWNER_READ);
+        fullPermission.add(PosixFilePermission.OWNER_WRITE);
+
+        fullPermission.add(PosixFilePermission.GROUP_EXECUTE);
+        fullPermission.add(PosixFilePermission.GROUP_READ);
+        fullPermission.add(PosixFilePermission.GROUP_WRITE);
+
+        fullPermission.add(PosixFilePermission.OTHERS_EXECUTE);
+        fullPermission.add(PosixFilePermission.OTHERS_READ);
+        fullPermission.add(PosixFilePermission.OTHERS_WRITE);
+
+        Path path = Paths.get(pathString);
+        try {
+            Files.createDirectories(path, PosixFilePermissions.asFileAttribute(fullPermission));
+            //outputLS(path);
+            Files.setPosixFilePermissions(path, fullPermission);
+            //outputLS(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean isValidFileType(String fileName) {
