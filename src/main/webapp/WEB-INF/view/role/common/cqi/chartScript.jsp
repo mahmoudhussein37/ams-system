@@ -76,7 +76,7 @@
 
             ],
             datasets: [{
-                label: '<spring:message code="professor.assignedStudents"/>',
+                label: '<spring:message code="professor.divideAvg"/>',
                 data: [
                     <c:forEach var="entry" items="${averageAssignedDivideMap}">
                     ${entry.value},

@@ -85,7 +85,7 @@
 
     </div>
     <div class="col-md-6">
-        <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="professor.assignedDivideSemester"/></h3>
+        <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="professor.averageAssignedDivideSemester"/></h3>
         <canvas id="chart2"></canvas>
         <table class="table table-bordered">
             <tr>
