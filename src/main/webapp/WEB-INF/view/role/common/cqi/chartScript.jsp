@@ -9,11 +9,12 @@
                 '${entry.key}',
                 </c:forEach>
 
+
             ],
             datasets: [
                 {
                     label: '<spring:message code="professor.assignedDivisionAvg"/>',
-                    data: [0, 0, ${pc.numStudent}],
+                    data: [0, 0, ${myAvg}],
                     backgroundColor: [
                         'rgba(255, 99, 132)',
                         'rgba(255, 99, 132)',
@@ -69,20 +70,20 @@
         type: 'bar',
         data: {
             labels: [
-                <c:forEach var="d" items="${professorCourseList}">
-                '${d.divide}',
+                <c:forEach var="entry" items="${averageAssignedDivideMap}">
+                '${entry.key}',
                 </c:forEach>
 
             ],
             datasets: [{
                 label: '<spring:message code="professor.assignedStudents"/>',
                 data: [
-                    <c:forEach var="d" items="${professorCourseList}">
-                    ${d.numStudent},
+                    <c:forEach var="entry" items="${averageAssignedDivideMap}">
+                    ${entry.value},
                     </c:forEach>
                 ],
                 backgroundColor: [
-                    <c:forEach var="d" items="${professorCourseList}">
+                    <c:forEach var="entry" items="${averageAssignedDivideMap}">
                     'rgba(255, 99, 132)',
                     </c:forEach>
 
@@ -91,7 +92,7 @@
 
                 ],
                 borderColor: [
-                    <c:forEach var="d" items="${professorCourseList}">
+                    <c:forEach var="entry" items="${averageAssignedDivideMap}">
                     'rgba(255, 99, 132)',
                     </c:forEach>
 

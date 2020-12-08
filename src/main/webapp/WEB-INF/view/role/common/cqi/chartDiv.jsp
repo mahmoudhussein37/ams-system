@@ -64,11 +64,19 @@
             </tr>
             <tr>
                 <td width="100px">
-                    <spring:message code="professor.course.numStudent"/> <br/>(<spring:message code="professor.divisionAvg"/>)
+                    <spring:message code="professor.course.numStudent"/>
                 </td>
-                <c:forEach var="entry" items="${averageAssignedMap}">
+                <c:forEach var="entry" items="${averageAssignedMap}" varStatus="varStatus">
                     <td>
-                            ${entry.value}
+                        <c:choose>
+                            <c:when test="${varStatus.count < fn:length(averageAssignedMap)}">
+                                0
+                            </c:when>
+                            <c:otherwise>
+                                ${fn:length(pc.assessmentList)}
+                            </c:otherwise>
+                        </c:choose>
+
                     </td>
                 </c:forEach>
 
