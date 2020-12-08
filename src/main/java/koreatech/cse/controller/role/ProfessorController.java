@@ -296,18 +296,27 @@ public class ProfessorController {
     public String professorCourseTable(Model model,
                               @RequestParam(defaultValue = "0", required=false) int year,
                               @RequestParam(defaultValue = "0", required=false) int semester) {
-
-        Searchable searchable = new Searchable();
-        searchable.setYear(year);
-        searchable.setSemester(semester);
-
-        List<ProfessorCourse> courseList = professorCourseMapper.findBy(searchable);
-
         ProfessorCourse firstCourse = null;
-        for(ProfessorCourse course: courseList) {
-            firstCourse = course;
-            break;
+        List<ProfessorCourse> courseList;
+
+        if(year == 0 && semester == 0) {
+            courseList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setYear(year);
+            searchable.setSemester(semester);
+            searchable.setAdvisor(User.current().getId());
+
+            courseList = professorCourseMapper.findBy(searchable);
+
+
+            for(ProfessorCourse course: courseList) {
+                firstCourse = course;
+                break;
+            }
         }
+
+
 
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("profCourseList", courseList);
