@@ -73,7 +73,7 @@ public class HomeController {
         Searchable searchable = new Searchable();
         searchable.setDivision(divisionId);
 
-        model.addAttribute("profList", userMapper.findProfessorsByNameNumberDivision(searchable));
+        model.addAttribute("profList", userMapper.findProfessorBy(searchable));
         model.addAttribute("defaultSelected", defaultSelected);
 
         return "include/profOptions";

@@ -1,11 +1,16 @@
 package koreatech.cse.repository;
 
 
+import koreatech.cse.domain.Searchable;
+import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.domain.role.student.StudentCourse;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Repository
@@ -61,6 +66,17 @@ public interface StudentCourseMapper {
     List<StudentCourse> findByUserIdValid(@Param("userId") int userId);
 
     @ResultMap("findOne-int")
+    //@formatter off
+    @Select("<script>"
+            + "SELECT * FROM student_course sc join professor_course pc on sc.prof_course_id=pc.id join semester s on pc.semester_id = s.id where sc.user_id = #{userId} "
+            + "<if test='year != 0'> and s.year = #{year}</if>"
+            + "<if test='semester != 0'> and s.semester = #{semester}</if>"
+            + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
+            + "</script>")
+        //@formatter on
+    List<StudentCourse> findByUserIdYearSemester(Searchable searchable);
+
+    @ResultMap("findOne-int")
     @Select("SELECT * FROM student_course where prof_course_id = #{profCourseId}")
     List<StudentCourse> findByProfCourseId(@Param("profCourseId") int profCourseId);
 
@@ -74,12 +90,25 @@ public interface StudentCourseMapper {
     @Select("SELECT user_id FROM student_course where course_id = #{courseId}")
     List<Integer> findUserIdsByCourseId(@Param("courseId") int courseId);
 
+    @Select("SELECT semester_id FROM student_course sc join professor_course pc on sc.prof_course_id = pc.id join semester s on pc.semester_id = s.id where sc.user_id = #{userId} and sc.valid = 1 order by s.year desc, s.semester desc")
+    LinkedHashSet<Integer> findSemesterIdByUserIdValid(@Param("userId") int userId);
+
+    @ResultMap("findOne-int")
+    @Select("SELECT * FROM student_course sc join professor_course pc on sc.prof_course_id = pc.id join semester s on pc.semester_id = s.id where sc.user_id = #{userId} and sc.valid = 1 and s.id = #{semesterId} order by s.year desc, s.semester desc")
+    List<StudentCourse> findByUserIdSemesterIdValid(@Param("userId") int userId, @Param("semesterId") int semesterId);
+
+    @ResultMap("findOne-int")
+    @Select("SELECT * FROM student_course sc join professor_course pc on sc.prof_course_id = pc.id join semester s on pc.semester_id = s.id where sc.user_id = #{userId} and s.id = #{semesterId} order by s.year desc, s.semester desc")
+    List<StudentCourse> findByUserIdSemesterId(@Param("userId") int userId, @Param("semesterId") int semesterId);
+
     @ResultMap("findOne-int")
     @Select("SELECT * FROM student_course where user_id = #{userId} and prof_course_id = #{profCourseId} limit 1")
     StudentCourse findByUserIdProfCourseId(@Param("userId") int userId, @Param("profCourseId") int profCourseId);
 
     @Select("SELECT count(*) FROM student_course where prof_course_id = #{profCourseId}")
     Integer countByProfCourseId(@Param("profCourseId") int profCourseId);
+
+
 
 
     @Update("UPDATE `student_course` SET"+
@@ -93,6 +122,7 @@ public interface StudentCourseMapper {
             "`score_final` = #{scoreFinal},"+
             "`score_options` = #{scoreOptions},"+
             "`score_total` = #{scoreTotal},"+
+            "`school_year` = #{schoolYear},"+
             "`valid` = #{valid},"+
             "`grade` = #{grade} "+
             "WHERE `id` = #{id}")

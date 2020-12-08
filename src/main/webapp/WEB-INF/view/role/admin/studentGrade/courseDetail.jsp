@@ -225,7 +225,7 @@
     $(document).ready(function() {
         $("body").on('click', '.print', function (e) {
             e.preventDefault();
-            openPage("${baseUrl}/admin/academicManagement/studentGrade/courseDetailForPrint?courseId=${pc.id}");
+            openPage("${baseUrl}/admin/academicManagement/studentGrade/courseDetailForPrint?profCourseId=${pc.id}");
         });
     });
 </script>

@@ -83,7 +83,7 @@
                                             <label><spring:message code="common.advisor"/></label>
                                             <form:select path="advisorId" class="form-control" >
                                                 <c:forEach var="s" items="${professors}">
-                                                    <option value="${s.id}">${s.contact.getFullName()}</option>
+                                                    <option value="${s.id}">${s.contact.getFullName()} (${s.division.name})</option>
                                                 </c:forEach>
                                             </form:select>
                                             <%--<form:input type="text" path="advisor" class="form-control"/>--%>
@@ -182,7 +182,14 @@
     $(document).ready(function() {
         KTBootstrapDatepicker.init();
         <c:if test="${not empty result}">
+        <c:choose>
+        <c:when test="${result eq 'success'}">
         alert("<spring:message code='common.success'/>");
+        </c:when>
+        <c:otherwise>
+        alert("<spring:message code='admin.duplicatedStudentNumber'/>");
+        </c:otherwise>
+        </c:choose>
         location.href="${baseUrl}/admin/studentManagement/studentRegistration";
         </c:if>
 

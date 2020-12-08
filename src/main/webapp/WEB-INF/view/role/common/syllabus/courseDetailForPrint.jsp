@@ -17,14 +17,14 @@
 
                         <div class="card-body">
                             <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="professor.course.lectureFundamentals"/></h3>
-                            <%@include file="/WEB-INF/view/role/admin/syllabus/courseDetailFundamentals.jsp" %>
+                            <%@include file="/WEB-INF/view/role/common/syllabus/courseDetailFundamentals.jsp" %>
 
                             <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="professor.course.lectureMethod"/></h3>
 
-                            <%@include file="/WEB-INF/view/role/admin/syllabus/courseDetailMethod.jsp" %>
+                            <%@include file="/WEB-INF/view/role/common/syllabus/courseDetailMethod.jsp" %>
                             <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="professor.course.lectureContents"/></h3>
 
-                            <%@include file="/WEB-INF/view/role/admin/syllabus/courseDetailContents.jsp" %>
+                            <%@include file="/WEB-INF/view/role/common/syllabus/courseDetailContents.jsp" %>
 
 
                         </div>

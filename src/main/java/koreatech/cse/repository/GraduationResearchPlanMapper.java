@@ -93,12 +93,12 @@ public interface GraduationResearchPlanMapper {
             "`ref` = #{ref},"+
             "`year` = #{year},"+
             "`etc` = #{etc},"+
-            "`enabled` = #{enabled},"+
+            "`approve` = #{approve},"+
             "`submit_date` = #{submitDate} "+
             "WHERE `id` = #{id}")
-    void update(GraduationResearchPlan classroom);
+    void update(GraduationResearchPlan plan);
 
     @Delete("DELETE FROM `graduation_research_plan` WHERE ID = #{id}")
-    void delete(GraduationResearchPlan classroom);
+    void delete(GraduationResearchPlan plan);
 
 }

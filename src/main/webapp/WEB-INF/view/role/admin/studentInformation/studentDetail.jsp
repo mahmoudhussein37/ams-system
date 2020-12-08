@@ -76,7 +76,7 @@
                 <label><spring:message code="common.advisor"/></label>
                 <form:select path="advisorId" class="form-control" >
                     <c:forEach var="s" items="${professors}">
-                        <form:option value="${s.id}">${s.contact.getFullName()}</form:option>
+                        <form:option value="${s.id}">${s.contact.getFullName()} (${s.division.name})</form:option>
                     </c:forEach>
                 </form:select>
                     <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
@@ -86,7 +86,11 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.schoolYear"/></label>
-                <form:input type="number" path="schoolYear" class="form-control" />
+                <form:select path="schoolYear" class="form-control" >
+                    <c:forEach var="s" begin="1" end="4">
+                        <form:option value="${s}">${s}</form:option>
+                    </c:forEach>
+                </form:select>
                     <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
             </div>
 

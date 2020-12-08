@@ -6,48 +6,39 @@
 
         <th class="pl-0"><spring:message code="common.no"/></th>
         <th><span class="text-primary"><spring:message code="common.year"/></span></th>
-        <th><span class="text-primary"><spring:message code="common.department"/></span>
-        <th></span>
+        <th><span class="text-primary"><spring:message code="common.department"/></span></th>
+        <th><span class="text-primary"><spring:message code="common.download"/></span></th>
 
     </tr>
     </thead>
     <tbody>
-    <tr>
-
-        <td class="pl-0">
-            1
-        </td>
-        <td>
-            2020
-        </td>
-        <td>
-            Electronics & Communication
-        </td>
-        <td>
-            <a href="#"><spring:message code="common.download"/></a>
-        </td>
-
-    </tr>
-    <%--<c:forEach var="course" items="${courseList}" varStatus="varStatus">
+    <c:forEach var="division" items="${divisions}" varStatus="varStatus">
         <tr>
 
             <td class="pl-0">
                     ${varStatus.count}
             </td>
             <td>
-                <a href="#" class="course-detail" data-course-id="${course.id}">
-                        ${course.code}
-                </a>
+                    ${year}
             </td>
             <td>
-                    ${course.title}
+                    ${division.name}
             </td>
             <td>
-                    ${course.category}
+
+                <c:forEach var="uf" items="${uploadedFiles}">
+                    <c:if test="${uf.year eq year and uf.divisionId eq division.id}">
+                        <a href="${baseUrl}/download?uploadedFileId=${uf.id}"><spring:message code="common.download"/></a>
+                    </c:if>
+                </c:forEach>
+
             </td>
 
+
+
         </tr>
-    </c:forEach>--%>
+    </c:forEach>
+
 
 
     </tbody>

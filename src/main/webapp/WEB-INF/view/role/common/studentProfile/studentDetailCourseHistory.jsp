@@ -20,25 +20,25 @@
                 <tr class="table-light">
                     <td class="table-light"><spring:message code="common.liberal"/></td>
                     <%--<td><spring:message code="common.require"/></td>--%>
-                    <td>${graduationCriteria.liberal}</td>
-                    <td>${liberalCount}</td>
-                    <td style="${(liberalCount - graduationCriteria.liberal) < 0 ? 'color:red' : ''}">${liberalCount - graduationCriteria.liberal}</td>
+                    <td>${studentUser.graduationCriteria.liberal}</td>
+                    <td>${studentUser.getCriteriaCount('liberal')}</td>
+                    <td style="${(studentUser.getCriteriaCount('liberal') - studentUser.graduationCriteria.liberal) < 0 ? 'color:red' : ''}">${studentUser.getCriteriaCount('liberal') - studentUser.graduationCriteria.liberal}</td>
                 </tr>
 
                 <tr>
                     <td >MSC</td>
                     <%--<td><spring:message code="common.require"/></td>--%>
-                    <td>${graduationCriteria.msc}</td>
-                    <td>${mscCount}</td>
-                    <td style="${(mscCount - graduationCriteria.msc) < 0 ? 'color:red' : ''}">${mscCount - graduationCriteria.msc}</td>
+                    <td>${studentUser.graduationCriteria.msc}</td>
+                    <td>${studentUser.getCriteriaCount('msc')}</td>
+                    <td style="${(studentUser.getCriteriaCount('msc') - studentUser.graduationCriteria.msc) < 0 ? 'color:red' : ''}">${studentUser.getCriteriaCount('msc') - studentUser.graduationCriteria.msc}</td>
                 </tr>
 
                 <tr class="table-light">
                     <td class="table-light"><spring:message code="common.major"/></td>
                     <%--<td><spring:message code="common.require"/></td>--%>
-                    <td>${graduationCriteria.major}</td>
-                    <td>${majorCount}</td>
-                    <td style="${(majorCount - graduationCriteria.major) < 0 ? 'color:red' : ''}">${majorCount - graduationCriteria.major}</td>
+                    <td>${studentUser.graduationCriteria.major}</td>
+                    <td>${studentUser.getCriteriaCount('major')}</td>
+                    <td style="${(studentUser.getCriteriaCount('major') - studentUser.graduationCriteria.major) < 0 ? 'color:red' : ''}">${studentUser.getCriteriaCount('major') - studentUser.graduationCriteria.major}</td>
                 </tr>
 
 
@@ -80,7 +80,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
+                <c:forEach var="sc" items="${studentUser.studentCourses}" varStatus="varStatus">
                     <tr>
                         <td>
 ${varStatus.count}
@@ -105,29 +105,7 @@ ${sc.professorCourse.semester.year}
                         </td>
                     </tr>
                 </c:forEach>
-                <tr>
-                    <td>
 
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                </tr>
                 </tbody>
             </table>
         </div>

@@ -1,4 +1,4 @@
-<form:form modelAttribute="studentUser" action="${baseUrl}/student/register/basic" method="post" class="form">
+<form:form modelAttribute="studentUser" action="${baseUrl}/student/register/basic" method="post" class="form" enctype="multipart/form-data">
     <div class="card-body">
         <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.personalInfo"/></h3>
         <div class="row">
@@ -6,7 +6,7 @@
 
                 <div class="form-group">
                     <label><spring:message code="common.cellPhone"/></label>
-                    <form:input type="text" class="form-control" path="contact.cellPhone" disabled="true"/>
+                    <form:input type="text" class="form-control" path="contact.cellPhone" />
                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                 </div>
             </div>
@@ -14,22 +14,34 @@
 
                 <div class="form-group">
                     <label><spring:message code="common.phone"/></label>
-                    <form:input type="text" class="form-control" path="contact.phone" disabled="true"/>
+                    <form:input type="text" class="form-control" path="contact.phone" />
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
             </div>
-            <div class="col-md-3"></div>
             <div class="col-md-3">
 
 
 
             </div>
+            <div class="col-md-3" style="text-align:center">
+                <c:choose>
+                    <c:when test="${not empty studentUser.profile}">
+                        <img src="${baseUrl}/download?uploadedFileId=${studentUser.profile.id}" style="max-width:100px"/>
+                    </c:when>
+                    <c:otherwise>
+                        <img src="${resources}/images/user.png" style="max-width:100px"/>
+                    </c:otherwise>
+                </c:choose>
+                <br/><br/>
+                <input type="file" name="file"/>
+            </div>
+
         </div>
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
                     <label><spring:message code="common.post"/></label>
-                    <form:input type="text" class="form-control" path="contact.postCode" disabled="true"/>
+                    <form:input type="text" class="form-control" path="contact.postCode" />
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
             </div>
@@ -38,7 +50,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label><spring:message code="common.address"/></label>
-                    <form:input type="text" class="form-control" path="contact.address" disabled="true"/>
+                    <form:input type="text" class="form-control" path="contact.address" />
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
             </div>
@@ -50,28 +62,28 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label><spring:message code="common.name"/></label>
-                    <form:input type="text" class="form-control" path="contact.parentName" disabled="true"/>
+                    <form:input type="text" class="form-control" path="contact.parentName" />
                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label><spring:message code="common.relation"/></label>
-                    <form:input type="text" class="form-control" path="contact.relation" disabled="true"/>
+                    <form:input type="text" class="form-control" path="contact.relation" />
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label><spring:message code="common.cellPhone"/></label>
-                    <form:input type="text" class="form-control" path="contact.parentCellPhone" disabled="true"/>
+                    <form:input type="text" class="form-control" path="contact.parentCellPhone" />
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label><spring:message code="common.phone"/></label>
-                    <form:input type="text" class="form-control" path="contact.parentPhone" disabled="true"/>
+                    <form:input type="text" class="form-control" path="contact.parentPhone" />
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
             </div>
@@ -82,7 +94,7 @@
 
                 <div class="form-group">
                     <label><spring:message code="common.post"/></label>
-                    <form:input type="text" class="form-control" path="contact.parentPostCode" disabled="true"/>
+                    <form:input type="text" class="form-control" path="contact.parentPostCode" />
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
             </div>
@@ -91,7 +103,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label><spring:message code="common.address"/></label>
-                    <form:input type="text" class="form-control" path="contact.parentAddress" disabled="true"/>
+                    <form:input type="text" class="form-control" path="contact.parentAddress" />
                         <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
                 </div>
             </div>

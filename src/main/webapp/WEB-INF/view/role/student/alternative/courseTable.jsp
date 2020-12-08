@@ -5,16 +5,16 @@
     <tr class="text-uppercase">
 
         <th class="pl-0" style=""><spring:message code="common.no"/></th>
+        <th style=""><span class="text-primary"><spring:message code="common.department"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span>
         <%--<th style=""><span class="text-primary"><spring:message code="common.compCategory"/></span>--%>
         <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span>
+        <th style=""><span class="text-primary"><spring:message code="common.credit"/></span>
         <th style=""><span class="text-primary"><spring:message code="professor.course.ltlp"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.department"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.registeredDate"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.closedDate"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.alternative"/></span>
-        <th style=""><span class="text-primary"><spring:message code="common.prerequisite"/></span>
+
+
+
     </tr>
     </thead>
     <tbody>
@@ -24,6 +24,9 @@
 
             <td class="pl-0">
                     ${varStatus.count}
+            </td>
+            <td>
+                    ${courseElement.division.name}
             </td>
             <td>
                 <a href="#" class="course-detail" data-course-id="${courseElement.id}">
@@ -41,23 +44,14 @@
                 <spring:message code="subj.category.${courseElement.subjCategory}"/>
             </td>
             <td>
+                    ${courseElement.credit}
+            </td>
+            <td>
+                    ${courseElement.lec}-${courseElement.tut}-${courseElement.lab}-${courseElement.ws}
+            </td>
 
-            </td>
-            <td>
-                ${courseElement.division.name}
-            </td>
-            <td>
-                YYYY-MM-dd
-            </td>
-            <td>
-                YYYY-MM-dd
-            </td>
-            <td>
-                Y
-            </td>
-            <td>
-                Y
-            </td>
+
+
 
         </tr>
     </c:forEach>

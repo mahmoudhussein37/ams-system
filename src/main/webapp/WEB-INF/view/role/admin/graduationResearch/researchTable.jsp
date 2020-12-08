@@ -10,7 +10,7 @@
         <th style=""><span class="text-primary"><spring:message code="common.studentsName"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.department"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.advisor"/></span>
-            <%--<th style=""><span class="text-primary"><spring:message code="common.major"/></span>--%>
+        <th style=""><span class="text-primary"><spring:message code="common.status"/></span>
 
     </tr>
     </thead>
@@ -39,6 +39,23 @@
             </td>
             <td>
                     ${plan.user.advisor.getFullName()}
+            </td>
+            <td>
+                <c:choose>
+                    <c:when test="${plan.approve eq -1}">
+                                <span style="color:red">
+                                <spring:message code="professor.graduateResearchPlan.status.returned"/>
+                                    </span>
+                    </c:when>
+                    <c:when test="${plan.approve eq 0}">
+                        <spring:message code="professor.graduateResearchPlan.status.submitted"/>
+                    </c:when>
+                    <c:when test="${plan.approve eq 1}">
+                            <span style="color:green">
+                                <spring:message code="professor.graduateResearchPlan.status.approved"/>
+                            </span>
+                    </c:when>
+                </c:choose>
             </td>
         </tr>
     </c:forEach>

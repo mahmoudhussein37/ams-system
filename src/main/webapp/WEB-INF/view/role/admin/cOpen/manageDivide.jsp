@@ -120,6 +120,7 @@
                                                 </td>
                                                 <td>
                                                     <a style="width:100%;margin-bottom:10px;" href="${baseUrl}/admin/courseManagement/cOpen/editDivide?profCourseId=${pc.id}" class="btn btn-light btm-sm" data-id="${pc.id}"><spring:message code="admin.editDivide"/></a><br/>
+                                                    <a style="width:100%;margin-bottom:10px;" href="${baseUrl}/admin/courseManagement/cOpen/manageTime?profCourseId=${pc.id}" class="btn btn-light btm-sm" data-id="${pc.id}"><spring:message code="admin.manageTimeTable"/></a><br/>
                                                     <a style="width:100%;margin-bottom:10px;" href="${baseUrl}/admin/courseManagement/cOpen/manageStudent?profCourseId=${pc.id}" class="btn btn-light btm-sm" data-id="${pc.id}"><spring:message code="admin.registerStudents"/></a><br/>
                                                     <button style="width:100%;margin-bottom:10px;" class="btn btn-light btm-sm change-status-row-btn" data-id="${pc.id}" data-to-status="false"><spring:message code="common.disable"/></button><br/>
                                                     <button style="width:100%;margin-bottom:10px;" class="btn btn-light btm-sm delete-row-btn" data-id="${pc.id}"><spring:message code="common.delete"/></button>
@@ -186,6 +187,13 @@
                                                     <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                             </div>
                                         </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label><spring:message code="common.schoolYear"/></label>
+                                                <form:input type="text" path="schoolYear" class="form-control" disabled="true" value="${course.schoolYear}"/>
+                                                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3">
@@ -222,8 +230,9 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label><spring:message code="common.schoolYear"/></label>
-                                                <form:input type="number" path="schoolYear" class="form-control"/>
+                                                <label><spring:message code="common.lectureLanguage"/></label>
+                                                <form:input type="text" path="language" class="form-control"/>
+                                                    <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                             </div>
                                         </div>
                                     </div>
@@ -238,7 +247,7 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label><spring:message code="common.classRoom"/></label>
-                                            <form:select path="userId" class="form-control" >
+                                            <form:select path="classroom" class="form-control" >
                                                 <form:option value="0">-</form:option>
                                                 <c:forEach var="c" items="${classroomList}">
                                                     <form:option value="${c.id}">${c.code}</form:option>

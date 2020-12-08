@@ -1,5 +1,7 @@
 package koreatech.cse.domain.role.professor;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import java.io.Serializable;
 
 public class Assessment implements Serializable {
@@ -10,6 +12,8 @@ public class Assessment implements Serializable {
     private int profCourseId;
 
     private String comment;
+
+    private boolean confirm;
 
     private int score1;
     private int score2;
@@ -707,5 +711,10 @@ public class Assessment implements Serializable {
                 return getScore(i);
         }
         return -1;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

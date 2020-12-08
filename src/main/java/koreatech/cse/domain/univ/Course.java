@@ -24,26 +24,9 @@ public class Course implements Serializable {
     private int tut;
     private int lab;
     private int ws;
-
-    private String alternative;
-    private String prerequisite;
-
+    private int schoolYear;
     private boolean enabled;
 
-
-
-
-
-
-
-
-    private String category;
-
-
-    private int schoolYear;
-    private String lang;
-    private String lectureTime;
-    private String compCategory;
 
 
     public int getId() {
@@ -68,14 +51,6 @@ public class Course implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public int getCredit() {
@@ -108,30 +83,6 @@ public class Course implements Serializable {
 
     public void setSchoolYear(int schoolYear) {
         this.schoolYear = schoolYear;
-    }
-
-    public String getLang() {
-        return lang;
-    }
-
-    public void setLang(String lang) {
-        this.lang = lang;
-    }
-
-    public String getLectureTime() {
-        return lectureTime;
-    }
-
-    public void setLectureTime(String lectureTime) {
-        this.lectureTime = lectureTime;
-    }
-
-    public String getCompCategory() {
-        return compCategory;
-    }
-
-    public void setCompCategory(String compCategory) {
-        this.compCategory = compCategory;
     }
 
     public String getSubjCategory() {
@@ -204,22 +155,6 @@ public class Course implements Serializable {
 
     public void setLearningObjective(String learningObjective) {
         this.learningObjective = learningObjective;
-    }
-
-    public String getAlternative() {
-        return alternative;
-    }
-
-    public void setAlternative(String alternative) {
-        this.alternative = alternative;
-    }
-
-    public String getPrerequisite() {
-        return prerequisite;
-    }
-
-    public void setPrerequisite(String prerequisite) {
-        this.prerequisite = prerequisite;
     }
 
     @Override

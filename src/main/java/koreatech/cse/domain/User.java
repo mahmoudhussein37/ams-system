@@ -1,7 +1,10 @@
 package koreatech.cse.domain;
 
 import koreatech.cse.domain.constant.Role;
+import koreatech.cse.domain.role.student.StudentCourse;
+import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Division;
+import koreatech.cse.domain.univ.GraduationCriteria;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +32,11 @@ public class User implements UserDetails {
     private String status;
     private int schoolYear;
 
+
+    private GraduationCriteria graduationCriteria;
+    private List<StudentCourse> studentCourses;
+
+    private UploadedFile profile;
 
 
 
@@ -168,6 +176,37 @@ public class User implements UserDetails {
         this.advisorId = advisorId;
     }
 
+    public GraduationCriteria getGraduationCriteria() {
+        return graduationCriteria;
+    }
+
+    public int getCriteriaCount(String category) {
+        if(this.studentCourses == null) return 0;
+        int count = 0;
+        for(StudentCourse studentCourse: studentCourses) {
+            Course course = studentCourse.getCourse();
+            if(course.getSubjCategory() == null)
+                continue;
+
+            if(course.getSubjCategory().equals(category))
+                count++;
+
+        }
+        return count;
+    }
+
+    public void setGraduationCriteria(GraduationCriteria graduationCriteria) {
+        this.graduationCriteria = graduationCriteria;
+    }
+
+    public List<StudentCourse> getStudentCourses() {
+        return studentCourses;
+    }
+
+    public void setStudentCourses(List<StudentCourse> studentCourses) {
+        this.studentCourses = studentCourses;
+    }
+
     public static User current() {
         try {
             return (User) SecurityContextHolder.getContext()
@@ -192,6 +231,14 @@ public class User implements UserDetails {
 
 
         return Role.student.name();
+    }
+
+    public UploadedFile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(UploadedFile profile) {
+        this.profile = profile;
     }
 
     public String getFullName() {

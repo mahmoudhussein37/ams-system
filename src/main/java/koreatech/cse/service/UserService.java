@@ -4,9 +4,9 @@ import koreatech.cse.domain.Authority;
 import koreatech.cse.domain.Contact;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.Role;
-import koreatech.cse.repository.AuthorityMapper;
-import koreatech.cse.repository.ContactMapper;
-import koreatech.cse.repository.UserMapper;
+import koreatech.cse.domain.role.student.StudentCourse;
+import koreatech.cse.domain.univ.Semester;
+import koreatech.cse.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +30,10 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
     @Inject
     private ContactMapper contactMapper;
+    @Inject
+    private StudentCourseMapper studentCourseMapper;
+    @Inject
+    private SemesterMapper semesterMapper;
 
 
     public Boolean signup(User user, Role role) {
@@ -112,6 +117,10 @@ public class UserService implements UserDetailsService {
     }
 
     public Boolean register(User user) {
+        String number = user.getNumber();
+        User stored = userMapper.findByNumber(number);
+        if(stored != null)
+            return false;
         userMapper.insert(user);
         user.getContact().setUserId(user.getId());
         Contact contact = user.getContact();
@@ -131,6 +140,21 @@ public class UserService implements UserDetailsService {
 
     public boolean isUniqueUsername(String username) {
         return userMapper.findByUsername(username) == null;
+    }
+
+    public int getCompleteSemesterCount(int userId) {
+        LinkedHashSet<Integer> semesterSet = studentCourseMapper.findSemesterIdByUserIdValid(userId);
+        if(semesterSet == null) return 0;
+
+        int completeSemesterCount = 0;
+        for(Integer semesterId: semesterSet) {
+            List<StudentCourse> validCourses = studentCourseMapper.findByUserIdSemesterIdValid(userId, semesterId);
+            List<StudentCourse> allCourses = studentCourseMapper.findByUserIdSemesterId(userId, semesterId);
+            if(validCourses == null || allCourses == null) continue;
+            if(validCourses.size() == allCourses.size())
+                completeSemesterCount++;
+        }
+        return completeSemesterCount;
     }
 
 }

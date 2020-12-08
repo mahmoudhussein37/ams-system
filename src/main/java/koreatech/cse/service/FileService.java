@@ -36,10 +36,12 @@ public class FileService {
             return false;
         StringBuilder pathBuilder = new StringBuilder(originPath);
         pathBuilder.append(File.separator);
+        pathBuilder.append(year);
+        pathBuilder.append(File.separator);
         pathBuilder.append(designation);
         pathBuilder.append(File.separator);
-        if (designation == Designation.curriculum) {
-            pathBuilder.append(year);
+        if(designation == Designation.attendance) {
+            pathBuilder.append(profCourseId);
             pathBuilder.append(File.separator);
         }
         File originDir = new File(pathBuilder.toString());

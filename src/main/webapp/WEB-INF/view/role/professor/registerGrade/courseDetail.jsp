@@ -104,6 +104,7 @@
                                     </td>
                                     <td style="width:100px;">
                                         <select name="grade" data-sc-id="${sc.id}" class="select-grade form-control">
+                                            <option value="">-</option>
                                             <option value="Ap" ${sc.grade eq 'Ap' ? 'selected' : ''}>A+</option>
                                             <option value="A0" ${sc.grade eq 'A0' ? 'selected' : ''}>A0</option>
                                             <option value="Bp" ${sc.grade eq 'Bp' ? 'selected' : ''}>B+</option>
@@ -140,6 +141,7 @@
                                     <td style="width:100px;">
 
                                         <select name="grade" data-sc-id="${sc.id}" class="select-grade form-control" disabled>
+                                            <option value="">-</option>
                                             <option value="Ap" ${sc.grade eq 'Ap' ? 'selected' : ''}>A+</option>
                                             <option value="A0" ${sc.grade eq 'A0' ? 'selected' : ''}>A0</option>
                                             <option value="Bp" ${sc.grade eq 'Bp' ? 'selected' : ''}>B+</option>
@@ -183,7 +185,7 @@
 <script>
     $.fn.editable.defaults.mode = 'inline';
 $(document).ready(function() {
-    $("#ratio-div").load("${baseUrl}/professor/classProgress/registerGrade/ratioDetail?courseId=${pc.id}");
+    $("#ratio-div").load("${baseUrl}/professor/classProgress/registerGrade/ratioDetail?profCourseId=${pc.id}");
 
     $('.course-editable').editable({
         success: function(response, newValue) {
@@ -197,12 +199,12 @@ $(document).ready(function() {
         var id = $(this).attr("data-sc-id");
         var selected = $(this).children("option:selected").val();
         $.post("${baseUrl}/professor/classProgress/registerGrade/gradeEditable?pk=" + id + "&name=grade&value=" + selected, function() {
-            $("#ratio-div").load("${baseUrl}/professor/classProgress/registerGrade/ratioDetail?courseId=${pc.id}");
+            $("#ratio-div").load("${baseUrl}/professor/classProgress/registerGrade/ratioDetail?profCourseId=${pc.id}");
         });
     });
    $("#lecture-fundamental-save").click(function(e) {
      e.preventDefault();
-       $.post('${baseUrl}/professor/classProgress/registerGrade/courseDetail?courseId=${pc.id}', function(result) {
+       $.post('${baseUrl}/professor/classProgress/registerGrade/courseDetail?profCourseId=${pc.id}', function(result) {
 
            if(result) {
               alert("<spring:message code="common.success"/>");
@@ -210,7 +212,7 @@ $(document).ready(function() {
                alert("<spring:message code="professor.checkGrades"/>");
 
            }
-           $(".detail-div").load("${baseUrl}/professor/classProgress/registerGrade/courseDetail?courseId=${pc.id}");
+           $(".detail-div").load("${baseUrl}/professor/classProgress/registerGrade/courseDetail?profCourseId=${pc.id}");
 
 
        });
@@ -219,7 +221,7 @@ $(document).ready(function() {
 
     $("body").on('click', '.print', function (e) {
         e.preventDefault();
-        openPage("${baseUrl}/professor/classProgress/registerGrade/courseDetailForPrint?courseId=${pc.id}");
+        openPage("${baseUrl}/professor/classProgress/registerGrade/courseDetailForPrint?profCourseId=${pc.id}");
     });
 });
 </script>

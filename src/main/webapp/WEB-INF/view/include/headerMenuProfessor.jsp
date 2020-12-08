@@ -10,10 +10,6 @@
             <li class="menu-item ${fn:contains(requestUri, '/professor/studentGuidance/counseling') ? 'menu-item-active' : ''} "  aria-haspopup="true">
                 <a  href="/professor/studentGuidance/counseling" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_2"/></span></a>
             </li>
-            <%--<li class="menu-item ${fn:contains(requestUri, '/professor/studentGuidance/coCourseEnrolment') ? 'menu-item-active' : ''} "  aria-haspopup="true">
-                <a  href="/professor/studentGuidance/coCourseEnrolment" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub1_3"/></span></a>
-            </li>--%>
-
         </ul>
         <!--end::Nav-->
     </div>
@@ -35,9 +31,6 @@
             <li class="menu-item ${fn:contains(requestUri, '/professor/classProgress/syllabus') ? 'menu-item-active' : ''} "  aria-haspopup="true">
                 <a  href="/professor/classProgress/syllabus" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_3"/></span></a>
             </li>
-            <%--<li class="menu-item ${fn:contains(requestUri, '/professor/classProgress/makeupClass') ? 'menu-item-active' : ''} "  aria-haspopup="true">
-                <a  href="/professor/classProgress/makeupClass" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_4"/></span></a>
-            </li>--%>
             <li class="menu-item ${fn:contains(requestUri, '/professor/classProgress/classAssessment') ? 'menu-item-active' : ''} "  aria-haspopup="true">
                 <a  href="/professor/classProgress/classAssessment" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub2_5"/></span></a>
             </li>

@@ -1,4 +1,4 @@
-<form:form class="form" modelAttribute="profLectureMethod" id="profLectureMethodForm" action="${baseUrl}/professor/classProgress/syllabus/courseDetail/profLectureMethod?profCourseId=${pc.courseId}" method="post">
+<form:form class="form" modelAttribute="profLectureMethod" id="profLectureMethodForm" action="${baseUrl}/professor/classProgress/syllabus/courseDetail/profLectureMethod?profCourseId=${pc.id}" method="post">
     <form:hidden path="courseId" value="${pc.courseId}"/>
     <div class="card-body">
         <div class="row">
@@ -57,7 +57,7 @@
                                 </thead>
                                 <tbody>
 
-                                <c:forEach var="lm" items="${lectureMethods}">
+                                <c:forEach var="lm" items="${lectureMethodsEnabled}">
                                     <c:if test="${lm.enabled}">
 
                                         <tr class="text-center">
@@ -158,7 +158,7 @@
                                 </thead>
                                 <tbody>
 
-                                <c:forEach var="lm" items="${evaluationMethods}">
+                                <c:forEach var="lm" items="${evaluationMethodsEnabled}">
                                     <c:if test="${lm.enabled}">
 
                                         <tr class="text-center">
@@ -259,7 +259,7 @@
                                 </thead>
                                 <tbody>
 
-                                <c:forEach var="lm" items="${educationalMediums}">
+                                <c:forEach var="lm" items="${educationalMediumsEnabled}">
                                     <c:if test="${lm.enabled}">
 
                                         <tr class="text-center">
@@ -342,51 +342,7 @@
 
         </div>
         <br/><br/>
-        <%--<div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label><spring:message code="professor.classificationOfEducationPlace"/></label>
-                    <table class="table table-head-custom table-vertical-center">
-                        <thead>
-                        <tr class="table-secondary text-center">
-                            <th class="pl-0" style=""></th>
-                            <th class="pl-0" style=""><spring:message code="common.no"/></th>
-                            <th style=""><spring:message code="professor.methods"/></th>
-                            <th style=""><spring:message code="professor.directInput"/></th>
-                            <th style=""><spring:message code="professor.inputAvailable"/></th>
-                            <th style=""></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="text-center">
-                            <td class="pl-0">
-                                <input type="checkbox" name=""/>
-                            </td>
-                            <td class="pl-0">
-                                1
-                            </td>
-                            <td class="pl-0">
-                                General Classroom
-                            </td>
-                            <td>
 
-                                Text Input
-
-                            </td>
-
-                            <td>
-                                Y
-                            </td>
-                        </tr>
-
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </div>
-        <br/><br/>--%>
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -410,7 +366,7 @@
                                 </thead>
                                 <tbody>
 
-                                <c:forEach var="lm" items="${equipments}">
+                                <c:forEach var="lm" items="${equipmentsEnabled}">
                                     <c:if test="${lm.enabled}">
 
                                         <tr class="text-center">

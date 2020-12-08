@@ -16,9 +16,9 @@
             <thead>
             <tr class="table-secondary text-center">
 
-                    <td>
-                            <spring:message code="common.no"/>
-                    </td>
+                <td>
+                    <spring:message code="common.no"/>
+                </td>
                 <td>
                     <spring:message code="common.oldCourseCode"/>
                 </td>
@@ -30,9 +30,6 @@
                     <spring:message code="common.subjCategory"/>
                 </td>
                 <td>
-                    <spring:message code="professor.course.ltlp"/>
-                </td>
-                <td>
                     <spring:message code="common.registeredDate"/>
                 </td>
                 <td>
@@ -41,33 +38,34 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="table-light text-center">
-                <td>
-                    1
-                </td>
-                <td>
-                    IFA140
-                </td>
-                <td>
-                    Electronic circuit
-                </td>
-                <td>
-                    Major
-                </td>
+            <c:set var="altCount" value="1"/>
+            <c:forEach var="ac" items="${altCourses}" varStatus="varStatus">
+                <c:if test="${ac.type eq 'alternative'}">
+                    <tr class="table-light text-center">
 
-                <td>
-                    5-3-2-0
-                </td>
-                <td>
-                    YYYY-MM-dd
-                </td>
-                <td>
-                    Y
-                </td>
+                        <td>
+                                ${altCount}
+                        </td>
+                        <td>
+                                ${ac.course.code}
+                        </td>
+                        <td>
+                                ${ac.course.title}
+                        </td>
+                        <td>
+                            <spring:message code="subj.category.${ac.course.subjCategory}"/>
+                        </td>
+                        <td>
+                            <fmt:formatDate pattern="dd-MMM-yyyy" value="${ac.course.registeredDate}"/>
+                        </td>
+                        <td>
+                                ${ac.course.enabled ? 'Y' : 'N'}
+                        </td>
 
-            </tr>
-
-
+                    </tr>
+                    <c:set var="altCount" value="${altCount + 1}"/>
+                </c:if>
+            </c:forEach>
             </tbody>
         </table>
 
@@ -82,79 +80,62 @@
                     <spring:message code="common.no"/>
                 </td>
                 <td>
-                    <spring:message code="common.postCourseCode"/>
+                    <spring:message code="common.oldCourseCode"/>
                 </td>
                 <td>
-                    <spring:message code="common.postCourseTitle"/>
-                </td>
-                <td>
-                    <spring:message code="common.preCourseCode"/>
-                </td>
-                <td>
-                    <spring:message code="common.preCourseTitle"/>
+                    <spring:message code="common.oldCourseTitle"/>
                 </td>
 
                 <td>
                     <spring:message code="common.subjCategory"/>
                 </td>
                 <td>
-                    <spring:message code="professor.course.ltlp"/>
+                    <spring:message code="common.registeredDate"/>
                 </td>
-                <td>
-                    <spring:message code="common.specifiedDate"/>
-                </td>
-
                 <td>
                     <spring:message code="common.use"/>
                 </td>
             </tr>
             </thead>
             <tbody>
-            <tr class="table-light text-center">
-                <td>
-                    1
-                </td>
-                <td>
-                    IFA140
-                </td>
-                <td>
-                    Electronic circuit
-                </td>
-                <td>
-                    IFA130
-                </td>
-                <td>
-                    Electronic Circuit Practice
-                </td>
-                <td>
-                    Major
-                </td>
+            <c:set var="preCount" value="1"/>
+            <c:forEach var="ac" items="${altCourses}" varStatus="varStatus">
+                <c:if test="${ac.type eq 'prerequisite'}">
+                    <tr class="table-light text-center">
 
-                <td>
-                    5-3-2-0
-                </td>
-                <td>
-                    YYYY-MM-dd
-                </td>
-                <td>
-                    Y
-                </td>
+                        <td>
+                                ${preCount}
+                        </td>
+                        <td>
+                                ${ac.course.code}
+                        </td>
+                        <td>
+                                ${ac.course.title}
+                        </td>
+                        <td>
+                            <spring:message code="subj.category.${ac.course.subjCategory}"/>
+                        </td>
+                        <td>
+                            <fmt:formatDate pattern="dd-MMM-yyyy" value="${ac.course.registeredDate}"/>
+                        </td>
+                        <td>
+                                ${ac.course.enabled ? 'Y' : 'N'}
+                        </td>
 
-            </tr>
-
-
+                    </tr>
+                    <c:set var="preCount" value="${preCount + 1}"/>
+                </c:if>
+            </c:forEach>
             </tbody>
         </table>
     </div>
-
-
 </div>
 
 
 
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
-$(document).ready(function() {
+    $(document).ready(function() {
 
-});
+    });
 </script>
