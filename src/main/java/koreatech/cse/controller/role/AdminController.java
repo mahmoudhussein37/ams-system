@@ -13,6 +13,7 @@ import koreatech.cse.repository.*;
 import koreatech.cse.repository.provider.CqiMapper;
 import koreatech.cse.service.AuthorityService;
 import koreatech.cse.service.FileService;
+import koreatech.cse.service.ProfService;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.SystemUtil;
 import org.apache.commons.lang.StringUtils;
@@ -101,6 +102,8 @@ public class AdminController {
     private CqiMapper cqiMapper;
     @Inject
     private ClassTimeMapper classTimeMapper;
+    @Inject
+    private ProfService profService;
 
 
     @RequestMapping("/studentManagement/studentRegistration")
@@ -1638,30 +1641,8 @@ public class AdminController {
     @RequestMapping("/academicManagement/cqi/courseDetail")
     public String cqiReportCourseDetail(Model model, @RequestParam int profCourseId, @RequestParam(defaultValue = "false", required=false) String print) {
         ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
-        List<Assessment> assessmentList = assessmentMapper.findByProfCourseId(profCourseId);
-        pc.setAssessmentList(assessmentList);
-        int myTotal = 0;
-        int mySize = 0;
-        for(Assessment assessment: pc.getAssessmentList()) {
-            for(int j=1; j<=20; j++) {
-                int item = assessment.getItem(j);
-                if(item > 0) {
-                    int score = assessment.getScore(j);
-                    System.out.println("score = " + score);
-                    myTotal += score;
-                    mySize++;
-                }
-            }
-        }
-        double myAvg;
-        if(myTotal == 0 || mySize == 0)
-            myAvg = 0.0;
-        else {
-            myAvg = (double)myTotal / (double)mySize;
-        }
 
-
-        model.addAttribute("myAvg", myAvg);
+        model.addAttribute("myAvg", profService.getAssignedAvg(pc));
         model.addAttribute("pc", pc);
         Searchable s = new Searchable();
         s.setCourseId(pc.getCourseId());
@@ -1682,35 +1663,9 @@ public class AdminController {
         model.addAttribute("currentYear", currentYear);
         LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(pc.getId());
         model.addAttribute("lectureFundamentals", lectureFundamentals);
-        Map<Integer, Double> averageAssignedMap = new LinkedHashMap<>();
-        Map<Integer, Double> averageAssignedDivideMap = new LinkedHashMap<>();
 
-        for(ProfessorCourse p: professorCourseList) {
-            List<Assessment> assessments = assessmentMapper.findByProfCourseId(p.getId());
-            p.setAssessmentList(assessments);
-            double avg = 0.0;
-            int total = 0;
-            int size = 0;
-            for(Assessment assessment: assessments) {
-                for(int j=1; j<=20; j++) {
-                    int item = assessment.getItem(j);
-                    if(item > 0) {
-                        int score = assessment.getScore(j);
-                        total += score;
-                        size++;
-                    }
-                }
-            }
-            if(total == 0 || size == 0)
-                avg = 0.0;
-            else {
-                avg = (double)total / (double)size;
-            }
-            averageAssignedDivideMap.put(p.getDivide(), avg);
-        }
+        Map<Integer, Double> averageAssignedDivideMap = profService.getAverageAssignedDivideMap(professorCourseList);
         model.addAttribute("averageAssignedDivideMap", averageAssignedDivideMap);
-
-
 
         Map<Integer, Cqi> cqiMap = new LinkedHashMap<>();
         for(int i=(currentYear - 2); i<currentYear; i++) {
@@ -1735,44 +1690,7 @@ public class AdminController {
             cqi.setProfCourseId(pc.getId());
         }
         model.addAttribute("cqi", cqi);
-
-        for(int i=(currentYear - 2); i<=currentYear; i++) {
-
-            Searchable searchable = new Searchable();
-            searchable.setCourseId(pc.getCourseId());
-            searchable.setYear(i);
-            searchable.setEnabled(true);
-            searchable.setOrderParam("divide");
-            searchable.setOrderDir("asc");
-            List<ProfessorCourse> professorCourses = professorCourseMapper.findBy(searchable);
-            double avg;
-            int total = 0;
-
-            int size = 0;
-
-            for(ProfessorCourse p: professorCourses) {
-                List<Assessment> assessments = assessmentMapper.findByProfCourseId(p.getId());
-                p.setAssessmentList(assessments);
-                for(Assessment assessment: assessments) {
-                    for(int j=1; j<=20; j++) {
-                        int item = assessment.getItem(j);
-                        if(item > 0) {
-                            int score = assessment.getScore(j);
-                            System.out.println("score = " + score);
-                            total += score;
-                            size++;
-                        }
-                    }
-                }
-            }
-            if(total == 0 || size == 0)
-                avg = 0.0;
-            else {
-                avg = (double)total / (double)size;
-            }
-
-            averageAssignedMap.put(i, avg);
-        }
+        Map<Integer, Double> averageAssignedMap = profService.getAverageAssignedMap(pc.getCourseId(), currentYear);
         model.addAttribute("averageAssignedMap", averageAssignedMap);
         List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(pc.getCourseId());
         model.addAttribute("assessmentFactors", assessmentFactors);

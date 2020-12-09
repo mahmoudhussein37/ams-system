@@ -137,13 +137,14 @@
 <%@include file="/WEB-INF/view/role/common/cqi/chartScript.jsp" %>
 <script>
     $(document).ready(function() {
+
         setTimeout(function(){
             window.print();
-            window.onafterprint = function(){
-                window.close();
-            }
         }, 2000);
 
+        window.onafterprint = function(){
+            window.close();
+        }
     });
 </script>
 </body>

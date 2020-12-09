@@ -6,7 +6,7 @@
     <name>Egypt</name>
     <groupId>koreatech.cse</groupId>
     <artifactId>egypt</artifactId>
-    <version>0011</version>
+    <version>0012</version>
     <packaging>war</packaging>
 
     <properties>
