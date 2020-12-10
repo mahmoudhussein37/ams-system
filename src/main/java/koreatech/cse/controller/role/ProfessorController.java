@@ -802,7 +802,7 @@ public class ProfessorController {
         List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(pc.getId());
         model.addAttribute("studentCourses", studentCourses);
 
-        return "role/professor/registerGrade/ratioDetail";
+        return "role/common/grade/ratioDetail";
     }
 
     @RequestMapping("/classProgress/cqiReport")

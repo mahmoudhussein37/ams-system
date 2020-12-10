@@ -67,7 +67,8 @@
     function search() {
         var year = $("#search-year").children("option:selected").val().trim();
         var semester = $("#search-semester").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/admin/courseManagement/syllabus/courseTable?year=" + year + "&semester=" + semester);
+        var division = $("#search-division").children("option:selected").val().trim();
+        $(".table-div").load("${baseUrl}/admin/courseManagement/syllabus/courseTable?year=" + year + "&semester=" + semester + "&division=" + division);
     }
 
     $(".input-enter").keydown(function(key) {

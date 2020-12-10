@@ -223,6 +223,8 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
     $(document).ready(function() {
+        $("#ratio-div").load("${baseUrl}/admin/academicManagement/studentGrade/ratioDetail?profCourseId=${pc.id}");
+
         $("body").on('click', '.print', function (e) {
             e.preventDefault();
             openPage("${baseUrl}/admin/academicManagement/studentGrade/courseDetailForPrint?profCourseId=${pc.id}");
