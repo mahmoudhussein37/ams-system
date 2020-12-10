@@ -109,7 +109,44 @@
                                         </div>
 
                                     </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label><spring:message code="professor.achievements"/></label>
+                                                <table class="table rounded">
+                                                    <thead>
+                                                    <tr class="table-secondary text-center">
 
+                                                        <c:forEach var="achi" begin="1" end="10">
+                                                            <td>
+                                                                    ${achi}
+                                                            </td>
+                                                        </c:forEach>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr class="table-light text-center">
+                                                        <c:forEach var="achi" begin="1" end="10">
+                                                            <td>
+                                                                <spring:message code="professor.achieve${achi}"/>
+                                                            </td>
+                                                        </c:forEach>
+                                                    </tr>
+                                                    <tr class="text-center">
+                                                        <c:forEach var="achi" begin="1" end="10">
+                                                            <td>
+                                                                <form:checkbox path="achieve${achi}"/>
+                                                            </td>
+                                                        </c:forEach>
+                                                    </tr>
+
+                                                    </tbody>
+                                                </table>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
                                     <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
                                 </form:form>
                             </div>

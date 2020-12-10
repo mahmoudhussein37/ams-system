@@ -6,6 +6,7 @@
 
         <th class="pl-0" style=""><spring:message code="common.no"/></th>
         <th style=""><span class="text-primary"><spring:message code="common.department"/></span></th>
+        <th style=""><span class="text-primary"><spring:message code="common.semester"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseCode"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.courseTitle"/></span>
         <th style=""><span class="text-primary"><spring:message code="common.subjCategory"/></span>
@@ -25,6 +26,9 @@
             </td>
             <td class="pl-0">
                     ${pc.course.division.name}
+            </td>
+            <td>
+                    ${pc.semester.year} - ${pc.semester.semester}
             </td>
             <td>
 

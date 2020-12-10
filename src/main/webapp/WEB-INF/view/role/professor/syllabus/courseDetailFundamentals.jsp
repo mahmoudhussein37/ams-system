@@ -41,23 +41,14 @@
                                 </td>
                             </c:forEach>
                         </tr>
-                        <tr class="text-center">
-                            <c:choose>
-                                <c:when test="${menuAccess.syllabus}">
-                                    <c:forEach var="achi" begin="1" end="10">
-                                        <td>
-                                            <form:checkbox path="achieve${achi}"/>
-                                        </td>
-                                    </c:forEach>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:forEach var="achi" begin="1" end="10">
-                                        <td>
-                                            <form:checkbox path="achieve${achi}" disabled="true"/>
-                                        </td>
-                                    </c:forEach>
-                                </c:otherwise>
-                            </c:choose>
+                        <tr class="table-light text-center">
+                            <c:forEach var="achi" begin="1" end="10">
+                                <td>
+                                    <c:if test="${pc.course.getAchieve(achi) eq true}">
+                                        O
+                                    </c:if>
+                                </td>
+                            </c:forEach>
 
                         </tr>
 

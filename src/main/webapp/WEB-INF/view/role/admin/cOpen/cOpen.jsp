@@ -20,7 +20,32 @@
 
                         </div>
                         <div class="card-body">
-                            <%@include file="/WEB-INF/view/include/yearSemesterDivisionSearchDiv.jsp" %>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <spring:message code="common.courseCode"/><br/>
+                                    <input type="text" id="search-code" class="form-control input-enter" value="" style="margin-top:10px;"/>
+                                </div>
+                                <div class="col-md-3">
+                                    <spring:message code="common.courseTitle"/><br/>
+                                    <input type="text" id="search-title" class="form-control input-enter"  value="" style="margin-top:10px;"/>
+                                </div>
+                                <div class="col-md-3">
+                                    <spring:message code="common.department"/><br/>
+                                    <select id="search-division" class="form-control" style="margin-top:10px;"><option value="0">-</option>
+                                        <c:forEach var="division" items="${divisions}">
+                                            <option value="${division.id}">${division.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="col-md-1">
+                                    <br/>
+                                    <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
+                                </div>
+                                <div class="col-md-1">
+                                    <br/>
+                                    <button class="btn btn-light" style="width:100%;margin-top:10px;" onclick="javascript:location.reload()"><spring:message code="common.reset"/></button>
+                                </div>
+                            </div>
                             <br/><br/>
 
 
@@ -100,11 +125,10 @@
 
 <script>
     function search() {
-        var year = $("#search-year").children("option:selected").val().trim();
-        var semester = $("#search-semester").children("option:selected").val().trim();
-        //var major = $("#search-major").children("option:selected").val().trim();
+        var code = $("#search-code").val().trim();
+        var title = $("#search-title").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/admin/courseManagement/cOpen/courseTable?year=" + year + "&semester=" + semester + "&division=" + division);
+        $(".table-div").load("${baseUrl}/admin/courseManagement/cOpen/courseTable?division=" + division + "&code=" + code +"&title=" + title);
     }
 
     $(".input-enter").keydown(function(key) {

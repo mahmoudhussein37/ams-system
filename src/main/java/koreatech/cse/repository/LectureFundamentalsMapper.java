@@ -15,16 +15,6 @@ public interface LectureFundamentalsMapper {
             "`user_id`,"+
             "`prof_course_id`,"+
             "`intro`,"+
-            "`achieve1`,"+
-            "`achieve2`,"+
-            "`achieve3`,"+
-            "`achieve4`,"+
-            "`achieve5`,"+
-            "`achieve6`,"+
-            "`achieve7`,"+
-            "`achieve8`,"+
-            "`achieve9`,"+
-            "`achieve10`,"+
             "`rate_attendance`,"+
             "`rate_assignment`,"+
             "`rate_mid`,"+
@@ -68,16 +58,6 @@ public interface LectureFundamentalsMapper {
             "#{userId},"+
             "#{profCourseId},"+
             "#{intro},"+
-            "#{achieve1},"+
-            "#{achieve2},"+
-            "#{achieve3},"+
-            "#{achieve4},"+
-            "#{achieve5},"+
-            "#{achieve6},"+
-            "#{achieve7},"+
-            "#{achieve8},"+
-            "#{achieve9},"+
-            "#{achieve10},"+
             "#{rateAttendance},"+
             "#{rateAssignment},"+
             "#{rateMid},"+
@@ -132,16 +112,6 @@ public interface LectureFundamentalsMapper {
             "`user_id` = #{userId},"+
             "`prof_course_id` = #{profCourseId},"+
             "`intro` = #{intro},"+
-            "`achieve1` = #{achieve1},"+
-            "`achieve2` = #{achieve2},"+
-            "`achieve3` = #{achieve3},"+
-            "`achieve4` = #{achieve4},"+
-            "`achieve5` = #{achieve5},"+
-            "`achieve6` = #{achieve6},"+
-            "`achieve7` = #{achieve7},"+
-            "`achieve8` = #{achieve8},"+
-            "`achieve9` = #{achieve9},"+
-            "`achieve10` = #{achieve10},"+
             "`rate_attendance` = #{rateAttendance},"+
             "`rate_assignment` = #{rateAssignment},"+
             "`rate_mid` = #{rateMid},"+
