@@ -252,12 +252,14 @@ public class AdminController {
         int divisionId = studentUser.getDivisionId();
 
         GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear, divisionId);
-        model.addAttribute("graduationCriteria", graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
+        studentUser.setGraduationCriteria(graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
+        //model.addAttribute("graduationCriteria", graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
 
         List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(studentId);
-        model.addAttribute("studentCourses", studentCourses);
+        studentUser.setStudentCourses(studentCourses);
+        //model.addAttribute("studentCourses", studentCourses);
 
-        int mscCount = 0;
+        /*int mscCount = 0;
         int liberalCount = 0;
         int majorCount = 0;
         for(StudentCourse studentCourse: studentCourses) {
@@ -274,7 +276,7 @@ public class AdminController {
         }
         model.addAttribute("majorCount", majorCount);
         model.addAttribute("mscCount", mscCount);
-        model.addAttribute("liberalCount", liberalCount);
+        model.addAttribute("liberalCount", liberalCount);*/
 
 
 
@@ -1362,6 +1364,20 @@ public class AdminController {
         model.addAttribute("studentCourses", studentCourses);
 
         return "role/admin/studentGrade/courseDetail";
+    }
+
+    @RequestMapping("/academicManagement/studentGrade/ratioDetail")
+    public String academicManagementRatioDetail(Model model, @RequestParam int profCourseId) {
+        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
+        model.addAttribute("pc", pc);
+
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(profCourseId);
+        model.addAttribute("lectureFundamentals", lectureFundamentals);
+
+        List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(pc.getId());
+        model.addAttribute("studentCourses", studentCourses);
+
+        return "role/common/grade/ratioDetail";
     }
 
     @RequestMapping("/academicManagement/studentGrade/courseDetailForPrint")

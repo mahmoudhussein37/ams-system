@@ -351,16 +351,10 @@
 
 <script>
 
-
-
-    $(document).ready(function() {
-        window.print();
-        window.onafterprint = function(){
-            window.close();
-        }
-
-
-    });
+    window.print();
+    window.onafterprint = function(){
+        window.close();
+    }
 
 </script>
 </body>
