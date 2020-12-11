@@ -31,6 +31,8 @@ public class StudentCourse implements Serializable {
     private boolean valid;
 
 
+
+
     private int acquire; //TODO: 수강중, 수강완료
 
     public int getId() {

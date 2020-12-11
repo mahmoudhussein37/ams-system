@@ -4,7 +4,6 @@
 
 <!--begin::Body-->
 <body id="kt_body"  class="header-fixed header-mobile-fixed page-loading"  >
-<%@include file="/WEB-INF/view/include/headerBar.jsp" %>
 <!--begin::Content-->
 <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Entry-->
@@ -15,15 +14,15 @@
                 <div class="col-md-12">
                     <!--begin::Card-->
                     <div class="card card-custom">
-                        <div class="card-header">
+                        <%--<div class="card-header">
                             <h3 class="card-title font-weight-bolder"><spring:message code="menu.student.sub4_1"/></h3>
-                        </div>
+                        </div>--%>
                         <div class="card-body">
-                            <div class="print-div">
+<%--                            <div class="print-div">
                                 <a href="#" class="btn btn-sm btn-light font-weight-bold print">
                                     <spring:message code="common.print"/>
                                 </a>
-                            </div>
+                            </div>--%>
                             <div class="row">
                                 <div class="col-md-3">
 
@@ -127,13 +126,9 @@
                                             <c:forEach var="entry" items="${courseMap}" varStatus="varStatus">
                                                 <c:set var="semester" value="${entry.key}"/>
                                                 <tr class="table-light text-center">
+                                                    <td>${varStatus.count}</td>
                                                     <td>
-                                                        <a href="#" class="course-detail" data-semester-id="${semester.id}">
-                                                            ${varStatus.count}
-                                                        </a>
-                                                    </td>
-                                                    <td>
-                                                        ${entry.key.year}
+                                                            ${entry.key.year}
                                                     </td>
                                                     <td>
                                                             ${entry.key.semester}
@@ -143,14 +138,14 @@
                                                         <c:forEach var="sc" items="${entry.value}">
                                                             <c:set var="schoolYear" value="${sc.schoolYear}"/>
                                                         </c:forEach>
-                                                        ${schoolYear}
+                                                            ${schoolYear}
                                                     </td>
                                                     <td>
                                                         <c:set var="applyCount" value="0"/>
                                                         <c:forEach var="sc" items="${courseMap.get(entry.key)}">
                                                             <c:set var="applyCount" value="${applyCount + sc.course.credit}"/>
                                                         </c:forEach>
-                                                        ${applyCount}
+                                                            ${applyCount}
                                                     </td>
                                                     <td>
                                                         <c:set var="completeCount" value="0"/>
@@ -179,7 +174,7 @@
                                                                 0.0
                                                             </c:when>
                                                             <c:otherwise>
-                                                               ${gradeTotal / gradeCount}
+                                                                ${gradeTotal / gradeCount}
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>
@@ -199,6 +194,104 @@
                             </div>
                             <div class="detail-div">
 
+                                <br/>
+                                <div class="separator separator-solid my-5"></div>
+                                <br/>
+                                <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="student.gradeDetail"/></h3>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <table class="table rounded">
+                                                <thead>
+                                                <tr class="table-secondary text-center">
+
+                                                    <td><spring:message code="common.no"/></td>
+                                                    <td>
+                                                        <spring:message code="common.year"/>
+                                                    </td>
+                                                    <td>
+                                                        <spring:message code="common.semester"/>
+                                                    </td>
+                                                    <td>
+                                                        <spring:message code="common.courseCode"/>
+                                                    </td>
+                                                    <td>
+                                                        <spring:message code="common.courseTitle"/>
+                                                    </td>
+                                                    <td>
+                                                        <spring:message code="common.category"/>
+                                                    </td>
+                                                    <td>
+                                                        <spring:message code="common.credit"/>
+                                                    </td>
+                                                    <td>
+                                                        <spring:message code="common.professor"/>
+                                                    </td>
+                                                    <td>
+                                                        <spring:message code="common.divide"/>
+                                                    </td>
+                                                    <td>
+                                                        <spring:message code="common.grade"/>
+                                                    </td>
+
+
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+
+
+
+                                                <c:forEach var="entry" items="${courseMap}" varStatus="varStatus">
+                                                    <c:set var="semester" value="${entry.key}"/>
+
+                                                    <c:forEach var="sc" items="${entry.value}">
+                                                        <tr class="table-light text-center">
+                                                            <td>${varStatus.count}</td>
+                                                            <td>
+                                                                    ${semester.year}
+                                                            </td>
+                                                            <td>
+                                                                    ${semester.semester}
+                                                            </td>
+                                                            <td>
+                                                                    ${sc.course.code}
+                                                            </td>
+                                                            <td>
+                                                                    ${sc.course.title}
+                                                            </td>
+                                                            <td>
+                                                                <spring:message code="subj.category.${sc.course.subjCategory}"/>
+                                                            </td>
+                                                            <td>
+                                                                    ${sc.course.credit}
+                                                            </td>
+                                                            <td>
+                                                                    ${sc.professorCourse.professorUser.getFullName()}
+                                                            </td>
+                                                            <td>
+                                                                    ${sc.professorCourse.divide}
+                                                            </td>
+                                                            <td>
+                                                                <spring:message code="student.grade.${sc.grade}"/>
+                                                            </td>
+
+                                                        </tr>
+                                                    </c:forEach>
+
+                                                </c:forEach>
+
+
+
+                                                </tbody>
+                                            </table>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
                         </div>
@@ -215,31 +308,15 @@
 </div>
 <!--end::Content-->
 
-<%@include file="/WEB-INF/view/include/footerBar.jsp" %>
-
-
-<%@include file="/WEB-INF/view/include/userPanel.jsp" %>
 
 
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
-    $(document).ready(function() {
-        <c:if test="${not empty firstSemester}">
-        $(".detail-div").load("${baseUrl}/student/grades/inquiryGrade/gradeDetail?semesterId=${firstSemester.id}");
-        </c:if>
-        $("body").on('click', '.course-detail', function (e) {
-            e.preventDefault();
-            var courseId = $(this).attr("data-semester-id");
-            $(".detail-div").load("${baseUrl}/student/grades/inquiryGrade/gradeDetail?semesterId=" + courseId);
-
-        });
-        $("body").on('click', '.print', function (e) {
-            e.preventDefault();
-            openPage("${baseUrl}/student/grades/inquiryGrade/gradeDetailForPrint");
-        });
-
-    });
+    window.print();
+    window.onafterprint = function(){
+        window.close();
+    }
 </script>
 </body>
 </html>

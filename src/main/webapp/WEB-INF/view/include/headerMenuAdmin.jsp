@@ -15,7 +15,9 @@
             <li class="menu-item ${fn:contains(requestUri, '/admin/studentManagement/studentCounseling') ? 'menu-item-active' : ''}"  aria-haspopup="true">
                 <a  href="/admin/studentManagement/studentCounseling" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub1_4"/></span></a>
             </li>
-
+            <li class="menu-item  ${fn:contains(requestUri, '/admin/studentManagement/inquiryGrade') ? 'menu-item-active' : ''} "  aria-haspopup="true">
+                <a  href="/admin/studentManagement/inquiryGrade" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub4_1"/></span></a>
+            </li>
         </ul>
         <!--end::Nav-->
     </div>

@@ -408,6 +408,137 @@ public class AdminController {
         return "role/admin/studentCounseling/counselingDetailForPrint";
     }
 
+    @RequestMapping("/studentManagement/inquiryGrade")
+    public String inquiryGrade(Model model) {
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+
+
+
+        return "role/admin/inquiryGrade/inquiryGrade";
+    }
+
+    @RequestMapping("/studentManagement/inquiryGrade/studentTable")
+    public String inquiryGradeStudentTable(Model model, @RequestParam(required=false) String number,
+                               @RequestParam(required=false) String name,
+                               @RequestParam(defaultValue = "0", required=false) int division) {
+        User firstUser = null;
+        List<User> userList;
+        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
+            userList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setNumber(number);
+            searchable.setName(name);
+            searchable.setDivision(division);
+            userList = userMapper.findStudentBy(searchable);
+
+
+            for(User user: userList) {
+                firstUser = user;
+                break;
+            }
+        }
+
+        model.addAttribute("userList", userList);
+        model.addAttribute("firstUser", firstUser);
+        return "role/admin/inquiryGrade/studentTable";
+    }
+
+    @RequestMapping("/studentManagement/inquiryGrade/studentDetail")
+    public String inquiryGradeStudentDetail(Model model, @RequestParam int studentId) {
+        User studentUser = userMapper.findOne(studentId);
+        model.addAttribute("studentUser", studentUser);
+        Semester firstSemester = null;
+        LinkedHashSet<Integer> semesterSet = studentCourseMapper.findSemesterIdByUserIdValid(studentUser.getId());
+        for(Integer semesterId: semesterSet) {
+            firstSemester = semesterMapper.findOne(semesterId);
+            break;
+        }
+        model.addAttribute("firstSemester", firstSemester);
+        Map<Semester, List<StudentCourse>> map = new HashMap<>();
+        for(Integer semesterId: semesterSet) {
+            Semester semester = semesterMapper.findOne(semesterId);
+            Searchable searchable = new Searchable();
+            searchable.setYear(semester.getYear());
+            searchable.setSemester(semester.getSemester());
+            searchable.setUserId(studentUser.getId());
+            List<StudentCourse> courses = studentCourseMapper.findByUserIdYearSemester(searchable);
+            map.put(semester, courses);
+        }
+
+        model.addAttribute("courseMap", map);
+        return "role/admin/inquiryGrade/studentDetail";
+    }
+
+    @RequestMapping("/studentManagement/inquiryGrade/gradeDetail")
+    public String inquiryGradeDetail(Model model, @RequestParam int studentId, @RequestParam int semesterId) {
+        User studentUser = userMapper.findOne(studentId);
+
+        List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdSemesterIdValid(studentUser.getId(), semesterId);
+        model.addAttribute("studentUser", studentUser);
+        model.addAttribute("studentCourses", studentCourses);
+        return "role/admin/inquiryGrade/gradeDetail";
+    }
+
+    @RequestMapping("/studentManagement/inquiryGrade/gradeDetailForPrint")
+    public String inquiryGradeDetailPrint(Model model, @RequestParam int studentId) {
+        User studentUser = userMapper.findOne(studentId);
+        model.addAttribute("studentUser", studentUser);
+        LinkedHashSet<Integer> semesterSet = studentCourseMapper.findSemesterIdByUserIdValid(studentUser.getId());
+
+        Map<Semester, List<StudentCourse>> map = new HashMap<>();
+        for(Integer semesterId: semesterSet) {
+            Semester semester = semesterMapper.findOne(semesterId);
+            Searchable searchable = new Searchable();
+            searchable.setYear(semester.getYear());
+            searchable.setSemester(semester.getSemester());
+            searchable.setUserId(studentUser.getId());
+            List<StudentCourse> courses = studentCourseMapper.findByUserIdYearSemester(searchable);
+
+            List<String> failCodes = new ArrayList<>();
+            List<StudentCourse> alternatives = new ArrayList<>();
+            List<StudentCourse> filtered = new ArrayList<>();
+            for(StudentCourse sc: courses) {
+                if(sc.getGrade().equals("F") || sc.getGrade().equals("U")) {
+
+                    failCodes.add(sc.getCourse().getCode());
+                }
+            }
+            for(StudentCourse sc: courses) {
+                for(String code: failCodes) {
+                    if(sc.getCourse().getCode().equals(code) && !sc.getGrade().equals("F") && !sc.getGrade().equals("U")) {
+                        alternatives.add(sc);
+                    }
+                }
+            }
+            model.addAttribute("alternatives", alternatives);
+
+
+            for(StudentCourse sc: courses) {
+                if(sc.getGrade().equals("F") || sc.getGrade().equals("U")) {
+                    boolean alternativeExist = false;
+                    for(StudentCourse al: alternatives) {
+                        if(al.getCourse().getCode().equals(sc.getCourse().getCode())) {
+                            alternativeExist = true;
+                        }
+                    }
+                    if(!alternativeExist)
+                        filtered.add(sc);
+                } else {
+                    filtered.add(sc);
+                }
+            }
+
+
+            map.put(semester, filtered);
+        }
+
+        model.addAttribute("courseMap", map);
+        return "role/common/grade/gradeDetailForPrint";
+    }
+
     @RequestMapping("/profManagement/profRegistration")
     public String profRegistration(Model model, @RequestParam(required=false) String result) {
         List<Division> divisions = divisionMapper.findAll();
@@ -1325,30 +1456,29 @@ public class AdminController {
 
     @RequestMapping("/academicManagement/studentGrade/courseTable")
     public String academicManagementCourseTable(Model model,
+                                                @RequestParam(required=false) String code,
+                                                @RequestParam(required=false) String title,
+                                                @RequestParam(defaultValue = "0", required=false) int division,
                                                 @RequestParam(defaultValue = "0", required=false) int year,
                                                 @RequestParam(defaultValue = "0", required=false) int semester) {
-        ProfessorCourse firstCourse = null;
-        List<ProfessorCourse> professorCourses;
 
-        if(year == 0 && semester == 0) {
-            professorCourses = new ArrayList<>();
+        ProfessorCourse firstCourse = null;
+        List<ProfessorCourse> courseList;
+        if(StringUtils.isBlank(code) && StringUtils.isBlank(title) && division == 0 && year == 0 && semester == 0) {
+            courseList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
             searchable.setYear(year);
             searchable.setSemester(semester);
-
-            professorCourses = professorCourseMapper.findBy(searchable);
-
-            for(ProfessorCourse pc: professorCourses) {
+            courseList = professorCourseMapper.findBy(searchable);
+            for(ProfessorCourse pc: courseList) {
                 firstCourse = pc;
                 break;
             }
         }
 
-
-
         model.addAttribute("firstCourse", firstCourse);
-        model.addAttribute("courseList", professorCourses);
+        model.addAttribute("courseList", courseList);
         return "role/admin/studentGrade/courseTable";
     }
 
