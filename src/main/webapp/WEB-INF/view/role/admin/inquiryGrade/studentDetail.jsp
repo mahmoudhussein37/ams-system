@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <div class="print-div">
     <a href="#" class="btn btn-sm btn-light font-weight-bold print">
-        <spring:message code="common.print"/>
+        <spring:message code="common.cert.print"/>
     </a>
 </div>
 <div class="row">

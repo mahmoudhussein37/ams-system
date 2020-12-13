@@ -81,7 +81,8 @@ public class StudentController {
     private AssessmentFactorMapper assessmentFactorMapper;
     @Inject
     private AssessmentMapper assessmentMapper;
-
+    @Inject
+    private CertificateMapper certificateMapper;
 
     @RequestMapping("/courseGuide/yearlyCurriculum")
     public String yearlyCurriculum(Model model) {
@@ -418,6 +419,17 @@ public class StudentController {
     public String inquiryGradeDetailPrint(Model model) {
         User studentUser = User.current();
         model.addAttribute("studentUser", studentUser);
+
+        Certificate certificate = certificateMapper.findByUserId(studentUser.getId());
+        if(certificate == null) {
+            certificate = new Certificate();
+            certificate.setRequestId(User.current().getId());
+            certificate.setUserId(studentUser.getId());
+            certificateMapper.insert(certificate);
+        }
+        model.addAttribute("certificate", certificate);
+        model.addAttribute("today", DateHelper.format(new Date()));
+
         LinkedHashSet<Integer> semesterSet = studentCourseMapper.findSemesterIdByUserIdValid(studentUser.getId());
 
         Map<Semester, List<StudentCourse>> map = new HashMap<>();

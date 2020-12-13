@@ -15,6 +15,7 @@ import koreatech.cse.service.AuthorityService;
 import koreatech.cse.service.FileService;
 import koreatech.cse.service.ProfService;
 import koreatech.cse.service.UserService;
+import koreatech.cse.util.DateHelper;
 import koreatech.cse.util.SystemUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -104,6 +105,8 @@ public class AdminController {
     private ClassTimeMapper classTimeMapper;
     @Inject
     private ProfService profService;
+    @Inject
+    private CertificateMapper certificateMapper;
 
 
     @RequestMapping("/studentManagement/studentRegistration")
@@ -486,6 +489,17 @@ public class AdminController {
     public String inquiryGradeDetailPrint(Model model, @RequestParam int studentId) {
         User studentUser = userMapper.findOne(studentId);
         model.addAttribute("studentUser", studentUser);
+
+        Certificate certificate = certificateMapper.findByUserId(studentId);
+        if(certificate == null) {
+            certificate = new Certificate();
+            certificate.setRequestId(User.current().getId());
+            certificate.setUserId(studentId);
+            certificateMapper.insert(certificate);
+        }
+        model.addAttribute("certificate", certificate);
+        model.addAttribute("today", DateHelper.format(new Date()));
+
         LinkedHashSet<Integer> semesterSet = studentCourseMapper.findSemesterIdByUserIdValid(studentUser.getId());
 
         Map<Semester, List<StudentCourse>> map = new HashMap<>();

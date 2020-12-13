@@ -21,7 +21,7 @@
                         <div class="card-body">
                             <div class="print-div">
                                 <a href="#" class="btn btn-sm btn-light font-weight-bold print">
-                                    <spring:message code="common.print"/>
+                                    <spring:message code="common.cert.print"/>
                                 </a>
                             </div>
                             <div class="row">

@@ -32,7 +32,7 @@ public final class DateHelper {
 
     public static String format(Date date) {
         if(date == null) return "";
-        return format("yyyy-MM-dd", date);
+        return format("dd MMM, yyyy", date);
     }
 
     public static Date parse(String dateFormat, String dateString) {
@@ -47,14 +47,14 @@ public final class DateHelper {
 
     public static Date parse(String dateString) {
         try {
-            return parse("yyyy-MM-dd", dateString);
+            return parse("dd MMM, yyyy", dateString);
         } catch (Exception e) {
             return null;
         }
     }
 
     public static SimpleDateFormat getDateFormat() {
-        return getDateFormat("yyyy-MM-dd");
+        return getDateFormat("dd MMM, yyyy");
     }
 
     public static SimpleDateFormat getDateFormat(String dateFormat) {

@@ -13,71 +13,63 @@
             <div class="row">
                 <div class="col-md-12">
                     <!--begin::Card-->
+                    <%--style="background-image: url('${resources}/images/certificate.png');background-repeat: no-repeat;background-size: cover;"--%>
                     <div class="card card-custom">
-                        <%--<div class="card-header">
-                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.student.sub4_1"/></h3>
-                        </div>--%>
-                        <div class="card-body">
-<%--                            <div class="print-div">
-                                <a href="#" class="btn btn-sm btn-light font-weight-bold print">
-                                    <spring:message code="common.print"/>
-                                </a>
-                            </div>--%>
+
+                        <div class="card-body" style="padding:100px;">
+
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-12" style="text-align:left">
+                                    No. ${certificate.getNo()}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="text-align:center">
+                                    <br/><br/><br/><br/>
+                                    <h1><spring:message code="common.cert.title"/></h1>
+                                    <br/><br/><br/><br/>
+                                </div>
+                            </div>
 
-                                    <div class="form-group">
-                                        <label><spring:message code="common.studentNumber"/></label>
-                                        <input type="text" class="form-control" value="${studentUser.number}" disabled/>
-                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                                    </div>
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <table style="width:100%">
+                                        <tr>
+                                            <td style="width:35%;text-align:left;"><label><strong><spring:message code="common.department"/></strong></label>: ${studentUser.division.name}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:35%;text-align:left;"><label><strong><spring:message code="common.admissionYear"/></strong></label>: ${studentUser.contact.admissionYear}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:35%;text-align:left;"> <label><strong><spring:message code="common.studentNumber"/></strong></label>: ${studentUser.number}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:35%;text-align:left;"><label><strong><spring:message code="common.name"/></strong></label>: ${studentUser.getFullName()}</td>
+                                        </tr>
+
+                                    </table>
+
 
                                 </div>
-                                <div class="col-md-3">
+
+
+                            </div>
+                           <%-- <div class="row">
+
+                                <div class="col-md-6 text-center">
                                     <div class="form-group">
-                                        <label><spring:message code="common.department"/></label>
-                                        <input type="text" class="form-control" value="${studentUser.division.name}" disabled/>
-                                        <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label><spring:message code="common.name"/></label>
-                                        <input type="text" class="form-control"  value="${studentUser.getFullName()}" disabled/>
-                                        <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
-                                    </div>
-                                </div>
-                                <%--<div class="col-md-3">
-                                    <div class="form-group">
-                                        <label><spring:message code="common.major"/></label>
-                                        <input type="text" class="form-control" value="${studentUser.major.name}" disabled/>
+                                        <label><strong><spring:message code="common.studentNumber"/></strong></label>: ${studentUser.number}
+
                                         &lt;%&ndash;<span class="form-text text-muted">We'll never share your email with anyone else</span>&ndash;%&gt;
                                     </div>
-                                </div>--%>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3">
+                                </div>
+                                <div class="col-md-6 text-center">
                                     <div class="form-group">
-                                        <label><spring:message code="common.status"/></label>
-                                        <input type="text" class="form-control" value="<spring:message code="student.status.${studentUser.status}"/>" disabled/>
-                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        <label><strong><spring:message code="common.name"/></strong></label>: ${studentUser.getFullName()}
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label><spring:message code="common.advisor"/></label>
-                                        <input type="text" class="form-control" value="${studentUser.advisor.getFullName()}" disabled/>
-                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label><spring:message code="common.schoolYear"/></label>
-                                        <input type="text" class="form-control" value="${studentUser.schoolYear}" disabled/>
-                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                                    </div>
-                                </div>
-                            </div>
+
+                            </div>--%>
                             <br/>
                             <div class="separator separator-solid my-5"></div>
                             <br/>
@@ -122,6 +114,11 @@
                                             </tr>
                                             </thead>
                                             <tbody>
+                                            <c:set var="totalApplied" value="0"/>
+                                            <c:set var="totalComplete" value="0"/>
+                                            <c:set var="totalGrade" value="0"/>
+                                            <c:set var="totalGradeTotal" value="0"/>
+                                            <c:set var="totalGradeCount" value="0"/>
 
                                             <c:forEach var="entry" items="${courseMap}" varStatus="varStatus">
                                                 <c:set var="semester" value="${entry.key}"/>
@@ -144,8 +141,10 @@
                                                         <c:set var="applyCount" value="0"/>
                                                         <c:forEach var="sc" items="${courseMap.get(entry.key)}">
                                                             <c:set var="applyCount" value="${applyCount + sc.course.credit}"/>
+
                                                         </c:forEach>
                                                             ${applyCount}
+                                                        <c:set var="totalApplied" value="${totalApplied + applyCount}"/>
                                                     </td>
                                                     <td>
                                                         <c:set var="completeCount" value="0"/>
@@ -156,6 +155,7 @@
 
                                                         </c:forEach>
                                                             ${completeCount}
+                                                        <c:set var="totalComplete" value="${totalComplete + completeCount}"/>
                                                     </td>
 
                                                     <td>
@@ -169,6 +169,8 @@
                                                             </c:if>
 
                                                         </c:forEach>
+                                                        <c:set var="totalGradeTotal" value="${totalGradeTotal + gradeTotal}"/>
+                                                        <c:set var="totalGradeCount" value="${totalGradeCount + gradeCount}"/>
                                                         <c:choose>
                                                             <c:when test="${gradeCount == 0 or gradeTotal == 0.0}">
                                                                 0.0
@@ -291,8 +293,50 @@
                                         </div>
                                     </div>
                                 </div>
+                                <br/>
+                                <div class="separator separator-solid my-5"></div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-md-6 text-center">
+
+                                        <div class="form-group">
+                                            <label><strong><spring:message code="common.cert.complete"/></strong></label>: ${totalComplete}
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6 text-center">
+
+                                        <div class="form-group">
+                                            <label><strong><spring:message code="common.cert.score"/></strong></label>: <c:choose>
+                                            <c:when test="${totalGradeCount == 0 or totalGradeTotal == 0.0}">
+                                                0.0
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${totalGradeTotal / totalGradeCount}
+                                            </c:otherwise>
+                                        </c:choose>
+                                        </div>
+
+                                    </div>
+
+                                </div>
 
                             </div>
+                            <div class="row">
+                                <div class="col-md-12" style="text-align:center">
+                                    <br/><br/>
+                                    <h3>${today}</h3>
+                                    <br/><br/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="text-align:center">
+                                    <br/><br/>
+                                    <img alt="Logo" src="${resources}/images/bst_logo_transparent.png" class="max-h-70px"/>
+                                    <br/><br/><br/><br/>
+                                </div>
+                            </div>
+
 
                         </div>
                     </div>
