@@ -5,6 +5,8 @@ import koreatech.cse.domain.Searchable;
 import koreatech.cse.domain.UploadedFile;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.Role;
+import koreatech.cse.domain.univ.Article;
+import koreatech.cse.repository.BoardMapper;
 import koreatech.cse.repository.FeedbackMapper;
 import koreatech.cse.repository.UploadedFileMapper;
 import koreatech.cse.repository.UserMapper;
@@ -39,35 +41,21 @@ public class HomeController {
     private FeedbackMapper feedbackMapper;
     @Inject
     private UploadedFileMapper uploadedFileMapper;
+    @Inject
+    private BoardMapper boardMapper;
 
 
     @RequestMapping
-    public String home(HttpSession session) {
+    public String home(Model model) {
+
+        String[] boardTableNames = {"notice", "de", "hire", "schedule"};
+        for(String b: boardTableNames) {
+            List<Article> articleList = boardMapper.findArticleList("board_" + b, 10);
+            model.addAttribute(b + "List", articleList);
+        }
 
         return "index";
     }
-
-    /*@RequestMapping("/majorList")
-    public String majorList(Model model, @RequestParam(required=false, defaultValue = "0") int divisionId,
-                            @RequestParam(required=false, defaultValue = "true") boolean enabled,
-                            @RequestParam(required=false, defaultValue = "0") int defaultSelected) {
-        if(enabled) {
-            if (divisionId == 0) {
-                model.addAttribute("majorList", majorMapper.findAllEnabled());
-            } else {
-                model.addAttribute("majorList", majorMapper.findAllEnabledByDivisionId(divisionId));
-            }
-        } else {
-            if (divisionId == 0) {
-                model.addAttribute("majorList", majorMapper.findAll());
-            } else {
-                model.addAttribute("majorList", majorMapper.findAllByDivisionId(divisionId));
-            }
-        }
-        model.addAttribute("defaultSelected", defaultSelected);
-        return "include/majorOptions";
-    }*/
-
     @RequestMapping("/profList")
     public String profList(Model model, @RequestParam(required=false, defaultValue = "0") int divisionId, @RequestParam(required=false, defaultValue = "0") int defaultSelected) {
         Searchable searchable = new Searchable();
