@@ -69,6 +69,9 @@
             font-size:12px;
         }
         </c:if>
+        .notice-table td {
+            border-top:0 !important;
+        }
 
         .print-div {
             text-align:${isRTL ? 'left' : 'right'};
