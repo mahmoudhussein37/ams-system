@@ -22,15 +22,15 @@ import java.util.List;
 @Controller
 @SessionAttributes({"article"})
 @Transactional
-@RequestMapping(value = "/admin/board/notice")
-public class NoticeBoardController {
+@RequestMapping(value = "/admin/board/de")
+public class DepartmentNoticeBoardController {
     @Inject
     private BoardService boardService;
     @Inject
     private BoardMapper boardMapper;
 
-    final static String boardName = "notice";
-    final static String boardTableName = "board_notice";
+    final static String boardName = "de";
+    final static String boardTableName = "board_de";
 
     @RequestMapping(value = "/form")
     public String form(Model model) {

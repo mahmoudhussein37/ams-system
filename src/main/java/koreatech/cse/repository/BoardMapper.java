@@ -23,19 +23,12 @@ public interface BoardMapper {
     void updateHit(@Param("boardTableName") String boardTableName, @Param("id") int id);
 
     @Delete("DELETE FROM ${boardTableName} WHERE id = #{id}")
-    void deleteById(@Param("boardTableName") String boardTableName, @Param("id") int id);
+    void delete(@Param("boardTableName") String boardTableName, @Param("id") int id);
 
-    @Select("SELECT id, USER_ID, SUBJECT, hit, registered_date, FROM ${boardTableName} ORDER BY registered_date desc LIMIT #{offset}, #{size}")
-    List<Article> findArticleList(@Param("boardTableName") String boardTableName, @Param("offset") int offset, @Param("size") int size);
-
-    @Select("SELECT id, SUBJECT, hit, registered_date, MOD_DATETIME FROM ${boardTableName} WHERE ${searchType} LIKE CONCAT('%',#{searchWord},'%') ORDER BY registered_date desc LIMIT #{offset}, #{size}")
-    List<Article> findArticleListByLike(@Param("boardTableName") String boardTableName, @Param("searchType") String searchType, @Param("searchWord") String searchWord,
-                                        @Param("offset") int offset, @Param("size") int size);
+    @Select("SELECT * FROM ${boardTableName} ORDER BY registered_date desc LIMIT #{size}")
+    List<Article> findArticleList(@Param("boardTableName") String boardTableName, @Param("size") int size);
 
     @Select("SELECT COUNT(article_id) FROM ${boardTableName}")
     int countAll(@Param("boardTableName") String boardTableName);
-
-    @Select("SELECT COUNT(article_id) FROM ${boardTableName} WHERE ${searchType} LIKE CONCAT('%',#{searchWord},'%')")
-    int countAllByLike(@Param("boardTableName") String boardTableName, @Param("searchType") String searchType, @Param("searchWord") String searchWord);
 
 }

@@ -22,20 +22,20 @@ import java.util.List;
 @Controller
 @SessionAttributes({"article"})
 @Transactional
-@RequestMapping(value = "/admin/board/notice")
-public class NoticeBoardController {
+@RequestMapping(value = "/admin/board/schedule")
+public class ScheduleBoardController {
     @Inject
     private BoardService boardService;
     @Inject
     private BoardMapper boardMapper;
 
-    final static String boardName = "notice";
-    final static String boardTableName = "board_notice";
+    final static String boardName = "schedule";
+    final static String boardTableName = "board_schedule";
 
     @RequestMapping(value = "/form")
     public String form(Model model) {
         model.addAttribute("article", new Article());
-        return "role/common/board/form";
+        return "role/common/board/formSchedule";
     }
 
     @RequestMapping(value = "/form", method = RequestMethod.POST)
@@ -53,13 +53,13 @@ public class NoticeBoardController {
     public String list(Model model) {
         List<Article> articleList = boardMapper.findArticleList(boardTableName, 50);
         model.addAttribute("articleList", articleList);
-        return "role/common/board/list";
+        return "role/common/board/listSchedule";
     }
 
     @RequestMapping(value = "/{articleId}")
     public String read(Model model, @PathVariable int articleId) {
         model.addAttribute("article", boardService.read(articleId, boardTableName));
-        return "role/common/board/article";
+        return "role/common/board/articleSchedule";
     }
 
 
@@ -69,7 +69,7 @@ public class NoticeBoardController {
         Article article = boardMapper.findOne(boardTableName, articleId);
         model.addAttribute("article", article);
         model.addAttribute("boardName", boardName);
-        return "role/common/board/edit";
+        return "role/common/board/editSchedule";
     }
 
     @RequestMapping(value = "/edit/{articleId}", method = RequestMethod.POST)
