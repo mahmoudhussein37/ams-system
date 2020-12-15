@@ -156,7 +156,7 @@
                         <!--begin::Header-->
                         <div class="card-header border-0 pt-5">
                             <h3 class="card-title align-items-start flex-column">
-                                <span class="card-label font-weight-bolder text-dark">학사 일정</span>
+                                <span class="card-label font-weight-bolder text-dark"><spring:message code="common.board.schedule"/></span>
 
                             </h3>
 
@@ -196,7 +196,7 @@
                         <div class="card-header border-0 pt-5">
                             <div class="card-title">
                                 <div class="card-label">
-                                    <div class="font-weight-bolder">학교 정보</div>
+                                    <div class="font-weight-bolder"><spring:message code="common.board.univInfo"/></div>
                                 </div>
                             </div>
                         </div>
@@ -222,7 +222,7 @@
                         <div class="card-header border-0 pt-5">
                             <div class="card-title font-weight-bolder">
                                 <div class="card-label">
-                                    공지사항
+                                    <spring:message code="common.board.notice"/>
 
                                 </div>
                             </div>
@@ -232,7 +232,7 @@
 
                         <!--begin::Body-->
                         <div class="card-body pt-0">
-                            <table class="table table-head-custom table-vertical-center notice-table" id="course-list">
+                            <table class="table table-head-custom table-vertical-center notice-table">
                                 <tbody>
                                 <c:set var="boardName" value="notice"/>
                                 <c:forEach var="article" items="${noticeList}" varStatus="varStatus">
@@ -263,7 +263,7 @@
                         <div class="card-header border-0 pt-5">
                             <div class="card-title font-weight-bolder">
                                 <div class="card-label">
-                                    학과 공지사항
+                                    <spring:message code="common.board.de"/>
 
                                 </div>
                             </div>
@@ -302,7 +302,7 @@
                     <div class="card card-custom gutter-b card-stretch">
                         <!--begin::Header-->
                         <div class="card-header border-0 pt-5">
-                            <h3 class="card-title font-weight-bolder text-dark">바로가기</h3>
+                            <h3 class="card-title font-weight-bolder text-dark"><spring:message code="common.board.link"/></h3>
                         </div>
                         <!--end::Header-->
 
@@ -323,7 +323,7 @@
                         <!--begin::Header-->
                         <div class="card-header border-0 pt-5">
                             <h3 class="card-title align-items-start flex-column">
-                                <span class="card-label font-weight-bolder text-dark">채용 정보</span>
+                                <span class="card-label font-weight-bolder text-dark"><spring:message code="common.board.hire"/></span>
 
                             </h3>
 
