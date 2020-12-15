@@ -5,6 +5,7 @@ import koreatech.cse.domain.User;
 import koreatech.cse.domain.univ.Article;
 import koreatech.cse.repository.BoardMapper;
 import koreatech.cse.service.board.BoardService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -22,7 +23,7 @@ import java.util.List;
 @Controller
 @SessionAttributes({"article"})
 @Transactional
-@RequestMapping(value = "/admin/board/de")
+@RequestMapping(value = "/board/de")
 public class DepartmentNoticeBoardController {
     @Inject
     private BoardService boardService;
@@ -32,12 +33,13 @@ public class DepartmentNoticeBoardController {
     final static String boardName = "de";
     final static String boardTableName = "board_de";
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/form")
     public String form(Model model) {
         model.addAttribute("article", new Article());
         return "role/common/board/form";
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/form", method = RequestMethod.POST)
     public String write(Article article, SessionStatus sessionStatus) throws IOException {
         article.setUserId(User.current().getId());
@@ -45,7 +47,7 @@ public class DepartmentNoticeBoardController {
         boardService.insert(article, boardTableName);
         sessionStatus.setComplete();
 
-        return "redirect:/admin/board/" + boardName + "/list";
+        return "redirect:/board/" + boardName + "/list";
     }
 
 
@@ -63,7 +65,7 @@ public class DepartmentNoticeBoardController {
     }
 
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/edit/{articleId}")
     public String editForm(Model model, @PathVariable int articleId) {
         Article article = boardMapper.findOne(boardTableName, articleId);
@@ -71,17 +73,17 @@ public class DepartmentNoticeBoardController {
         model.addAttribute("boardName", boardName);
         return "role/common/board/edit";
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/edit/{articleId}", method = RequestMethod.POST)
     public String update(@PathVariable int articleId, Article article, BindingResult bindingResult, SessionStatus sessionStatus) throws IOException {
         boardService.update(article, boardTableName);
         sessionStatus.setComplete();
-        return "redirect:/admin/board/" + boardName + "/list";
+        return "redirect:/board/" + boardName + "/list";
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/delete/{articleId}", method = RequestMethod.POST)
     public String delete(@PathVariable int articleId) {
         boardMapper.delete(boardTableName, articleId);
-        return "redirect:/admin/board/" + boardName + "/list";
+        return "redirect:/board/" + boardName + "/list";
     }
 }

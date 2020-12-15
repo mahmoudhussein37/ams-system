@@ -16,6 +16,8 @@
         <sec:intercept-url pattern="/student/**" access="hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN')" />
         <sec:intercept-url pattern="/professor/**" access="hasAnyRole('ROLE_PROFESSOR', 'ROLE_ADMIN')" />
         <sec:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+        <sec:intercept-url pattern="/board/**" access="hasRole('ROLE_USER')" />
+        <sec:intercept-url pattern="/" access="hasRole('ROLE_USER')" />
         <sec:intercept-url pattern="/**" access="permitAll" />
     </sec:http>
 

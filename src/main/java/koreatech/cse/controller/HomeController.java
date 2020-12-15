@@ -53,6 +53,7 @@ public class HomeController {
             List<Article> articleList = boardMapper.findArticleList("board_" + b, 4);
             model.addAttribute(b + "List", articleList);
         }
+        model.addAttribute("home", true);
 
         return "index";
     }

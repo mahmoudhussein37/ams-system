@@ -5,6 +5,31 @@
 <!--begin::Body-->
 <body id="kt_body"  class="header-fixed header-mobile-fixed page-loading"  >
 <%@include file="/WEB-INF/view/include/headerBar.jsp" %>
+
+
+<%--<sec:authorize access="!hasRole('ROLE_ADMIN')">
+    <style>
+
+        .header-bottom {
+            display:none !important;
+        }
+        @media (min-width: 992px) {
+            .header-fixed .header {
+                height:70px;
+            }
+            .header-fixed .wrapper {
+                padding-top: 100px;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+
+            .header-mobile-fixed .wrapper {
+                padding-top: 70px;
+            }
+        }
+    </style>
+</sec:authorize>--%>
 <!--begin::Content-->
 <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Entry-->
@@ -53,7 +78,7 @@
 
                                 <br/>
 
-                                <a href="javascript:history.back()" class="btn btn-primary mr-2"><spring:message code="common.back"/></a>
+                                <a href="/board/${boardName}/list" class="btn btn-primary mr-2"><spring:message code="common.list"/></a>
                             </form:form>
 
                         </div>

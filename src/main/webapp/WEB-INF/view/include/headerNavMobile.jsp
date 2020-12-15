@@ -1,6 +1,11 @@
 <c:choose>
     <c:when test="${currentRole eq 'professor'}">
         <ul class="header-tabs p-5 p-lg-0 d-flex d-lg-none nav nav-bold nav-tabs" role="tablist">
+            <li class="nav-item mr-2">
+                <a href="#" class="nav-link btn btn-clean ${fn:contains(requestUri, '/board/') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_0" role="tab">
+                    <spring:message code="menu.professor.main0"/>
+                </a>
+            </li>
             <!--begin::Item-->
             <li class="nav-item mr-2">
                 <a href="#" class="nav-link btn btn-clean ${fn:contains(requestUri, '/professor/studentGuidance') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
@@ -20,6 +25,11 @@
     </c:when>
     <c:when test="${currentRole eq 'student'}">
         <ul class="header-tabs p-5 p-lg-0 d-flex d-lg-none nav nav-bold nav-tabs" role="tablist">
+            <li class="nav-item mr-2">
+                <a href="#" class="nav-link btn btn-clean ${fn:contains(requestUri, '/board/') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_0" role="tab">
+                    <spring:message code="menu.student.main0"/>
+                </a>
+            </li>
             <!--begin::Item-->
             <li class="nav-item mr-2">
                 <a href="#" class="nav-link btn btn-clean ${fn:contains(requestUri, '/student/courseGuide') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
@@ -85,7 +95,7 @@
                 </a>
             </li>
             <li class="nav-item mr-2">
-                <a href="#" class="nav-link btn btn-clean ${fn:contains(requestUri, '/admin/board') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_6" role="tab">
+                <a href="#" class="nav-link btn btn-clean ${fn:contains(requestUri, '/board') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_6" role="tab">
                     <spring:message code="menu.admin.main6"/>
                 </a>
             </li>

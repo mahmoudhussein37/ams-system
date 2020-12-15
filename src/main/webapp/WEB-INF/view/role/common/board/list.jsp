@@ -5,6 +5,29 @@
 <!--begin::Body-->
 <body id="kt_body"  class="header-fixed header-mobile-fixed page-loading"  >
 <%@include file="/WEB-INF/view/include/headerBar.jsp" %>
+<%--<sec:authorize access="!hasRole('ROLE_ADMIN')">
+    <style>
+
+        .header-bottom {
+            display:none !important;
+        }
+        @media (min-width: 992px) {
+            .header-fixed .header {
+                height:70px;
+            }
+            .header-fixed .wrapper {
+                padding-top: 100px;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+
+            .header-mobile-fixed .wrapper {
+                padding-top: 70px;
+            }
+        }
+    </style>
+</sec:authorize>--%>
 <!--begin::Content-->
 <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Entry-->
@@ -24,9 +47,10 @@
 
                         </div>
                         <div class="card-body">
+                            <sec:authorize access="hasRole('ROLE_ADMIN')">
                             <a href="/admin/board/${boardName}/form" class="btn btn-primary"><spring:message code="admin.board.write"/></a>
                             <br/><br/><br/>
-
+                            </sec:authorize>
 
                             <table class="table table-head-custom table-vertical-center" id="course-list">
                                 <thead>
@@ -35,7 +59,9 @@
                                     <th class="pl-0" style=""><spring:message code="common.date"/></th>
                                     <th style=""><span class="text-primary"><spring:message code="admin.board.subject"/></span></th>
                                     <th class="pl-0" style=""><spring:message code="admin.board.hit"/></th>
+                                    <sec:authorize access="hasRole('ROLE_ADMIN')">
                                     <th style=""></th>
+                                    </sec:authorize>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -52,10 +78,12 @@
                                         <td style="width:10%">
                                                 ${article.hit}
                                         </td>
+                                        <sec:authorize access="hasRole('ROLE_ADMIN')">
                                         <td style="width:20%">
                                             <a href="/admin/board/${boardName}/edit/${article.id}" class="btn btn-secondary"><spring:message code="common.edit"/></a>
                                             <button class="btn btn-secondary delete-btn" data-article-id="${article.id}"><spring:message code="common.delete"/></button>
                                         </td>
+                                        </sec:authorize>
                                     </tr>
                                 </c:forEach>
 
