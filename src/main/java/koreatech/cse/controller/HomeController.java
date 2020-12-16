@@ -50,7 +50,7 @@ public class HomeController {
 
         String[] boardTableNames = {"notice", "de", "hire", "schedule"};
         for(String b: boardTableNames) {
-            List<Article> articleList = boardMapper.findArticleList("board_" + b, 4);
+            List<Article> articleList = boardMapper.findArticleList("board_" + b, 6);
             model.addAttribute(b + "List", articleList);
         }
         model.addAttribute("home", true);

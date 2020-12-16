@@ -1,6 +1,20 @@
+<div class="tab-pane py-5 p-lg-0 ${not empty home and home eq true ? 'show active' : ''}" id="kt_header_tab_00">
+    <!--begin::Menu-->
+    <div id="kt_header_menu0" class="header-menu header-menu-mobile header-menu-layout-default ">
+        <!--begin::Nav-->
+        <ul class="menu-nav ">
+            <li class="menu-item  ${not empty home and home eq true ? 'menu-item-active' : ''} "  aria-haspopup="true">
+                <a  href="/" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.dashboard"/></span></a>
+            </li>
+
+        </ul>
+        <!--end::Nav-->
+    </div>
+    <!--end::Menu-->
+</div>
 <div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/admin/studentManagement') ? 'show active' : ''}" id="kt_header_tab_1">
     <!--begin::Menu-->
-    <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default ">
+    <div id="kt_header_menu1" class="header-menu header-menu-mobile header-menu-layout-default ">
         <!--begin::Nav-->
         <ul class="menu-nav ">
             <li class="menu-item  ${fn:contains(requestUri, '/admin/studentManagement/studentRegistration') ? 'menu-item-active' : ''} "  aria-haspopup="true">
@@ -143,7 +157,7 @@
     </div>
     <!--end::Menu-->
 </div>
-<div class="tab-pane py-5 p-lg-0 ${(fn:contains(requestUri, '/board/') or (not empty home and home eq true)) ? 'show active' : ''}" id="kt_header_tab_6">
+<div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/board/') ? 'show active' : ''}" id="kt_header_tab_6">
     <!--begin::Menu-->
     <div id="kt_header_menu6" class="header-menu header-menu-mobile  header-menu-layout-default " >
 

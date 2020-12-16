@@ -84,7 +84,9 @@
 
                         <!--begin::Body-->
                         <div class="card-body pt-0">
-                            -
+                            The Republican Decree to establish Beni Suef Technological University was issued on June 3, 2019, regarding the issuance of Law No. 72 of 2019 establishing technological universities. This step is an important step in the development of a new path for technical education in Egypt.
+
+                            Technological universities are extension of technical students’ path as they work to aquire them scientific and practical skills to cope international and local work market through applying the technological programs inside University facilities which are designed according to national projects needs and geographical considerations.
                         </div>
                         <!--end::Body-->
                     </div>
