@@ -59,6 +59,8 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <c:set var="totalCount" value="0"/>
+                    <c:set var="totalScore" value="0.0"/>
                     <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
                         <tr class="table-light text-center" style="${not sc.valid? 'color:red' : ''}">
                             <td>${varStatus.count}</td>
@@ -139,7 +141,8 @@
                                             ${sc.scoreTotal}
                                     </td>
                                     <td style="width:100px;">
-
+                                        <c:set var="totalScore" value="${totalScore + sc.getGradeScore()}"/>
+                                        <c:set var="totalCount" value="${totalCount + 1}"/>
                                         <select name="grade" data-sc-id="${sc.id}" class="select-grade form-control" disabled>
                                             <option value="">-</option>
                                             <option value="Ap" ${sc.grade eq 'Ap' ? 'selected' : ''}>A+</option>
@@ -165,6 +168,26 @@
 
                     </tbody>
                 </table>
+                <div class="row">
+                    <div class="col-md-12 text-left">
+
+                        <div class="form-group">
+                            <label><strong><spring:message code="professor.course.averageScore"/></strong></label>:
+                            <c:choose>
+                                <c:when test="${totalScore == 0.0 or totalCount == 0}">
+                                    0.0
+                                </c:when>
+                                <c:otherwise>
+                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${totalScore / totalCount}" />
+                                </c:otherwise>
+                            </c:choose>
+
+                        </div>
+
+                    </div>
+                </div>
+                <br/>
+                <br/>
                 <div id="ratio-div">
 
                 </div>

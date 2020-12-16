@@ -502,7 +502,7 @@ public class AdminController {
         Map<Semester, List<StudentCourse>> map = profService.getStudentSemesterCourseMap(studentUser.getId());
         model.addAttribute("finalScore", profService.getStudentTotalScore(studentUser.getId()));
         model.addAttribute("courseMap", map);
-        return "role/common/grade/gradeDetailForPrint";
+        return "role/common/grade/gradeCertForPrint";
     }
 
     @RequestMapping("/profManagement/profRegistration")
@@ -1487,7 +1487,7 @@ public class AdminController {
         List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(profCourseId);
         model.addAttribute("studentCourses", studentCourses);
 
-        return "role/admin/studentGrade/courseDetailForPrint";
+        return "role/common/grade/courseDetailForPrint";
     }
 
     @RequestMapping("/academicManagement/graduationCriteria")

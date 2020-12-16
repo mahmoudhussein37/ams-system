@@ -435,7 +435,7 @@ public class StudentController {
         Map<Semester, List<StudentCourse>> map = profService.getStudentSemesterCourseMap(studentUser.getId());
         model.addAttribute("finalScore", profService.getStudentTotalScore(studentUser.getId()));
         model.addAttribute("courseMap", map);
-        return "role/common/grade/gradeDetailForPrint";
+        return "role/common/grade/gradeCertForPrint";
     }
 
     @RequestMapping("/graduation/graduationRequirements")

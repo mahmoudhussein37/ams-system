@@ -1,4 +1,3 @@
-<%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <div class="row">
     <div class="col-md-4">
         <table class="table rounded">
@@ -139,13 +138,3 @@
         </table>
     </div>
 </div>
-
-
-
-<%@include file="/WEB-INF/view/include/footerScript.jsp" %>
-<script>
-$(document).ready(function() {
-
-
-});
-</script>
