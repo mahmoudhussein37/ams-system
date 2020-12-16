@@ -116,7 +116,6 @@
                                             <tbody>
                                             <c:set var="totalApplied" value="0"/>
                                             <c:set var="totalComplete" value="0"/>
-                                            <c:set var="totalGrade" value="0"/>
                                             <c:set var="totalGradeTotal" value="0"/>
                                             <c:set var="totalGradeCount" value="0"/>
 
@@ -152,7 +151,6 @@
                                                             <c:if test="${sc.valid and sc.grade ne 'U' and sc.grade ne 'F'}">
                                                                 <c:set var="completeCount" value="${completeCount + sc.course.credit}"/>
                                                             </c:if>
-
                                                         </c:forEach>
                                                             ${completeCount}
                                                         <c:set var="totalComplete" value="${totalComplete + completeCount}"/>
@@ -307,14 +305,8 @@
                                     <div class="col-md-6 text-center">
 
                                         <div class="form-group">
-                                            <label><strong><spring:message code="common.cert.score"/></strong></label>: <c:choose>
-                                            <c:when test="${totalGradeCount == 0 or totalGradeTotal == 0.0}">
-                                                0.0
-                                            </c:when>
-                                            <c:otherwise>
-                                                ${totalGradeTotal / totalGradeCount}
-                                            </c:otherwise>
-                                        </c:choose>
+                                            <label><strong><spring:message code="common.cert.score"/></strong></label>: ${finalScore}
+
                                         </div>
 
                                     </div>

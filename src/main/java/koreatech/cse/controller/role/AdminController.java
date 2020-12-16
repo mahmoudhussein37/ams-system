@@ -499,56 +499,8 @@ public class AdminController {
         }
         model.addAttribute("certificate", certificate);
         model.addAttribute("today", DateHelper.format(new Date()));
-
-        LinkedHashSet<Integer> semesterSet = studentCourseMapper.findSemesterIdByUserIdValid(studentUser.getId());
-
-        Map<Semester, List<StudentCourse>> map = new HashMap<>();
-        for(Integer semesterId: semesterSet) {
-            Semester semester = semesterMapper.findOne(semesterId);
-            Searchable searchable = new Searchable();
-            searchable.setYear(semester.getYear());
-            searchable.setSemester(semester.getSemester());
-            searchable.setUserId(studentUser.getId());
-            List<StudentCourse> courses = studentCourseMapper.findByUserIdYearSemester(searchable);
-
-            List<String> failCodes = new ArrayList<>();
-            List<StudentCourse> alternatives = new ArrayList<>();
-            List<StudentCourse> filtered = new ArrayList<>();
-            for(StudentCourse sc: courses) {
-                if(sc.getGrade().equals("F") || sc.getGrade().equals("U")) {
-
-                    failCodes.add(sc.getCourse().getCode());
-                }
-            }
-            for(StudentCourse sc: courses) {
-                for(String code: failCodes) {
-                    if(sc.getCourse().getCode().equals(code) && !sc.getGrade().equals("F") && !sc.getGrade().equals("U")) {
-                        alternatives.add(sc);
-                    }
-                }
-            }
-            model.addAttribute("alternatives", alternatives);
-
-
-            for(StudentCourse sc: courses) {
-                if(sc.getGrade().equals("F") || sc.getGrade().equals("U")) {
-                    boolean alternativeExist = false;
-                    for(StudentCourse al: alternatives) {
-                        if(al.getCourse().getCode().equals(sc.getCourse().getCode())) {
-                            alternativeExist = true;
-                        }
-                    }
-                    if(!alternativeExist)
-                        filtered.add(sc);
-                } else {
-                    filtered.add(sc);
-                }
-            }
-
-
-            map.put(semester, filtered);
-        }
-
+        Map<Semester, List<StudentCourse>> map = profService.getStudentSemesterCourseMap(studentUser.getId());
+        model.addAttribute("finalScore", profService.getStudentTotalScore(studentUser.getId()));
         model.addAttribute("courseMap", map);
         return "role/common/grade/gradeDetailForPrint";
     }
