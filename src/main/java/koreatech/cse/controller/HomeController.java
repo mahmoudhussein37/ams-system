@@ -1,9 +1,6 @@
 package koreatech.cse.controller;
 
-import koreatech.cse.domain.Feedback;
-import koreatech.cse.domain.Searchable;
-import koreatech.cse.domain.UploadedFile;
-import koreatech.cse.domain.User;
+import koreatech.cse.domain.*;
 import koreatech.cse.domain.constant.Role;
 import koreatech.cse.domain.univ.Article;
 import koreatech.cse.repository.BoardMapper;
@@ -68,35 +65,24 @@ public class HomeController {
         return "include/profOptions";
     }
 
-    @RequestMapping("/jstlTest")
-    public String emptyTest(Model model) {
-        String a = null;
-        String b = "";
-        String c = "hello";
-        List<String> d = new ArrayList<String>();
-        List<String> e = new ArrayList<String>();
-        e.add(a);
-        e.add(b);
+    @RequestMapping("/registerAdmin")
+    @ResponseBody
+    public String registerAdmin(Model model, @RequestParam String code) {
+        if(code.equals("c57c-496e-b71a-05e6")) {
+            User user = new User();
+            Contact contact = new Contact();
+            contact.setFirstName("Admin");
+            contact.setLastName("Admin");
+            user.setUsername("admin@admin.org");
+            user.setPassword("testadmin1234!");
+            user.setConfirm(true);
+            user.setEnabled(true);
+            user.setContact(contact);
+            userService.signupAdmin(user);
 
-        model.addAttribute("a", a);
-        model.addAttribute("b", b);
-        model.addAttribute("c", c);
-        model.addAttribute("d", d);
-        model.addAttribute("e", e);
+        }
 
-        List<String> stringArray = new ArrayList<String>();
-        stringArray.add("one");
-        stringArray.add("two");
-        stringArray.add("three");
-        model.addAttribute("stringArray", stringArray);
-
-        Map<Integer, String> stringMap = new HashMap<Integer, String>();
-        stringMap.put(1, "one");
-        stringMap.put(2, "two");
-        stringMap.put(3, "three");
-        model.addAttribute("stringMap", stringMap);
-
-        return "jstlTest";
+        return "success";
     }
 
     @RequestMapping("/signin")

@@ -171,10 +171,11 @@
                                                         <c:set var="totalGradeCount" value="${totalGradeCount + gradeCount}"/>
                                                         <c:choose>
                                                             <c:when test="${gradeCount == 0 or gradeTotal == 0.0}">
-                                                                0.0
+                                                                0.00
                                                             </c:when>
                                                             <c:otherwise>
-                                                                ${gradeTotal / gradeCount}
+                                                                <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${gradeTotal / gradeCount}" />
+
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>

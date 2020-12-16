@@ -189,7 +189,7 @@ public class User implements UserDetails {
                 continue;
 
             if(course.getSubjCategory().equals(category))
-                count++;
+                count += studentCourse.getCourse().getCredit();
 
         }
         return count;

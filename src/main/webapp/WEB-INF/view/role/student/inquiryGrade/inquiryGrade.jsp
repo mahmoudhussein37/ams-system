@@ -113,6 +113,9 @@
                                                 <td>
                                                     <spring:message code="common.grade"/>
                                                 </td>
+                                                <td>
+
+                                                </td>
                                                 <%--<td>
                                                     <spring:message code="common.percentile"/>
                                                 </td>
@@ -128,9 +131,7 @@
                                                 <c:set var="semester" value="${entry.key}"/>
                                                 <tr class="table-light text-center">
                                                     <td>
-                                                        <a href="#" class="course-detail" data-semester-id="${semester.id}">
                                                             ${varStatus.count}
-                                                        </a>
                                                     </td>
                                                     <td>
                                                         ${entry.key.year}
@@ -179,9 +180,15 @@
                                                                 0.0
                                                             </c:when>
                                                             <c:otherwise>
-                                                               ${gradeTotal / gradeCount}
+                                                                <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${gradeTotal / gradeCount}" />
+
                                                             </c:otherwise>
                                                         </c:choose>
+                                                    </td>
+                                                    <td>
+                                                        <a href="#" class="course-detail" data-semester-id="${semester.id}">
+                                                            <i class="far fa-file-alt"></i>
+                                                        </a>
                                                     </td>
 
                                                 </tr>

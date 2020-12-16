@@ -44,16 +44,18 @@
                                         </div>
 
                                     </div>
-                                    <%--<div class="col-md-3">
+                                    <div class="col-md-3">
 
                                         <div class="form-group">
-                                            <label><spring:message code="common.major"/></label>
-                                            <form:select id="search-major" path="majorId" class="form-control" >
-
+                                            <label><spring:message code="common.schoolYear"/></label>
+                                            <form:select path="schoolYear" class="form-control">
+                                                <option value="0"><spring:message code="common.schoolYear"/></option>
+                                                <c:forEach var="d" begin="1" end="4">
+                                                    <form:option value="${d}">${d}</form:option>
+                                                </c:forEach>
                                             </form:select>
-                                            &lt;%&ndash;<span class="form-text text-muted">We'll never share your email with anyone else</span>&ndash;%&gt;
                                         </div>
-                                    </div>--%>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-3">
