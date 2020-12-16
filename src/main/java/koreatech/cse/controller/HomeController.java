@@ -19,12 +19,11 @@ import org.springframework.web.bind.support.SessionStatus;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.List;
 
 @Controller
 @Transactional
@@ -67,7 +66,7 @@ public class HomeController {
 
     @RequestMapping("/registerAdmin")
     @ResponseBody
-    public String registerAdmin(Model model, @RequestParam String code) {
+    public String registerAdmin(@RequestParam String code) {
         if(code.equals("c57c-496e-b71a-05e6")) {
             User user = new User();
             Contact contact = new Contact();
