@@ -1,6 +1,20 @@
+<div class="tab-pane py-5 p-lg-0 ${not empty home and home eq true ? 'show active' : ''}" id="kt_header_tab_00">
+    <!--begin::Menu-->
+    <div id="kt_header_menu0" class="header-menu header-menu-mobile header-menu-layout-default ">
+        <!--begin::Nav-->
+        <ul class="menu-nav ">
+            <li class="menu-item  ${not empty home and home eq true ? 'menu-item-active' : ''} "  aria-haspopup="true">
+                <a  href="/" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.dashboard"/></span></a>
+            </li>
+
+        </ul>
+        <!--end::Nav-->
+    </div>
+    <!--end::Menu-->
+</div>
 <div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/admin/studentManagement') ? 'show active' : ''}" id="kt_header_tab_1">
     <!--begin::Menu-->
-    <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default ">
+    <div id="kt_header_menu1" class="header-menu header-menu-mobile header-menu-layout-default ">
         <!--begin::Nav-->
         <ul class="menu-nav ">
             <li class="menu-item  ${fn:contains(requestUri, '/admin/studentManagement/studentRegistration') ? 'menu-item-active' : ''} "  aria-haspopup="true">
@@ -15,7 +29,9 @@
             <li class="menu-item ${fn:contains(requestUri, '/admin/studentManagement/studentCounseling') ? 'menu-item-active' : ''}"  aria-haspopup="true">
                 <a  href="/admin/studentManagement/studentCounseling" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub1_4"/></span></a>
             </li>
-
+            <li class="menu-item  ${fn:contains(requestUri, '/admin/studentManagement/inquiryGrade') ? 'menu-item-active' : ''} "  aria-haspopup="true">
+                <a  href="/admin/studentManagement/inquiryGrade" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub4_1"/></span></a>
+            </li>
         </ul>
         <!--end::Nav-->
     </div>
@@ -37,9 +53,6 @@
             <li class="menu-item ${fn:contains(requestUri, '/admin/profManagement/graduationResearch') ? 'menu-item-active' : ''}"  aria-haspopup="true">
                 <a  href="/admin/profManagement/graduationResearch" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub2_3"/></span></a>
             </li>
-            <%--<li class="menu-item ${fn:contains(requestUri, '/admin/profManagement/studentEnrolment') ? 'menu-item-active' : ''}"  aria-haspopup="true">
-                <a  href="/admin/profManagement/studentEnrolment" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub2_4"/></span></a>
-            </li>--%>
         </ul>
         <!--end::Nav-->
     </div>
@@ -136,6 +149,30 @@
             <li class="menu-item  ${fn:contains(requestUri, '/admin/systemManagement/errorReport') ? 'menu-item-active' : ''}"  aria-haspopup="true">
                 <a  href="/admin/systemManagement/errorReport" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub5_10"/></span></a>
             </li>
+        </ul>
+        <!--end::Nav-->
+    </div>
+    <!--end::Menu-->
+</div>
+<div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/board/') ? 'show active' : ''}" id="kt_header_tab_6">
+    <!--begin::Menu-->
+    <div id="kt_header_menu6" class="header-menu header-menu-mobile  header-menu-layout-default " >
+
+        <!--begin::Nav-->
+        <ul class="menu-nav ">
+            <li class="menu-item ${(fn:contains(requestUri, '/board/notice') or (not empty home and home eq true)) ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                <a  href="/board/notice/list" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub6_1"/></span></a>
+            </li>
+            <li class="menu-item ${fn:contains(requestUri, '/board/de') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                <a  href="/board/de/list" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub6_2"/></span></a>
+            </li>
+            <li class="menu-item ${fn:contains(requestUri, '/board/hire') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                <a  href="/board/hire/list" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub6_3"/></span></a>
+            </li>
+            <li class="menu-item ${fn:contains(requestUri, '/board/schedule') ? 'menu-item-active' : ''}"  aria-haspopup="true">
+                <a  href="/board/schedule/list" class="menu-link "><span class="menu-text"><spring:message code="menu.admin.sub6_4"/></span></a>
+            </li>
+
         </ul>
         <!--end::Nav-->
     </div>

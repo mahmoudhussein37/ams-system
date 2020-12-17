@@ -19,6 +19,11 @@
                             <h3 class="card-title font-weight-bolder"><spring:message code="menu.student.sub4_1"/></h3>
                         </div>
                         <div class="card-body">
+                            <div class="print-div">
+                                <a href="#" class="btn btn-sm btn-light font-weight-bold print">
+                                    <spring:message code="common.cert.print"/>
+                                </a>
+                            </div>
                             <div class="row">
                                 <div class="col-md-3">
 
@@ -108,6 +113,9 @@
                                                 <td>
                                                     <spring:message code="common.grade"/>
                                                 </td>
+                                                <td>
+
+                                                </td>
                                                 <%--<td>
                                                     <spring:message code="common.percentile"/>
                                                 </td>
@@ -122,7 +130,9 @@
                                             <c:forEach var="entry" items="${courseMap}" varStatus="varStatus">
                                                 <c:set var="semester" value="${entry.key}"/>
                                                 <tr class="table-light text-center">
-                                                    <td>${varStatus.count}</td>
+                                                    <td>
+                                                            ${varStatus.count}
+                                                    </td>
                                                     <td>
                                                         ${entry.key.year}
                                                     </td>
@@ -170,9 +180,15 @@
                                                                 0.0
                                                             </c:when>
                                                             <c:otherwise>
-                                                               ${gradeTotal / gradeCount}
+                                                                <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${gradeTotal / gradeCount}" />
+
                                                             </c:otherwise>
                                                         </c:choose>
+                                                    </td>
+                                                    <td>
+                                                        <a href="#" class="course-detail" data-semester-id="${semester.id}">
+                                                            <i class="far fa-file-alt"></i>
+                                                        </a>
                                                     </td>
 
                                                 </tr>
@@ -225,7 +241,10 @@
             $(".detail-div").load("${baseUrl}/student/grades/inquiryGrade/gradeDetail?semesterId=" + courseId);
 
         });
-
+        $("body").on('click', '.print', function (e) {
+            e.preventDefault();
+            openPage("${baseUrl}/student/grades/inquiryGrade/gradeDetailForPrint");
+        });
 
     });
 </script>

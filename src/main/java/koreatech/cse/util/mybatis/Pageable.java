@@ -11,6 +11,8 @@ import java.util.TreeMap;
 public class Pageable extends PageRequest {
 
     private static final long serialVersionUID = -4940142830513904845L;
+    private String tableName;
+
 
     protected Map<String, Term> conditionals = new TreeMap<String, Term>();
 
@@ -24,6 +26,13 @@ public class Pageable extends PageRequest {
         super(page, size);
     }
 
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
 
     public void addConditionals(String property, Object value, Operator operator) {
         conditionals.put(property, Term.newInstance(property, value, operator));

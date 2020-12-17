@@ -14,7 +14,6 @@
                 <div class="col-md-12">
                     <!--begin::Card-->
                     <div class="card card-custom">
-
                         <div class="card-body">
                             <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.courseInformation"/></h3>
 
@@ -65,6 +64,7 @@
                             </div>
 
                             <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.result"/></h3>
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -117,6 +117,8 @@
                                             </tr>
                                             </thead>
                                             <tbody>
+                                            <c:set var="totalCount" value="0"/>
+                                            <c:set var="totalScore" value="0.0"/>
                                             <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
                                                 <tr class="table-light text-center" style="${not sc.valid? 'color:red' : ''}">
                                                     <td>${varStatus.count}</td>
@@ -159,7 +161,8 @@
                                                             ${sc.scoreTotal}
                                                     </td>
                                                     <td style="width:100px;">
-
+                                                        <c:set var="totalScore" value="${totalScore + sc.getGradeScore()}"/>
+                                                        <c:set var="totalCount" value="${totalCount + 1}"/>
                                                         <select name="grade" data-sc-id="${sc.id}" class="select-grade form-control" disabled>
                                                             <option value="Ap" ${sc.grade eq 'Ap' ? 'selected' : ''}>A+</option>
                                                             <option value="A0" ${sc.grade eq 'A0' ? 'selected' : ''}>A0</option>
@@ -181,149 +184,29 @@
 
                                             </tbody>
                                         </table>
-                                        <div id="ratio-div">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <table class="table rounded">
-                                                        <thead>
-                                                        <tr class="table-secondary text-center">
+                                        <div class="row">
+                                            <div class="col-md-12 text-left">
 
-                                                            <td><spring:message code="common.grade"/></td>
-                                                            <td>
-                                                                <spring:message code="professor.course.numStudent"/>
-                                                            </td>
-                                                            <td>
-                                                                <spring:message code="common.ratio"/>
-                                                            </td>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <c:set var="count" value="0"/>
-                                                        <c:set var="ratio" value="0.0"/>
-                                                        <tr class="text-center">
-                                                            <td>A</td>
-                                                            <td>
+                                                <div class="form-group">
+                                                    <label><strong><spring:message code="professor.course.averageScore"/></strong></label>:
+                                                    <c:choose>
+                                                        <c:when test="${totalScore == 0.0 or totalCount == 0}">
+                                                            0.0
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${totalScore / totalCount}" />
+                                                        </c:otherwise>
+                                                    </c:choose>
 
-                                                                <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
-                                                                    <c:if test="${sc.grade eq 'Ap' or sc.grade eq 'A0'}">
-                                                                        <c:set var="count" value="${count + 1}"/>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                                ${count}
-                                                            </td>
-                                                            <td>
-                                                                ${count * 100 / fn:length(studentCourses)} %
-                                                            </td>
-                                                        </tr>
-                                                        <c:set var="count" value="0"/>
-                                                        <c:set var="ratio" value="0.0"/>
-                                                        <tr class="text-center">
-                                                            <td>B</td>
-                                                            <td>
-
-                                                                <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
-                                                                    <c:if test="${sc.grade eq 'Bp' or sc.grade eq 'B0'}">
-                                                                        <c:set var="count" value="${count + 1}"/>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                                ${count}
-                                                            </td>
-                                                            <td>
-                                                                ${count * 100 / fn:length(studentCourses)} %
-                                                            </td>
-                                                        </tr>
-                                                        <c:set var="count" value="0"/>
-                                                        <c:set var="ratio" value="0.0"/>
-                                                        <tr class="text-center">
-                                                            <td>C</td>
-                                                            <td>
-
-                                                                <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
-                                                                    <c:if test="${sc.grade eq 'Cp' or sc.grade eq 'C0'}">
-                                                                        <c:set var="count" value="${count + 1}"/>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                                ${count}
-                                                            </td>
-                                                            <td>
-                                                                ${count * 100 / fn:length(studentCourses)} %
-                                                            </td>
-                                                        </tr>
-                                                        <c:set var="count" value="0"/>
-                                                        <c:set var="ratio" value="0.0"/>
-                                                        <tr class="text-center">
-                                                            <td>D</td>
-                                                            <td>
-
-                                                                <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
-                                                                    <c:if test="${sc.grade eq 'Dp' or sc.grade eq 'D0'}">
-                                                                        <c:set var="count" value="${count + 1}"/>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                                ${count}
-                                                            </td>
-                                                            <td>
-                                                                ${count * 100 / fn:length(studentCourses)} %
-                                                            </td>
-                                                        </tr>
-                                                        <c:set var="count" value="0"/>
-                                                        <c:set var="ratio" value="0.0"/>
-                                                        <tr class="text-center">
-                                                            <td>F</td>
-                                                            <td>
-
-                                                                <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
-                                                                    <c:if test="${sc.grade eq 'F'}">
-                                                                        <c:set var="count" value="${count + 1}"/>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                                ${count}
-                                                            </td>
-                                                            <td>
-                                                                ${count * 100 / fn:length(studentCourses)} %
-                                                            </td>
-                                                        </tr>
-                                                        <c:set var="count" value="0"/>
-                                                        <c:set var="ratio" value="0.0"/>
-                                                        <tr class="text-center">
-                                                            <td>S</td>
-                                                            <td>
-
-                                                                <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
-                                                                    <c:if test="${sc.grade eq 'S' or sc.grade eq 'S'}">
-                                                                        <c:set var="count" value="${count + 1}"/>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                                ${count}
-                                                            </td>
-                                                            <td>
-                                                                ${count * 100 / fn:length(studentCourses)} %
-                                                            </td>
-                                                        </tr>
-                                                        <c:set var="count" value="0"/>
-                                                        <c:set var="ratio" value="0.0"/>
-                                                        <tr class="text-center">
-                                                            <td>U</td>
-                                                            <td>
-
-                                                                <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
-                                                                    <c:if test="${sc.grade eq 'U' or sc.grade eq 'U'}">
-                                                                        <c:set var="count" value="${count + 1}"/>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                                ${count}
-                                                            </td>
-                                                            <td>
-                                                                ${count * 100 / fn:length(studentCourses)} %
-                                                            </td>
-                                                        </tr>
-
-                                                        </tbody>
-                                                    </table>
                                                 </div>
+
                                             </div>
                                         </div>
-
+                                        <br/>
+                                        <br/>
+                                        <div id="ratio-div">
+                                            <%@include file="/WEB-INF/view/role/common/grade/ratioDetailDiv.jsp" %>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -333,11 +216,6 @@
                     <!--end::Card-->
                 </div>
             </div>
-
-
-
-
-
         </div>
         <!--end::Container-->
     </div>
@@ -346,16 +224,13 @@
 <!--end::Content-->
 
 
-
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
-
     window.print();
     window.onafterprint = function(){
         window.close();
     }
-
 </script>
 </body>
 </html>

@@ -31,6 +31,8 @@ public class StudentCourse implements Serializable {
     private boolean valid;
 
 
+
+
     private int acquire; //TODO: 수강중, 수강완료
 
     public int getId() {
@@ -184,6 +186,8 @@ public class StudentCourse implements Serializable {
         return 0.0;
 
     }
+
+    
 
     @Override
     public String toString() {

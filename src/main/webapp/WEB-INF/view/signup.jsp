@@ -118,14 +118,14 @@
                             </c:set>
                             <form:input class="form-control form-control-solid h-auto rounded" type="text" placeholder="${labelLastName}" path="contact.lastName" autocomplete="off"/>
                         </div>
-                        <div class="form-group school-year-div">
+                        <%--<div class="form-group school-year-div">
                             <form:select path="schoolYear" class="form-control form-control-solid " style="margin-top:10px;">
                                 <option value="0"><spring:message code="common.schoolYear"/></option>
                                 <c:forEach var="d" begin="1" end="4">
                                     <form:option value="${d}">${d}</form:option>
                                 </c:forEach>
                             </form:select>
-                        </div>
+                        </div>--%>
                         <!--end::Form group-->
                         <!--begin::Form group-->
                         <div class="form-group">
@@ -381,7 +381,7 @@
 
     jQuery(document).ready(function() {
         KTFormControls.init();
-        var role = $("#select-role").children("option:selected").val().trim();
+        /*var role = $("#select-role").children("option:selected").val().trim();
         if(role == 'student') {
             $(".school-year-div").show("normal");
         } else {
@@ -396,6 +396,7 @@
                 $(".school-year-div").hide("normal");
             }
         });
+        */
 
     });
 

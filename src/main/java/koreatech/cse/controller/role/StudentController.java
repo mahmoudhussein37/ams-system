@@ -11,6 +11,7 @@ import koreatech.cse.domain.univ.*;
 import koreatech.cse.repository.*;
 import koreatech.cse.service.AuthorityService;
 import koreatech.cse.service.FileService;
+import koreatech.cse.service.ProfService;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.DateHelper;
 import org.apache.commons.lang.StringUtils;
@@ -81,7 +82,10 @@ public class StudentController {
     private AssessmentFactorMapper assessmentFactorMapper;
     @Inject
     private AssessmentMapper assessmentMapper;
-
+    @Inject
+    private CertificateMapper certificateMapper;
+    @Inject
+    private ProfService profService;
 
     @RequestMapping("/courseGuide/yearlyCurriculum")
     public String yearlyCurriculum(Model model) {
@@ -412,6 +416,26 @@ public class StudentController {
         model.addAttribute("studentUser", studentUser);
         model.addAttribute("studentCourses", studentCourses);
         return "role/student/inquiryGrade/gradeDetail";
+    }
+
+    @RequestMapping("/grades/inquiryGrade/gradeDetailForPrint")
+    public String inquiryGradeDetailPrint(Model model) {
+        User studentUser = User.current();
+        model.addAttribute("studentUser", studentUser);
+
+        Certificate certificate = certificateMapper.findByUserId(studentUser.getId());
+        if(certificate == null) {
+            certificate = new Certificate();
+            certificate.setRequestId(User.current().getId());
+            certificate.setUserId(studentUser.getId());
+            certificateMapper.insert(certificate);
+        }
+        model.addAttribute("certificate", certificate);
+        model.addAttribute("today", DateHelper.format(new Date()));
+        Map<Semester, List<StudentCourse>> map = profService.getStudentSemesterCourseMap(studentUser.getId());
+        model.addAttribute("finalScore", profService.getStudentTotalScore(studentUser.getId()));
+        model.addAttribute("courseMap", map);
+        return "role/common/grade/gradeCertForPrint";
     }
 
     @RequestMapping("/graduation/graduationRequirements")

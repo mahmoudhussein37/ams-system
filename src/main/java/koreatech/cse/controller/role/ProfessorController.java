@@ -746,7 +746,7 @@ public class ProfessorController {
         List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(pc.getId());
         model.addAttribute("studentCourses", studentCourses);
 
-        return "role/professor/registerGrade/courseDetailForPrint";
+        return "role/common/grade/courseDetailForPrint";
     }
 
     @RequestMapping(value = "/classProgress/registerGrade/courseDetail", method = RequestMethod.POST)

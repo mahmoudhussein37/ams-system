@@ -1,6 +1,8 @@
 package koreatech.cse.repository;
 
 import koreatech.cse.domain.univ.Article;
+import koreatech.cse.repository.provider.ArticleSqlProvider;
+import koreatech.cse.util.mybatis.Pageable;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -23,19 +25,25 @@ public interface BoardMapper {
     void updateHit(@Param("boardTableName") String boardTableName, @Param("id") int id);
 
     @Delete("DELETE FROM ${boardTableName} WHERE id = #{id}")
-    void deleteById(@Param("boardTableName") String boardTableName, @Param("id") int id);
+    void delete(@Param("boardTableName") String boardTableName, @Param("id") int id);
 
-    @Select("SELECT id, USER_ID, SUBJECT, hit, registered_date, FROM ${boardTableName} ORDER BY registered_date desc LIMIT #{offset}, #{size}")
-    List<Article> findArticleList(@Param("boardTableName") String boardTableName, @Param("offset") int offset, @Param("size") int size);
+    @Select("SELECT * FROM ${boardTableName} ORDER BY registered_date desc LIMIT #{size}")
+    List<Article> findArticleList(@Param("boardTableName") String boardTableName, @Param("size") int size);
 
-    @Select("SELECT id, SUBJECT, hit, registered_date, MOD_DATETIME FROM ${boardTableName} WHERE ${searchType} LIKE CONCAT('%',#{searchWord},'%') ORDER BY registered_date desc LIMIT #{offset}, #{size}")
-    List<Article> findArticleListByLike(@Param("boardTableName") String boardTableName, @Param("searchType") String searchType, @Param("searchWord") String searchWord,
-                                        @Param("offset") int offset, @Param("size") int size);
+    @Select("SELECT * FROM ${boardTableName} ORDER BY registered_date desc")
+    List<Article> findArticleAll(@Param("boardTableName") String boardTableName);
+
+    @SelectProvider(type = ArticleSqlProvider.class, method = "findAllSql")
+    List<Article> findArticleListAjax(Pageable pageable);
+
+    @SelectProvider(type = ArticleSqlProvider.class, method = "countAllSql")
+    int countArticleListAjax(Pageable pageable);
+
+    /*@ResultMap("findOne-int")
+    @SelectProvider(type = ConferenceManuscriptSqlProvider.class, method = "findCowrittenManuscriptsSql")
+    List<Manuscript> findCowrittenManuscripts(Pageable pageable);*/
 
     @Select("SELECT COUNT(article_id) FROM ${boardTableName}")
     int countAll(@Param("boardTableName") String boardTableName);
-
-    @Select("SELECT COUNT(article_id) FROM ${boardTableName} WHERE ${searchType} LIKE CONCAT('%',#{searchWord},'%')")
-    int countAllByLike(@Param("boardTableName") String boardTableName, @Param("searchType") String searchType, @Param("searchWord") String searchWord);
 
 }

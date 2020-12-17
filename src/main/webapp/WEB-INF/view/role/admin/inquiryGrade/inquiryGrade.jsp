@@ -16,30 +16,19 @@
                     <!--begin::Card-->
                     <div class="card card-custom">
                         <div class="card-header">
-                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.admin.sub4_1"/></h3>
-
+                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.student.sub4_1"/></h3>
                         </div>
                         <div class="card-body">
                             <div class="row">
-
                                 <div class="col-md-2">
-                                    <spring:message code="common.year"/><br/>
-                                    <select id="search-year" class="form-control" style="margin-top:10px;">
-                                        <option value="0">-</option>
-                                        <c:forEach var="y" items="${yearList}">
-
-                                            <option value="${y}">${y}</option>
-                                        </c:forEach>
-                                    </select>
+                                    <spring:message code="common.studentsNumber"/><br/>
+                                    <input type="text" id="search-number" class="form-control input-enter" value="" style="margin-top:10px;"/>
                                 </div>
-                                <div class="col-md-2">
-                                    <spring:message code="common.semester"/><br/>
-                                    <select id="search-semester" class="form-control" style="margin-top:10px;"><option value="0">-</option>
-                                        <option value="1"><spring:message code="common.sem1"/></option>
-                                        <option value="2"><spring:message code="common.sem2"/></option>
-                                    </select>
+                                <div class="col-md-3">
+                                    <spring:message code="common.studentsName"/><br/>
+                                    <input type="text" id="search-name" class="form-control input-enter"  value="" style="margin-top:10px;"/>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <spring:message code="common.department"/><br/>
                                     <select id="search-division" class="form-control" style="margin-top:10px;"><option value="0">-</option>
                                         <c:forEach var="division" items="${divisions}">
@@ -47,25 +36,23 @@
                                         </c:forEach>
                                     </select>
                                 </div>
-                                <div class="col-md-2">
-                                    <spring:message code="common.courseCode"/><br/>
-                                    <input type="text" id="search-code" class="form-control input-enter" value="" style="margin-top:10px;"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <spring:message code="common.courseTitle"/><br/>
-                                    <input type="text" id="search-title" class="form-control input-enter"  value="" style="margin-top:10px;"/>
-                                </div>
+                                <%--<div class="col-md-2">
+                                    <spring:message code="common.major"/><br/>
+                                    <select id="search-major" class="form-control" style="margin-top:10px;">
+                                        <c:forEach var="major" items="${majors}">
+                                            <option value="${major.id}">${major.name}</option>
+                                        </c:forEach>
 
-                                <div class="col-md-2">
+                                    </select>
+                                </div>--%>
+                                <div class="col-md-1">
                                     <br/>
                                     <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="search()"><spring:message code="common.search"/></button>
                                 </div>
-                                <div class="col-md-2">
-
+                                <div class="col-md-1">
+                                    <br/>
+                                    <button class="btn btn-light" style="width:100%;margin-top:10px;" onclick="javascript:location.reload()"><spring:message code="common.reset"/></button>
                                 </div>
-
-
-
 
                             </div>
                             <br/><br/>
@@ -111,26 +98,24 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 
 <script>
-
     function search() {
-        var year = $("#search-year").children("option:selected").val().trim();
-        var semester = $("#search-semester").children("option:selected").val().trim();
-        var code = $("#search-code").val().trim();
-        var title = $("#search-title").val().trim();
+        var number = $("#search-number").val().trim();
+        var name = $("#search-name").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/admin/academicManagement/studentGrade/courseTable?year=" + year + "&semester=" + semester + "&division=" + division + "&code=" + code +"&title=" + title);
+        //var major = $("#search-major").children("option:selected").val().trim();
+
+        $(".table-div").load("${baseUrl}/admin/studentManagement/inquiryGrade/studentTable?number=" + number + "&name=" + name + "&division=" + division);
     }
-
-    $(".input-enter").keydown(function(key) {
-        if (key.keyCode == 13) {
-            search();
-        }
-    });
-
     $(document).ready(function() {
-        $(".table-div").load("${baseUrl}/admin/academicManagement/studentGrade/courseTable");
-    });
+        $(".table-div").load("${baseUrl}/admin/studentManagement/inquiryGrade/studentTable");
 
+        $(".input-enter").keydown(function(key) {
+            if (key.keyCode == 13) {
+                search();
+            }
+        });
+
+    });
 </script>
 </body>
 </html>

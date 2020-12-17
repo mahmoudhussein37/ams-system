@@ -1,10 +1,9 @@
 package koreatech.cse.controller;
 
-import koreatech.cse.domain.Feedback;
-import koreatech.cse.domain.Searchable;
-import koreatech.cse.domain.UploadedFile;
-import koreatech.cse.domain.User;
+import koreatech.cse.domain.*;
 import koreatech.cse.domain.constant.Role;
+import koreatech.cse.domain.univ.Article;
+import koreatech.cse.repository.BoardMapper;
 import koreatech.cse.repository.FeedbackMapper;
 import koreatech.cse.repository.UploadedFileMapper;
 import koreatech.cse.repository.UserMapper;
@@ -20,12 +19,11 @@ import org.springframework.web.bind.support.SessionStatus;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.List;
 
 @Controller
 @Transactional
@@ -39,35 +37,22 @@ public class HomeController {
     private FeedbackMapper feedbackMapper;
     @Inject
     private UploadedFileMapper uploadedFileMapper;
+    @Inject
+    private BoardMapper boardMapper;
 
 
     @RequestMapping
-    public String home(HttpSession session) {
+    public String home(Model model) {
+
+        String[] boardTableNames = {"notice", "de", "hire", "schedule"};
+        for(String b: boardTableNames) {
+            List<Article> articleList = boardMapper.findArticleList("board_" + b, 6);
+            model.addAttribute(b + "List", articleList);
+        }
+        model.addAttribute("home", true);
 
         return "index";
     }
-
-    /*@RequestMapping("/majorList")
-    public String majorList(Model model, @RequestParam(required=false, defaultValue = "0") int divisionId,
-                            @RequestParam(required=false, defaultValue = "true") boolean enabled,
-                            @RequestParam(required=false, defaultValue = "0") int defaultSelected) {
-        if(enabled) {
-            if (divisionId == 0) {
-                model.addAttribute("majorList", majorMapper.findAllEnabled());
-            } else {
-                model.addAttribute("majorList", majorMapper.findAllEnabledByDivisionId(divisionId));
-            }
-        } else {
-            if (divisionId == 0) {
-                model.addAttribute("majorList", majorMapper.findAll());
-            } else {
-                model.addAttribute("majorList", majorMapper.findAllByDivisionId(divisionId));
-            }
-        }
-        model.addAttribute("defaultSelected", defaultSelected);
-        return "include/majorOptions";
-    }*/
-
     @RequestMapping("/profList")
     public String profList(Model model, @RequestParam(required=false, defaultValue = "0") int divisionId, @RequestParam(required=false, defaultValue = "0") int defaultSelected) {
         Searchable searchable = new Searchable();
@@ -79,35 +64,24 @@ public class HomeController {
         return "include/profOptions";
     }
 
-    @RequestMapping("/jstlTest")
-    public String emptyTest(Model model) {
-        String a = null;
-        String b = "";
-        String c = "hello";
-        List<String> d = new ArrayList<String>();
-        List<String> e = new ArrayList<String>();
-        e.add(a);
-        e.add(b);
+    @RequestMapping("/registerAdmin")
+    @ResponseBody
+    public String registerAdmin(@RequestParam String code) {
+        if(code.equals("c57c-496e-b71a-05e6")) {
+            User user = new User();
+            Contact contact = new Contact();
+            contact.setFirstName("Admin");
+            contact.setLastName("Admin");
+            user.setUsername("admin@admin.org");
+            user.setPassword("testadmin1234!");
+            user.setConfirm(true);
+            user.setEnabled(true);
+            user.setContact(contact);
+            userService.signupAdmin(user);
 
-        model.addAttribute("a", a);
-        model.addAttribute("b", b);
-        model.addAttribute("c", c);
-        model.addAttribute("d", d);
-        model.addAttribute("e", e);
+        }
 
-        List<String> stringArray = new ArrayList<String>();
-        stringArray.add("one");
-        stringArray.add("two");
-        stringArray.add("three");
-        model.addAttribute("stringArray", stringArray);
-
-        Map<Integer, String> stringMap = new HashMap<Integer, String>();
-        stringMap.put(1, "one");
-        stringMap.put(2, "two");
-        stringMap.put(3, "three");
-        model.addAttribute("stringMap", stringMap);
-
-        return "jstlTest";
+        return "success";
     }
 
     @RequestMapping("/signin")
