@@ -1,6 +1,8 @@
 package koreatech.cse.repository;
 
 import koreatech.cse.domain.univ.Article;
+import koreatech.cse.repository.provider.ArticleSqlProvider;
+import koreatech.cse.util.mybatis.Pageable;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +29,19 @@ public interface BoardMapper {
 
     @Select("SELECT * FROM ${boardTableName} ORDER BY registered_date desc LIMIT #{size}")
     List<Article> findArticleList(@Param("boardTableName") String boardTableName, @Param("size") int size);
+
+    @Select("SELECT * FROM ${boardTableName} ORDER BY registered_date desc")
+    List<Article> findArticleAll(@Param("boardTableName") String boardTableName);
+
+    @SelectProvider(type = ArticleSqlProvider.class, method = "findAllSql")
+    List<Article> findArticleListAjax(Pageable pageable);
+
+    @SelectProvider(type = ArticleSqlProvider.class, method = "countAllSql")
+    int countArticleListAjax(Pageable pageable);
+
+    /*@ResultMap("findOne-int")
+    @SelectProvider(type = ConferenceManuscriptSqlProvider.class, method = "findCowrittenManuscriptsSql")
+    List<Manuscript> findCowrittenManuscripts(Pageable pageable);*/
 
     @Select("SELECT COUNT(article_id) FROM ${boardTableName}")
     int countAll(@Param("boardTableName") String boardTableName);

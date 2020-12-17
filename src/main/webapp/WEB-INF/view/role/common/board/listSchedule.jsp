@@ -64,7 +64,12 @@
 
                                 </tbody>
                             </table>
+                            <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                <br/><br/><br/>
+                                <a href="/board/${boardName}/list?all=true" class="btn btn-secondary"><spring:message code="admin.board.seeAll"/></a>
 
+
+                            </sec:authorize>
                         </div>
                     </div>
                     <!--end::Card-->

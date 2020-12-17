@@ -49,7 +49,6 @@
                         <div class="card-body">
                             <sec:authorize access="hasRole('ROLE_ADMIN')">
                             <a href="/admin/board/${boardName}/form" class="btn btn-primary"><spring:message code="admin.board.write"/></a>
-
                             <br/><br/><br/>
                             </sec:authorize>
 
@@ -66,7 +65,22 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach var="article" items="${articleList}" varStatus="varStatus">
+
+
+                                <tr>
+                                    <td data-column-data="registeredDate" data-column-searchable="false" data-column-orderable="true" data-column-order="desc" data-column-class="pl-0" data-column-width="10%"></td>
+                                    <%--<td data-column-data="typeId" data-column-render="renderManuscriptType" data-column-orderable="true" data-column-class="cellCenter" data-column-width="50px"></td>
+                                    <c:if test="${cnid != 'icic' && cnid != 'icsmb' && cnid != 'icsmb2020' }">
+                                        <td data-column-data="presentationTypeId" data-column-render="renderPresentationType" data-column-orderable="true" data-column-class="cellCenter" data-column-width="50px"></td>
+                                    </c:if>
+                                    <td data-column-data="trackId" data-column-searchable="false" data-column-render="renderTrack" data-column-visible="${conference.co.manageTrack}" data-column-width="70px"></td>
+                                    <td data-column-render="renderAuthors" data-column-orderable="false" data-column-searchable="false" data-column-width="70px"></td>
+                                    <td data-column-data="title" data-column-render="renderTitleLink" data-column-width="120px"></td>
+                                    <td data-column-data="submitDate" data-column-render="renderDate" data-column-class="cellCenter" data-column-width="70px"></td>
+                                    <td data-column-data="status" data-column-render="renderStatus" data-column-width="70px"></td>
+                                    <td data-column-data="id" data-column-render="renderButtonCompleted" data-column-orderable="false" data-column-searchable="false" data-column-class="cellCenter" data-column-width="70px"></td>--%>
+                                </tr>
+                                <%--<c:forEach var="article" items="${articleList}" varStatus="varStatus">
                                     <tr>
 
                                         <td class="pl-0" style="width:10%">
@@ -86,17 +100,12 @@
                                         </td>
                                         </sec:authorize>
                                     </tr>
-                                </c:forEach>
+                                </c:forEach>--%>
 
 
                                 </tbody>
                             </table>
-                            <sec:authorize access="hasRole('ROLE_ADMIN')">
-                                <br/><br/><br/>
-                                <a href="/board/${boardName}/list?all=true" class="btn btn-secondary"><spring:message code="admin.board.seeAll"/></a>
 
-
-                            </sec:authorize>
                         </div>
                     </div>
                     <!--end::Card-->
@@ -118,11 +127,15 @@
 
 
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
-
+<script src="${resources}/js/tableAjax.js" type="text/javascript"></script>
 <script>
-    $("#course-list").DataTable({
+
+    TableAjax.init($('#course-list'), '/board/${boardName}/listAjax', "${locale}");
+
+
+/*    $("#course-list").DataTable({
         "order": [[ 0, "desc" ]]
-    });
+    });*/
     $(document).ready(function() {
 
 
