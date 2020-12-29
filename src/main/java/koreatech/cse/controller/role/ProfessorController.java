@@ -729,6 +729,9 @@ public class ProfessorController {
         model.addAttribute("studentCourses", studentCourses);
         MenuAccess menuAccess = menuAccessMapper.findOne();
         model.addAttribute("menuAccess", menuAccess);
+
+
+
         return "role/professor/registerGrade/courseDetail";
     }
 

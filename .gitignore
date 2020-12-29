@@ -3,3 +3,4 @@ target
 *.iml
 src/main/resources/dev/*
 src/main/resources/prod/*
+src/main/resources/prod/config.properties
