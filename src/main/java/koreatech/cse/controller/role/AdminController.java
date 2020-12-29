@@ -1780,8 +1780,17 @@ public class AdminController {
 
 
         Semester exist = semesterMapper.findByYearSemester(semester.getYear(), semester.getSemester());
-        if(exist == null)
+        if(exist == null) {
+            List<Semester> semesterAll = semesterMapper.findAll();
+            for(Semester s: semesterAll) {
+                s.setCurrent(false);
+                semesterMapper.update(s);
+            }
+            semester.setCurrent(true);
             semesterMapper.insert(semester);
+        }
+
+
         sessionStatus.setComplete();
 
         return "redirect:/admin/systemManagement/yearSemester?result=success";
@@ -1792,6 +1801,22 @@ public class AdminController {
     public Boolean deleteSemester(@RequestParam int id) {
         Semester exist = semesterMapper.findOne(id);
         semesterMapper.delete(exist);
+
+        return true;
+    }
+
+    @RequestMapping(value = "/systemManagement/yearSemester/currentSemester", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean currentSemester(@RequestParam int id) {
+        List<Semester> semesterAll = semesterMapper.findAll();
+        for(Semester s: semesterAll) {
+            s.setCurrent(false);
+            semesterMapper.update(s);
+        }
+        Semester exist = semesterMapper.findOne(id);
+        exist.setCurrent(true);
+        semesterMapper.update(exist);
+
 
         return true;
     }

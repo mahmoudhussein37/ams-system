@@ -371,6 +371,9 @@ public class StudentController {
         model.addAttribute("assessmentFactorsAll", assessmentFactorsAll);
         MenuAccess menuAccess = menuAccessMapper.findOne();
         model.addAttribute("menuAccess", menuAccess);
+        ProfessorCourse pc = professorCourseMapper.findOne(sc.getProfCourseId());
+        Semester semester = pc.getSemester();
+        model.addAttribute("isEditable", menuAccess.isAssessment() && semester.isCurrent());
 
         return "role/student/classAssessment/courseDetail";
     }

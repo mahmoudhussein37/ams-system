@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface SemesterMapper {
-    @Insert("INSERT INTO semester (year, semester) VALUES (#{year}, #{semester})")
+    @Insert("INSERT INTO semester (year, semester, current) VALUES (#{year}, #{semester}, #{current})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(Semester semester);
 
@@ -27,6 +27,7 @@ public interface SemesterMapper {
 
     @Update("UPDATE `semester` SET"+
             "`year` = #{year},"+
+            "`current` = #{current},"+
             "`semester` = #{semester} "+
             "WHERE `id` = #{id}")
     void update(Semester semester);

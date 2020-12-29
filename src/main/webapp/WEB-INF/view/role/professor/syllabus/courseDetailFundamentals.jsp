@@ -86,7 +86,7 @@
                         </thead>
                         <tbody>
                         <c:choose>
-                            <c:when test="${menuAccess.syllabus}">
+                            <c:when test="${isEditable}">
                                 <tr class="text-center">
                                     <td>
                                         <form:input type="number" path="rateAttendance" cssClass="form-control"/>
@@ -164,7 +164,7 @@
                         </thead>
                         <tbody>
                         <c:choose>
-                            <c:when test="${menuAccess.syllabus}">
+                            <c:when test="${isEditable}">
                                 <tr class="text-center">
                                     <td>
                                         1
@@ -398,7 +398,7 @@
                         </thead>
                         <tbody>
                         <c:choose>
-                            <c:when test="${menuAccess.syllabus}">
+                            <c:when test="${isEditable}">
                                 <tr class="text-center">
                                     <td>
                                         1
@@ -480,7 +480,7 @@
         </div>
 
     </div>
-    <c:if test="${menuAccess.syllabus}">
+    <c:if test="${isEditable}">
     <div class="card-footer">
         <button type="submit" id="lecture-fundamental-save" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
             <%--<button type="reset" class="btn btn-secondary">Cancel</button>--%>
