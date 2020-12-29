@@ -27,6 +27,7 @@ public interface SemesterMapper {
 
     @Update("UPDATE `semester` SET"+
             "`year` = #{year},"+
+            "`current` = #{current},"+
             "`semester` = #{semester} "+
             "WHERE `id` = #{id}")
     void update(Semester semester);

@@ -10,6 +10,7 @@ public class Semester implements Serializable {
     private int id;
     private int year;
     private int semester;
+    private boolean current;
 
     public int getId() {
         return id;
@@ -33,6 +34,14 @@ public class Semester implements Serializable {
 
     public void setSemester(int semester) {
         this.semester = semester;
+    }
+
+    public boolean isCurrent() {
+        return current;
+    }
+
+    public void setCurrent(boolean current) {
+        this.current = current;
     }
 
     @Override

@@ -731,7 +731,6 @@ public class ProfessorController {
         model.addAttribute("menuAccess", menuAccess);
 
 
-
         return "role/professor/registerGrade/courseDetail";
     }
 

@@ -1780,8 +1780,17 @@ public class AdminController {
 
 
         Semester exist = semesterMapper.findByYearSemester(semester.getYear(), semester.getSemester());
-        if(exist == null)
+        if(exist == null) {
+            List<Semester> semesterAll = semesterMapper.findAll();
+            for(Semester s: semesterAll) {
+                s.setCurrent(false);
+                semesterMapper.update(s);
+            }
+            semester.setCurrent(true);
             semesterMapper.insert(semester);
+        }
+
+
         sessionStatus.setComplete();
 
         return "redirect:/admin/systemManagement/yearSemester?result=success";
