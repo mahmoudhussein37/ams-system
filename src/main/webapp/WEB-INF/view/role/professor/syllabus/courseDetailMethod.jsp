@@ -46,7 +46,7 @@
                     <table class="table table-head-custom table-vertical-center">
                         <c:set var="count" value="1"/>
                         <c:choose>
-                            <c:when test="${menuAccess.syllabus}">
+                            <c:when test="${isEditable}">
                                 <thead>
                                 <tr class="table-secondary text-center">
                                     <th class="pl-0" style=""></th>
@@ -147,7 +147,7 @@
                     <table class="table table-head-custom table-vertical-center">
                         <c:set var="count" value="1"/>
                         <c:choose>
-                            <c:when test="${menuAccess.syllabus}">
+                            <c:when test="${isEditable}">
                                 <thead>
                                 <tr class="table-secondary text-center">
                                     <th class="pl-0" style=""></th>
@@ -248,7 +248,7 @@
                     <table class="table table-head-custom table-vertical-center">
                         <c:set var="count" value="1"/>
                         <c:choose>
-                            <c:when test="${menuAccess.syllabus}">
+                            <c:when test="${isEditable}">
                                 <thead>
                                 <tr class="table-secondary text-center">
                                     <th class="pl-0" style=""></th>
@@ -354,7 +354,7 @@
                     <table class="table table-head-custom table-vertical-center">
                         <c:set var="count" value="1"/>
                         <c:choose>
-                            <c:when test="${menuAccess.syllabus}">
+                            <c:when test="${isEditable}">
                                 <thead>
                                 <tr class="table-secondary text-center">
                                     <th class="pl-0" style=""></th>
@@ -467,7 +467,7 @@
 
 
     </div>
-    <c:if test="${menuAccess.syllabus}">
+    <c:if test="${isEditable}">
     <div class="card-footer">
         <button type="button" id="prof-lecture-method-save" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
             <%--<button type="reset" class="btn btn-secondary">Cancel</button>--%>

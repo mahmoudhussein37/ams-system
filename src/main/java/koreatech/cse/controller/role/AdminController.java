@@ -1805,6 +1805,22 @@ public class AdminController {
         return true;
     }
 
+    @RequestMapping(value = "/systemManagement/yearSemester/currentSemester", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean currentSemester(@RequestParam int id) {
+        List<Semester> semesterAll = semesterMapper.findAll();
+        for(Semester s: semesterAll) {
+            s.setCurrent(false);
+            semesterMapper.update(s);
+        }
+        Semester exist = semesterMapper.findOne(id);
+        exist.setCurrent(true);
+        semesterMapper.update(exist);
+
+
+        return true;
+    }
+
     @RequestMapping(value = "/systemManagement/yearSemester/semesterEditable", method = RequestMethod.POST)
     @ResponseBody
     public Boolean semesterEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {

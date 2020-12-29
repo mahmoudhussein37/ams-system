@@ -7,7 +7,7 @@
         <th class="pl-0" style=""><spring:message code="common.no"/></th>
         <th style=""><span class="text-primary"><spring:message code="common.year"/></span></th>
         <th style=""><span class="text-primary"><spring:message code="common.semester"/></span></th>
-        <%--<th style=""><span class="text-primary"></span>--%>
+        <th style=""><span class="text-primary"><spring:message code="common.currentSemester"/></span>
     </tr>
     </thead>
     <tbody>
@@ -22,6 +22,9 @@
             </td>
             <td>
                 <a href="#" class="course-editable" data-type="number" data-name="semester" data-url="${baseUrl}/admin/systemManagement/yearSemester/semesterEditable" data-pk="${semester.id}" data-original-title="<spring:message code="common.semester"/>">${semester.semester}</a>
+            </td>
+            <td>
+                <input type="radio" class="current-semester" name="current-semester" value="${semester.id}" ${semester.current ? 'checked' : ''}/>
             </td>
 
             <%--<td>
@@ -50,7 +53,16 @@
         $("body").on("click", ".delete-semester", function(e) {
             e.preventDefault();
             var id = $(this).attr("data-id");
-            $.post("${baseUrl}/admin/systemManagement/yearSemester/deleteSemester?id=" + id, function(result) {
+            $.post("${baseUrl}/admin/systemManagement/yearSemester/deleteSemester?id=" + id, function() {
+                alert("<spring:message code="common.success"/>");
+                location.reload();
+            });
+        });
+
+        $("body").on("click", ".current-semester", function(e) {
+            e.preventDefault();
+            var semesterId = $(this).val();
+            $.post("${baseUrl}/admin/systemManagement/yearSemester?currentSemester?id=" + semesterId, function() {
                 alert("<spring:message code="common.success"/>");
                 location.reload();
             });

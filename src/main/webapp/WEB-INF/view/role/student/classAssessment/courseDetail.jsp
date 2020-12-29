@@ -28,7 +28,7 @@
                     </thead>
                     <tbody>
                     <c:choose>
-                        <c:when test="${menuAccess.assessment and assessment.id eq 0}">
+                        <c:when test="${isEditable and assessment.id eq 0}">
                             <c:forEach var="af" items="${assessmentFactors}" varStatus="varStatus">
                                 <input type="hidden" name="item${varStatus.count}" value="${af.id}"/>
                                 <tr class="table-light text-center">
@@ -85,12 +85,12 @@
 
 
                 <label><spring:message code="common.comment"/></label>
-                <form:textarea rows="5" path="comment" class="form-control" style="" disabled="${menuAccess.assessment and assessment.id eq 0 ? 'false' : 'true'}"></form:textarea>
+                <form:textarea rows="5" path="comment" class="form-control" style="" disabled="${isEditable and assessment.id eq 0 ? 'false' : 'true'}"></form:textarea>
             </div>
         </div>
     </div>
 </div>
-    <c:if test="${menuAccess.assessment and assessment.id eq 0}">
+    <c:if test="${isEditable and assessment.id eq 0}">
 <div class="card-footer">
     <button type="submit" id="assessment-save" class="btn btn-primary mr-2"><spring:message code="common.submit"/></button>
 </div>

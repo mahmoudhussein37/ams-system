@@ -434,6 +434,7 @@ public class ProfessorController {
     @RequestMapping("/classProgress/syllabus/courseDetail")
     public String courseDetail(Model model, @RequestParam int profCourseId, @RequestParam(defaultValue = "false", required=false) String print) {
         ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
+
         model.addAttribute("pc", pc);
         LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(pc.getId());
         model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
@@ -464,7 +465,9 @@ public class ProfessorController {
 
         MenuAccess menuAccess = menuAccessMapper.findOne();
         model.addAttribute("menuAccess", menuAccess);
+        Semester semester = pc.getSemester();
 
+        model.addAttribute("isEditable", menuAccess.isSyllabus() && semester.isCurrent());
         if(print.equals("true"))
             return "role/common/syllabus/courseDetailForPrint";
         return "role/professor/syllabus/courseDetail";
@@ -728,7 +731,9 @@ public class ProfessorController {
         List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(pc.getId());
         model.addAttribute("studentCourses", studentCourses);
         MenuAccess menuAccess = menuAccessMapper.findOne();
+        Semester semester = pc.getSemester();
         model.addAttribute("menuAccess", menuAccess);
+        model.addAttribute("isEditable", menuAccess.isGrade() && semester.isCurrent());
 
 
         return "role/professor/registerGrade/courseDetail";
@@ -854,6 +859,9 @@ public class ProfessorController {
         model.addAttribute("menuAccess", menuAccess);
 
         ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
+        Semester semester = pc.getSemester();
+
+        model.addAttribute("isEditable", menuAccess.isCqi() && semester.isCurrent());
         model.addAttribute("myAvg", profService.getAssignedAvg(pc));
         model.addAttribute("pc", pc);
         Searchable s = new Searchable();

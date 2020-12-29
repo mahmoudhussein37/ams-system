@@ -85,7 +85,7 @@
                             </td>
 
                             <c:choose>
-                                <c:when test="${menuAccess.grade}">
+                                <c:when test="${isEditable}">
                                     <td>
                                         <a href="#" class="course-editable" data-type="number" data-name="scoreAttendance" data-url="${baseUrl}/professor/classProgress/registerGrade/gradeEditable" data-pk="${sc.id}" data-original-title="<spring:message code="professor.grade.attendance"/>">${sc.scoreAttendance}</a>
                                     </td>
@@ -197,7 +197,7 @@
     </div>
 
 </div>
-<c:if test="${menuAccess.grade}">
+<c:if test="${isEditable}">
 <div class="card-footer">
     <button type="submit" id="lecture-fundamental-save" class="btn btn-primary mr-2"><spring:message code="common.save"/></button>
     <%--<button type="reset" class="btn btn-secondary">Cancel</button>--%>
