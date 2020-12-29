@@ -62,7 +62,7 @@
         $("body").on("click", ".current-semester", function(e) {
             e.preventDefault();
             var semesterId = $(this).val();
-            $.post("${baseUrl}/admin/systemManagement/yearSemester?currentSemester?id=" + semesterId, function() {
+            $.post("${baseUrl}/admin/systemManagement/yearSemester/currentSemester?id=" + semesterId, function() {
                 alert("<spring:message code="common.success"/>");
                 location.reload();
             });
