@@ -66,10 +66,6 @@
                     <table class="table rounded">
                         <thead>
                         <tr class="table-secondary text-center">
-
-                            <td>
-                                <spring:message code="professor.grade.attendance"/>
-                            </td>
                             <td>
                                 <spring:message code="professor.grade.assignment"/>
                             </td>
@@ -88,10 +84,7 @@
                         <c:choose>
                             <c:when test="${isEditable}">
                                 <tr class="text-center">
-                                    <td>
-                                        <form:input type="number" path="rateAttendance" cssClass="form-control"/>
-                                    </td>
-                                    <td>
+                                                                        <td>
                                         <form:input type="number" path="rateAssignment" cssClass="form-control"/>
                                     </td>
                                     <td>
@@ -108,9 +101,6 @@
                             </c:when>
                             <c:otherwise>
                                 <tr class="text-center">
-                                    <td>
-                                        <form:input type="number" path="rateAttendance" cssClass="form-control" disabled="true"/>
-                                    </td>
                                     <td>
                                         <form:input type="number" path="rateAssignment" cssClass="form-control" disabled="true"/>
                                     </td>

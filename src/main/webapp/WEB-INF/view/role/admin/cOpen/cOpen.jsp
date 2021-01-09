@@ -143,7 +143,7 @@
         location.href="${baseUrl}/admin/courseManagement/cOpen";
         </c:if>
         $(".table-div").load("${baseUrl}/admin/courseManagement/cOpen/courseTable");
-        //changeMajor("#search-division", "#search-major", "true", 0);
+
     });
 </script>
 </body>

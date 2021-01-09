@@ -19,7 +19,7 @@ public class StudentCourse implements Serializable {
     private Course course;
     private User studentUser;
 
-    private int scoreAttendance;
+
     private int scoreAssignment;
     private int scoreMid;
     private int scoreFinal;
@@ -97,14 +97,6 @@ public class StudentCourse implements Serializable {
 
     public void setStudentUser(User studentUser) {
         this.studentUser = studentUser;
-    }
-
-    public int getScoreAttendance() {
-        return scoreAttendance;
-    }
-
-    public void setScoreAttendance(int scoreAttendance) {
-        this.scoreAttendance = scoreAttendance;
     }
 
     public int getScoreAssignment() {

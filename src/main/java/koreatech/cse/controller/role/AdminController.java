@@ -256,32 +256,8 @@ public class AdminController {
 
         GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear, divisionId);
         studentUser.setGraduationCriteria(graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
-        //model.addAttribute("graduationCriteria", graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
-
         List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(studentId);
         studentUser.setStudentCourses(studentCourses);
-        //model.addAttribute("studentCourses", studentCourses);
-
-        /*int mscCount = 0;
-        int liberalCount = 0;
-        int majorCount = 0;
-        for(StudentCourse studentCourse: studentCourses) {
-            Course course = studentCourse.getCourse();
-            if(course.getSubjCategory() == null)
-                continue;
-
-            if(course.getSubjCategory().equals("major"))
-                majorCount++;
-            if(course.getSubjCategory().equals("msc"))
-                mscCount++;
-            if(course.getSubjCategory().equals("liberal"))
-                liberalCount++;
-        }
-        model.addAttribute("majorCount", majorCount);
-        model.addAttribute("mscCount", mscCount);
-        model.addAttribute("liberalCount", liberalCount);*/
-
-
 
         return "role/admin/studentProfile/studentDetail";
     }
@@ -337,6 +313,115 @@ public class AdminController {
 
         model.addAttribute("studentList", studentList);
         return "role/admin/studentProfile/studentDetailForPrint";
+    }
+
+    @RequestMapping("/studentManagement/schoolYear")
+    public String schoolYear(Model model, @RequestParam(required=false) String result) {
+
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+        List<User> professors = userMapper.findAllProfessors();
+        model.addAttribute("professors", professors);
+        model.addAttribute("result", result);
+        return "role/admin/schoolYear/schoolYear";
+    }
+
+    @RequestMapping("/studentManagement/schoolYear/studentTable")
+    public String schoolYearStudentTable(Model model, @RequestParam(defaultValue = "0", required=false) int schoolYear,
+                                             @RequestParam(defaultValue = "0", required=false) int advisor,
+                                             @RequestParam(defaultValue = "0", required=false) int division) {
+        User firstUser = null;
+        List<User> userList;
+
+        if(schoolYear == 0 && advisor == 0 && division == 0) {
+            userList = new ArrayList<>();
+        } else {
+            Searchable searchable = new Searchable();
+            searchable.setAdvisor(advisor);
+            searchable.setSchoolYear(schoolYear);
+            searchable.setDivision(division);
+            userList = userMapper.findStudentBy(searchable);
+
+            for(User user: userList) {
+                firstUser = user;
+                break;
+            }
+        }
+
+        model.addAttribute("userList", userList);
+        model.addAttribute("firstUser", firstUser);
+        return "role/admin/schoolYear/studentTable";
+    }
+
+    @RequestMapping("/studentManagement/schoolYear/studentDetail")
+    public String schoolYearStudentDetail(Model model, @RequestParam int studentId) {
+        User studentUser = userMapper.findOne(studentId);
+        model.addAttribute("studentUser", studentUser);
+        model.addAttribute("statusList", StudentStatus.values());
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+
+        User advisor = userMapper.findOne(studentUser.getAdvisorId());
+        model.addAttribute("advisor", advisor);
+        List<User> professors = userMapper.findAllProfessors();
+        model.addAttribute("professors", professors);
+        return "role/admin/schoolYear/studentDetail";
+    }
+
+    @RequestMapping(value = "/studentManagement/schoolYear/studentDetail", method = RequestMethod.POST)
+    public String schoolYearStudentDetail(@ModelAttribute("studentUser") User studentUser, SessionStatus sessionStatus) {
+        System.out.println("studentUser = " + studentUser);
+
+        userMapper.update(studentUser);
+        userMapper.updateFromSignup(studentUser);
+        contactMapper.update(studentUser.getContact());
+        sessionStatus.setComplete();
+
+        return "redirect:/admin/studentManagement/schoolYear?result=success";
+    }
+
+    @RequestMapping(value = "/studentManagement/schoolYear/increaseYear", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean schoolYearStudentDetailForPrint(@RequestParam boolean checkAll,
+                                                   @RequestParam(defaultValue = "0", required=false) int schoolYear,
+                                                   @RequestParam(defaultValue = "0", required=false) int advisor,
+                                                   @RequestParam(defaultValue = "0", required=false) int division, @RequestParam Map<String, String> params) {
+        System.out.println("checkAll = " + checkAll);
+        List<Integer> integerIds = new ArrayList<>();
+        List<User> studentList;
+        if (checkAll) {
+            Searchable searchable = new Searchable();
+            searchable.setAdvisor(advisor);
+            searchable.setSchoolYear(schoolYear);
+            searchable.setDivision(division);
+            studentList = userMapper.findStudentBy(searchable);
+
+
+        } else {
+            params.entrySet().stream().filter(entry -> entry.getKey().equals("tableCheckbox")).forEach(entry -> {
+                String value = entry.getValue();
+                String[] split = value.split(",");
+                for (String userIdString : split) {
+                    if (StringUtils.isNotBlank(userIdString)) {
+                        integerIds.add(Integer.parseInt(userIdString));
+                    }
+                }
+            });
+            if(CollectionUtils.isEmpty(integerIds))
+                studentList = new ArrayList<>();
+            else
+                studentList = userMapper.findByUserIds(integerIds);
+        }
+
+        for(User u:studentList) {
+            u.setSchoolYear(u.getSchoolYear() + 1);
+            userMapper.update(u);
+        }
+
+
+        return true;
     }
 
     @RequestMapping("/studentManagement/studentCounseling")

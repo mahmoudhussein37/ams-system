@@ -196,7 +196,6 @@
         </c:if>
 
 
-        //changeMajor("#search-division", "#search-major", true);
 
     });
 </script>

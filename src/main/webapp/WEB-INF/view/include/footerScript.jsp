@@ -93,24 +93,6 @@
     var y = document.getElementById("current-year");
     if(y) y.innerHTML = String(new Date().getFullYear());
 
-    function changeMajor(divisionSelector, majorSelector, enabled, defaultSelected) {
-        var selected = defaultSelected;
-        if(!defaultSelected) {
-            selected = 0;
-        }
-
-        var divisionId = $(divisionSelector).children("option:selected").val();
-        $.get("${baseUrl}/majorList?enabled=" + enabled + "&divisionId=" + divisionId + "&defaultSelected=" + selected, function(html) {
-            $(majorSelector).html(html);
-        });
-        $(divisionSelector).change(function() {
-            divisionId = $(divisionSelector).children("option:selected").val();
-            $.get("${baseUrl}/majorList?enabled=" + enabled + "&divisionId=" + divisionId + "&defaultSelected=" + selected, function(html) {
-                $(majorSelector).html(html);
-            });
-        });
-    }
-
     function openPage(url) {
         var newPage=window.open(url);
     }

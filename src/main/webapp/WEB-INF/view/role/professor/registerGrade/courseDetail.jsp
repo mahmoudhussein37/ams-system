@@ -35,9 +35,7 @@
                             <spring:message code="common.status"/>
                         </td>
 
-                        <td>
-                            <spring:message code="professor.grade.attendance"/><br/>(${lectureFundamentals.rateAttendance})
-                        </td>
+
                         <td>
                             <spring:message code="professor.grade.assignment"/><br/>(${lectureFundamentals.rateAssignment})
                         </td>
@@ -86,9 +84,7 @@
 
                             <c:choose>
                                 <c:when test="${isEditable}">
-                                    <td>
-                                        <a href="#" class="course-editable" data-type="number" data-name="scoreAttendance" data-url="${baseUrl}/professor/classProgress/registerGrade/gradeEditable" data-pk="${sc.id}" data-original-title="<spring:message code="professor.grade.attendance"/>">${sc.scoreAttendance}</a>
-                                    </td>
+
                                     <td>
                                         <a href="#" class="course-editable" data-type="number" data-name="scoreAssignment" data-url="${baseUrl}/professor/classProgress/registerGrade/gradeEditable" data-pk="${sc.id}" data-original-title="<spring:message code="professor.grade.assignment"/>">${sc.scoreAssignment}</a>
                                     </td>
@@ -122,9 +118,7 @@
                                     </td>
                                 </c:when>
                                 <c:otherwise>
-                                    <td>
-                                            ${sc.scoreAttendance}
-                                    </td>
+
                                     <td>
                                             ${sc.scoreAssignment}
                                     </td>

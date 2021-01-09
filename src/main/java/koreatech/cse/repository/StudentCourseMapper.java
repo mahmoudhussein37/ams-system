@@ -22,7 +22,6 @@ public interface StudentCourseMapper {
             "`course_id`,"+
             "`prof_course_id`,"+
             "`acquire`,"+
-            "`score_attendance`,"+
             "`score_assignment`,"+
             "`score_mid`,"+
             "`score_final`,"+
@@ -34,7 +33,6 @@ public interface StudentCourseMapper {
             "#{courseId},"+
             "#{profCourseId},"+
             "#{acquire},"+
-            "#{scoreAttendance},"+
             "#{scoreAssignment},"+
             "#{scoreMid},"+
             "#{scoreFinal},"+
@@ -116,7 +114,6 @@ public interface StudentCourseMapper {
             "`course_id` = #{courseId},"+
             "`prof_course_id` = #{profCourseId},"+
             "`acquire` = #{acquire},"+
-            "`score_attendance` = #{scoreAttendance},"+
             "`score_assignment` = #{scoreAssignment},"+
             "`score_mid` = #{scoreMid},"+
             "`score_final` = #{scoreFinal},"+

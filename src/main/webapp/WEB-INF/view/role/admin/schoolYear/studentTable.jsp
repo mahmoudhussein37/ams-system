@@ -55,12 +55,12 @@
         $("#student-list").DataTable();
 
         <c:if test="${not empty firstUser}">
-        $(".detail-div").load("${baseUrl}/admin/studentManagement/studentProfile/studentDetail?studentId=${firstUser.id}");
+        $(".detail-div").load("${baseUrl}/admin/studentManagement/schoolYear/studentDetail?studentId=${firstUser.id}");
         </c:if>
         $("body").on('click', '.student-detail', function (e) {
             e.preventDefault();
             var studentId = $(this).attr("data-student-id");
-            $(".detail-div").load("${baseUrl}/admin/studentManagement/studentProfile/studentDetail?studentId=" + studentId);
+            $(".detail-div").load("${baseUrl}/admin/studentManagement/schoolYear/studentDetail?studentId=" + studentId);
 
         });
         $("body").on('click', '.print', function (e) {
@@ -73,7 +73,7 @@
             if (!checkedAll && size == 0) {
                 alert("<spring:message code="common.pleaseSelectItems"/>");
             } else {
-                openPage("${baseUrl}/admin/studentManagement/studentProfile/studentDetailForPrint?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("tableCheckbox"));
+                openPage("${baseUrl}/admin/studentManagement/schoolYear/studentDetailForPrint?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("tableCheckbox"));
             }
 
         });
@@ -87,7 +87,10 @@
             if (!checkedAll && size == 0) {
                 alert("<spring:message code="common.pleaseSelectItems"/>");
             } else {
-                openPage("${baseUrl}/admin/studentManagement/studentProfile/increaseGrade?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("tableCheckbox"));
+                $.post("${baseUrl}/admin/studentManagement/schoolYear/increaseYear?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("tableCheckbox"), function() {
+                    alert("<spring:message code="common.success"/>");
+                    location.reload();
+                });
             }
 
         });

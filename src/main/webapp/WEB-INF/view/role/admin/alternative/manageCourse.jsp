@@ -233,8 +233,6 @@
 
 
         $(".table-div").load("${baseUrl}/admin/courseManagement/alternative/altCourseTable?targetCourseId=${course.id}");
-        //changeMajor("#search-division", "#search-major", true);
-        //changeMajor("#divisionId", "#majorId", true);
     });
 
 </script>

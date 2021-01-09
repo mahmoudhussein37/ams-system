@@ -16,7 +16,7 @@ public class LectureFundamentals implements Serializable {
     private int userId; //professor user id;
     private String intro;
 
-    private int rateAttendance;
+
     private int rateAssignment;
     private int rateMid;
     private int rateFinal;
@@ -103,13 +103,7 @@ public class LectureFundamentals implements Serializable {
         this.intro = intro;
     }
 
-    public int getRateAttendance() {
-        return rateAttendance;
-    }
 
-    public void setRateAttendance(int rateAttendance) {
-        this.rateAttendance = rateAttendance;
-    }
 
     public int getRateAssignment() {
         return rateAssignment;
