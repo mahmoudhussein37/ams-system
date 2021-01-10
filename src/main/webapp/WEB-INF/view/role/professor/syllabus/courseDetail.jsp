@@ -35,13 +35,12 @@
     $(document).ready(function() {
         $("#lecture-fundamental-save").click(function(e) {
             e.preventDefault();
-            var rateAttendance = Number($("input[name=rateAttendance]").val());
             var rateAssignment = Number($("input[name=rateAssignment]").val());
             var rateMid = Number($("input[name=rateMid]").val());
             var rateFinal = Number($("input[name=rateFinal]").val());
             var rateOptional = Number($("input[name=rateOptional]").val());
 
-            var total = rateAttendance + rateAssignment + rateMid + rateFinal + rateOptional;
+            var total = rateAssignment + rateMid + rateFinal + rateOptional;
 
             if(total == 100) {
                 $.post('${baseUrl}/professor/classProgress/syllabus/courseDetail/lectureFundamentals?profCourseId=${pc.id}', $('#lectureFundamentalsForm').serialize(), function() {

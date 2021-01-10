@@ -402,7 +402,18 @@ public class StudentController {
             searchable.setSemester(semester.getSemester());
             searchable.setUserId(studentUser.getId());
             List<StudentCourse> courses = studentCourseMapper.findByUserIdYearSemester(searchable);
-            map.put(semester, courses);
+            List<StudentCourse> filtered = new ArrayList<>();
+            for(StudentCourse sc: courses) {
+                Assessment assessment = assessmentMapper.findByUserIdProfCourseId(studentUser.getId(), sc.getProfCourseId());
+                if(assessment != null) {
+                    filtered.add(sc);
+                }
+            }
+
+
+
+
+            map.put(semester, filtered);
         }
 
         model.addAttribute("courseMap", map);
@@ -416,8 +427,18 @@ public class StudentController {
         User studentUser = User.current();
 
         List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdSemesterIdValid(studentUser.getId(), semesterId);
+
+        List<StudentCourse> filtered = new ArrayList<>();
+        for(StudentCourse sc: studentCourses) {
+            Assessment assessment = assessmentMapper.findByUserIdProfCourseId(studentUser.getId(), sc.getProfCourseId());
+            if(assessment != null) {
+                filtered.add(sc);
+            }
+        }
+
+
         model.addAttribute("studentUser", studentUser);
-        model.addAttribute("studentCourses", studentCourses);
+        model.addAttribute("studentCourses", filtered);
         return "role/student/inquiryGrade/gradeDetail";
     }
 

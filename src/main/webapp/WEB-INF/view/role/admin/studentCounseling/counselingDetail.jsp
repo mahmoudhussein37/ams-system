@@ -122,7 +122,7 @@
         </div>
     </div>
     <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
-        <%@include file="/WEB-INF/view/role/admin/studentProfile/studentDetailCourseHistory.jsp" %>
+        <%@include file="/WEB-INF/view/role/common/studentProfile/studentDetailCourseHistory.jsp" %>
     </div>
     <div class="tab-pane fade" id="kt_tab_pane_3" role="tabpanel" aria-labelledby="kt_tab_pane_3">
         <%@include file="/WEB-INF/view/role/admin/studentProfile/studentDetailLanguage.jsp" %>

@@ -15,7 +15,6 @@ public interface LectureFundamentalsMapper {
             "`user_id`,"+
             "`prof_course_id`,"+
             "`intro`,"+
-            "`rate_attendance`,"+
             "`rate_assignment`,"+
             "`rate_mid`,"+
             "`rate_final`,"+
@@ -58,7 +57,6 @@ public interface LectureFundamentalsMapper {
             "#{userId},"+
             "#{profCourseId},"+
             "#{intro},"+
-            "#{rateAttendance},"+
             "#{rateAssignment},"+
             "#{rateMid},"+
             "#{rateFinal},"+
@@ -112,7 +110,6 @@ public interface LectureFundamentalsMapper {
             "`user_id` = #{userId},"+
             "`prof_course_id` = #{profCourseId},"+
             "`intro` = #{intro},"+
-            "`rate_attendance` = #{rateAttendance},"+
             "`rate_assignment` = #{rateAssignment},"+
             "`rate_mid` = #{rateMid},"+
             "`rate_final` = #{rateFinal},"+

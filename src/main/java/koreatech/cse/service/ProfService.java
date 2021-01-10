@@ -165,7 +165,15 @@ public class ProfService {
             searchable.setYear(semester.getYear());
             searchable.setSemester(semester.getSemester());
             searchable.setUserId(studentUserId);
-            List<StudentCourse> courses = studentCourseMapper.findByUserIdYearSemester(searchable);
+            List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdYearSemester(searchable);
+
+            List<StudentCourse> courses = new ArrayList<>();
+            for(StudentCourse sc: studentCourses) {
+                Assessment assessment = assessmentMapper.findByUserIdProfCourseId(studentUserId, sc.getProfCourseId());
+                if(assessment != null) {
+                    courses.add(sc);
+                }
+            }
 
             List<String> failCodes = new ArrayList<>();
             List<StudentCourse> alternatives = new ArrayList<>();

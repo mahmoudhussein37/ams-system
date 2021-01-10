@@ -274,6 +274,7 @@ public class ProfessorController {
         model.addAttribute("course", new Course());
         model.addAttribute("subjCategoryList", SubjCategory.values());
 
+
         return "role/professor/attendance/attendance";
     }
 
@@ -331,7 +332,8 @@ public class ProfessorController {
         ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         model.addAttribute("pc", pc);
         model.addAttribute("uploadedFile", new UploadedFile());
-
+        Semester semester = pc.getSemester();
+        model.addAttribute("isEditable", semester.isCurrent());
         return "role/professor/attendance/courseDetail";
     }
 
@@ -655,6 +657,8 @@ public class ProfessorController {
         model.addAttribute("assessmentFactors", assessmentFactors);
         MenuAccess menuAccess = menuAccessMapper.findOne();
         model.addAttribute("menuAccess", menuAccess);
+        Semester semester = pc.getSemester();
+        model.addAttribute("isViewable", !semester.isCurrent() || !menuAccess.isAssessment());
         if(print.equals("true"))
             return "role/common/assessment/courseDetailForPrint";
 
@@ -680,7 +684,7 @@ public class ProfessorController {
             default:
                 SystemUtil.setObjectFieldValue(sc, name, value);
         }
-        int total = sc.getScoreAssignment() + sc.getScoreAttendance() + sc.getScoreMid() + sc.getScoreFinal() + sc.getScoreOptions();
+        int total = sc.getScoreAssignment() + sc.getScoreMid() + sc.getScoreFinal() + sc.getScoreOptions();
         sc.setScoreTotal(total);
         studentCourseMapper.update(sc);
 
@@ -770,8 +774,6 @@ public class ProfessorController {
         for(StudentCourse sc: studentCourses) {
             boolean studentValid = true;
 
-            if (sc.getScoreAttendance() > lectureFundamentals.getRateAttendance())
-                studentValid = false;
             if (sc.getScoreAssignment() > lectureFundamentals.getRateAssignment())
                 studentValid = false;
             if (sc.getScoreMid() > lectureFundamentals.getRateMid())
@@ -782,7 +784,7 @@ public class ProfessorController {
                 studentValid = false;
 
 
-            int total = sc.getScoreAssignment() + sc.getScoreAttendance() + sc.getScoreMid() + sc.getScoreFinal() + sc.getScoreOptions();
+            int total = sc.getScoreAssignment() + sc.getScoreMid() + sc.getScoreFinal() + sc.getScoreOptions();
             if(total > 100) {
                 studentValid = false;
             }

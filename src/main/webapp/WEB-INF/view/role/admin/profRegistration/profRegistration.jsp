@@ -173,7 +173,7 @@
         location.href="${baseUrl}/admin/profManagement/profRegistration";
         </c:if>
 
-        //changeMajor("#search-division", "#search-major", true);
+
     });
 </script>
 </body>

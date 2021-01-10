@@ -95,6 +95,7 @@
                                                 <td>
                                                     <spring:message code="common.use"/>
                                                 </td>
+                                                <td></td>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -120,6 +121,9 @@
                                                     </td>
                                                     <td>
                                                         ${ac.course.enabled ? 'Y' : 'N'}
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-light btm-sm delete-btn" data-id="${ac.id}" style="width:100%"><spring:message code="common.delete"/></button>
                                                     </td>
 
                                                 </tr>
@@ -155,6 +159,7 @@
                                                 <td>
                                                     <spring:message code="common.use"/>
                                                 </td>
+                                                <td></td>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -180,6 +185,9 @@
                                                         </td>
                                                         <td>
                                                                 ${ac.course.enabled ? 'Y' : 'N'}
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-light btm-sm delete-btn" data-id="${ac.id}" style="width:100%"><spring:message code="common.delete"/></button>
                                                         </td>
 
                                                     </tr>
@@ -233,8 +241,18 @@
 
 
         $(".table-div").load("${baseUrl}/admin/courseManagement/alternative/altCourseTable?targetCourseId=${course.id}");
-        //changeMajor("#search-division", "#search-major", true);
-        //changeMajor("#divisionId", "#majorId", true);
+
+        $("body").on("click", ".delete-btn", function(e) {
+            e.preventDefault();
+            var id = $(this).attr("data-id");
+
+            $.post("${baseUrl}/admin/courseManagement/alternative/deleteAlt?id=" + id, function(result) {
+                if(result == true) {
+                    location.reload();
+                }
+
+            });
+        });
     });
 
 </script>

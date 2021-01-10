@@ -16,7 +16,7 @@
                     <!--begin::Card-->
                     <div class="card card-custom">
                         <div class="card-header">
-                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.admin.sub1_3"/></h3>
+                            <h3 class="card-title font-weight-bolder"><spring:message code="menu.admin.sub1_5"/></h3>
 
                         </div>
                         <div class="card-body">
@@ -64,14 +64,11 @@
                                     <br/>
                                     <button class="btn btn-light" style="width:100%;margin-top:10px;" onclick="javascript:location.reload()"><spring:message code="common.reset"/></button>
                                 </div>
-                                <div class="col-md-1">
-                                    <br/>
-                                    <button class="btn btn-light print" style="width:100%;margin-top:10px;"> <spring:message code="common.print"/></button>
-                                </div>
-                                <%--<div class="col-md-1">
+
+                                <div class="col-md-2">
                                     <br/>
                                     <button class="btn btn-light increase-grade" style="width:100%;margin-top:10px;"> <spring:message code="admin.increaseGrade"/></button>
-                                </div>--%>
+                                </div>
 
                             </div>
                             <br/><br/>
@@ -122,7 +119,7 @@
         var advisor = $("#search-advisor").children("option:selected").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
         //var major = $("#search-major").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/admin/studentManagement/studentProfile/studentTable?schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division);
+        $(".table-div").load("${baseUrl}/admin/studentManagement/schoolYear/studentTable?schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division);
     }
 
 
@@ -131,7 +128,7 @@
         var schoolYear = $("#search-school-year").children("option:selected").val().trim();
         var advisor = $("#search-advisor").children("option:selected").val().trim();
         var division = $("#search-division").children("option:selected").val().trim();
-        $(".table-div").load("${baseUrl}/admin/studentManagement/studentProfile/studentTable?schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division);
+        $(".table-div").load("${baseUrl}/admin/studentManagement/schoolYear/studentTable?schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division);
 
         $(".input-enter").keydown(function(key) {
             if (key.keyCode == 13) {

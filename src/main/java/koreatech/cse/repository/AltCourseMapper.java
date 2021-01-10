@@ -18,6 +18,10 @@ public interface AltCourseMapper {
     @Select("SELECT * FROM `alt_course` where target_course_id=#{id}")
     List<AltCourse> findByTargetCourseId(@Param("id") int id);
 
+    @ResultMap("findOne-int")
+    @Select("SELECT * FROM `alt_course` where course_id = #{courseId} and target_course_id=#{targetCourseId} and type = #{type} limit 1")
+    AltCourse findByCourseIdTargetCourseIdType(@Param("courseId") int courseId, @Param("targetCourseId") int targetCourseId, @Param("type") String type);
+
 
     @Results({
             @Result(column = "id", property = "id"),

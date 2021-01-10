@@ -93,9 +93,7 @@
                                                     <spring:message code="common.status"/>
                                                 </td>
 
-                                                <td>
-                                                    <spring:message code="professor.grade.attendance"/><br/>(${lectureFundamentals.rateAttendance})
-                                                </td>
+
                                                 <td>
                                                     <spring:message code="professor.grade.assignment"/><br/>(${lectureFundamentals.rateAssignment})
                                                 </td>
@@ -142,9 +140,6 @@
                                                         <spring:message code="student.status.${sc.studentUser.status}"/>
                                                     </td>
 
-                                                    <td>
-                                                            ${sc.scoreAttendance}
-                                                    </td>
                                                     <td>
                                                             ${sc.scoreAssignment}
                                                     </td>

@@ -58,6 +58,8 @@ public class FileService {
             File tempFile = File.createTempFile(designation.name(), rName, originDir);
             FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(tempFile));
 
+            //
+
             UploadedFile uploadedFile = new UploadedFile();
             uploadedFile.setUploaderId(uploader.getId());
             uploadedFile.setDesignation(designation.name());

@@ -121,7 +121,7 @@
         alert("<spring:message code='common.success'/>");
         location.href="${baseUrl}/admin/profManagement/profInformation";
         </c:if>
-        //changeMajor("#search-division", "#search-major", true);
+
     });
 </script>
 </body>

@@ -97,8 +97,7 @@
         </c:if>
 
         $(".table-div").load("${baseUrl}/admin/courseManagement/alternative/courseTable");
-        //changeMajor("#search-division", "#search-major", true);
-        //changeMajor("#divisionId", "#majorId", true);
+
     });
 
 </script>
