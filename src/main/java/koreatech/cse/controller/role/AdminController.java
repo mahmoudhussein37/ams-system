@@ -1027,11 +1027,26 @@ public class AdminController {
     @RequestMapping(value = "/courseManagement/alternative/addToAlt", method = RequestMethod.POST)
     @ResponseBody
     public Boolean addToAlt(@RequestParam int id, @RequestParam int targetCourseId, @RequestParam String type) {
-        AltCourse altCourse = new AltCourse();
-        altCourse.setCourseId(id);
-        altCourse.setTargetCourseId(targetCourseId);
-        altCourse.setType(type);
-        altCourseMapper.insert(altCourse);
+
+        AltCourse stored = altCourseMapper.findByCourseIdTargetCourseIdType(id, targetCourseId, type);
+        if(stored == null && id != targetCourseId) {
+            AltCourse altCourse = new AltCourse();
+            altCourse.setCourseId(id);
+            altCourse.setTargetCourseId(targetCourseId);
+            altCourse.setType(type);
+            altCourseMapper.insert(altCourse);
+        }
+
+        return true;
+    }
+
+    @RequestMapping(value = "/courseManagement/alternative/deleteAlt", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean deleteAlt(@RequestParam int id) {
+
+        AltCourse stored = altCourseMapper.findOne(id);
+        altCourseMapper.delete(stored);
+
         return true;
     }
 

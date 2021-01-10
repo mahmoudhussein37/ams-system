@@ -62,6 +62,7 @@
                                 ${ac.course.enabled ? 'Y' : 'N'}
                         </td>
 
+
                     </tr>
                     <c:set var="altCount" value="${altCount + 1}"/>
                 </c:if>

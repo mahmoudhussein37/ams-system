@@ -657,6 +657,8 @@ public class ProfessorController {
         model.addAttribute("assessmentFactors", assessmentFactors);
         MenuAccess menuAccess = menuAccessMapper.findOne();
         model.addAttribute("menuAccess", menuAccess);
+        Semester semester = pc.getSemester();
+        model.addAttribute("isViewable", !semester.isCurrent() || !menuAccess.isAssessment());
         if(print.equals("true"))
             return "role/common/assessment/courseDetailForPrint";
 
