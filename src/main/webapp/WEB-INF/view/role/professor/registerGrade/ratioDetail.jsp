@@ -22,7 +22,7 @@
                 <td>
 
                     <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
-                        <c:if test="${sc.grade eq 'Ap' or sc.grade eq 'A0'}">
+                        <c:if test="${sc.grade eq 'A'}">
                             <c:set var="count" value="${count + 1}"/>
                         </c:if>
                     </c:forEach>
@@ -39,7 +39,7 @@
                 <td>
 
                     <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
-                        <c:if test="${sc.grade eq 'Bp' or sc.grade eq 'B0'}">
+                        <c:if test="${sc.grade eq 'B'}">
                             <c:set var="count" value="${count + 1}"/>
                         </c:if>
                     </c:forEach>
@@ -56,7 +56,7 @@
                 <td>
 
                     <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
-                        <c:if test="${sc.grade eq 'Cp' or sc.grade eq 'C0'}">
+                        <c:if test="${sc.grade eq 'C'}">
                             <c:set var="count" value="${count + 1}"/>
                         </c:if>
                     </c:forEach>
@@ -73,7 +73,24 @@
                 <td>
 
                     <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
-                        <c:if test="${sc.grade eq 'Dp' or sc.grade eq 'D0'}">
+                        <c:if test="${sc.grade eq 'D'}">
+                            <c:set var="count" value="${count + 1}"/>
+                        </c:if>
+                    </c:forEach>
+                    ${count}
+                </td>
+                <td>
+                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${count * 100 / fn:length(studentCourses)}" />%
+                </td>
+            </tr>
+            <c:set var="count" value="0"/>
+            <c:set var="ratio" value="0.0"/>
+            <tr class="text-center">
+                <td>E</td>
+                <td>
+
+                    <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
+                        <c:if test="${sc.grade eq 'E'}">
                             <c:set var="count" value="${count + 1}"/>
                         </c:if>
                     </c:forEach>
@@ -91,6 +108,23 @@
 
                     <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
                         <c:if test="${sc.grade eq 'F'}">
+                            <c:set var="count" value="${count + 1}"/>
+                        </c:if>
+                    </c:forEach>
+                    ${count}
+                </td>
+                <td>
+                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${count * 100 / fn:length(studentCourses)}" />%
+                </td>
+            </tr>
+            <c:set var="count" value="0"/>
+            <c:set var="ratio" value="0.0"/>
+            <tr class="text-center">
+                <td>G</td>
+                <td>
+
+                    <c:forEach var="sc" items="${studentCourses}" varStatus="varStatus">
+                        <c:if test="${sc.grade eq 'G'}">
                             <c:set var="count" value="${count + 1}"/>
                         </c:if>
                     </c:forEach>

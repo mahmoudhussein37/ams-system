@@ -707,17 +707,15 @@ public class ProfessorController {
                 grade = "F";
         } else {
 
-            double finalRatio = 0.0;
+            double finalRatio;
             if(sc.getScoreFinal() == 0 || lectureFundamentals.getRateFinal() == 0.0)
                 finalRatio = 0.0;
             else
                 finalRatio = (double)sc.getScoreFinal() / lectureFundamentals.getRateFinal();
 
             if(finalRatio < 0.4)
-                return "G";
-
-
-            if(total >= 85)
+                grade = "G";
+            else if(total >= 85)
                 grade = "A";
             else if(total >= 75)
                 grade = "B";

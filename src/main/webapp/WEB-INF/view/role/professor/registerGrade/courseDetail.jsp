@@ -213,8 +213,9 @@ $(document).ready(function() {
             var result = response;
             var split = result.split("_");
             var gid = split[0];
+            var total = split[1];
             var grade = split[2];
-            $(".grade-total" + gid).val(split[1]);
+            $(".grade-total" + gid).val(total);
             $(".grade-" + gid).val(grade);
             $.post("${baseUrl}/professor/classProgress/registerGrade/gradeEditable?pk=" + gid + "&name=grade&value=" + grade, function() {
                 $("#ratio-div").load("${baseUrl}/professor/classProgress/registerGrade/ratioDetail?profCourseId=${pc.id}");
