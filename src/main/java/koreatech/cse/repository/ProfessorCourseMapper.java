@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ProfessorCourseMapper {
 
-    @Insert("INSERT INTO professor_course (user_id, course_id, semester_id, limit_student, num_student, attendance, lateness, absence, divide, school_year, classroom, eng_accreditation, language) VALUES (#{userId}, #{courseId}, #{semesterId}, #{limitStudent}, #{numStudent}, #{attendance}, #{lateness}, #{absence}, #{divide}, #{schoolYear}, #{classroom}, #{engAccreditation}, #{language})")
+    @Insert("INSERT INTO professor_course (user_id, course_id, semester_id, limit_student, num_student, attendance, lateness, absence, divide, school_year, classroom, eng_accreditation, language, second_test) VALUES (#{userId}, #{courseId}, #{semesterId}, #{limitStudent}, #{numStudent}, #{attendance}, #{lateness}, #{absence}, #{divide}, #{schoolYear}, #{classroom}, #{engAccreditation}, #{language}, #{secondTest})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     void insert(ProfessorCourse professorCourse);
 
@@ -74,6 +74,7 @@ public interface ProfessorCourseMapper {
             "`attendance` = #{attendance},"+
             "`lateness` = #{lateness},"+
             "`enabled` = #{enabled},"+
+            "`second_test` = #{secondTest},"+
             "`divide` = #{divide},"+
             "`school_year` = #{schoolYear},"+
             "`eng_accreditation` = #{engAccreditation},"+

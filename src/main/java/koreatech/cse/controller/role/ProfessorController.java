@@ -686,9 +686,51 @@ public class ProfessorController {
         }
         int total = sc.getScoreAssignment() + sc.getScoreMid() + sc.getScoreFinal() + sc.getScoreOptions();
         sc.setScoreTotal(total);
+
+
+        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(sc.getProfCourseId());
+        ProfessorCourse pc = professorCourseMapper.findOne(sc.getProfCourseId());
+
+        String grade = "";
+        if(pc.isSecondTest()) {
+            if(total >= 85)
+                grade = "A";
+            else if(total >= 75)
+                grade = "B";
+            else if(total >= 65)
+                grade = "C";
+            else if(total >= 50)
+                grade = "D";
+            else if(total >= 40)
+                grade = "E";
+            else
+                grade = "F";
+        } else {
+
+            double finalRatio;
+            if(sc.getScoreFinal() == 0 || lectureFundamentals.getRateFinal() == 0.0)
+                finalRatio = 0.0;
+            else
+                finalRatio = (double)sc.getScoreFinal() / lectureFundamentals.getRateFinal();
+
+            if(finalRatio < 0.4)
+                grade = "G";
+            else if(total >= 85)
+                grade = "A";
+            else if(total >= 75)
+                grade = "B";
+            else if(total >= 65)
+                grade = "C";
+            else if(total >= 60)
+                grade = "D";
+            else
+                grade = "F";
+        }
+
+
         studentCourseMapper.update(sc);
 
-        return result + "_" + total;
+        return result + "_" + total + "_" + grade;
     }
 
     @RequestMapping("/classProgress/registerGrade/courseTable")

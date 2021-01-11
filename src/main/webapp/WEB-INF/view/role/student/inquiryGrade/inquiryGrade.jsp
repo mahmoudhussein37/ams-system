@@ -107,12 +107,12 @@
                                                 <td>
                                                     <spring:message code="common.complete"/>
                                                 </td>
-                                                <%--<td>
-                                                    <spring:message code="common.score"/>
-                                                </td>--%>
                                                 <td>
-                                                    <spring:message code="common.grade"/>
+                                                    <spring:message code="common.score"/>
                                                 </td>
+                                                <%--<td>
+                                                    <spring:message code="common.grade"/>
+                                                </td>--%>
                                                 <td>
 
                                                 </td>
@@ -156,7 +156,7 @@
                                                     <td>
                                                         <c:set var="completeCount" value="0"/>
                                                         <c:forEach var="sc" items="${courseMap.get(entry.key)}">
-                                                            <c:if test="${sc.valid and sc.grade ne 'U' and sc.grade ne 'F'}">
+                                                            <c:if test="${sc.valid and sc.grade ne 'U' and sc.grade ne 'F' and sc.grade ne 'G'}">
                                                                 <c:set var="completeCount" value="${completeCount + sc.course.credit}"/>
                                                             </c:if>
 

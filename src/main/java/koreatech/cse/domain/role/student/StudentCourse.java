@@ -168,14 +168,11 @@ public class StudentCourse implements Serializable {
 
     public double getGradeScore() {
         if(StringUtils.isBlank(grade)) return 0.0;
-        if(grade.equals("Ap")) return 4.5;
-        if(grade.equals("A0")) return 4;
-        if(grade.equals("Bp")) return 3.5;
-        if(grade.equals("B0")) return 3;
-        if(grade.equals("Cp")) return 2.5;
-        if(grade.equals("C0")) return 2;
-        if(grade.equals("F")) return 0;
-        return 0.0;
+
+        if(grade.equals("F") || grade.equals("G")) return 0;
+        else {
+            return scoreAssignment + scoreMid + scoreFinal;
+        }
 
     }
 

@@ -33,6 +33,8 @@ public class ProfessorCourse implements Serializable {
     private int absence;
     private boolean enabled;
 
+    private boolean secondTest;
+
     private int schoolYear;
     private int classroom; //classroom id
     private boolean engAccreditation;
@@ -255,7 +257,9 @@ public class ProfessorCourse implements Serializable {
         grades.put("B", 0);
         grades.put("C", 0);
         grades.put("D", 0);
+        grades.put("E", 0);
         grades.put("F", 0);
+        grades.put("G", 0);
         grades.put("S", 0);
         grades.put("U", 0);
         if(CollectionUtils.isEmpty(studentCourseList)) {
@@ -263,25 +267,33 @@ public class ProfessorCourse implements Serializable {
         }
 
         for(StudentCourse sc: studentCourseList) {
-            if(sc.getGrade().equals("Ap") || sc.getGrade().equals("A0")) {
+            if(sc.getGrade().equals("A")) {
                 Integer count = grades.get("A");
                 grades.put("A", count + 1);
             }
-            if(sc.getGrade().equals("Bp") || sc.getGrade().equals("B0")) {
+            if(sc.getGrade().equals("B")) {
                 Integer count = grades.get("B");
                 grades.put("B", count + 1);
             }
-            if(sc.getGrade().equals("Cp") || sc.getGrade().equals("C0")) {
+            if(sc.getGrade().equals("C")) {
                 Integer count = grades.get("C");
                 grades.put("C", count + 1);
             }
-            if(sc.getGrade().equals("Dp") || sc.getGrade().equals("D0")) {
+            if(sc.getGrade().equals("D")) {
                 Integer count = grades.get("D");
                 grades.put("D", count + 1);
+            }
+            if(sc.getGrade().equals("E")) {
+                Integer count = grades.get("E");
+                grades.put("E", count + 1);
             }
             if(sc.getGrade().equals("F")) {
                 Integer count = grades.get("F");
                 grades.put("F", count + 1);
+            }
+            if(sc.getGrade().equals("G")) {
+                Integer count = grades.get("G");
+                grades.put("G", count + 1);
             }
             if(sc.getGrade().equals("S")) {
                 Integer count = grades.get("S");
@@ -309,6 +321,14 @@ public class ProfessorCourse implements Serializable {
 
     public void setClassTimeList(List<ClassTime> classTimeList) {
         this.classTimeList = classTimeList;
+    }
+
+    public boolean isSecondTest() {
+        return secondTest;
+    }
+
+    public void setSecondTest(boolean secondTest) {
+        this.secondTest = secondTest;
     }
 
     @Override

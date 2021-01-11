@@ -158,7 +158,8 @@
                                                     <td style="width:100px;">
                                                         <c:set var="totalScore" value="${totalScore + sc.getGradeScore()}"/>
                                                         <c:set var="totalCount" value="${totalCount + 1}"/>
-                                                        <select name="grade" data-sc-id="${sc.id}" class="select-grade form-control" disabled>
+                                                        <input type="text" name="grade" class="form-control grade-${sc.id}" value="${sc.grade}" disabled/>
+                                                        <%--<select name="grade" data-sc-id="${sc.id}" class="select-grade form-control" disabled>
                                                             <option value="Ap" ${sc.grade eq 'Ap' ? 'selected' : ''}>A+</option>
                                                             <option value="A0" ${sc.grade eq 'A0' ? 'selected' : ''}>A0</option>
                                                             <option value="Bp" ${sc.grade eq 'Bp' ? 'selected' : ''}>B+</option>
@@ -170,7 +171,7 @@
                                                             <option value="F" ${sc.grade eq 'F' ? 'selected' : ''}>F</option>
                                                             <option value="S" ${sc.grade eq 'S' ? 'selected' : ''}>S</option>
                                                             <option value="U" ${sc.grade eq 'U' ? 'selected' : ''}>U</option>
-                                                        </select>
+                                                        </select>--%>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

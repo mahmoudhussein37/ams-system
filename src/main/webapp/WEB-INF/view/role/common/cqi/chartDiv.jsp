@@ -152,7 +152,13 @@
                     D
                 </td>
                 <td>
+                    E
+                </td>
+                <td>
                     F
+                </td>
+                <td>
+                    G
                 </td>
                 <td>
                     S
@@ -171,7 +177,7 @@
                     <td>
                         <c:set var="count" value="0"/>
                         <c:forEach var="sc" items="${professorCourse.studentCourseList}">
-                            <c:if test="${sc.grade eq 'Ap' or sc.grade eq 'A0'}">
+                            <c:if test="${sc.grade eq 'A'}">
                                 <c:set var="count" value="${count + 1}"/>
                             </c:if>
 
@@ -181,7 +187,7 @@
                     <td>
                         <c:set var="count" value="0"/>
                         <c:forEach var="sc" items="${professorCourse.studentCourseList}">
-                            <c:if test="${sc.grade eq 'Bp' or sc.grade eq 'B0'}">
+                            <c:if test="${sc.grade eq 'B'}">
                                 <c:set var="count" value="${count + 1}"/>
                             </c:if>
 
@@ -191,7 +197,7 @@
                     <td>
                         <c:set var="count" value="0"/>
                         <c:forEach var="sc" items="${professorCourse.studentCourseList}">
-                            <c:if test="${sc.grade eq 'Cp' or sc.grade eq 'c0'}">
+                            <c:if test="${sc.grade eq 'C'}">
                                 <c:set var="count" value="${count + 1}"/>
                             </c:if>
 
@@ -201,7 +207,27 @@
                     <td>
                         <c:set var="count" value="0"/>
                         <c:forEach var="sc" items="${professorCourse.studentCourseList}">
-                            <c:if test="${sc.grade eq 'Dp' or sc.grade eq 'D0'}">
+                            <c:if test="${sc.grade eq 'D'}">
+                                <c:set var="count" value="${count + 1}"/>
+                            </c:if>
+
+                        </c:forEach>
+                            ${count}
+                    </td>
+                    <td>
+                        <c:set var="count" value="0"/>
+                        <c:forEach var="sc" items="${professorCourse.studentCourseList}">
+                            <c:if test="${sc.grade eq 'E'}">
+                                <c:set var="count" value="${count + 1}"/>
+                            </c:if>
+
+                        </c:forEach>
+                            ${count}
+                    </td>
+                    <td>
+                        <c:set var="count" value="0"/>
+                        <c:forEach var="sc" items="${professorCourse.studentCourseList}">
+                            <c:if test="${sc.grade eq 'G'}">
                                 <c:set var="count" value="${count + 1}"/>
                             </c:if>
 
