@@ -61,7 +61,9 @@
                                 ${sc.professorCourse.divide}
                         </td>
                         <td>
-                            <spring:message code="student.grade.${sc.grade}"/>
+                            <spring:message code="student.grade.${sc.grade}"/> (<spring:message code="student.grade.txt.${sc.grade}"/>)
+
+
                         </td>
 
                     </tr>
