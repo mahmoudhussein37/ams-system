@@ -32,6 +32,9 @@
                         <spring:message code="common.divide"/>
                     </td>
                     <td>
+                        <spring:message code="common.score"/>
+                    </td>
+                    <td>
                         <spring:message code="common.grade"/>
                     </td>
 
@@ -59,6 +62,9 @@
                         </td>
                         <td>
                                 ${sc.professorCourse.divide}
+                        </td>
+                        <td>
+                                ${sc.getGradeScore()}
                         </td>
                         <td>
                             <spring:message code="student.grade.${sc.grade}"/> (<spring:message code="student.grade.txt.${sc.grade}"/>)

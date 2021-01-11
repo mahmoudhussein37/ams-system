@@ -107,12 +107,12 @@
                                                 <td>
                                                     <spring:message code="common.complete"/>
                                                 </td>
-                                                <%--<td>
-                                                    <spring:message code="common.score"/>
-                                                </td>--%>
                                                 <td>
-                                                    <spring:message code="common.grade"/>
+                                                    <spring:message code="common.score"/>
                                                 </td>
+                                                <%--<td>
+                                                    <spring:message code="common.grade"/>
+                                                </td>--%>
                                                 <td>
 
                                                 </td>
