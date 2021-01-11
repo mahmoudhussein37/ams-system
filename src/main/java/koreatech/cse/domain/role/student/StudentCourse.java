@@ -175,6 +175,7 @@ public class StudentCourse implements Serializable {
         if(grade.equals("Cp")) return 2.5;
         if(grade.equals("C0")) return 2;
         if(grade.equals("F")) return 0;
+        if(grade.equals("G")) return 0;
         return 0.0;
 
     }

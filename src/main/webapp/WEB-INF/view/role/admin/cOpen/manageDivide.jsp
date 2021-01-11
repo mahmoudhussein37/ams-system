@@ -264,6 +264,16 @@
                                             </form:select>
                                         </div>
                                     </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label><spring:message code="professor.secondTestDivide"/></label>
+                                            <form:select path="secondTest" class="form-control" >
+                                                <form:option value="true">Y</form:option>
+                                                <form:option value="false">N</form:option>
+                                            </form:select>
+                                        </div>
+                                    </div>
+
                                 </div>
                                     <button type="submit" class="btn btn-primary mr-2"><spring:message code="common.create"/></button>
                                 </form:form>

@@ -101,7 +101,8 @@
                                         <input type="number" class="form-control grade-total${sc.id}" value="${sc.scoreTotal}" disabled/>
                                     </td>
                                     <td style="width:100px;">
-                                        <select name="grade" data-sc-id="${sc.id}" class="select-grade form-control">
+                                        <input type="text" name="grade" class="form-control grade-${sc.id}" value="${sc.grade}" disabled/>
+                                        <%--<select name="grade" data-sc-id="${sc.id}" class="select-grade form-control">
                                             <option value="">-</option>
                                             <option value="Ap" ${sc.grade eq 'Ap' ? 'selected' : ''}>A+</option>
                                             <option value="A0" ${sc.grade eq 'A0' ? 'selected' : ''}>A0</option>
@@ -112,9 +113,10 @@
                                             <option value="Dp" ${sc.grade eq 'Dp' ? 'selected' : ''}>D+</option>
                                             <option value="D0" ${sc.grade eq 'D0' ? 'selected' : ''}>D0</option>
                                             <option value="F" ${sc.grade eq 'F' ? 'selected' : ''}>F</option>
+                                            <option value="G" ${sc.grade eq 'G' ? 'selected' : ''}>G</option>
                                             <option value="S" ${sc.grade eq 'S' ? 'selected' : ''}>S</option>
                                             <option value="U" ${sc.grade eq 'U' ? 'selected' : ''}>U</option>
-                                        </select>
+                                        </select>--%>
                                     </td>
                                 </c:when>
                                 <c:otherwise>
@@ -137,7 +139,8 @@
                                     <td style="width:100px;">
                                         <c:set var="totalScore" value="${totalScore + sc.getGradeScore()}"/>
                                         <c:set var="totalCount" value="${totalCount + 1}"/>
-                                        <select name="grade" data-sc-id="${sc.id}" class="select-grade form-control" disabled>
+                                        <input type="text" name="grade" class="form-control grade-${sc.id}" value="${sc.grade}" disabled/>
+                                        <%--<select name="grade" data-sc-id="${sc.id}" class="select-grade form-control" disabled>
                                             <option value="">-</option>
                                             <option value="Ap" ${sc.grade eq 'Ap' ? 'selected' : ''}>A+</option>
                                             <option value="A0" ${sc.grade eq 'A0' ? 'selected' : ''}>A0</option>
@@ -148,9 +151,10 @@
                                             <option value="Dp" ${sc.grade eq 'Dp' ? 'selected' : ''}>D+</option>
                                             <option value="D0" ${sc.grade eq 'D0' ? 'selected' : ''}>D0</option>
                                             <option value="F" ${sc.grade eq 'F' ? 'selected' : ''}>F</option>
+                                            <option value="G" ${sc.grade eq 'G' ? 'selected' : ''}>G</option>
                                             <option value="S" ${sc.grade eq 'S' ? 'selected' : ''}>S</option>
                                             <option value="U" ${sc.grade eq 'U' ? 'selected' : ''}>U</option>
-                                        </select>
+                                        </select>--%>
                                     </td>
                                 </c:otherwise>
                             </c:choose>
@@ -209,16 +213,21 @@ $(document).ready(function() {
             var result = response;
             var split = result.split("_");
             var gid = split[0];
+            var grade = split[2];
             $(".grade-total" + gid).val(split[1]);
+            $(".grade-" + gid).val(grade);
+            $.post("${baseUrl}/professor/classProgress/registerGrade/gradeEditable?pk=" + gid + "&name=grade&value=" + grade, function() {
+                $("#ratio-div").load("${baseUrl}/professor/classProgress/registerGrade/ratioDetail?profCourseId=${pc.id}");
+            });
         }
     });
-    $(".select-grade").change(function() {
+    /*$(".select-grade").change(function() {
         var id = $(this).attr("data-sc-id");
         var selected = $(this).children("option:selected").val();
         $.post("${baseUrl}/professor/classProgress/registerGrade/gradeEditable?pk=" + id + "&name=grade&value=" + selected, function() {
             $("#ratio-div").load("${baseUrl}/professor/classProgress/registerGrade/ratioDetail?profCourseId=${pc.id}");
         });
-    });
+    });*/
    $("#lecture-fundamental-save").click(function(e) {
      e.preventDefault();
        $.post('${baseUrl}/professor/classProgress/registerGrade/courseDetail?profCourseId=${pc.id}', function(result) {

@@ -22,6 +22,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -182,8 +184,20 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/studentManagement/studentInformation/studentDetail", method = RequestMethod.POST)
-    public String studentDetail(@ModelAttribute("studentUser") User studentUser, SessionStatus sessionStatus) {
+    public String studentDetail(@ModelAttribute("studentUser") User studentUser, SessionStatus sessionStatus, HttpServletRequest request) throws IOException {
         System.out.println("studentUser = " + studentUser);
+        if (request instanceof MultipartHttpServletRequest) {
+            MultipartFile f = ((MultipartHttpServletRequest) request).getFile("file");
+            System.out.println("f = " + f.getSize());
+            if(f == null || f.getSize() == 0) {
+
+            } else {
+                uploadedFileMapper.deleteProfileByUser(studentUser);
+                DateTime dt = new DateTime();
+                fileService.processUploadedFile(f, studentUser, Designation.profile, 0, 0, dt.getYear());
+            }
+
+        }
 
         userMapper.update(studentUser);
         userMapper.updateFromSignup(studentUser);
