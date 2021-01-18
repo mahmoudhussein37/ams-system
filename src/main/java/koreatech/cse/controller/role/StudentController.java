@@ -86,6 +86,8 @@ public class StudentController {
     private CertificateMapper certificateMapper;
     @Inject
     private ProfService profService;
+    @Inject
+    private LangCertMapper langCertMapper;
 
     @RequestMapping("/courseGuide/yearlyCurriculum")
     public String yearlyCurriculum(Model model) {
@@ -209,6 +211,9 @@ public class StudentController {
 
         User studentUser = userMapper.findOne(User.current().getId());
         model.addAttribute("studentUser", studentUser);
+        List<LangCert> langCerts = langCertMapper.findByUserId(User.current().getId());
+        model.addAttribute("langCerts", langCerts);
+
         return "role/student/basic/basic";
     }
 

@@ -18,36 +18,36 @@
                     <th>
                         <spring:message code="common.acquisitionDate"/>
                     </th>
-                    <th>
-                        <spring:message code="common.file"/>
-                    </th>
-                    <th>
-                        <spring:message code="common.approve"/>
-                    </th>
+
 
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>
+                <tbody>
+                <c:set var="count" value="1"/>
+                <c:forEach var="langCert"  items="${langCerts}">
+                    <c:if test="${langCert.type eq 'lang'}">
+                        <tr>
+                            <td>
+                                    ${count}
+                            </td>
+                            <td>
+                                    ${langCert.lType}
+                            </td>
+                            <td>
+                                    ${langCert.level}
+                            </td>
+                            <td>
+                                    ${langCert.date}
+                            </td>
 
-                    </td>
-                    <td>
 
-                    </td>
-                    <td>
+                        </tr>
+                    </c:if>
+                    <c:set var="count" value="${count + 1}"/>
+                </c:forEach>
 
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                </tr>
+                </tbody>
                 </tbody>
             </table>
         </div>

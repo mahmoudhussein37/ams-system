@@ -33,10 +33,10 @@
         <%@include file="/WEB-INF/view/role/common/studentProfile/studentDetailCourseHistory.jsp" %>
     </div>
     <div class="tab-pane fade" id="kt_tab_pane_3" role="tabpanel" aria-labelledby="kt_tab_pane_3">
-        <%@include file="/WEB-INF/view/role/professor/studentLookup/studentDetailLanguage.jsp" %>
+        <%@include file="/WEB-INF/view/role/common/studentProfile/studentDetailLanguage.jsp" %>
     </div>
     <div class="tab-pane fade" id="kt_tab_pane_4" role="tabpanel" aria-labelledby="kt_tab_pane_4">
-        <%@include file="/WEB-INF/view/role/professor/studentLookup/studentDetailCertificate.jsp" %>
+        <%@include file="/WEB-INF/view/role/common/studentProfile/studentDetailCertificate.jsp" %>
     </div>
 </div>
 
