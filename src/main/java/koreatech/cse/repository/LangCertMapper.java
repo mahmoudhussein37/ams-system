@@ -34,7 +34,7 @@ public interface LangCertMapper {
     @Select("SELECT * FROM `lang_cert` where user_id=#{userId} and type = #{type}")
     List<LangCert> findByUserIdType(@Param("userId") int userId, @Param("type") String type);
 
-    @Select("SELECT * FROM `lang_cert` where user_id=#{userId}")
+    @Select("SELECT * FROM `lang_cert` where user_id=#{userId} order by date desc")
     List<LangCert> findByUserId(@Param("userId") int userId);
 
     @Update("UPDATE `lang_cert` SET"+
