@@ -86,6 +86,8 @@ public class ProfessorController {
     private MessageSource messageSource;
     @Inject
     private ProfService profService;
+    @Inject
+    private LangCertMapper langCertMapper;
 
     @RequestMapping("/studentGuidance/studentLookup")
     public String studentLookup(Model model) {
@@ -143,6 +145,9 @@ public class ProfessorController {
         studentUser.setStudentCourses(studentCourses);
 
         model.addAttribute("studentUser", studentUser);
+
+        List<LangCert> langCerts = langCertMapper.findByUserId(studentId);
+        model.addAttribute("langCerts", langCerts);
         if(print.equals("true"))
             return "role/professor/studentLookup/studentDetailForPrint";
         return "role/professor/studentLookup/studentDetail";

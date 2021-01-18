@@ -109,6 +109,8 @@ public class AdminController {
     private ProfService profService;
     @Inject
     private CertificateMapper certificateMapper;
+    @Inject
+    private LangCertMapper langCertMapper;
 
 
     @RequestMapping("/studentManagement/studentRegistration")
@@ -273,7 +275,42 @@ public class AdminController {
         List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(studentId);
         studentUser.setStudentCourses(studentCourses);
 
+        List<LangCert> langCerts = langCertMapper.findByUserId(studentId);
+        model.addAttribute("langCerts", langCerts);
+
         return "role/admin/studentProfile/studentDetail";
+    }
+
+    @RequestMapping("/studentManagement/studentProfile/addLangCert")
+    public String addLangCert(Model model, @RequestParam int studentId) {
+        User studentUser = userMapper.findOne(studentId);
+        model.addAttribute("studentUser", studentUser);
+        User advisor = userMapper.findOne(studentUser.getAdvisorId());
+        model.addAttribute("advisor", advisor);
+
+        LangCert langCert = new LangCert();
+        langCert.setUserId(studentId);
+        model.addAttribute("langCert", langCert);
+
+
+        return "role/admin/studentProfile/addLangCert";
+    }
+
+    @RequestMapping(value = "/studentManagement/studentProfile/addLangCert", method = RequestMethod.POST)
+    public String addLangCert(@ModelAttribute("langCert") LangCert langCert, @RequestParam int studentId, SessionStatus sessionStatus) {
+        langCert.setUserId(studentId);
+        langCert.setApprove(true);
+        langCertMapper.insert(langCert);
+        sessionStatus.setComplete();
+
+        return "redirect:/admin/studentManagement/studentProfile";
+    }
+
+    @RequestMapping(value = "/studentManagement/studentProfile/deleteLangCert", method = RequestMethod.POST)
+    public String deleteLangCert(@RequestParam int langCertId) {
+        LangCert langCert = langCertMapper.findOne(langCertId);
+        langCertMapper.delete(langCert);
+        return "redirect:/admin/studentManagement/studentProfile";
     }
 
     @RequestMapping("/studentManagement/studentProfile/studentDetailForPrint")

@@ -24,9 +24,9 @@
                             <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.courseHistory"/></h3>
                             <%@include file="/WEB-INF/view/role/professor/studentLookup/studentDetailCourseHistory.jsp" %>
                             <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.language"/></h3>
-                            <%@include file="/WEB-INF/view/role/professor/studentLookup/studentDetailLanguage.jsp" %>
+                            <%@include file="/WEB-INF/view/role/common/studentProfile/studentDetailLanguage.jsp" %>
                             <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.certificate"/></h3>
-                            <%@include file="/WEB-INF/view/role/professor/studentLookup/studentDetailCertificate.jsp" %>
+                            <%@include file="/WEB-INF/view/role/common/studentProfile/studentDetailCertificate.jsp" %>
 
 
                         </div>
