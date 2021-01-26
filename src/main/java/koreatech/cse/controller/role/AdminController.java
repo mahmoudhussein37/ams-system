@@ -17,7 +17,7 @@ import koreatech.cse.service.ProfService;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.DateHelper;
 import koreatech.cse.util.SystemUtil;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -194,9 +194,14 @@ public class AdminController {
             if(f == null || f.getSize() == 0) {
 
             } else {
-                uploadedFileMapper.deleteProfileByUser(studentUser);
-                DateTime dt = new DateTime();
-                fileService.processUploadedFile(f, studentUser, Designation.profile, 0, 0, dt.getYear());
+                String fileName = f.getOriginalFilename();
+                String ext = fileService.getExtension(fileName);
+                if(ext.equalsIgnoreCase("png") || ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg") || ext.equalsIgnoreCase("gif")) {
+                    uploadedFileMapper.deleteProfileByUser(studentUser);
+                    DateTime dt = new DateTime();
+                    fileService.processUploadedFile(f, studentUser, Designation.profile, 0, 0, dt.getYear());
+                }
+
             }
 
         }
@@ -868,8 +873,14 @@ public class AdminController {
         MultipartFile multipartFile = uploadedFile.getFile();
         if(multipartFile != null) {
             try {
-                System.out.println("multipartFile = " + multipartFile);
-                fileService.processUploadedFile(multipartFile, user, Designation.curriculum, divisionId, 0, year);
+
+                String fileName = multipartFile.getOriginalFilename();
+                String ext = fileService.getExtension(fileName);
+                if(ext.equalsIgnoreCase("xls") || ext.equalsIgnoreCase("xlsx") || ext.equalsIgnoreCase("doc") || ext.equalsIgnoreCase("docx") || ext.equalsIgnoreCase("pdf")) {
+                    System.out.println("multipartFile = " + multipartFile);
+                    fileService.processUploadedFile(multipartFile, user, Designation.curriculum, divisionId, 0, year);
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1339,14 +1350,19 @@ public class AdminController {
         MultipartFile multipartFile = uploadedFile.getFile();
         if(multipartFile != null) {
             try {
-                String tempPath = fileService.getTempPath(request);
-                System.out.println("tempPath = " + tempPath);
-                File originalDir = new File(tempPath);
+                String fileName = multipartFile.getOriginalFilename();
+                String ext = fileService.getExtension(fileName);
+                if(ext.equalsIgnoreCase("xls") || ext.equalsIgnoreCase("xlsx")) {
+                    String tempPath = fileService.getTempPath(request);
+                    System.out.println("tempPath = " + tempPath);
+                    File originalDir = new File(tempPath);
 
-                File convFile = new File(multipartFile.getOriginalFilename());
-                multipartFile.transferTo(convFile);
-                //FileCopyUtils.copy(multipartFile.getInputStream(), new FileOutputStream(convFile));
-                readStudentExcel(convFile, profCourseId);
+                    File convFile = new File(multipartFile.getOriginalFilename());
+                    multipartFile.transferTo(convFile);
+                    //FileCopyUtils.copy(multipartFile.getInputStream(), new FileOutputStream(convFile));
+                    readStudentExcel(convFile, profCourseId);
+                }
+
                 //
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2478,6 +2494,14 @@ public class AdminController {
         List<Feedback> feedbackList = feedbackMapper.findRecent();
         model.addAttribute("feedbackList", feedbackList);
         return "role/admin/errorReport/errorReport";
+    }
+
+    @RequestMapping(value = "/systemManagement/errorReport/deleteEr", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteEr(@RequestParam int id) {
+        Feedback feedback = feedbackMapper.findOne(id);
+        feedbackMapper.delete(feedback);
+        return "success";
     }
 
 

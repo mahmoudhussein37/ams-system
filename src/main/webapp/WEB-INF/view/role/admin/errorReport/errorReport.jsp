@@ -29,6 +29,7 @@
                                         <th style=""><spring:message code="common.name"/></th>
                                         <th style=""><spring:message code="common.email"/></th>
                                         <th style=""><spring:message code="admin.errorDetail"/></th>
+                                        <th style=""></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -52,6 +53,9 @@
 
                                                 ${feedback.contents}
 
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-light delete-fb" data-id="${feedback.id}"><spring:message code="common.delete"/></button>
                                             </td>
 
                                         </tr>
@@ -88,6 +92,14 @@
 <script>
     $(document).ready(function() {
         $("#course-list").DataTable();
+        $(".delete-fb").click(function(e) {
+           e.preventDefault();
+           var id = $(this).attr("data-id");
+           $.post("${baseUrl}/admin/systemManagement/errorReport/deleteEr?id=" + id, function() {
+              alert("<spring:message code="common.success"/>");
+              location.reload();
+           });
+        });
     });
 </script>
 </body>

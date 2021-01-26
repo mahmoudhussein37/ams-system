@@ -3,7 +3,7 @@ package koreatech.cse.interceptor;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.SupportedLanguage;
 import koreatech.cse.util.UrlHelper;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ModelAndViewDefiningException;

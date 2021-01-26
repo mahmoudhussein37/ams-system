@@ -16,7 +16,7 @@ import koreatech.cse.service.ProfService;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.SystemUtil;
 import koreatech.cse.view.StudentListExcelView;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;

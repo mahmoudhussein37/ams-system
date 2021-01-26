@@ -1,4 +1,4 @@
-<div class="tab-pane py-5 p-lg-0 ${not empty home and home eq true ? 'show active' : ''}" id="kt_header_tab_00">
+<%--<div class="tab-pane py-5 p-lg-0 ${not empty home and home eq true ? 'show active' : ''}" id="kt_header_tab_00">
     <!--begin::Menu-->
     <div id="kt_header_menu00" class="header-menu header-menu-mobile header-menu-layout-default ">
         <!--begin::Nav-->
@@ -11,7 +11,7 @@
         <!--end::Nav-->
     </div>
     <!--end::Menu-->
-</div>
+</div>--%>
 <div class="tab-pane py-5 p-lg-0  ${fn:contains(requestUri, '/board/') ? 'show active' : ''}" id="kt_header_tab_0">
     <!--begin::Menu-->
     <div id="kt_header_menu0" class="header-menu header-menu-mobile header-menu-layout-default ">

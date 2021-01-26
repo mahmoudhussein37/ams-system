@@ -2,11 +2,9 @@ package koreatech.cse.repository;
 
 
 import koreatech.cse.domain.Feedback;
+import koreatech.cse.domain.univ.AltCourse;
 import koreatech.cse.domain.univ.MenuAccess;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,5 +18,11 @@ public interface FeedbackMapper {
 
     @Select("SELECT * FROM `feedback` order by datetime desc limit 30")
     List<Feedback> findRecent();
+
+    @Select("SELECT * FROM `feedback` where id=#{id}")
+    Feedback findOne(@Param("id") int id);
+
+    @Delete("DELETE FROM `feedback` WHERE ID = #{id}")
+    void delete(Feedback feedback);
 
 }
