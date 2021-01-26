@@ -50,7 +50,7 @@
 
             <!--begin::Item-->
             <li class="nav-item mr-3">
-                <a href="#" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/student/register') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
+                <a href="/student/register/basic" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/student/register/basic') ? 'active' : ''}">
                     <spring:message code="menu.student.main2"/>
                 </a>
             </li>
@@ -60,7 +60,7 @@
                 </a>
             </li>
             <li class="nav-item mr-3">
-                <a href="#" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/student/grades') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_4" role="tab">
+                <a href="/student/grades/inquiryGrade" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/student/grades/inquiryGrade') ? 'active' : ''}" >
                     <spring:message code="menu.student.main4"/>
                 </a>
             </li>

@@ -58,9 +58,9 @@
     <!--end::Menu-->
 </div>
 <!--begin::Tab Pane-->
-<div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/student/register') ? 'show active' : ''}" id="kt_header_tab_2">
+<div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/student/register/basic') ? 'show active' : ''}" id="kt_header_tab_2_register_basic" onclick="menuGoto('/student/register/basic')">
     <!--begin::Menu-->
-    <div id="kt_header_menu2" class="header-menu header-menu-mobile  header-menu-layout-default " >
+    <%--<div id="kt_header_menu2" class="header-menu header-menu-mobile  header-menu-layout-default " >
 
         <!--begin::Nav-->
         <ul class="menu-nav ">
@@ -69,7 +69,7 @@
             </li>
         </ul>
         <!--end::Nav-->
-    </div>
+    </div>--%>
     <!--end::Menu-->
 </div>
 <div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/student/classInformation') ? 'show active' : ''}" id="kt_header_tab_3">
@@ -90,17 +90,17 @@
     </div>
     <!--end::Menu-->
 </div>
-<div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/student/grades') ? 'show active' : ''}" id="kt_header_tab_4">
+<div class="tab-pane py-5 p-lg-0 ${fn:contains(requestUri, '/student/grades') ? 'show active' : ''}" id="kt_header_tab_4" onclick="menuGoto('/student/grades/inquiryGrade')">
     <!--begin::Menu-->
     <div id="kt_header_menu4" class="header-menu header-menu-mobile  header-menu-layout-default " >
 
         <!--begin::Nav-->
-        <ul class="menu-nav ">
+        <%--<ul class="menu-nav ">
             <li class="menu-item  ${fn:contains(requestUri, '/student/grades/inquiryGrade') ? 'menu-item-active' : ''} "  aria-haspopup="true">
                 <a  href="/student/grades/inquiryGrade" class="menu-link "><span class="menu-text"><spring:message code="menu.student.sub4_1"/></span></a>
             </li>
 
-        </ul>
+        </ul>--%>
         <!--end::Nav-->
     </div>
     <!--end::Menu-->

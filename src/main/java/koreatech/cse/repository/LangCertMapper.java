@@ -14,6 +14,7 @@ public interface LangCertMapper {
             "`type`,"+
             "`l_type`,"+
             "`level`,"+
+            "`agency`,"+
             "`date`,"+
             "`approve`"+
             ")VALUES("+
@@ -21,6 +22,7 @@ public interface LangCertMapper {
             "#{type},"+
             "#{lType},"+
             "#{level},"+
+            "#{agency},"+
             "#{date},"+
             "#{approve}"+
             ")")
@@ -42,6 +44,7 @@ public interface LangCertMapper {
             "`type` = #{type},"+
             "`l_type` = #{lType},"+
             "`level` = #{level},"+
+            "`agency` = #{agency},"+
             "`date` = #{date},"+
             "`approve` = #{approve} "+
             "WHERE `id` = #{id}")

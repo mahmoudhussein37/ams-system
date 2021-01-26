@@ -14,6 +14,7 @@ public class LangCert implements Serializable {
     private String lType;
     private String level;
     private String date;
+    private String agency;//issuing agency
     private boolean approve;
 
 
@@ -71,6 +72,14 @@ public class LangCert implements Serializable {
 
     public void setApprove(boolean approve) {
         this.approve = approve;
+    }
+
+    public String getAgency() {
+        return agency;
+    }
+
+    public void setAgency(String agency) {
+        this.agency = agency;
     }
 
     @Override

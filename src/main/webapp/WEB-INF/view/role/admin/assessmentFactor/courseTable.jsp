@@ -21,9 +21,7 @@
                     ${varStatus.count}
             </td>
             <td>
-                <a href="#" class="course-detail" data-course-id="${courseElement.id}">
-                        ${courseElement.code}
-                </a>
+                    ${courseElement.code}
             </td>
             <td>
                     ${courseElement.title}

@@ -21,6 +21,9 @@
                         <spring:message code="common.scoreLevel"/>
                     </th>
                     <th>
+                        <spring:message code="common.agency"/>
+                    </th>
+                    <th>
                         <spring:message code="common.acquisitionDate"/>
                     </th>
                     <th>
@@ -41,6 +44,9 @@
                             </td>
                             <td>
                                     ${langCert.level}
+                            </td>
+                            <td>
+                                    ${langCert.agency}
                             </td>
                             <td>
                                     ${langCert.date}

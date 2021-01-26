@@ -60,6 +60,7 @@
         .header-menu .menu-nav > .menu-item {
             padding-top:0;
             padding-bottom:0;
+            max-width:120px;
         }
         .header-menu .menu-nav > .menu-item > .menu-link {
             padding-top:0;

@@ -111,6 +111,8 @@ public class ProfessorController {
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
+            searchable.setOrderParam("number");
+            searchable.setOrderDir("asc");
             userList = userMapper.findStudentBy(searchable);
 
 
@@ -957,6 +959,7 @@ public class ProfessorController {
             cqi.setCourseId(pc.getCourseId());
             cqi.setDivide(pc.getDivide());
             cqi.setProfCourseId(pc.getId());
+            cqi.setUserId(User.current().getId());
         }
         model.addAttribute("cqi", cqi);
         Map<Integer, Double> averageAssignedMap = profService.getAverageAssignedMap(pc.getCourseId(), currentYear);
@@ -973,6 +976,8 @@ public class ProfessorController {
     @ResponseBody
     public String cqiReportCourseDetail(@ModelAttribute("cqi") Cqi cqi, @RequestParam int profCourseId) {
 
+        User user = User.current();
+        cqi.setUserId(user.getId());
         System.out.println("cqi = " + cqi);
         if(cqi.getId() == 0) {
             cqiMapper.insert(cqi);

@@ -48,7 +48,7 @@
                         </div>
                         <div class="card-body">
                             <sec:authorize access="hasRole('ROLE_ADMIN')">
-                            <a href="/admin/board/${boardName}/form" class="btn btn-primary"><spring:message code="admin.board.write"/></a>
+                            <a href="/board/${boardName}/form" class="btn btn-primary"><spring:message code="admin.board.write"/></a>
 
                             <br/><br/><br/>
                             </sec:authorize>
@@ -74,14 +74,14 @@
                                             <fmt:formatDate pattern="dd-MMM-yyyy hh:mm:ss" value="${article.registeredDate}"/>
                                         </td>
                                         <td class="pl-0" style="width:60%">
-                                            <a href="/admin/board/${boardName}/${article.id}">${article.subject}</a>
+                                            <a href="/board/${boardName}/${article.id}">${article.subject}</a>
                                         </td>
                                         <td style="width:10%">
                                                 ${article.hit}
                                         </td>
                                         <sec:authorize access="hasRole('ROLE_ADMIN')">
                                         <td style="width:20%">
-                                            <a href="/admin/board/${boardName}/edit/${article.id}" class="btn btn-secondary"><spring:message code="common.edit"/></a>
+                                            <a href="/board/${boardName}/edit/${article.id}" class="btn btn-secondary"><spring:message code="common.edit"/></a>
                                             <button class="btn btn-secondary delete-btn" data-article-id="${article.id}"><spring:message code="common.delete"/></button>
                                         </td>
                                         </sec:authorize>
@@ -131,7 +131,7 @@
             var r = confirm("<spring:message code="admin.board.confirm"/>");
             if (r == true) {
                 var articleId = $(this).attr("data-article-id");
-                $.post("/admin/board/${boardName}/delete/" + articleId, function() {
+                $.post("/board/${boardName}/delete/" + articleId, function() {
                    location.reload();
                 });
             }

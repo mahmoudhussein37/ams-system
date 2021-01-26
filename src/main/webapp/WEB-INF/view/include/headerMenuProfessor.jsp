@@ -25,7 +25,7 @@
                 <a  href="/board/de/list" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub0_2"/></span></a>
             </li>
             <li class="menu-item ${fn:contains(requestUri, '/board/hire') ? 'menu-item-active' : ''} "  aria-haspopup="true">
-                <a  href="/board/hire/list" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub0_2"/></span></a>
+                <a  href="/board/hire/list" class="menu-link "><span class="menu-text"><spring:message code="menu.professor.sub0_3"/></span></a>
             </li>
         </ul>
         <!--end::Nav-->
