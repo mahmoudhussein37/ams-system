@@ -83,6 +83,15 @@
 <script src="${resources}/js/CustomMap.js" type="text/javascript"></script>
 <script>
 
+    function menuGoto(u) {
+        location.href=u;
+    }
+
+    function logout() {
+        $.post("${baseUrl}/logout", function() {
+           location.href="${baseUrl}";
+        });
+    }
     $(".country-select").click(function(e) {
        e.preventDefault();
        var lang = $(this).attr("data-lang");

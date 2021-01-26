@@ -5,7 +5,7 @@ import koreatech.cse.datatables.DataTablesPageable;
 import koreatech.cse.util.mybatis.Operator;
 import koreatech.cse.util.mybatis.Pageable;
 import koreatech.cse.util.mybatis.Term;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
 import org.springframework.data.domain.Sort.Order;
 

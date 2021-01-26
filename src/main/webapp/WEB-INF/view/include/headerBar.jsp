@@ -92,7 +92,7 @@
 								</span>
                                 </div>
                                 <div class="btn btn-icon btn-hover-transparent-white w-lg-auto d-flex align-items-center btn-lg px-2" >
-                                    <a href="/signout">
+                                    <a id="logout-link" onclick="logout()">
                                     <span class="symbol symbol-sm-30">
 									<span class="symbol-label font-size-h5 font-weight-bold text-white bg-white-o-30"><i class="fa fa-sign-out-alt"></i></span>
                                     </span>

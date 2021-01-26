@@ -26,7 +26,7 @@
 
                         </div>
                         <div class="card-body">
-                            <form:form modelAttribute="article" action="/admin/board/${boardName}/edit/${article.id}" method="post">
+                            <form:form modelAttribute="article" action="/board/${boardName}/edit/${article.id}" method="post">
                                 <div class="row">
                                     <div class="col-md-12">
 

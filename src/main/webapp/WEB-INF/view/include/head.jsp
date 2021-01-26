@@ -23,6 +23,7 @@
         response.setHeader("Cache-Control","no-cache");
         response.setHeader("Pragma","no-cache");
         response.setDateHeader("Expires",-1);
+        response.setHeader("Cache-Control", "no-store"); //HTTP 1.1
     %>
     <base href="">
     <title>Beni Suef Technological University</title>
@@ -60,6 +61,7 @@
         .header-menu .menu-nav > .menu-item {
             padding-top:0;
             padding-bottom:0;
+            max-width:120px;
         }
         .header-menu .menu-nav > .menu-item > .menu-link {
             padding-top:0;

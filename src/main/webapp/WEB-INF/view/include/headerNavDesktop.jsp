@@ -2,11 +2,11 @@
     <c:when test="${currentRole eq 'professor'}">
         <ul class="header-tabs nav align-self-end font-size-lg" role="tablist">
             <!--begin::Item-->
-            <li class="nav-item">
+<%--            <li class="nav-item">
                 <a href="#" class="nav-link py-4 px-6 ${not empty home and home eq true ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_00" role="tab">
                     <spring:message code="menu.admin.home"/>
                 </a>
-            </li>
+            </li>--%>
             <li class="nav-item">
                 <a href="#" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/board/') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_0" role="tab">
                     <spring:message code="menu.professor.main0"/>
@@ -30,11 +30,11 @@
     </c:when>
     <c:when test="${currentRole eq 'student'}">
         <ul class="header-tabs nav align-self-end font-size-lg" role="tablist">
-            <li class="nav-item">
+<%--            <li class="nav-item">
                 <a href="#" class="nav-link py-4 px-6 ${not empty home and home eq true ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_00" role="tab">
                     <spring:message code="menu.admin.home"/>
                 </a>
-            </li>
+            </li>--%>
             <li class="nav-item">
                 <a href="#" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/board/') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_0" role="tab">
                     <spring:message code="menu.student.main0"/>
@@ -50,7 +50,7 @@
 
             <!--begin::Item-->
             <li class="nav-item mr-3">
-                <a href="#" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/student/register') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_2" role="tab">
+                <a href="/student/register/basic" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/student/register/basic') ? 'active' : ''}">
                     <spring:message code="menu.student.main2"/>
                 </a>
             </li>
@@ -60,7 +60,7 @@
                 </a>
             </li>
             <li class="nav-item mr-3">
-                <a href="#" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/student/grades') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_4" role="tab">
+                <a href="/student/grades/inquiryGrade" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/student/grades/inquiryGrade') ? 'active' : ''}" >
                     <spring:message code="menu.student.main4"/>
                 </a>
             </li>
@@ -75,11 +75,11 @@
     <c:when test="${currentRole eq 'admin'}">
         <ul class="header-tabs nav align-self-end font-size" role="tablist">
 
-            <li class="nav-item">
+<%--            <li class="nav-item">
                 <a href="#" class="nav-link py-4 px-6 ${not empty home and home eq true ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_00" role="tab">
                     <spring:message code="menu.admin.home"/>
                 </a>
-            </li>
+            </li>--%>
             <li class="nav-item">
                 <a href="#" class="nav-link py-4 px-6 ${fn:contains(requestUri, '/admin/studentManagement') ? 'active' : ''}" data-toggle="tab" data-target="#kt_header_tab_1" role="tab">
                     <spring:message code="menu.admin.main1"/>

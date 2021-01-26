@@ -9,6 +9,7 @@ import koreatech.cse.repository.UploadedFileMapper;
 import koreatech.cse.repository.UserMapper;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.SystemUtil;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -109,6 +111,7 @@ public class HomeController {
         return "redirect:/signin?msg=signupSuccess";
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/feedback", method = RequestMethod.GET)
     public String feedback(Model model) {
         Feedback feedback = new Feedback();
@@ -117,6 +120,7 @@ public class HomeController {
         return "feedback";
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/feedback", method = RequestMethod.POST)
     public String feedback(@ModelAttribute Feedback feedback, SessionStatus status) {
         feedbackMapper.insert(feedback);
@@ -125,6 +129,7 @@ public class HomeController {
         return "redirect:/";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_PROFESSOR', 'ROLE_ADMIN')")
     @Transactional(readOnly = true)
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public void download(HttpServletRequest request, HttpServletResponse response, @RequestParam int uploadedFileId) throws IOException {
@@ -156,6 +161,13 @@ public class HomeController {
                 }
             }
         }
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public String logout(HttpSession session) {
+        session.invalidate();
+
+        return "redirect:/";
     }
 
 }

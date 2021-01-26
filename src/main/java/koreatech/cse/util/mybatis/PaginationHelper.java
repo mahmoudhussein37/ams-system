@@ -2,7 +2,7 @@ package koreatech.cse.util.mybatis;
 
 import koreatech.cse.datatables.DataTablesPageable;
 import koreatech.cse.datatables.DataTablesRequest;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.util.CollectionUtils;
 

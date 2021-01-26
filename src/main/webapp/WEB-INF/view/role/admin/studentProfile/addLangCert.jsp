@@ -38,6 +38,9 @@
                                                 </form:select>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
+
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label><spring:message code="common.langCertName"/></label>
@@ -49,6 +52,12 @@
                                             <div class="form-group">
                                                 <label><spring:message code="common.level"/></label>
                                                 <form:input type="text" path="level" class="form-control"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label><spring:message code="common.agency"/></label>
+                                                <form:input type="text" path="agency" class="form-control"/>
                                             </div>
                                         </div>
                                         <div class="col-md-3">

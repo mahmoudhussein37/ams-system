@@ -14,7 +14,7 @@ import koreatech.cse.service.FileService;
 import koreatech.cse.service.ProfService;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.DateHelper;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -226,9 +226,15 @@ public class StudentController {
             if(f == null || f.getSize() == 0) {
 
             } else {
-                uploadedFileMapper.deleteProfileByUser(user);
-                DateTime dt = new DateTime();
-                fileService.processUploadedFile(f, user, Designation.profile, 0, 0, dt.getYear());
+
+                String fileName = f.getOriginalFilename();
+                String ext = fileService.getExtension(fileName);
+                if(ext.equalsIgnoreCase("png") || ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg") || ext.equalsIgnoreCase("gif")) {
+                    uploadedFileMapper.deleteProfileByUser(user);
+                    DateTime dt = new DateTime();
+                    fileService.processUploadedFile(f, user, Designation.profile, 0, 0, dt.getYear());
+                }
+
             }
 
         }

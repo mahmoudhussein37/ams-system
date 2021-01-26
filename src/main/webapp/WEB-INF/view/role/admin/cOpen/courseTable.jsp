@@ -28,7 +28,7 @@
                     ${courseElement.code}
             </td>
             <td>
-                <a href="#" class="course-editable" data-type="text" data-name="title" data-url="${baseUrl}/admin/courseManagement/courseEditable" data-pk="${courseElement.id}" data-original-title="<spring:message code="common.courseTitle"/>">${courseElement.title}</a>
+                ${courseElement.title}
 
             </td>
             <td>

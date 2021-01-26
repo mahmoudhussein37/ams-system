@@ -7,7 +7,7 @@ import koreatech.cse.domain.univ.AssessmentFactor;
 import koreatech.cse.domain.univ.Classroom;
 import koreatech.cse.domain.univ.Course;
 import koreatech.cse.domain.univ.Semester;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.security.access.method.P;
 import org.springframework.util.CollectionUtils;
 
