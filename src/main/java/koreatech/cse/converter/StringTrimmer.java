@@ -12,7 +12,7 @@ public class StringTrimmer implements Converter<String, String> {
 
             s = s.trim();
             s = StringEscapeUtils.escapeHtml4(s);
-            s = SecurityHelper.makeSecureString(s);
+            //s = SecurityHelper.makeSecureString(s);
             return s;
         } else {
             return s;
