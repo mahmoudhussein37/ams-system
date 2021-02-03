@@ -1542,6 +1542,9 @@ public class AdminController {
     @RequestMapping("/academicManagement/studentGrade")
     public String studentGrade(Model model) {
         model.addAttribute("yearList", getYearList());
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
         return "role/admin/studentGrade/studentGrade";
     }
 
