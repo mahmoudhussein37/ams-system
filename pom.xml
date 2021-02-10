@@ -6,7 +6,7 @@
     <name>Egypt</name>
     <groupId>koreatech.cse</groupId>
     <artifactId>egypt</artifactId>
-    <version>0027</version>
+    <version>0028</version>
     <packaging>war</packaging>
 
     <properties>
@@ -241,6 +241,7 @@
     </profiles>
 
     <build>
+        <finalName>ROOT##${project.version}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources/common</directory>
