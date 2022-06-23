@@ -47,10 +47,11 @@ public class FileService {
             pathBuilder.append(profCourseId);
             pathBuilder.append(File.separator);
         }
+        System.out.println("pathBuilder = " + pathBuilder.toString());
         File originDir = new File(pathBuilder.toString());
-        createFolder(pathBuilder.toString());
-//        if (!originDir.exists())
-//            originDir.mkdirs();
+        //createFolder(pathBuilder.toString());
+        if (!originDir.exists())
+            originDir.mkdirs();
         String originalFilename = file.getOriginalFilename();
         if(this.isValidFileType(originalFilename)) {
             String validFilename = changeToValidFilename(originalFilename);
