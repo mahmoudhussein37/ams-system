@@ -66,6 +66,10 @@ public class HomeController {
         return "include/profOptions";
     }
 
+
+    /*
+    /registerAdmin?code=c57c-496e-b71a-05e6
+    */
     @RequestMapping("/registerAdmin")
     @ResponseBody
     public String registerAdmin(@RequestParam String code) {
