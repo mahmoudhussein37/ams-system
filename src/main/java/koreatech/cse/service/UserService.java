@@ -51,7 +51,7 @@ public class UserService implements UserDetailsService {
                 stored.setEnabled(true);
                 stored.setConfirm(true);
 
-
+                stored.setStatus("registered");
                 userMapper.insert(stored);
                 Contact contact = user.getContact();
                 contact.setUserId(stored.getId());
