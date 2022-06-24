@@ -206,6 +206,13 @@
 <!--begin::Page Scripts(used by this page)-->
 <%--<script src="${resources}/vendor/metronic_assets_7/assets/js/pages/custom/login/login-general.js"></script>--%>
 <!--end::Page Scripts-->
+<script>
+    <c:if test="${not empty msg}">
+        alert('<spring:message code="common.signin.${msg}"/>');
+    </c:if>
+
+
+</script>
 </body>
 <!--end::Body-->
 </html>

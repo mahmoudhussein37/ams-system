@@ -9,6 +9,7 @@ import koreatech.cse.repository.UploadedFileMapper;
 import koreatech.cse.repository.UserMapper;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.SystemUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -92,12 +93,21 @@ public class HomeController {
 
     @RequestMapping("/signin")
     public String signin(Model model, @RequestParam(required=false) String msg) {
-        model.addAttribute("msg", msg);
+        if(User.current() != null) {
+            return "redirect:/";
+        }
+        String m = StringUtils.isBlank(msg) ? "" : msg;
+        if(StringUtils.isBlank(m) || m.equals("success") || m.equals("error") || m.equals("number") || m.equals("info"))
+            model.addAttribute("msg", m);
+
         return "signin";
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String signup(Model model) {
+        if(User.current() != null) {
+            return "redirect:/";
+        }
         User signupUser = new User();
         model.addAttribute("signupUser", signupUser);
 
@@ -107,12 +117,10 @@ public class HomeController {
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String signup(@ModelAttribute User signupUser, @RequestParam Role role, SessionStatus status) {
 
-        System.out.println("signupUser = " + signupUser);
-        System.out.println("role = " + role);
-        userService.signup(signupUser, role);
+        String result = userService.signup(signupUser, role);
         status.setComplete();
 
-        return "redirect:/signin?msg=signupSuccess";
+        return "redirect:/signin?msg=" + result;
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")

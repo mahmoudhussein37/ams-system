@@ -36,57 +36,60 @@ public class UserService implements UserDetailsService {
     private SemesterMapper semesterMapper;
 
 
-    public Boolean signup(User user, Role role) {
+    public String signup(User user, Role role) {
 
         if(user.getUsername() == null || user.getPassword() ==  null)
-            return false;
+            return "info";
 
         if(isUniqueUsername(user.getUsername().trim())) {
 
             User stored = userMapper.findByNumber(user.getNumber());
-            if(stored == null) {
-                stored = user;
-                stored.setUsername(user.getUsername());
-                stored.setPassword(passwordEncoder.encode(user.getPassword()));
-                stored.setEnabled(true);
-                stored.setConfirm(true);
+            if(stored == null)
+                return "number";
 
-                stored.setStatus("registered");
-                userMapper.insert(stored);
-                Contact contact = user.getContact();
-                contact.setUserId(stored.getId());
+            stored.setUsername(user.getUsername());
+            stored.setPassword(passwordEncoder.encode(user.getPassword()));
+            stored.setEnabled(true);
+            stored.setConfirm(true);
 
-                contactMapper.insert(contact);
 
-                Authority authority = new Authority();
-                authority.setUserId(stored.getId());
-                authority.setRole(Role.user);
-                authorityMapper.insert(authority);
+            userMapper.updateFromSignup(stored);
+            Contact contact = user.getContact();
+            Contact storedContact = contactMapper.findByUserId(stored.getId());
 
-                //TODO: remove
-                if(role == Role.admin) {
-                    Authority adminAuthority = new Authority();
-                    adminAuthority.setUserId(stored.getId());
-                    adminAuthority.setRole(Role.admin);
-                    authorityMapper.insert(adminAuthority);
-                } else if(role == Role.student) {
-                    Authority studentAuthority = new Authority();
-                    studentAuthority.setUserId(stored.getId());
-                    studentAuthority.setRole(Role.student);
-                    authorityMapper.insert(studentAuthority);
-                } else if(role == Role.professor) {
-                    Authority profAuthority = new Authority();
-                    profAuthority.setUserId(stored.getId());
-                    profAuthority.setRole(Role.professor);
-                    authorityMapper.insert(profAuthority);
-                }
+
+            storedContact.setFirstName(contact.getFirstName());
+            storedContact.setLastName(contact.getLastName());
+            contactMapper.update(storedContact);
+
+            Authority authority = new Authority();
+            authority.setUserId(stored.getId());
+            authority.setRole(Role.user);
+            authorityMapper.insert(authority);
+
+            //TODO: remove
+            if (role == Role.admin) {
+                Authority adminAuthority = new Authority();
+                adminAuthority.setUserId(stored.getId());
+                adminAuthority.setRole(Role.admin);
+                authorityMapper.insert(adminAuthority);
+            } else if (role == Role.student) {
+                Authority studentAuthority = new Authority();
+                studentAuthority.setUserId(stored.getId());
+                studentAuthority.setRole(Role.student);
+                authorityMapper.insert(studentAuthority);
+            } else if (role == Role.professor) {
+                Authority profAuthority = new Authority();
+                profAuthority.setUserId(stored.getId());
+                profAuthority.setRole(Role.professor);
+                authorityMapper.insert(profAuthority);
+
             }
-
-
             System.out.println("user created :" + new Date());
-            return true;
+            return "success";
+
         }
-        return false;
+        return "error";
     }
 
     public Boolean signupAdmin(User user) {
