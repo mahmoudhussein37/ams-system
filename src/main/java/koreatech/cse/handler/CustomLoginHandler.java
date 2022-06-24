@@ -1,0 +1,71 @@
+package koreatech.cse.handler;
+
+import koreatech.cse.domain.User;
+import koreatech.cse.domain.constant.Role;
+import koreatech.cse.repository.AuthorityMapper;
+import koreatech.cse.repository.UserMapper;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
+import org.springframework.security.web.WebAttributes;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
+
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Component
+public class CustomLoginHandler implements AuthenticationSuccessHandler {
+
+    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    @Inject
+    private AuthorityMapper authorityMapper;
+    @Inject
+    private UserMapper userMapper;
+
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request,
+                                        HttpServletResponse response, Authentication authentication) throws IOException {
+        User user = User.current();
+
+
+        handle(request, response, user);
+        clearAuthenticationAttributes(request);
+    }
+
+    protected void handle(HttpServletRequest request,
+                          HttpServletResponse response, User user) throws IOException {
+        String targetUrl = determineTargetUrl(request, user);
+
+        if (response.isCommitted()) {
+            return;
+        }
+        redirectStrategy.sendRedirect(request, response, targetUrl);
+    }
+
+    /** Builds the target URL according to the logic defined in the main class Javadoc. */
+    protected String determineTargetUrl(HttpServletRequest request, User user) {
+        String referer = request.getHeader("referer");
+        return "/";
+    }
+
+    protected void clearAuthenticationAttributes(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return;
+        }
+        session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+        session.setMaxInactiveInterval(3600);
+    }
+}

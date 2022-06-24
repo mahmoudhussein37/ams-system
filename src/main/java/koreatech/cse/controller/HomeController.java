@@ -97,7 +97,7 @@ public class HomeController {
             return "redirect:/";
         }
         String m = StringUtils.isBlank(msg) ? "" : msg;
-        if(StringUtils.isBlank(m) || m.equals("success") || m.equals("error") || m.equals("number") || m.equals("info"))
+        if(StringUtils.isBlank(m) || m.equals("success") || m.equals("error") || m.equals("number") || m.equals("info") || m.equals("fail"))
             model.addAttribute("msg", m);
 
         return "signin";

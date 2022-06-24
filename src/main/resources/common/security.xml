@@ -7,7 +7,7 @@
 
     <sec:global-method-security secured-annotations="enabled" pre-post-annotations="enabled" />
     <sec:http pattern="/**" use-expressions="true">
-        <sec:form-login login-page="/signin" />
+        <sec:form-login login-page="/signin" authentication-success-handler-ref="customLoginHandler" authentication-failure-handler-ref="customLoginFailureHandler"/>
 
         <sec:logout logout-url="/signout" delete-cookies="JSESSIONID"/>
         <sec:session-management>
