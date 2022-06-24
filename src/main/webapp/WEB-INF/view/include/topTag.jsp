@@ -15,15 +15,8 @@
 <c:set var="requestUri" value="${requestScope['javax.servlet.forward.request_uri']}" />
 <c:set var="locale" value="<%=RequestContextUtils.getLocale(request).toString()%>" />
 <c:set var="testMode"><spring:eval expression="@config['super.test']" /></c:set>
+<c:set var="baseUrl"><spring:eval expression="@config['super.baseUrl']" /></c:set>
 <c:set var="resources">/resources</c:set>
-<c:choose>
-    <c:when test="${testMode eq true}">
-        <c:set var="baseUrl">http://localhost:8088</c:set>
-    </c:when>
-    <c:otherwise>
-        <c:set var="baseUrl"></c:set>
-    </c:otherwise>
-</c:choose>
 <c:set var="current_path" value="${requestScope['javax.servlet.forward.servlet_path']}" />
 <c:set var="current_url" value="${root}${current_path}" />
 <c:choose>
