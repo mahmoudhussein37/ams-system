@@ -74,13 +74,13 @@
                 </tr>
                 <tr>
                     <td>
-<textarea rows="6" dir="rtl" class="form-control" disabled>
+<textarea rows="6" dir="${isRTL ? 'rtl' : 'ltr'}" class="form-control" disabled>
         ${prevCqi.plan}
 
 </textarea>
                     </td>
                     <td>
-                        <form:textarea path="problem" rows="6"  dir="rtl" class="form-control" disabled="true"/>
+                        <form:textarea path="problem" rows="6"  dir="${isRTL ? 'rtl' : 'ltr'}" class="form-control" disabled="true"/>
 
                     </td>
                 </tr>
@@ -92,7 +92,7 @@
     <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="professor.comprehensiveLecture"/></h3>
     <div class="row">
         <div class="col-md-12">
-            <form:textarea path="plan" rows="6" dir="rtl"  class="form-control" disabled="true"/>
+            <form:textarea path="plan" rows="6" dir="${isRTL ? 'rtl' : 'ltr'}"  class="form-control" disabled="true"/>
         </div>
     </div>
 

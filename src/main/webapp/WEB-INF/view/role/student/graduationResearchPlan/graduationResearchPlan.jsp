@@ -155,7 +155,7 @@
                                                 <spring:message code="professor.scopeOfStudy"/>
                                             </td>
                                             <td>
-                                                <form:textarea path="scope" class="form-control" dir="rtl" rows="6" disabled="true"></form:textarea>
+                                                <form:textarea path="scope" class="form-control" dir="${isRTL ? 'rtl' : 'ltr'}" rows="6" disabled="true"></form:textarea>
                                             </td>
                                         </tr>
                                         <tr>
@@ -187,7 +187,7 @@
                                                 <spring:message code="professor.references"/>
                                             </td>
                                             <td>
-                                                <form:textarea path="ref" class="form-control" dir="rtl" rows="6" disabled="true"></form:textarea>
+                                                <form:textarea path="ref" class="form-control" dir="${isRTL ? 'rtl' : 'ltr'}" rows="6" disabled="true"></form:textarea>
                                             </td>
                                         </tr>
                                         <tr>
