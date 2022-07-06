@@ -23,7 +23,7 @@ public class GraduationResearchPlan implements Serializable {
     private String ref;
     private String etc;
     private String submitDate;
-    private boolean enabled;
+
     private int completeSemester;
     private int approve;
 
@@ -148,14 +148,6 @@ public class GraduationResearchPlan implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     public int getYear() {

@@ -82,7 +82,16 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.approve"/></label>
-                <input type="text" class="form-control" value="${stored.enabled ? 'Y' : 'N'}" disabled/>
+                <c:set var="approveStatus" value="-"/>
+                <c:choose>
+                    <c:when test="${stored.approve eq 1}">
+                        <c:set var="approveStatus" value="Y"/>
+                    </c:when>
+                    <c:when test="${stored.approve eq 0}">
+                        <c:set var="approveStatus" value="N"/>
+                    </c:when>
+                </c:choose>
+                <input type="text" class="form-control" value="${approveStatus}" disabled/>
                     <%--<span class="form-text text-muted">Please enter your full name</span>--%>
             </div>
         </div>
