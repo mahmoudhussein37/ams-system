@@ -67,7 +67,7 @@
 
                                 <div class="col-md-2">
                                     <br/>
-                                    <button class="btn btn-light increase-grade" style="width:100%;margin-top:10px;"> <spring:message code="admin.increaseGrade"/></button>
+                                    <button class="btn btn-light " onclick="increaseGrade()" style="width:100%;margin-top:10px;"> <spring:message code="admin.increaseGrade"/></button>
                                 </div>
 
                             </div>

@@ -51,6 +51,18 @@
         var checkboxes = $("input[name=tableCheckbox]");
         setCheckboxAll(checked, checkboxes);
     }
+    function printChecked() {
+        var checkedAll = $("input[name=tableCheckboxAll]").is(":checked");
+        var schoolYear = $("#search-school-year").children("option:selected").val().trim();
+        var advisor = $("#search-advisor").children("option:selected").val().trim();
+        var division = $("#search-division").children("option:selected").val().trim();
+        var size = $("input[name=tableCheckbox]:checked").length;
+        if (!checkedAll && size == 0) {
+            alert("<spring:message code="common.pleaseSelectItems"/>");
+        } else {
+            location.href="${baseUrl}/admin/studentManagement/studentProfile/studentDetailForPrint?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("tableCheckbox");
+        }
+    }
     $(document).ready(function() {
         $("#student-list").DataTable();
 
@@ -63,20 +75,7 @@
             $(".detail-div").load("${baseUrl}/admin/studentManagement/studentProfile/studentDetail?studentId=" + studentId);
 
         });
-        $("body").on('click', '.print', function (e) {
-            e.preventDefault();
-            var checkedAll = $("input[name=tableCheckboxAll]").is(":checked");
-            var schoolYear = $("#search-school-year").children("option:selected").val().trim();
-            var advisor = $("#search-advisor").children("option:selected").val().trim();
-            var division = $("#search-division").children("option:selected").val().trim();
-            var size = $("input[name=tableCheckbox]:checked").length;
-            if (!checkedAll && size == 0) {
-                alert("<spring:message code="common.pleaseSelectItems"/>");
-            } else {
-                location.href="${baseUrl}/admin/studentManagement/studentProfile/studentDetailForPrint?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("tableCheckbox");
-            }
 
-        });
         /*$("body").on('click', '.increase-grade', function (e) {
             e.preventDefault();
             var checkedAll = $("input[name=tableCheckboxAll]").is(":checked");

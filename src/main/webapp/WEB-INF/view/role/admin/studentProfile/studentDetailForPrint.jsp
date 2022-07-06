@@ -58,7 +58,7 @@
     window.print();
     window.onafterprint = function(){
         window.close();
-        location.href="${baseUrl}/studentManagement/studentProfile";
+        location.href="${baseUrl}/admin/studentManagement/studentProfile";
     }
 
 </script>
