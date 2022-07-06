@@ -198,7 +198,7 @@ $(document).ready(function() {
 
     $("body").on('click', '.print', function (e) {
         e.preventDefault();
-        openPage("${baseUrl}/admin/studentManagement/inquiryGrade/gradeDetailForPrint?studentId=${studentUser.id}");
+        location.href="${baseUrl}/admin/studentManagement/inquiryGrade/gradeDetailForPrint?studentId=${studentUser.id}";
     });
 });
 </script>

@@ -70,7 +70,7 @@
 $(document).ready(function() {
     $("body").on('click', '.print', function (e) {
         e.preventDefault();
-        openPage("${baseUrl}/admin/academicManagement/assessmentResult/courseDetail?print=true&profCourseId=${pc.id}");
+        location.href="${baseUrl}/admin/academicManagement/assessmentResult/courseDetail?print=true&profCourseId=${pc.id}";
     });
 });
 </script>

@@ -243,7 +243,7 @@
         });
         $("body").on('click', '.print', function (e) {
             e.preventDefault();
-            openPage("${baseUrl}/student/grades/inquiryGrade/gradeDetailForPrint");
+            location.href="${baseUrl}/student/grades/inquiryGrade/gradeDetailForPrint";
         });
 
     });

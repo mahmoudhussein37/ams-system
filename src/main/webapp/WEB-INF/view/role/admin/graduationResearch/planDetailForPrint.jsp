@@ -229,6 +229,7 @@
     window.print();
         window.onafterprint = function(){
             window.close();
+            location.href="${baseUrl}/admin/profManagement/graduationResearch";
         }
 
 </script>

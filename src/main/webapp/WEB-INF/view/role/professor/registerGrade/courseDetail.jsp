@@ -248,7 +248,7 @@ $(document).ready(function() {
 
     $("body").on('click', '.print', function (e) {
         e.preventDefault();
-        openPage("${baseUrl}/professor/classProgress/registerGrade/courseDetailForPrint?profCourseId=${pc.id}");
+        location.href="${baseUrl}/professor/classProgress/registerGrade/courseDetailForPrint?profCourseId=${pc.id}";
     });
 });
 </script>
