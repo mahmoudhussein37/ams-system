@@ -68,6 +68,22 @@
         var checked = $("input[name=tableCheckboxAll]").is(":checked");
         var checkboxes = $("input[name=tableCheckbox]");
         setCheckboxAll(checked, checkboxes);
+
+
+    }
+    function printChecked() {
+        var checkedAll = $("input[name=tableCheckboxAll]").is(":checked");
+        var year = $("#search-year").children("option:selected").val().trim();
+        var division = $("#search-division").children("option:selected").val().trim();
+        var advisor = $("#search-advisor").children("option:selected").val().trim();
+        var name = $("#search-name").val().trim();
+        var number = $("#search-number").val().trim();
+        var size = $("input[name=tableCheckbox]:checked").length;
+        if (!checkedAll && size == 0) {
+            alert("<spring:message code="common.pleaseSelectItems"/>");
+        } else {
+            location.href="${baseUrl}/admin/profManagement/graduationResearch/planDetailForPrint?checkAll=" + checkedAll + "&year=" + year + "&division=" + division + "&advisor=" + advisor + "&name=" + name + "&number=" + number + "&" + parameterize("tableCheckbox");
+        }
     }
     $(document).ready(function() {
         $("#student-list").DataTable();
@@ -82,20 +98,5 @@
 
         });
 
-        $("body").on('click', '.print', function (e) {
-            e.preventDefault();
-            var checkedAll = $("input[name=tableCheckboxAll]").is(":checked");
-            var year = $("#search-year").children("option:selected").val().trim();
-            var division = $("#search-division").children("option:selected").val().trim();
-            var advisor = $("#search-advisor").children("option:selected").val().trim();
-            var name = $("#search-name").val().trim();
-            var number = $("#search-number").val().trim();
-            var size = $("input[name=tableCheckbox]:checked").length;
-            if (!checkedAll && size == 0) {
-                alert("<spring:message code="common.pleaseSelectItems"/>");
-            } else {
-                location.href="${baseUrl}/admin/profManagement/graduationResearch/planDetailForPrint?checkAll=" + checkedAll + "&year=" + year + "&division=" + division + "&advisor=" + advisor + "&name=" + name + "&number=" + number + "&" + parameterize("tableCheckbox");
-            }
-        });
     });
 </script>

@@ -53,6 +53,19 @@
         var checkboxes = $("input[name=tableCheckbox]");
         setCheckboxAll(checked, checkboxes);
     }
+
+    function printChecked() {
+        var checkedAll = $("input[name=tableCheckboxAll]").is(":checked");
+        var year = $("#search-year").children("option:selected").val().trim();
+        var name = $("#search-name").val().trim();
+        var size = $("input[name=tableCheckbox]:checked").length;
+        if (!checkedAll && size == 0) {
+            alert("<spring:message code="common.pleaseSelectItems"/>");
+        } else {
+            //openPage("${baseUrl}/admin/studentManagement/studentCounseling/counselingDetailForPrint?checkAll=" + checkedAll + "&year=" + year + "&name=" + name + "&" + parameterize("tableCheckbox"));
+            location.href="${baseUrl}/admin/studentManagement/studentCounseling/counselingDetailForPrint?checkAll=" + checkedAll + "&year=" + year + "&name=" + name + "&" + parameterize("tableCheckbox");
+        }
+    }
     $(document).ready(function() {
         $("#student-list").DataTable();
 
@@ -66,19 +79,7 @@
 
         });
 
-        $("body").on('click', '.print', function (e) {
-            e.preventDefault();
-            var checkedAll = $("input[name=tableCheckboxAll]").is(":checked");
-            var year = $("#search-year").children("option:selected").val().trim();
-            var name = $("#search-name").val().trim();
-            var size = $("input[name=tableCheckbox]:checked").length;
-            if (!checkedAll && size == 0) {
-                alert("<spring:message code="common.pleaseSelectItems"/>");
-            } else {
-                //openPage("${baseUrl}/admin/studentManagement/studentCounseling/counselingDetailForPrint?checkAll=" + checkedAll + "&year=" + year + "&name=" + name + "&" + parameterize("tableCheckbox"));
-                location.href="${baseUrl}/admin/studentManagement/studentCounseling/counselingDetailForPrint?checkAll=" + checkedAll + "&year=" + year + "&name=" + name + "&" + parameterize("tableCheckbox");
-            }
-        });
+
     });
 
 </script>

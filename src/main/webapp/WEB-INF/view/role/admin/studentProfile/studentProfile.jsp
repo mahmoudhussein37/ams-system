@@ -66,7 +66,7 @@
                                 </div>
                                 <div class="col-md-1">
                                     <br/>
-                                    <button class="btn btn-light print" style="width:100%;margin-top:10px;"> <spring:message code="common.print"/></button>
+                                    <button class="btn btn-light" onclick="printChecked()" style="width:100%;margin-top:10px;"> <spring:message code="common.print"/></button>
                                 </div>
                                 <%--<div class="col-md-1">
                                     <br/>
