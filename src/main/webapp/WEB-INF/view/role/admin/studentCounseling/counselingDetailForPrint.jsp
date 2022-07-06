@@ -153,6 +153,7 @@
     window.print();
         window.onafterprint = function(){
             window.close();
+            location.href="/admin/studentManagement/studentCounseling";
         }
 
 </script>

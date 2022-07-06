@@ -144,6 +144,15 @@
 
         window.onafterprint = function(){
             window.close();
+            <c:choose>
+            <c:when test="${currentPageRole eq 'professor'}">
+            location.href="${baseUrl}/admin/academicManagement/cqi";
+            </c:when>
+            <c:when test="${currentPageRole eq 'admin'}">
+            location.href="${baseUrl}/professor/classProgress/cqiReport";
+            </c:when>
+            </c:choose>
+
         }
     });
 </script>

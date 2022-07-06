@@ -106,7 +106,8 @@
 
         $("body").on('click', '.print', function (e) {
             e.preventDefault();
-            openPage("${baseUrl}/admin/academicManagement/cqi/courseDetail?print=true&profCourseId=${pc.id}");
+            //openPage("${baseUrl}/admin/academicManagement/cqi/courseDetail?print=true&profCourseId=${pc.id}");
+            location.href="${baseUrl}/admin/academicManagement/cqi/courseDetail?print=true&profCourseId=${pc.id}";
         });
     });
 </script>

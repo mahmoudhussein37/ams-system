@@ -128,7 +128,7 @@ ${prevCqi.plan}
         });
         $("body").on('click', '.print', function (e) {
             e.preventDefault();
-            openPage("${baseUrl}/professor/classProgress/cqiReport/courseDetail?print=true&profCourseId=${pc.id}");
+            location.href="${baseUrl}/professor/classProgress/cqiReport/courseDetail?print=true&profCourseId=${pc.id}";
         });
     });
 </script>

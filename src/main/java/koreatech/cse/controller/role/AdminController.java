@@ -112,6 +112,10 @@ public class AdminController {
     @Inject
     private LangCertMapper langCertMapper;
 
+    @ModelAttribute("currentPageRole")
+    public String getCurrentPageRole() {
+        return "admin";
+    }
 
     @RequestMapping("/studentManagement/studentRegistration")
     public String studentRegistration(Model model, @RequestParam(required=false) String result) {
@@ -324,9 +328,8 @@ public class AdminController {
                                                        @RequestParam(defaultValue = "0", required=false) int schoolYear,
                                                        @RequestParam(defaultValue = "0", required=false) int advisor,
                                                        @RequestParam(defaultValue = "0", required=false) int division, @RequestParam Map<String, String> params) {
-        System.out.println("checkAll = " + checkAll);
         List<Integer> integerIds = new ArrayList<>();
-        List<User> studentList = null;
+        List<User> studentList;
         if (checkAll) {
             Searchable searchable = new Searchable();
             searchable.setAdvisor(advisor);
@@ -1931,8 +1934,10 @@ public class AdminController {
         List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(pc.getCourseId());
         model.addAttribute("assessmentFactors", assessmentFactors);
 
-        if(print.equals("true"))
+        if(print.equals("true")) {
+
             return "role/common/cqi/courseDetailForPrint";
+        }
 
         return "role/admin/cqi/courseDetail";
     }

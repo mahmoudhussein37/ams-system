@@ -89,6 +89,11 @@ public class StudentController {
     @Inject
     private LangCertMapper langCertMapper;
 
+    @ModelAttribute("currentPageRole")
+    public String getCurrentPageRole() {
+        return "student";
+    }
+
     @RequestMapping("/courseGuide/yearlyCurriculum")
     public String yearlyCurriculum(Model model) {
 

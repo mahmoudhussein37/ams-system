@@ -34,6 +34,6 @@
 <script>
     $("body").on('click', '.print', function (e) {
         e.preventDefault();
-        openPage("${baseUrl}/admin/courseManagement/syllabus/courseDetail?print=true&profCourseId=${pc.id}");
+        location.href="${baseUrl}/admin/courseManagement/syllabus/courseDetail?print=true&profCourseId=${pc.id}";
     });
 </script>

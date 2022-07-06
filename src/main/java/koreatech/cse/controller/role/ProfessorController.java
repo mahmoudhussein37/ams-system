@@ -89,6 +89,11 @@ public class ProfessorController {
     @Inject
     private LangCertMapper langCertMapper;
 
+    @ModelAttribute("currentPageRole")
+    public String getCurrentPageRole() {
+        return "professor";
+    }
+
     @RequestMapping("/studentGuidance/studentLookup")
     public String studentLookup(Model model) {
 
