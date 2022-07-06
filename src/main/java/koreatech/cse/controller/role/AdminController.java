@@ -186,7 +186,44 @@ public class AdminController {
         model.addAttribute("advisor", advisor);
         List<User> professors = userMapper.findAllProfessors();
         model.addAttribute("professors", professors);
+        int admissionYear = studentUser.getContact().getAdmissionYear();
+        int divisionId = studentUser.getDivisionId();
+
+        GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear, divisionId);
+        studentUser.setGraduationCriteria(graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
+        List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(studentId);
+        studentUser.setStudentCourses(studentCourses);
+
+        List<LangCert> langCerts = langCertMapper.findByUserId(studentId);
+        model.addAttribute("langCerts", langCerts);
         return "role/admin/studentInformation/studentDetail";
+    }
+
+    @RequestMapping("/studentManagement/studentInformation/studentDetailForPrint")
+    public String studentDetailForPrint(Model model, @RequestParam int studentId) {
+        System.out.println("studentId = " + studentId);
+        User studentUser = userMapper.findOne(studentId);
+        model.addAttribute("studentUser", studentUser);
+        model.addAttribute("statusList", StudentStatus.values());
+        List<Division> divisions = divisionMapper.findAll();
+
+        model.addAttribute("divisions", divisions);
+
+        User advisor = userMapper.findOne(studentUser.getAdvisorId());
+        model.addAttribute("advisor", advisor);
+        List<User> professors = userMapper.findAllProfessors();
+        model.addAttribute("professors", professors);
+        int admissionYear = studentUser.getContact().getAdmissionYear();
+        int divisionId = studentUser.getDivisionId();
+
+        GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear, divisionId);
+        studentUser.setGraduationCriteria(graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
+        List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(studentId);
+        studentUser.setStudentCourses(studentCourses);
+
+        List<LangCert> langCerts = langCertMapper.findByUserId(studentId);
+        model.addAttribute("langCerts", langCerts);
+        return "role/admin/studentInformation/studentDetailForPrint";
     }
 
     @RequestMapping(value = "/studentManagement/studentInformation/studentDetail", method = RequestMethod.POST)
@@ -229,8 +266,37 @@ public class AdminController {
     }
 
 
+    @RequestMapping("/studentManagement/studentInformation/addLangCert")
+    public String addLangCert(Model model, @RequestParam int studentId) {
+        User studentUser = userMapper.findOne(studentId);
+        model.addAttribute("studentUser", studentUser);
+        User advisor = userMapper.findOne(studentUser.getAdvisorId());
+        model.addAttribute("advisor", advisor);
+
+        LangCert langCert = new LangCert();
+        langCert.setUserId(studentId);
+        model.addAttribute("langCert", langCert);
 
 
+        return "role/admin/studentInformation/addLangCert";
+    }
+
+    @RequestMapping(value = "/studentManagement/studentInformation/addLangCert", method = RequestMethod.POST)
+    public String addLangCert(@ModelAttribute("langCert") LangCert langCert, @RequestParam int studentId, SessionStatus sessionStatus) {
+        langCert.setUserId(studentId);
+        langCert.setApprove(true);
+        langCertMapper.insert(langCert);
+        sessionStatus.setComplete();
+
+        return "redirect:/admin/studentManagement/studentInformation";
+    }
+
+    @RequestMapping(value = "/studentManagement/studentInformation/deleteLangCert", method = RequestMethod.POST)
+    public String deleteLangCert(@RequestParam int langCertId) {
+        LangCert langCert = langCertMapper.findOne(langCertId);
+        langCertMapper.delete(langCert);
+        return "redirect:/admin/studentManagement/studentInformation";
+    }
 
     @RequestMapping("/studentManagement/studentProfile")
     public String studentProfile(Model model) {
@@ -290,37 +356,7 @@ public class AdminController {
         return "role/admin/studentProfile/studentDetail";
     }
 
-    @RequestMapping("/studentManagement/studentProfile/addLangCert")
-    public String addLangCert(Model model, @RequestParam int studentId) {
-        User studentUser = userMapper.findOne(studentId);
-        model.addAttribute("studentUser", studentUser);
-        User advisor = userMapper.findOne(studentUser.getAdvisorId());
-        model.addAttribute("advisor", advisor);
 
-        LangCert langCert = new LangCert();
-        langCert.setUserId(studentId);
-        model.addAttribute("langCert", langCert);
-
-
-        return "role/admin/studentProfile/addLangCert";
-    }
-
-    @RequestMapping(value = "/studentManagement/studentProfile/addLangCert", method = RequestMethod.POST)
-    public String addLangCert(@ModelAttribute("langCert") LangCert langCert, @RequestParam int studentId, SessionStatus sessionStatus) {
-        langCert.setUserId(studentId);
-        langCert.setApprove(true);
-        langCertMapper.insert(langCert);
-        sessionStatus.setComplete();
-
-        return "redirect:/admin/studentManagement/studentProfile";
-    }
-
-    @RequestMapping(value = "/studentManagement/studentProfile/deleteLangCert", method = RequestMethod.POST)
-    public String deleteLangCert(@RequestParam int langCertId) {
-        LangCert langCert = langCertMapper.findOne(langCertId);
-        langCertMapper.delete(langCert);
-        return "redirect:/admin/studentManagement/studentProfile";
-    }
 
     @RequestMapping("/studentManagement/studentProfile/studentDetailForPrint")
     public String studentProfileStudentDetailForPrint(Model model,

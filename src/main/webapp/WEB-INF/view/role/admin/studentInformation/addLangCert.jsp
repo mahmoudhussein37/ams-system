@@ -24,7 +24,7 @@
                         </div>
                         <div class="card-body">
 
-                            <form:form modelAttribute="langCert" action="${baseUrl}/admin/studentManagement/studentProfile/addLangCert?studentId=${studentUser.id}" method="post" class="form">
+                            <form:form modelAttribute="langCert" action="${baseUrl}/admin/studentManagement/studentInformation/addLangCert?studentId=${studentUser.id}" method="post" class="form">
                                     <form:hidden path="userId" value="${studentUser.id}"/>
 
                                     <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.addLangCert"/></h3>
@@ -137,7 +137,7 @@
     $(document).ready(function() {
         <c:if test="${not empty result}">
         alert("<spring:message code='common.success'/>");
-        location.href="${baseUrl}/admin/studentManagement/studentProfile";
+        location.href="${baseUrl}/admin/studentManagement/studentInformation";
         </c:if>
         KTBootstrapDatepicker.init();
     });

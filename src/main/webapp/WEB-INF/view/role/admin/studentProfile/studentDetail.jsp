@@ -17,12 +17,12 @@
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2"><spring:message code="common.courseHistory"/></a>
     </li>
-    <li class="nav-item">
+    <%--<li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_3"><spring:message code="common.language"/></a>
     </li>
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_4"><spring:message code="common.certificate"/></a>
-    </li>
+    </li>--%>
 
 </ul>
 <div class="tab-content mt-5" id="myTabContent">
@@ -32,12 +32,12 @@
     <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
         <%@include file="/WEB-INF/view/role/common/studentProfile/studentDetailCourseHistory.jsp" %>
     </div>
-    <div class="tab-pane fade" id="kt_tab_pane_3" role="tabpanel" aria-labelledby="kt_tab_pane_3">
+    <%--<div class="tab-pane fade" id="kt_tab_pane_3" role="tabpanel" aria-labelledby="kt_tab_pane_3">
         <%@include file="/WEB-INF/view/role/admin/studentProfile/studentDetailLanguage.jsp" %>
     </div>
     <div class="tab-pane fade" id="kt_tab_pane_4" role="tabpanel" aria-labelledby="kt_tab_pane_4">
         <%@include file="/WEB-INF/view/role/admin/studentProfile/studentDetailCertificate.jsp" %>
-    </div>
+    </div>--%>
 </div>
 
 

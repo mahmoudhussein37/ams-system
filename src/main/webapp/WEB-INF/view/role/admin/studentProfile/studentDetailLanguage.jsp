@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-12">
             <p style="text-align:right">
-                <a class="btn btn-primary" href="${baseUrl}/admin/studentManagement/studentProfile/addLangCert?studentId=${studentUser.id}"><spring:message code="common.new"/></a>
+                <a class="btn btn-primary" href="${baseUrl}/admin/studentManagement/studentInformation/addLangCert?studentId=${studentUser.id}"><spring:message code="common.new"/></a>
             </p>
 
             <br/><br/>
