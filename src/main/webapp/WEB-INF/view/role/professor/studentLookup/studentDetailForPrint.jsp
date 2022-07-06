@@ -58,6 +58,7 @@
     window.print();
     window.onafterprint = function(){
         window.close();
+        location.href="${baseUrl}/professor/studentGuidance/studentLookup";
     }
 
 </script>

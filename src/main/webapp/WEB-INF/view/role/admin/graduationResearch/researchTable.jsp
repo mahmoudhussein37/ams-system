@@ -94,7 +94,7 @@
             if (!checkedAll && size == 0) {
                 alert("<spring:message code="common.pleaseSelectItems"/>");
             } else {
-                openPage("${baseUrl}/admin/profManagement/graduationResearch/planDetailForPrint?checkAll=" + checkedAll + "&year=" + year + "&division=" + division + "&advisor=" + advisor + "&name=" + name + "&number=" + number + "&" + parameterize("tableCheckbox"));
+                location.href="${baseUrl}/admin/profManagement/graduationResearch/planDetailForPrint?checkAll=" + checkedAll + "&year=" + year + "&division=" + division + "&advisor=" + advisor + "&name=" + name + "&number=" + number + "&" + parameterize("tableCheckbox");
             }
         });
     });

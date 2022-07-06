@@ -100,7 +100,7 @@
 
                                         <div class="form-group">
                                             <label><spring:message code="professor.consultingContents"/></label>
-                                            <textarea class="form-control" dir="rtl" rows="6" disabled>${counseling.contents}</textarea>
+                                            <textarea class="form-control" dir="${isRTL ? 'rtl' : 'ltr'}" rows="6" disabled>${counseling.contents}</textarea>
                                                 <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                         </div>
                                     </div>
@@ -111,7 +111,7 @@
 
                                         <div class="form-group">
                                             <label><spring:message code="professor.suggestions"/></label>
-                                            <textarea class="form-control" dir="rtl" rows="6" disabled>${counseling.suggestions}</textarea>
+                                            <textarea class="form-control" dir="${isRTL ? 'rtl' : 'ltr'}" rows="6" disabled>${counseling.suggestions}</textarea>
                                                 <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                         </div>
                                     </div>
@@ -153,6 +153,7 @@
     window.print();
         window.onafterprint = function(){
             window.close();
+            location.href="/admin/studentManagement/studentCounseling";
         }
 
 </script>

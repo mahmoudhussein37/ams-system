@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Controller
-@SessionAttributes({"studentUser", "assessment"})
+@SessionAttributes({"studentUser", "assessment", "graduationResearchPlan"})
 @PreAuthorize("hasRole('ROLE_STUDENT')")
 @RequestMapping("/student")
 public class StudentController {
@@ -88,6 +88,11 @@ public class StudentController {
     private ProfService profService;
     @Inject
     private LangCertMapper langCertMapper;
+
+    @ModelAttribute("currentPageRole")
+    public String getCurrentPageRole() {
+        return "student";
+    }
 
     @RequestMapping("/courseGuide/yearlyCurriculum")
     public String yearlyCurriculum(Model model) {
@@ -513,7 +518,7 @@ public class StudentController {
 
         model.addAttribute("completeSemester", userService.getCompleteSemesterCount(studentUser.getId()));
 
-        if (stored == null)
+        if (stored == null || stored.getApprove() == -1)
             return "role/student/graduationResearchPlan/newGraduationResearchPlan";
         else
             return "role/student/graduationResearchPlan/graduationResearchPlan";
@@ -533,34 +538,17 @@ public class StudentController {
         } catch(Exception e) {
 
         }
-
-        graduationResearchPlanMapper.insert(graduationResearchPlan);
+        GraduationResearchPlan stored = graduationResearchPlanMapper.findByUserId(studentUser.getId());
+        if (stored == null) {
+            graduationResearchPlan.setApprove(-1);
+            graduationResearchPlanMapper.insert(graduationResearchPlan);
+        } else {
+            graduationResearchPlan.setId(stored.getId());
+            graduationResearchPlanMapper.update(graduationResearchPlan);
+        }
+        sessionStatus.setComplete();
         return "redirect:/student/graduation/graduationResearchPlan?result=success";
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     private List<Integer> getYearList() {

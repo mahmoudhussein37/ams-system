@@ -47,6 +47,6 @@
 <script>
     $("body").on('click', '.print', function (e) {
         e.preventDefault();
-        openPage("${baseUrl}/professor/studentGuidance/counseling/counselingDetail?print=true&counselingId=${counseling.id}");
+        location.href="${baseUrl}/professor/studentGuidance/counseling/counselingDetail?print=true&counselingId=${counseling.id}";
     });
 </script>

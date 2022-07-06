@@ -47,6 +47,14 @@
     window.print();
         window.onafterprint = function(){
             window.close();
+            <c:choose>
+            <c:when test="${currentPageRole eq 'professor'}">
+            location.href="${baseUrl}/professor/classProgress/classAssessment/courseDetail?profCourseId=${pc.id}";
+            </c:when>
+            <c:when test="${currentPageRole eq 'admin'}">
+            location.href="${baseUrl}/admin/academicManagement/assessmentResult";
+            </c:when>
+            </c:choose>
         }
 
 </script>

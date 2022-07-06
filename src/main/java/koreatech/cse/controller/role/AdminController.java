@@ -112,6 +112,10 @@ public class AdminController {
     @Inject
     private LangCertMapper langCertMapper;
 
+    @ModelAttribute("currentPageRole")
+    public String getCurrentPageRole() {
+        return "admin";
+    }
 
     @RequestMapping("/studentManagement/studentRegistration")
     public String studentRegistration(Model model, @RequestParam(required=false) String result) {
@@ -324,9 +328,8 @@ public class AdminController {
                                                        @RequestParam(defaultValue = "0", required=false) int schoolYear,
                                                        @RequestParam(defaultValue = "0", required=false) int advisor,
                                                        @RequestParam(defaultValue = "0", required=false) int division, @RequestParam Map<String, String> params) {
-        System.out.println("checkAll = " + checkAll);
         List<Integer> integerIds = new ArrayList<>();
-        List<User> studentList = null;
+        List<User> studentList;
         if (checkAll) {
             Searchable searchable = new Searchable();
             searchable.setAdvisor(advisor);
@@ -440,7 +443,7 @@ public class AdminController {
 
     @RequestMapping(value = "/studentManagement/schoolYear/increaseYear", method = RequestMethod.POST)
     @ResponseBody
-    public Boolean schoolYearStudentDetailForPrint(@RequestParam boolean checkAll,
+    public Boolean increaseYear(@RequestParam boolean checkAll,
                                                    @RequestParam(defaultValue = "0", required=false) int schoolYear,
                                                    @RequestParam(defaultValue = "0", required=false) int advisor,
                                                    @RequestParam(defaultValue = "0", required=false) int division, @RequestParam Map<String, String> params) {
@@ -478,6 +481,58 @@ public class AdminController {
 
 
         return true;
+    }
+
+    @RequestMapping("/studentManagement/schoolYear/studentDetailForPrint")
+    public String schoolYearStudentDetailForPrint(Model model,
+                                                      @RequestParam boolean checkAll,
+                                                      @RequestParam(defaultValue = "0", required=false) int schoolYear,
+                                                      @RequestParam(defaultValue = "0", required=false) int advisor,
+                                                      @RequestParam(defaultValue = "0", required=false) int division, @RequestParam Map<String, String> params) {
+        List<Integer> integerIds = new ArrayList<>();
+        List<User> studentList;
+        if (checkAll) {
+            Searchable searchable = new Searchable();
+            searchable.setAdvisor(advisor);
+            searchable.setSchoolYear(schoolYear);
+            searchable.setDivision(division);
+            studentList = userMapper.findStudentBy(searchable);
+
+
+        } else {
+            params.entrySet().stream().filter(entry -> entry.getKey().equals("tableCheckbox")).forEach(entry -> {
+                String value = entry.getValue();
+                String[] split = value.split(",");
+                for (String userIdString : split) {
+                    if (StringUtils.isNotBlank(userIdString)) {
+                        integerIds.add(Integer.parseInt(userIdString));
+                    }
+                }
+            });
+            if(CollectionUtils.isEmpty(integerIds))
+                studentList = new ArrayList<>();
+            else
+                studentList = userMapper.findByUserIds(integerIds);
+        }
+
+
+
+        for(User u:studentList) {
+            User advisorUser = userMapper.findOne(u.getAdvisorId());
+            u.setAdvisor(advisorUser);
+
+            int admissionYear = u.getContact().getAdmissionYear();
+            int divisionId = u.getDivisionId();
+
+            GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear, divisionId);
+            u.setGraduationCriteria(graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
+
+            List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(u.getId());
+            u.setStudentCourses(studentCourses);
+        }
+
+        model.addAttribute("studentList", studentList);
+        return "role/admin/schoolYear/studentDetailForPrint";
     }
 
     @RequestMapping("/studentManagement/studentCounseling")
@@ -1931,8 +1986,10 @@ public class AdminController {
         List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(pc.getCourseId());
         model.addAttribute("assessmentFactors", assessmentFactors);
 
-        if(print.equals("true"))
+        if(print.equals("true")) {
+
             return "role/common/cqi/courseDetailForPrint";
+        }
 
         return "role/admin/cqi/courseDetail";
     }

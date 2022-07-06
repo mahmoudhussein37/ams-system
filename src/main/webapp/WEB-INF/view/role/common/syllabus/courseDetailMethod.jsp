@@ -288,7 +288,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label><spring:message code="common.note"/></label>
-                    <form:textarea path="note" class="form-control" dir="rtl" rows="6" disabled="true"></form:textarea>
+                    <form:textarea path="note" class="form-control" dir="${isRTL ? 'rtl' : 'ltr'}" rows="6" disabled="true"></form:textarea>
                 </div>
             </div>
 

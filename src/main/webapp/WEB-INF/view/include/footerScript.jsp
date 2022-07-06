@@ -109,6 +109,7 @@
 
     function printContent(el){
         var restorePage = $('body').html();
+        $(el).css("padding", "100px");
         var pContent = $(el).clone();
         $('body').empty().html(pContent);
         window.print();

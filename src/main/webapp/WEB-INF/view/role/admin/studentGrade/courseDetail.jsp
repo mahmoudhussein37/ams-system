@@ -220,7 +220,7 @@
 
         $("body").on('click', '.print', function (e) {
             e.preventDefault();
-            openPage("${baseUrl}/admin/academicManagement/studentGrade/courseDetailForPrint?profCourseId=${pc.id}");
+            location.href="${baseUrl}/admin/academicManagement/studentGrade/courseDetailForPrint?profCourseId=${pc.id}";
         });
     });
 </script>

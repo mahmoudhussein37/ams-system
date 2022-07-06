@@ -52,7 +52,7 @@
 
                 <div class="form-group">
                     <label><spring:message code="professor.consultingContents"/></label>
-                    <form:textarea class="form-control" dir="rtl" rows="6" path="contents"/>
+                    <form:textarea class="form-control" dir="${isRTL ? 'rtl' : 'ltr'}" rows="6" path="contents"/>
                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                 </div>
             </div>
@@ -63,7 +63,7 @@
 
                 <div class="form-group">
                     <label><spring:message code="professor.suggestions"/></label>
-                    <form:textarea class="form-control" dir="rtl" rows="6" path="suggestions"/>
+                    <form:textarea class="form-control" dir="${isRTL ? 'rtl' : 'ltr'}" rows="6" path="suggestions"/>
                         <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                 </div>
             </div>

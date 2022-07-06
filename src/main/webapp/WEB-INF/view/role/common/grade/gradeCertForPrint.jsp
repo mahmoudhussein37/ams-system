@@ -359,6 +359,14 @@
     window.print();
     window.onafterprint = function(){
         window.close();
+        <c:choose>
+        <c:when test="${currentPageRole eq 'student'}">
+        location.href="${baseUrl}/student/grades/inquiryGrade";
+        </c:when>
+        <c:when test="${currentPageRole eq 'admin'}">
+        location.href="${baseUrl}/admin/studentManagement/inquiryGrade";
+        </c:when>
+        </c:choose>
     }
 </script>
 </body>

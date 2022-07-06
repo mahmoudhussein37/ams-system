@@ -18,201 +18,210 @@
                         <div class="card-header">
                             <h3 class="card-title font-weight-bolder"><spring:message code="menu.student.sub5_2"/></h3>
                         </div>
-<form:form modelAttribute="stored" class="form">
-                        <div class="card-body">
+                        <form:form modelAttribute="stored" class="form">
+                            <div class="card-body">
 
-                            <div class="row">
-                                <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-3">
 
-                                    <div class="form-group">
-                                        <label><spring:message code="common.studentNumber"/></label>
-                                        <input type="text" class="form-control" value="${studentUser.number}" disabled/>
-                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        <div class="form-group">
+                                            <label><spring:message code="common.studentNumber"/></label>
+                                            <input type="text" class="form-control" value="${studentUser.number}" disabled/>
+                                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label><spring:message code="common.name"/></label>
+                                            <input type="text" class="form-control"  value="${studentUser.getFullName()}" disabled/>
+                                                <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label><spring:message code="common.department"/></label>
+                                            <input type="text" class="form-control" value="${studentUser.division.name}" disabled/>
+                                                <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+                                        </div>
+                                    </div>
+
+                                        <%--<div class="col-md-3">
+                                            <div class="form-group">
+                                                <label><spring:message code="common.major"/></label>
+                                                <input type="text" class="form-control" value="${studentUser.major.name}" disabled/>
+                                                &lt;%&ndash;<span class="form-text text-muted">We'll never share your email with anyone else</span>&ndash;%&gt;
+                                            </div>
+                                        </div>--%>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label><spring:message code="common.completeSemester"/></label>
+                                            <input type="text" class="form-control" value="${completeSemester}" disabled/>
+                                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label><spring:message code="common.status"/></label>
+                                            <input type="text" class="form-control" value="<spring:message code="student.status.${studentUser.status}"/>" disabled/>
+                                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label><spring:message code="common.advisor"/></label>
+                                            <input type="text" class="form-control" value="${studentUser.advisor.getFullName()}" disabled/>
+                                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label><spring:message code="common.admissionYear"/></label>
+                                            <input type="text" class="form-control" value="${studentUser.contact.admissionYear}" disabled/>
+                                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label><spring:message code="common.schoolYear"/></label>
+                                            <input type="text" class="form-control" value="${studentUser.schoolYear}" disabled/>
+                                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        </div>
                                     </div>
 
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label><spring:message code="common.name"/></label>
-                                        <input type="text" class="form-control"  value="${studentUser.getFullName()}" disabled/>
-                                        <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+                                <div class="row">
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label><spring:message code="common.approve"/></label>
+                                            <c:set var="approveStatus" value="-"/>
+                                            <c:choose>
+                                                <c:when test="${stored.approve eq 1}">
+                                                    <c:set var="approveStatus" value="Y"/>
+                                                </c:when>
+                                                <c:when test="${stored.approve eq -1}">
+                                                    <c:set var="approveStatus" value="N"/>
+                                                </c:when>
+                                            </c:choose>
+                                            <input type="text" class="form-control" value="${approveStatus}" disabled/>
+                                                <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label><spring:message code="common.department"/></label>
-                                        <input type="text" class="form-control" value="${studentUser.division.name}" disabled/>
-                                        <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
+                                <br/>
+                                <div class="separator separator-solid my-5"></div>
+                                <br/>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="professor.researchPlan"/></h3>
+                                        <table class="table">
+
+                                            <tr>
+                                                <td>
+                                                    <spring:message code="professor.researchTitle"/>
+                                                </td>
+                                                <td>
+                                                    <form:input type="text" path="title" class="form-control" disabled="true"/>
+                                                </td>
+
+
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <spring:message code="professor.outcomeType"/>
+                                                </td>
+                                                <td>
+                                                    <form:input type="text" path="type" class="form-control" disabled="true"/>
+                                                </td>
+
+
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <spring:message code="professor.studyPeriod"/>
+                                                </td>
+                                                <td>
+                                                    <form:input type="text" path="startDate" class="form-control date-picker" style="width:49%;display:inline" disabled="true"/> ~
+
+                                                    <form:input type="text" path="endDate" class="form-control date-picker" style="width:49%;display:inline" disabled="true"/>
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <spring:message code="professor.studyPurpose"/>
+                                                </td>
+                                                <td>
+                                                    <form:input type="text" path="purpose" class="form-control" disabled="true"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <spring:message code="professor.scopeOfStudy"/>
+                                                </td>
+                                                <td>
+                                                    <form:textarea path="scope" class="form-control" dir="${isRTL ? 'rtl' : 'ltr'}" rows="6" disabled="true"></form:textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <spring:message code="professor.processAndMethodOfResearch"/>
+                                                </td>
+                                                <td>
+                                                    <form:input type="text" path="method" class="form-control" disabled="true"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <spring:message code="professor.projectImplementation"/>
+                                                </td>
+                                                <td>
+                                                    <form:input type="text" path="impl" class="form-control" disabled="true"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <spring:message code="common.schedule"/>
+                                                </td>
+                                                <td>
+                                                    <form:input type="text" path="schedule" class="form-control" disabled="true"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <spring:message code="professor.references"/>
+                                                </td>
+                                                <td>
+                                                    <form:textarea path="ref" class="form-control" dir="${isRTL ? 'rtl' : 'ltr'}" rows="6" disabled="true"></form:textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <spring:message code="professor.etc"/>
+                                                </td>
+                                                <td>
+                                                    <form:input type="text" path="etc" class="form-control" disabled="true"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <spring:message code="professor.dateOfSubmission"/>
+                                                </td>
+                                                <td>
+                                                    <form:input type="text" path="submitDate" class="form-control date-picker" disabled="true"/>
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </div>
 
-                                <%--<div class="col-md-3">
-                                    <div class="form-group">
-                                        <label><spring:message code="common.major"/></label>
-                                        <input type="text" class="form-control" value="${studentUser.major.name}" disabled/>
-                                        &lt;%&ndash;<span class="form-text text-muted">We'll never share your email with anyone else</span>&ndash;%&gt;
-                                    </div>
-                                </div>--%>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label><spring:message code="common.completeSemester"/></label>
-                                        <input type="text" class="form-control" value="${completeSemester}" disabled/>
-                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                                    </div>
-                                </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label><spring:message code="common.status"/></label>
-                                        <input type="text" class="form-control" value="<spring:message code="student.status.${studentUser.status}"/>" disabled/>
-                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label><spring:message code="common.advisor"/></label>
-                                        <input type="text" class="form-control" value="${studentUser.advisor.getFullName()}" disabled/>
-                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label><spring:message code="common.admissionYear"/></label>
-                                        <input type="text" class="form-control" value="${studentUser.contact.admissionYear}" disabled/>
-                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label><spring:message code="common.schoolYear"/></label>
-                                        <input type="text" class="form-control" value="${studentUser.schoolYear}" disabled/>
-                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                                    </div>
-                                </div>
 
-                            </div>
-                            <div class="row">
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label><spring:message code="common.approve"/></label>
-                                        <input type="text" class="form-control" value="${stored.enabled ? 'Y' : 'N'}" disabled/>
-                                        <%--<span class="form-text text-muted">Please enter your full name</span>--%>
-                                    </div>
-                                </div>
-                            </div>
-                            <br/>
-                            <div class="separator separator-solid my-5"></div>
-                            <br/>
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="professor.researchPlan"/></h3>
-                                    <table class="table">
-
-                                        <tr>
-                                            <td>
-                                                <spring:message code="professor.researchTitle"/>
-                                            </td>
-                                            <td>
-                                                <form:input type="text" path="title" class="form-control" disabled="true"/>
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <spring:message code="professor.outcomeType"/>
-                                            </td>
-                                            <td>
-                                                <form:input type="text" path="type" class="form-control" disabled="true"/>
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <spring:message code="professor.studyPeriod"/>
-                                            </td>
-                                            <td>
-                                                <form:input type="text" path="startDate" class="form-control date-picker" style="width:49%;display:inline" disabled="true"/> ~
-
-                                                <form:input type="text" path="endDate" class="form-control date-picker" style="width:49%;display:inline" disabled="true"/>
-
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <spring:message code="professor.studyPurpose"/>
-                                            </td>
-                                            <td>
-                                                <form:input type="text" path="purpose" class="form-control" disabled="true"/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <spring:message code="professor.scopeOfStudy"/>
-                                            </td>
-                                            <td>
-                                                <form:textarea path="scope" class="form-control" dir="rtl" rows="6" disabled="true"></form:textarea>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <spring:message code="professor.processAndMethodOfResearch"/>
-                                            </td>
-                                            <td>
-                                                <form:input type="text" path="method" class="form-control" disabled="true"/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <spring:message code="professor.projectImplementation"/>
-                                            </td>
-                                            <td>
-                                                <form:input type="text" path="impl" class="form-control" disabled="true"/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <spring:message code="common.schedule"/>
-                                            </td>
-                                            <td>
-                                                <form:input type="text" path="schedule" class="form-control" disabled="true"/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <spring:message code="professor.references"/>
-                                            </td>
-                                            <td>
-                                                <form:textarea path="ref" class="form-control" dir="rtl" rows="6" disabled="true"></form:textarea>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <spring:message code="professor.etc"/>
-                                            </td>
-                                            <td>
-                                                <form:input type="text" path="etc" class="form-control" disabled="true"/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <spring:message code="professor.dateOfSubmission"/>
-                                            </td>
-                                            <td>
-                                                <form:input type="text" path="submitDate" class="form-control date-picker" disabled="true"/>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-
-                        </div>
-
-</form:form>
+                        </form:form>
                     </div>
                     <!--end::Card-->
                 </div>

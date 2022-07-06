@@ -82,7 +82,16 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.approve"/></label>
-                <input type="text" class="form-control" value="${stored.enabled ? 'Y' : 'N'}" disabled/>
+                <c:set var="approveStatus" value="-"/>
+                <c:choose>
+                    <c:when test="${stored.approve eq 1}">
+                        <c:set var="approveStatus" value="Y"/>
+                    </c:when>
+                    <c:when test="${stored.approve eq 0}">
+                        <c:set var="approveStatus" value="N"/>
+                    </c:when>
+                </c:choose>
+                <input type="text" class="form-control" value="${approveStatus}" disabled/>
                     <%--<span class="form-text text-muted">Please enter your full name</span>--%>
             </div>
         </div>
@@ -163,7 +172,7 @@
                         <spring:message code="professor.scopeOfStudy"/>
                     </td>
                     <td>
-                        <form:textarea path="scope" class="form-control" dir="rtl" rows="6" disabled="true"></form:textarea>
+                        <form:textarea path="scope" class="form-control" dir="${isRTL ? 'rtl' : 'ltr'}" rows="6" disabled="true"></form:textarea>
                     </td>
                 </tr>
                 <tr>
@@ -195,7 +204,7 @@
                         <spring:message code="professor.references"/>
                     </td>
                     <td>
-                        <form:textarea path="ref" class="form-control" dir="rtl" rows="6" disabled="true"></form:textarea>
+                        <form:textarea path="ref" class="form-control" dir="${isRTL ? 'rtl' : 'ltr'}" rows="6" disabled="true"></form:textarea>
                     </td>
                 </tr>
                 <tr>

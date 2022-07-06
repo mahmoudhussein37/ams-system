@@ -75,7 +75,8 @@
             if (!checkedAll && size == 0) {
                 alert("<spring:message code="common.pleaseSelectItems"/>");
             } else {
-                openPage("${baseUrl}/admin/studentManagement/studentCounseling/counselingDetailForPrint?checkAll=" + checkedAll + "&year=" + year + "&name=" + name + "&" + parameterize("tableCheckbox"));
+                //openPage("${baseUrl}/admin/studentManagement/studentCounseling/counselingDetailForPrint?checkAll=" + checkedAll + "&year=" + year + "&name=" + name + "&" + parameterize("tableCheckbox"));
+                location.href="${baseUrl}/admin/studentManagement/studentCounseling/counselingDetailForPrint?checkAll=" + checkedAll + "&year=" + year + "&name=" + name + "&" + parameterize("tableCheckbox");
             }
         });
     });

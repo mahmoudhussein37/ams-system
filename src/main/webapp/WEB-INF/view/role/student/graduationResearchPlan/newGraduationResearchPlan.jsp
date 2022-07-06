@@ -92,7 +92,25 @@
                                 </div>
 
                             </div>
+                            <div class="row">
 
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label><spring:message code="common.approve"/></label>
+                                        <c:set var="approveStatus" value="-"/>
+                                        <c:choose>
+                                            <c:when test="${stored.approve eq 1}">
+                                                <c:set var="approveStatus" value="Y"/>
+                                            </c:when>
+                                            <c:when test="${stored.approve eq -1}">
+                                                <c:set var="approveStatus" value="N"/>
+                                            </c:when>
+                                        </c:choose>
+                                        <input type="text" class="form-control" value="${approveStatus}" disabled/>
+                                            <%--<span class="form-text text-muted">Please enter your full name</span>--%>
+                                    </div>
+                                </div>
+                            </div>
                             <br/>
                             <div class="separator separator-solid my-5"></div>
                             <br/>
@@ -146,7 +164,7 @@
                                                 <spring:message code="professor.scopeOfStudy"/>
                                             </td>
                                             <td>
-                                                <textarea name="scope" class="form-control" dir="rtl" rows="6" ></textarea>
+                                                <textarea name="scope" class="form-control" dir="${isRTL ? 'rtl' : 'ltr'}" rows="6" ></textarea>
                                             </td>
                                         </tr>
                                         <tr>
@@ -178,7 +196,7 @@
                                                 <spring:message code="professor.references"/>
                                             </td>
                                             <td>
-                                                <textarea name="ref" class="form-control" dir="rtl" rows="6" ></textarea>
+                                                <textarea name="ref" class="form-control" dir="${isRTL ? 'rtl' : 'ltr'}" rows="6" ></textarea>
                                             </td>
                                         </tr>
                                         <tr>

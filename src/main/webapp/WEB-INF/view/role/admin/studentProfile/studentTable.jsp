@@ -73,11 +73,11 @@
             if (!checkedAll && size == 0) {
                 alert("<spring:message code="common.pleaseSelectItems"/>");
             } else {
-                openPage("${baseUrl}/admin/studentManagement/studentProfile/studentDetailForPrint?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("tableCheckbox"));
+                location.href="${baseUrl}/admin/studentManagement/studentProfile/studentDetailForPrint?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("tableCheckbox");
             }
 
         });
-        $("body").on('click', '.increase-grade', function (e) {
+        /*$("body").on('click', '.increase-grade', function (e) {
             e.preventDefault();
             var checkedAll = $("input[name=tableCheckboxAll]").is(":checked");
             var schoolYear = $("#search-school-year").children("option:selected").val().trim();
@@ -87,10 +87,10 @@
             if (!checkedAll && size == 0) {
                 alert("<spring:message code="common.pleaseSelectItems"/>");
             } else {
-                openPage("${baseUrl}/admin/studentManagement/studentProfile/increaseGrade?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("tableCheckbox"));
+                //openPage("${baseUrl}/admin/studentManagement/studentProfile/increaseGrade?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("tableCheckbox"));
             }
 
-        });
+        });*/
 
     });
 
