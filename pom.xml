@@ -241,7 +241,7 @@
     </profiles>
 
     <build>
-        <finalName>ROOT##${project.version}</finalName>
+        <finalName>ams</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources/common</directory>
