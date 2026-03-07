@@ -17,7 +17,9 @@
 
 
     <context:component-scan base-package="koreatech.cse" />
-    <context:property-placeholder location="classpath:config.properties" />
+    <context:property-placeholder
+        location="file:/opt/ams/conf/config.properties,classpath:config.properties"
+        ignore-resource-not-found="true"/>
     <util:properties id="config" location="classpath:config.properties" />
 
     <mvc:annotation-driven conversion-service="conversionService" />
