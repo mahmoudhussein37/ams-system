@@ -7,9 +7,12 @@ import koreatech.cse.repository.BoardMapper;
 import koreatech.cse.repository.FeedbackMapper;
 import koreatech.cse.repository.UploadedFileMapper;
 import koreatech.cse.repository.UserMapper;
+import koreatech.cse.service.FileAccessService;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.SystemUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +35,8 @@ import java.util.List;
 @Transactional
 @RequestMapping("/")
 public class HomeController {
+    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+
     @Inject
     private UserService userService;
     @Inject
@@ -42,13 +47,14 @@ public class HomeController {
     private UploadedFileMapper uploadedFileMapper;
     @Inject
     private BoardMapper boardMapper;
-
+    @Inject
+    private FileAccessService fileAccessService;
 
     @RequestMapping
     public String home(Model model) {
 
-        String[] boardTableNames = {"notice", "de", "hire", "schedule"};
-        for(String b: boardTableNames) {
+        String[] boardTableNames = { "notice", "de", "hire", "schedule" };
+        for (String b : boardTableNames) {
             List<Article> articleList = boardMapper.findArticleList("board_" + b, 6);
             model.addAttribute(b + "List", articleList);
         }
@@ -56,8 +62,10 @@ public class HomeController {
 
         return "index";
     }
+
     @RequestMapping("/profList")
-    public String profList(Model model, @RequestParam(required=false, defaultValue = "0") int divisionId, @RequestParam(required=false, defaultValue = "0") int defaultSelected) {
+    public String profList(Model model, @RequestParam(required = false, defaultValue = "0") int divisionId,
+            @RequestParam(required = false, defaultValue = "0") int defaultSelected) {
         Searchable searchable = new Searchable();
         searchable.setDivision(divisionId);
 
@@ -67,37 +75,23 @@ public class HomeController {
         return "include/profOptions";
     }
 
-
     /*
-    /registerAdmin?code=c57c-496e-b71a-05e6
-    */
+     * /registerAdmin — disabled in production
+     */
     @RequestMapping("/registerAdmin")
     @ResponseBody
     public String registerAdmin(@RequestParam String code) {
-        if(code.equals("c57c-496e-b71a-05e6")) {
-            User user = new User();
-            Contact contact = new Contact();
-            contact.setFirstName("Admin");
-            contact.setLastName("Admin");
-            user.setUsername("admin@admin.org");
-            user.setPassword("testadmin1234!");
-            user.setConfirm(true);
-            user.setEnabled(true);
-            user.setContact(contact);
-            userService.signupAdmin(user);
-
-        }
-
-        return "success";
+        return "disabled in production";
     }
 
     @RequestMapping("/signin")
-    public String signin(Model model, @RequestParam(required=false) String msg) {
-        if(User.current() != null) {
+    public String signin(Model model, @RequestParam(required = false) String msg) {
+        if (User.current() != null) {
             return "redirect:/";
         }
         String m = StringUtils.isBlank(msg) ? "" : msg;
-        if(StringUtils.isBlank(m) || m.equals("success") || m.equals("error") || m.equals("number") || m.equals("info") || m.equals("fail"))
+        if (StringUtils.isBlank(m) || m.equals("success") || m.equals("error") || m.equals("number") || m.equals("info")
+                || m.equals("fail") || m.equals("activated"))
             model.addAttribute("msg", m);
 
         return "signin";
@@ -105,7 +99,7 @@ public class HomeController {
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String signup(Model model) {
-        if(User.current() != null) {
+        if (User.current() != null) {
             return "redirect:/";
         }
         User signupUser = new User();
@@ -144,21 +138,37 @@ public class HomeController {
     @PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_PROFESSOR', 'ROLE_ADMIN')")
     @Transactional(readOnly = true)
     @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public void download(HttpServletRequest request, HttpServletResponse response, @RequestParam int uploadedFileId) throws IOException {
+    public void download(HttpServletRequest request, HttpServletResponse response, @RequestParam int uploadedFileId)
+            throws IOException {
         UploadedFile uploadedFile = uploadedFileMapper.findOne(uploadedFileId);
         if (uploadedFile != null) {
+            fileAccessService.assertUserCanAccessFile(User.current(), uploadedFile);
             File file = new File(uploadedFile.getPath());
+            if (!file.exists() || !file.isFile()) {
+                logger.error("DOWNLOAD FAILED — file missing on disk | fileId={} | path={}",
+                        uploadedFile.getId(), uploadedFile.getPath());
+                response.sendError(HttpServletResponse.SC_NOT_FOUND,
+                        "Requested file is no longer available.");
+                return;
+            }
             this.handleDownloadFile(request, response, file, uploadedFile.getName());
         }
     }
 
-    private void handleDownloadFile(HttpServletRequest request, HttpServletResponse response, File file, String downloadFileName) {
+    private void handleDownloadFile(HttpServletRequest request, HttpServletResponse response, File file,
+            String downloadFileName) {
         response.setContentLength((int) file.length());
         response.setHeader("Content-type", "application/octet-stream");
         response.setHeader("Content-Transfer-Encoding", "binary");
+        response.setHeader("X-Content-Type-Options", "nosniff");
+        response.setHeader("X-Frame-Options", "DENY");
+        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setIntHeader("Expires", 0);
         FileInputStream fis = null;
         try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + SystemUtil.getDocName(request, downloadFileName));
+            response.setHeader("Content-Disposition",
+                    "attachment;filename=" + SystemUtil.getDocName(request, downloadFileName));
             OutputStream out = response.getOutputStream();
             fis = new FileInputStream(file);
             FileCopyUtils.copy(fis, out);

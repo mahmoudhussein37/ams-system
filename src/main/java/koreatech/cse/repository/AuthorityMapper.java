@@ -1,6 +1,5 @@
 package koreatech.cse.repository;
 
-
 import koreatech.cse.domain.Authority;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -18,6 +17,9 @@ public interface AuthorityMapper {
 
     @Select("SELECT * FROM authority WHERE USER_ID = #{userId}")
     List<Authority> findByUserId(@Param("userId") int userId);
+
+    @Select("SELECT * FROM authority WHERE USER_ID = #{userId} AND ROLE = #{role} LIMIT 1")
+    Authority findByUserIdAndRole(@Param("userId") int userId, @Param("role") String role);
 
     @Delete("DELETE FROM authority WHERE ID = #{id}")
     void delete(Authority authority);

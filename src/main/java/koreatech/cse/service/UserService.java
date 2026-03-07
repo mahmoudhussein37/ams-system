@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -35,55 +36,69 @@ public class UserService implements UserDetailsService {
     @Inject
     private SemesterMapper semesterMapper;
 
-
     public String signup(User user, Role role) {
 
-        if(user.getUsername() == null || user.getPassword() ==  null)
+        if (user.getUsername() == null || user.getPassword() == null)
             return "info";
 
-        if(isUniqueUsername(user.getUsername().trim())) {
+        if (isUniqueUsername(user.getUsername().trim())) {
 
             User stored = userMapper.findByNumber(user.getNumber());
-            if(stored == null)
+            if (stored == null)
                 return "number";
+
+            // Check if account is already activated
+            if (stored.isConfirm()) {
+                return "activated";
+            }
 
             stored.setUsername(user.getUsername());
             stored.setPassword(passwordEncoder.encode(user.getPassword()));
             stored.setEnabled(true);
             stored.setConfirm(true);
 
-
             userMapper.updateFromSignup(stored);
             Contact contact = user.getContact();
             Contact storedContact = contactMapper.findByUserId(stored.getId());
-
 
             storedContact.setFirstName(contact.getFirstName());
             storedContact.setLastName(contact.getLastName());
             contactMapper.update(storedContact);
 
-            Authority authority = new Authority();
-            authority.setUserId(stored.getId());
-            authority.setRole(Role.user);
-            authorityMapper.insert(authority);
+            // Insert ROLE_USER authority only if it doesn't already exist
+            Authority existingUser = authorityMapper.findByUserIdAndRole(stored.getId(), Role.user.toCode());
+            if (existingUser == null) {
+                Authority authority = new Authority();
+                authority.setUserId(stored.getId());
+                authority.setRole(Role.user);
+                authorityMapper.insert(authority);
+            }
 
-            //TODO: remove
+            // Insert role-specific authority only if it doesn't already exist
             if (role == Role.admin) {
-                Authority adminAuthority = new Authority();
-                adminAuthority.setUserId(stored.getId());
-                adminAuthority.setRole(Role.admin);
-                authorityMapper.insert(adminAuthority);
+                Authority existingAdmin = authorityMapper.findByUserIdAndRole(stored.getId(), Role.admin.toCode());
+                if (existingAdmin == null) {
+                    Authority adminAuthority = new Authority();
+                    adminAuthority.setUserId(stored.getId());
+                    adminAuthority.setRole(Role.admin);
+                    authorityMapper.insert(adminAuthority);
+                }
             } else if (role == Role.student) {
-                Authority studentAuthority = new Authority();
-                studentAuthority.setUserId(stored.getId());
-                studentAuthority.setRole(Role.student);
-                authorityMapper.insert(studentAuthority);
+                Authority existingStudent = authorityMapper.findByUserIdAndRole(stored.getId(), Role.student.toCode());
+                if (existingStudent == null) {
+                    Authority studentAuthority = new Authority();
+                    studentAuthority.setUserId(stored.getId());
+                    studentAuthority.setRole(Role.student);
+                    authorityMapper.insert(studentAuthority);
+                }
             } else if (role == Role.professor) {
-                Authority profAuthority = new Authority();
-                profAuthority.setUserId(stored.getId());
-                profAuthority.setRole(Role.professor);
-                authorityMapper.insert(profAuthority);
-
+                Authority existingProf = authorityMapper.findByUserIdAndRole(stored.getId(), Role.professor.toCode());
+                if (existingProf == null) {
+                    Authority profAuthority = new Authority();
+                    profAuthority.setUserId(stored.getId());
+                    profAuthority.setRole(Role.professor);
+                    authorityMapper.insert(profAuthority);
+                }
             }
             System.out.println("user created :" + new Date());
             return "success";
@@ -94,10 +109,10 @@ public class UserService implements UserDetailsService {
 
     public Boolean signupAdmin(User user) {
 
-        if(user.getUsername() == null || user.getPassword() ==  null)
+        if (user.getUsername() == null || user.getPassword() == null)
             return false;
 
-        if(isUniqueUsername(user.getUsername().trim())) {
+        if (isUniqueUsername(user.getUsername().trim())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userMapper.insert(user);
             user.getContact().setUserId(user.getId());
@@ -120,15 +135,29 @@ public class UserService implements UserDetailsService {
         return false;
     }
 
+    /**
+     * Register a new student (used by manual registration and Excel import).
+     * Creates user, contact, and ROLE_STUDENT authority in single atomic
+     * transaction.
+     */
+    @Transactional
     public Boolean register(User user) {
+
         String number = user.getNumber();
         User stored = userMapper.findByNumber(number);
-        if(stored != null)
+        if (stored != null)
             return false;
         userMapper.insert(user);
         user.getContact().setUserId(user.getId());
         Contact contact = user.getContact();
         contactMapper.insert(contact);
+
+        // Add ROLE_STUDENT authority so student appears in queries
+        Authority studentAuthority = new Authority();
+        studentAuthority.setUserId(user.getId());
+        studentAuthority.setRole(Role.student);
+        authorityMapper.insert(studentAuthority);
+
         return true;
     }
 
@@ -148,14 +177,16 @@ public class UserService implements UserDetailsService {
 
     public int getCompleteSemesterCount(int userId) {
         LinkedHashSet<Integer> semesterSet = studentCourseMapper.findSemesterIdByUserIdValid(userId);
-        if(semesterSet == null) return 0;
+        if (semesterSet == null)
+            return 0;
 
         int completeSemesterCount = 0;
-        for(Integer semesterId: semesterSet) {
+        for (Integer semesterId : semesterSet) {
             List<StudentCourse> validCourses = studentCourseMapper.findByUserIdSemesterIdValid(userId, semesterId);
             List<StudentCourse> allCourses = studentCourseMapper.findByUserIdSemesterId(userId, semesterId);
-            if(validCourses == null || allCourses == null) continue;
-            if(validCourses.size() == allCourses.size())
+            if (validCourses == null || allCourses == null)
+                continue;
+            if (validCourses.size() == allCourses.size())
                 completeSemesterCount++;
         }
         return completeSemesterCount;

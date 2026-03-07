@@ -1,66 +1,88 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 
-<table class="table table-head-custom table-vertical-center" id="course-list">
-    <thead>
-    <tr class="text-uppercase">
+    <table class="table table-head-custom table-vertical-center align-middle" id="curriculum-table">
+        <thead>
+            <tr class="text-uppercase">
+                <th class="pl-0">
+                    <spring:message code="common.no" />
+                </th>
+                <th>
+                    <spring:message code="common.department" />
+                </th>
+                <th>
+                    <spring:message code="common.status" />
+                </th>
+                <th>
+                    <spring:message code="common.publishedAt" />
+                </th>
+                <th>
+                    <spring:message code="common.publishedBy" />
+                </th>
+                <th>
+                    <spring:message code="common.actions" />
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach var="row" items="${curriculumRows}" varStatus="vs">
+                <tr>
+                    <td class="pl-0">${vs.count}</td>
+                    <td>${row.divisionName}</td>
 
-        <th class="pl-0"><spring:message code="common.no"/></th>
-        <th><span class="text-primary"><spring:message code="common.year"/></span></th>
-        <th><span class="text-primary"><spring:message code="common.department"/></span></th>
-        <th></th>
-        <th></th>
+                    <%-- Status column --%>
+                        <td>
+                            <c:choose>
+                                <c:when test="${row.status eq 'ACTIVE'}">
+                                    <span class="badge badge-success">ACTIVE</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="text-muted">&mdash;</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
 
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
+                        <%-- Published At: visible only if ACTIVE --%>
+                            <td>
+                                <c:if test="${row.status eq 'ACTIVE' and row.uploadedAt != null}">
+                                    <fmt:formatDate value="${row.uploadedAt}" pattern="yyyy-MM-dd HH:mm" />
+                                </c:if>
+                                <c:if test="${row.status ne 'ACTIVE' or row.uploadedAt == null}">
+                                    <span class="text-muted">&mdash;</span>
+                                </c:if>
+                            </td>
 
-        <td class="pl-0">
-            1
-        </td>
-        <td>
-            2020
-        </td>
-        <td>
-            Electronics & Communication
-        </td>
-        <td>
+                            <%-- Published By: visible only if ACTIVE --%>
+                                <td>
+                                    <c:if test="${row.status eq 'ACTIVE' and not empty row.uploaderName}">
+                                        ${row.uploaderName}
+                                    </c:if>
+                                    <c:if test="${row.status ne 'ACTIVE' or empty row.uploaderName}">
+                                        <span class="text-muted">&mdash;</span>
+                                    </c:if>
+                                </td>
 
-            <a href="#"><spring:message code="common.download"/></a>
-        </td>
-        <td>
-            <button type="button" class="btn btn-primary mr-2"><spring:message code="common.upload"/></button>
-            <button type="button" class="btn btn-primary mr-2"><spring:message code="common.delete"/></button>
-        </td>
+                                <%-- Actions column --%>
+                                    <td class="actions-cell">
+                                        <div class="actions-wrapper">
+                                            <%-- Publish New Version: always visible --%>
+                                                <a href="${baseUrl}/admin/courseManagement/curriculum/uploadCurriculum?year=${row.academicYear}&divisionId=${row.divisionId}"
+                                                    class="btn btn-sm btn-primary action-btn"
+                                                    title="Publish a new curriculum version for this department">
+                                                    <spring:message code="common.publishNewVersion" />
+                                                </a>
 
-
-    </tr>
-    <%--<c:forEach var="course" items="${courseList}" varStatus="varStatus">
-        <tr>
-
-            <td class="pl-0">
-                    ${varStatus.count}
-            </td>
-            <td>
-                <a href="#" class="course-detail" data-course-id="${course.id}">
-                        ${course.code}
-                </a>
-            </td>
-            <td>
-                    ${course.title}
-            </td>
-            <td>
-                    ${course.category}
-            </td>
-
-        </tr>
-    </c:forEach>--%>
-
-
-    </tbody>
-</table>
-<script>
-    //$("#course-list").DataTable();
-
-
-</script>
+                                                <%-- Download: visible only if ACTIVE --%>
+                                                    <c:if
+                                                        test="${row.status eq 'ACTIVE' and row.uploadedFileId != null}">
+                                                        <a href="${baseUrl}/download?uploadedFileId=${row.uploadedFileId}"
+                                                            class="btn btn-sm btn-outline-primary action-btn">
+                                                            <i class="flaticon-download"></i>
+                                                            <spring:message code="common.download" />
+                                                        </a>
+                                                    </c:if>
+                                        </div>
+                                    </td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>

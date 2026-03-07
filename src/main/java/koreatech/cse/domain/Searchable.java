@@ -1,6 +1,5 @@
 package koreatech.cse.domain;
 
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public class Searchable {
     private String code;
     private String title;
     private boolean enabled;
-
+    private String accountStatus; // "active" or "pending" for filtering
 
     private String orderParam;
     private String orderDir;
@@ -154,7 +153,16 @@ public class Searchable {
         this.courseId = courseId;
     }
 
+    public String getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(String accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+
     @Override
+
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }

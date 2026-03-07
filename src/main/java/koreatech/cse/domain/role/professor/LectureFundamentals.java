@@ -17,10 +17,10 @@ public class LectureFundamentals implements Serializable {
     private String intro;
 
 
-    private int rateAssignment;
-    private int rateMid;
-    private int rateFinal;
-    private int rateOptional;
+    private Integer rateAssignment;
+    private Integer rateMid;
+    private Integer rateFinal;
+    private Integer rateOptional;
 
     private String clo1;
     private String la1;
@@ -106,34 +106,34 @@ public class LectureFundamentals implements Serializable {
 
 
     public int getRateAssignment() {
-        return rateAssignment;
+        return rateAssignment != null ? rateAssignment : 0;
     }
 
-    public void setRateAssignment(int rateAssignment) {
+    public void setRateAssignment(Integer rateAssignment) {
         this.rateAssignment = rateAssignment;
     }
 
     public int getRateMid() {
-        return rateMid;
+        return rateMid != null ? rateMid : 0;
     }
 
-    public void setRateMid(int rateMid) {
+    public void setRateMid(Integer rateMid) {
         this.rateMid = rateMid;
     }
 
     public int getRateFinal() {
-        return rateFinal;
+        return rateFinal != null ? rateFinal : 0;
     }
 
-    public void setRateFinal(int rateFinal) {
+    public void setRateFinal(Integer rateFinal) {
         this.rateFinal = rateFinal;
     }
 
     public int getRateOptional() {
-        return rateOptional;
+        return rateOptional != null ? rateOptional : 0;
     }
 
-    public void setRateOptional(int rateOptional) {
+    public void setRateOptional(Integer rateOptional) {
         this.rateOptional = rateOptional;
     }
 

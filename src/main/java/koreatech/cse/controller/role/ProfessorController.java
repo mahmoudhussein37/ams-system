@@ -25,6 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.http.ResponseEntity;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +33,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
-@SessionAttributes({"lectureFundamentals", "counseling", "lectureContents", "profLectureMethod", "cqi", "uploadedFile"})
+@SessionAttributes({ "lectureFundamentals", "counseling", "lectureContents", "profLectureMethod", "cqi",
+        "uploadedFile" })
 @PreAuthorize("hasRole('ROLE_PROFESSOR')")
 @RequestMapping("/professor")
 public class ProfessorController {
@@ -104,12 +106,12 @@ public class ProfessorController {
     }
 
     @RequestMapping("/studentGuidance/studentLookup/studentTable")
-    public String studentTable(Model model, @RequestParam(required=false) String number,
-                               @RequestParam(required=false) String name,
-                               @RequestParam(defaultValue = "0", required=false) int division) {
+    public String studentTable(Model model, @RequestParam(required = false) String number,
+            @RequestParam(required = false) String name,
+            @RequestParam(defaultValue = "0", required = false) int division) {
         User firstUser = null;
         List<User> userList;
-        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
+        if (StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
             userList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
@@ -120,14 +122,11 @@ public class ProfessorController {
             searchable.setOrderDir("asc");
             userList = userMapper.findStudentBy(searchable);
 
-
-            for(User user: userList) {
+            for (User user : userList) {
                 firstUser = user;
                 break;
             }
         }
-
-
 
         model.addAttribute("userList", userList);
         model.addAttribute("firstUser", firstUser);
@@ -135,18 +134,18 @@ public class ProfessorController {
     }
 
     @RequestMapping("/studentGuidance/studentLookup/studentDetail")
-    public String studentDetail(Model model, @RequestParam int studentId, @RequestParam(defaultValue = "false", required=false) String print) {
+    public String studentDetail(Model model, @RequestParam int studentId,
+            @RequestParam(defaultValue = "false", required = false) String print) {
         User studentUser = userMapper.findOne(studentId);
-
 
         User advisor = userMapper.findOne(studentUser.getAdvisorId());
         model.addAttribute("advisor", advisor);
         int admissionYear = studentUser.getContact().getAdmissionYear();
         int divisionId = studentUser.getDivisionId();
 
-        GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear, divisionId);
+        GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear,
+                divisionId);
         studentUser.setGraduationCriteria(graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
-
 
         List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(studentId);
         studentUser.setStudentCourses(studentCourses);
@@ -155,14 +154,13 @@ public class ProfessorController {
 
         List<LangCert> langCerts = langCertMapper.findByUserId(studentId);
         model.addAttribute("langCerts", langCerts);
-        if(print.equals("true"))
+        if (print.equals("true"))
             return "role/professor/studentLookup/studentDetailForPrint";
         return "role/professor/studentLookup/studentDetail";
     }
 
-
     @RequestMapping("/studentGuidance/counseling")
-    public String counseling(Model model, @RequestParam(required=false) String result) {
+    public String counseling(Model model, @RequestParam(required = false) String result) {
         model.addAttribute("yearList", getYearList());
         model.addAttribute("result", result);
         return "role/professor/counseling/counseling";
@@ -192,7 +190,7 @@ public class ProfessorController {
 
     @RequestMapping(value = "/studentGuidance/counseling/newCounselingDetail", method = RequestMethod.POST)
     public String newCounselingDetail(@ModelAttribute Counseling counseling, @RequestParam int studentId) {
-        //generate number
+        // generate number
         String number = UUID.randomUUID().toString().replace("-", "");
         counseling.setNumber(number);
         User user = User.current();
@@ -202,12 +200,12 @@ public class ProfessorController {
     }
 
     @RequestMapping("/studentGuidance/counseling/studentTable")
-    public String counselingStudentTable(Model model, @RequestParam(required=false) String number,
-                               @RequestParam(required=false) String name,
-                               @RequestParam(defaultValue = "0", required=false) int division) {
+    public String counselingStudentTable(Model model, @RequestParam(required = false) String number,
+            @RequestParam(required = false) String name,
+            @RequestParam(defaultValue = "0", required = false) int division) {
         User firstUser = null;
         List<User> userList;
-        if(StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
+        if (StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0) {
             userList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
@@ -216,8 +214,7 @@ public class ProfessorController {
             searchable.setDivision(division);
             userList = userMapper.findStudentBy(searchable);
 
-
-            for(User user: userList) {
+            for (User user : userList) {
                 firstUser = user;
                 break;
             }
@@ -229,11 +226,11 @@ public class ProfessorController {
     }
 
     @RequestMapping("/studentGuidance/counseling/counselingTable")
-    public String counselingStudentTable(Model model, @RequestParam(required=false, defaultValue = "0") int year,
-                               @RequestParam(required=false) String name) {
+    public String counselingStudentTable(Model model, @RequestParam(required = false, defaultValue = "0") int year,
+            @RequestParam(required = false) String name) {
         Counseling firstCounseling = null;
         List<Counseling> counselingList;
-        if(year == 0 && StringUtils.isBlank(name)) {
+        if (year == 0 && StringUtils.isBlank(name)) {
             counselingList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
@@ -241,7 +238,7 @@ public class ProfessorController {
             searchable.setName(name);
             counselingList = counselingMapper.findByCounseling(searchable);
 
-            for(Counseling counseling: counselingList) {
+            for (Counseling counseling : counselingList) {
                 firstCounseling = counseling;
                 break;
             }
@@ -253,7 +250,8 @@ public class ProfessorController {
     }
 
     @RequestMapping("/studentGuidance/counseling/counselingDetail")
-    public String counselingStudentDetail(Model model, @RequestParam int counselingId, @RequestParam(defaultValue = "false", required=false) String print) {
+    public String counselingStudentDetail(Model model, @RequestParam int counselingId,
+            @RequestParam(defaultValue = "false", required = false) String print) {
         Counseling counseling = counselingMapper.findOne(counselingId);
         model.addAttribute("counseling", counseling);
 
@@ -265,13 +263,14 @@ public class ProfessorController {
         int admissionYear = studentUser.getContact().getAdmissionYear();
         int divisionId = studentUser.getDivisionId();
 
-        GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear, divisionId);
+        GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear,
+                divisionId);
         studentUser.setGraduationCriteria(graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
         List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(studentId);
         studentUser.setStudentCourses(studentCourses);
         model.addAttribute("studentUser", studentUser);
 
-        if(print.equals("true"))
+        if (print.equals("true"))
             return "role/professor/counseling/counselingDetailForPrint";
         return "role/professor/counseling/counselingDetail";
     }
@@ -285,7 +284,6 @@ public class ProfessorController {
         model.addAttribute("yearList", getYearList());
         model.addAttribute("course", new Course());
         model.addAttribute("subjCategoryList", SubjCategory.values());
-
 
         return "role/professor/attendance/attendance";
     }
@@ -301,21 +299,20 @@ public class ProfessorController {
         objectMap.put("studentCourses", studentCourses);
         objectMap.put("messageSource", messageSource);
         objectMap.put("locale", locale);
-        response.setContentType( "application/ms-excel" );
+        response.setContentType("application/ms-excel");
         String fileName = "attendance_" + todayDateString;
-        response.setHeader( "Content-disposition", String.format("attachment; filename=%s.xls", fileName));
+        response.setHeader("Content-disposition", String.format("attachment; filename=%s.xls", fileName));
         return new ModelAndView(new StudentListExcelView(), objectMap);
     }
 
-
     @RequestMapping("/classProgress/attendance/courseTable")
     public String professorCourseTable(Model model,
-                              @RequestParam(defaultValue = "0", required=false) int year,
-                              @RequestParam(defaultValue = "0", required=false) int semester) {
+            @RequestParam(defaultValue = "0", required = false) int year,
+            @RequestParam(defaultValue = "0", required = false) int semester) {
         ProfessorCourse firstCourse = null;
         List<ProfessorCourse> courseList;
 
-        if(year == 0 && semester == 0) {
+        if (year == 0 && semester == 0) {
             courseList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
@@ -325,14 +322,11 @@ public class ProfessorController {
 
             courseList = professorCourseMapper.findBy(searchable);
 
-
-            for(ProfessorCourse course: courseList) {
+            for (ProfessorCourse course : courseList) {
                 firstCourse = course;
                 break;
             }
         }
-
-
 
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("profCourseList", courseList);
@@ -355,15 +349,17 @@ public class ProfessorController {
         User user = User.current();
         Semester semester = pc.getSemester();
 
-        List<UploadedFile> uploadedFiles = uploadedFileMapper.findByDesignationProfCourseId(Designation.attendance, profCourseId);
+        List<UploadedFile> uploadedFiles = uploadedFileMapper.findByDesignationProfCourseId(Designation.attendance,
+                profCourseId);
 
-        for(UploadedFile stored: uploadedFiles) {
+        for (UploadedFile stored : uploadedFiles) {
             uploadedFileMapper.delete(stored);
         }
         MultipartFile multipartFile = uploadedFile.getFile();
-        if(multipartFile != null) {
+        if (multipartFile != null) {
             try {
-                fileService.processUploadedFile(multipartFile, user, Designation.attendance, pc.getCourse().getDivisionId(), profCourseId, semester.getYear());
+                fileService.processUploadedFile(multipartFile, user, Designation.attendance,
+                        pc.getCourse().getDivisionId(), profCourseId, semester.getYear());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -380,13 +376,12 @@ public class ProfessorController {
 
     @RequestMapping("/classProgress/inquiryCourse/courseTable")
     public String inquiryCourseTable(Model model,
-                              @RequestParam(defaultValue = "0", required=false) int year,
-                              @RequestParam(defaultValue = "0", required=false) int semester) {
+            @RequestParam(defaultValue = "0", required = false) int year,
+            @RequestParam(defaultValue = "0", required = false) int semester) {
         ProfessorCourse firstCourse = null;
 
-
         List<ProfessorCourse> courseList;
-        if(semester == 0 && year == 0) {
+        if (semester == 0 && year == 0) {
             courseList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
@@ -394,13 +389,11 @@ public class ProfessorController {
             searchable.setSemester(semester);
             courseList = professorCourseMapper.findBy(searchable);
 
-
-            for(ProfessorCourse course: courseList) {
+            for (ProfessorCourse course : courseList) {
                 firstCourse = course;
                 break;
             }
         }
-
 
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("profCourseList", courseList);
@@ -408,13 +401,16 @@ public class ProfessorController {
     }
 
     @RequestMapping("/classProgress/inquiryCourse/courseDetail")
-    public String inCourseDetail(Model model, @RequestParam int profCourseId, @RequestParam(defaultValue = "false", required=false) String print) {
+    public String inCourseDetail(Model model, @RequestParam int profCourseId,
+            @RequestParam(defaultValue = "false", required = false) String print) {
         ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         model.addAttribute("pc", pc);
         LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(pc.getId());
-        model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
+        model.addAttribute("lectureFundamentals",
+                lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
         ProfLectureMethod profLectureMethod = profLectureMethodMapper.findByProfCourseId(pc.getId());
-        model.addAttribute("profLectureMethod", profLectureMethod == null ? new ProfLectureMethod() : profLectureMethod);
+        model.addAttribute("profLectureMethod",
+                profLectureMethod == null ? new ProfLectureMethod() : profLectureMethod);
         LectureContents lectureContents = lectureContentsMapper.findByProfCourseId(pc.getId());
         model.addAttribute("lectureContents", lectureContents == null ? new LectureContents() : lectureContents);
 
@@ -432,13 +428,13 @@ public class ProfessorController {
 
         MenuAccess menuAccess = menuAccessMapper.findOne();
         model.addAttribute("menuAccess", menuAccess);
-        if(print.equals("true"))
+        if (print.equals("true"))
             return "role/common/syllabus/courseDetailForPrint";
         return "role/professor/inquiryCourse/courseDetail";
     }
 
     @RequestMapping("/classProgress/syllabus")
-    public String syllabus(Model model, @RequestParam(required=false) String result) {
+    public String syllabus(Model model, @RequestParam(required = false) String result) {
 
         model.addAttribute("yearList", getYearList());
         model.addAttribute("result", result);
@@ -446,14 +442,17 @@ public class ProfessorController {
     }
 
     @RequestMapping("/classProgress/syllabus/courseDetail")
-    public String courseDetail(Model model, @RequestParam int profCourseId, @RequestParam(defaultValue = "false", required=false) String print) {
+    public String courseDetail(Model model, @RequestParam int profCourseId,
+            @RequestParam(defaultValue = "false", required = false) String print) {
         ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
 
         model.addAttribute("pc", pc);
         LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(pc.getId());
-        model.addAttribute("lectureFundamentals", lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
+        model.addAttribute("lectureFundamentals",
+                lectureFundamentals == null ? new LectureFundamentals() : lectureFundamentals);
         ProfLectureMethod profLectureMethod = profLectureMethodMapper.findByProfCourseId(pc.getId());
-        model.addAttribute("profLectureMethod", profLectureMethod == null ? new ProfLectureMethod() : profLectureMethod);
+        model.addAttribute("profLectureMethod",
+                profLectureMethod == null ? new ProfLectureMethod() : profLectureMethod);
         LectureContents lectureContents = lectureContentsMapper.findByProfCourseId(pc.getId());
         model.addAttribute("lectureContents", lectureContents == null ? new LectureContents() : lectureContents);
 
@@ -482,55 +481,87 @@ public class ProfessorController {
         Semester semester = pc.getSemester();
 
         model.addAttribute("isEditable", menuAccess.isSyllabus() && semester.isCurrent());
-        if(print.equals("true"))
+        if (print.equals("true"))
             return "role/common/syllabus/courseDetailForPrint";
         return "role/professor/syllabus/courseDetail";
     }
 
     @RequestMapping(value = "/classProgress/syllabus/courseDetail/lectureFundamentals", method = RequestMethod.POST)
     @ResponseBody
-    public String lectureFundamentals(@RequestParam int profCourseId, @ModelAttribute LectureFundamentals lectureFundamentals) {
+    public ResponseEntity<Map<String, Object>> lectureFundamentals(@RequestParam int profCourseId,
+            @ModelAttribute LectureFundamentals lectureFundamentals) {
 
-        User user = User.current();
-        lectureFundamentals.setUserId(user.getId());
-        lectureFundamentals.setProfCourseId(profCourseId);
+        Map<String, Object> response = new HashMap<>();
 
-        String[] ref1Checkbox = lectureFundamentals.getRef1Checkbox();
-        String ref1CheckboxStr = checkboxToStr(ref1Checkbox);
-        lectureFundamentals.setReflect1(ref1CheckboxStr);
+        try {
+            User user = User.current();
+            lectureFundamentals.setUserId(user.getId());
+            lectureFundamentals.setProfCourseId(profCourseId);
 
-        String[] ref2Checkbox = lectureFundamentals.getRef2Checkbox();
-        String ref2CheckboxStr = checkboxToStr(ref2Checkbox);
-        lectureFundamentals.setReflect2(ref2CheckboxStr);
+            // Server-side grade rate validation
+            int total = lectureFundamentals.getRateAssignment() + lectureFundamentals.getRateMid()
+                    + lectureFundamentals.getRateFinal() + lectureFundamentals.getRateOptional();
+            if (total != 100) {
+                response.put("success", false);
+                response.put("message", messageSource.getMessage("professor.gradeRates.validation.error",
+                        new Object[] { total }, org.springframework.context.i18n.LocaleContextHolder.getLocale()));
+                return ResponseEntity.ok(response);
+            }
 
-        String[] ref3Checkbox = lectureFundamentals.getRef3Checkbox();
-        String ref3CheckboxStr = checkboxToStr(ref3Checkbox);
-        lectureFundamentals.setReflect3(ref3CheckboxStr);
+            String[] ref1Checkbox = lectureFundamentals.getRef1Checkbox();
+            String ref1CheckboxStr = checkboxToStr(ref1Checkbox);
+            lectureFundamentals.setReflect1(ref1CheckboxStr);
 
-        String[] ref4Checkbox = lectureFundamentals.getRef4Checkbox();
-        String ref4CheckboxStr = checkboxToStr(ref4Checkbox);
-        lectureFundamentals.setReflect4(ref4CheckboxStr);
+            String[] ref2Checkbox = lectureFundamentals.getRef2Checkbox();
+            String ref2CheckboxStr = checkboxToStr(ref2Checkbox);
+            lectureFundamentals.setReflect2(ref2CheckboxStr);
 
-        String[] ref5Checkbox = lectureFundamentals.getRef5Checkbox();
-        String ref5CheckboxStr = checkboxToStr(ref5Checkbox);
-        lectureFundamentals.setReflect5(ref5CheckboxStr);
+            String[] ref3Checkbox = lectureFundamentals.getRef3Checkbox();
+            String ref3CheckboxStr = checkboxToStr(ref3Checkbox);
+            lectureFundamentals.setReflect3(ref3CheckboxStr);
 
-        String[] ref6Checkbox = lectureFundamentals.getRef6Checkbox();
-        String ref6CheckboxStr = checkboxToStr(ref6Checkbox);
-        lectureFundamentals.setReflect6(ref6CheckboxStr);
+            String[] ref4Checkbox = lectureFundamentals.getRef4Checkbox();
+            String ref4CheckboxStr = checkboxToStr(ref4Checkbox);
+            lectureFundamentals.setReflect4(ref4CheckboxStr);
 
+            String[] ref5Checkbox = lectureFundamentals.getRef5Checkbox();
+            String ref5CheckboxStr = checkboxToStr(ref5Checkbox);
+            lectureFundamentals.setReflect5(ref5CheckboxStr);
 
-        if (lectureFundamentals.getId() == 0) {
-            lectureFundamentalsMapper.insert(lectureFundamentals);
-        } else {
-            lectureFundamentalsMapper.update(lectureFundamentals);
+            String[] ref6Checkbox = lectureFundamentals.getRef6Checkbox();
+            String ref6CheckboxStr = checkboxToStr(ref6Checkbox);
+            lectureFundamentals.setReflect6(ref6CheckboxStr);
+
+            if (lectureFundamentals.getId() == 0) {
+                // Check for existing record to prevent duplicates
+                LectureFundamentals existing = lectureFundamentalsMapper.findByProfCourseId(profCourseId);
+                if (existing != null) {
+                    // Update existing instead of insert
+                    lectureFundamentals.setId(existing.getId());
+                    lectureFundamentalsMapper.update(lectureFundamentals);
+                } else {
+                    lectureFundamentalsMapper.insert(lectureFundamentals);
+                }
+            } else {
+                lectureFundamentalsMapper.update(lectureFundamentals);
+            }
+
+            response.put("success", true);
+            response.put("message", "Saved successfully");
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("success", false);
+            response.put("message", "An error occurred while saving: " + e.getMessage());
+            return ResponseEntity.ok(response);
         }
-        return "success";
     }
 
     @RequestMapping(value = "/classProgress/syllabus/courseDetail/profLectureMethod", method = RequestMethod.POST)
     @ResponseBody
-    public String profLectureMethod(@RequestParam int profCourseId, @ModelAttribute ProfLectureMethod profLectureMethod) {
+    public String profLectureMethod(@RequestParam int profCourseId,
+            @ModelAttribute ProfLectureMethod profLectureMethod) {
         User user = User.current();
         profLectureMethod.setUserId(user.getId());
         profLectureMethod.setProfCourseId(profCourseId);
@@ -538,7 +569,7 @@ public class ProfessorController {
         String lectureMethodCheckboxStr = checkboxToStr(lectureMethodCheckbox);
         profLectureMethod.setLectureMethods(lectureMethodCheckboxStr);
 
-        if(!profLectureMethod.hasValue(profLectureMethod.getLectureMethods(), 100)) {
+        if (!profLectureMethod.hasValue(profLectureMethod.getLectureMethods(), 100)) {
             profLectureMethod.setLectureMethodOther(null);
         }
 
@@ -546,7 +577,7 @@ public class ProfessorController {
         String evaluationMethodCheckboxStr = checkboxToStr(evaluationMethodCheckbox);
         profLectureMethod.setEvaluationMethods(evaluationMethodCheckboxStr);
 
-        if(!profLectureMethod.hasValue(profLectureMethod.getEvaluationMethods(), 100)) {
+        if (!profLectureMethod.hasValue(profLectureMethod.getEvaluationMethods(), 100)) {
             profLectureMethod.setEvaluationMethodOther(null);
         }
 
@@ -554,7 +585,7 @@ public class ProfessorController {
         String educationalMediumCheckboxStr = checkboxToStr(educationalMediumCheckbox);
         profLectureMethod.setEducationalMediums(educationalMediumCheckboxStr);
 
-        if(!profLectureMethod.hasValue(profLectureMethod.getEducationalMediums(), 100)) {
+        if (!profLectureMethod.hasValue(profLectureMethod.getEducationalMediums(), 100)) {
             profLectureMethod.setEducationalMediumOther(null);
         }
 
@@ -562,11 +593,9 @@ public class ProfessorController {
         String equipmentCheckboxStr = checkboxToStr(equipmentCheckbox);
         profLectureMethod.setEquipments(equipmentCheckboxStr);
 
-        if(!profLectureMethod.hasValue(profLectureMethod.getEquipments(), 100)) {
+        if (!profLectureMethod.hasValue(profLectureMethod.getEquipments(), 100)) {
             profLectureMethod.setEquipmentOther(null);
         }
-
-
 
         if (profLectureMethod.getId() == 0) {
             profLectureMethodMapper.insert(profLectureMethod);
@@ -592,13 +621,13 @@ public class ProfessorController {
 
     @RequestMapping("/classProgress/syllabus/courseTable")
     public String syllabusCourseTable(Model model,
-                                     @RequestParam(defaultValue = "0", required=false) int year,
-                                     @RequestParam(defaultValue = "0", required=false) int semester) {
+            @RequestParam(defaultValue = "0", required = false) int year,
+            @RequestParam(defaultValue = "0", required = false) int semester) {
 
         ProfessorCourse firstCourse = null;
 
         List<ProfessorCourse> courseList;
-        if(year == 0 && semester == 0) {
+        if (year == 0 && semester == 0) {
             courseList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
@@ -609,12 +638,11 @@ public class ProfessorController {
 
             courseList = professorCourseMapper.findBy(searchable);
 
-            for(ProfessorCourse course: courseList) {
+            for (ProfessorCourse course : courseList) {
                 firstCourse = course;
                 break;
             }
         }
-
 
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);
@@ -631,12 +659,12 @@ public class ProfessorController {
 
     @RequestMapping("/classProgress/classAssessment/courseTable")
     public String classAssessmentCourseTable(Model model,
-                                      @RequestParam(defaultValue = "0", required=false) int year,
-                                      @RequestParam(defaultValue = "0", required=false) int semester) {
+            @RequestParam(defaultValue = "0", required = false) int year,
+            @RequestParam(defaultValue = "0", required = false) int semester) {
 
         ProfessorCourse firstCourse = null;
         List<ProfessorCourse> courseList;
-        if(year == 0 && semester == 0) {
+        if (year == 0 && semester == 0) {
             courseList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
@@ -646,13 +674,11 @@ public class ProfessorController {
 
             courseList = professorCourseMapper.findBy(searchable);
 
-            for(ProfessorCourse course: courseList) {
+            for (ProfessorCourse course : courseList) {
                 firstCourse = course;
                 break;
             }
         }
-
-
 
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);
@@ -660,7 +686,8 @@ public class ProfessorController {
     }
 
     @RequestMapping("/classProgress/classAssessment/courseDetail")
-    public String classAssessmentCourseDetail(Model model, @RequestParam int profCourseId, @RequestParam(defaultValue = "false", required=false) String print) {
+    public String classAssessmentCourseDetail(Model model, @RequestParam int profCourseId,
+            @RequestParam(defaultValue = "false", required = false) String print) {
         ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         model.addAttribute("pc", pc);
         List<Assessment> assessments = assessmentMapper.findByProfCourseId(profCourseId);
@@ -671,9 +698,8 @@ public class ProfessorController {
         model.addAttribute("menuAccess", menuAccess);
         Semester semester = pc.getSemester();
         model.addAttribute("isViewable", !semester.isCurrent() || !menuAccess.isAssessment());
-        if(print.equals("true"))
+        if (print.equals("true"))
             return "role/common/assessment/courseDetailForPrint";
-
 
         return "role/professor/classAssessment/courseDetail";
     }
@@ -699,46 +725,44 @@ public class ProfessorController {
         int total = sc.getScoreAssignment() + sc.getScoreMid() + sc.getScoreFinal() + sc.getScoreOptions();
         sc.setScoreTotal(total);
 
-
         LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(sc.getProfCourseId());
         ProfessorCourse pc = professorCourseMapper.findOne(sc.getProfCourseId());
 
         String grade = "";
-        if(pc.isSecondTest()) {
-            if(total >= 85)
+        if (pc.isSecondTest()) {
+            if (total >= 85)
                 grade = "A";
-            else if(total >= 75)
+            else if (total >= 75)
                 grade = "B";
-            else if(total >= 65)
+            else if (total >= 65)
                 grade = "C";
-            else if(total >= 50)
+            else if (total >= 50)
                 grade = "D";
-            else if(total >= 40)
+            else if (total >= 40)
                 grade = "E";
             else
                 grade = "F";
         } else {
 
             double finalRatio;
-            if(sc.getScoreFinal() == 0 || lectureFundamentals.getRateFinal() == 0.0)
+            if (sc.getScoreFinal() == 0 || lectureFundamentals.getRateFinal() == 0.0)
                 finalRatio = 0.0;
             else
-                finalRatio = (double)sc.getScoreFinal() / lectureFundamentals.getRateFinal();
+                finalRatio = (double) sc.getScoreFinal() / lectureFundamentals.getRateFinal();
 
-            if(finalRatio < 0.4)
+            if (finalRatio < 0.4)
                 grade = "G";
-            else if(total >= 85)
+            else if (total >= 85)
                 grade = "A";
-            else if(total >= 75)
+            else if (total >= 75)
                 grade = "B";
-            else if(total >= 65)
+            else if (total >= 65)
                 grade = "C";
-            else if(total >= 60)
+            else if (total >= 60)
                 grade = "D";
             else
                 grade = "F";
         }
-
 
         studentCourseMapper.update(sc);
 
@@ -747,13 +771,12 @@ public class ProfessorController {
 
     @RequestMapping("/classProgress/registerGrade/courseTable")
     public String registerGradeCourseTable(Model model,
-                                      @RequestParam(defaultValue = "0", required=false) int year,
-                                      @RequestParam(defaultValue = "0", required=false) int semester) {
-
+            @RequestParam(defaultValue = "0", required = false) int year,
+            @RequestParam(defaultValue = "0", required = false) int semester) {
 
         List<ProfessorCourse> courseList;
         ProfessorCourse firstCourse = null;
-        if(year == 0 && semester == 0) {
+        if (year == 0 && semester == 0) {
             courseList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
@@ -762,13 +785,11 @@ public class ProfessorController {
             searchable.setAdvisor(User.current().getId());
 
             courseList = professorCourseMapper.findBy(searchable);
-            for(ProfessorCourse course: courseList) {
+            for (ProfessorCourse course : courseList) {
                 firstCourse = course;
                 break;
             }
         }
-
-
 
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);
@@ -781,7 +802,7 @@ public class ProfessorController {
         model.addAttribute("pc", pc);
 
         LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(profCourseId);
-        if(lectureFundamentals == null)
+        if (lectureFundamentals == null)
             return "role/common/syllabus/requiredSyllabus";
 
         model.addAttribute("lectureFundamentals", lectureFundamentals);
@@ -793,7 +814,6 @@ public class ProfessorController {
         model.addAttribute("menuAccess", menuAccess);
         model.addAttribute("isEditable", menuAccess.isGrade() && semester.isCurrent());
 
-
         return "role/professor/registerGrade/courseDetail";
     }
 
@@ -803,7 +823,7 @@ public class ProfessorController {
         model.addAttribute("pc", pc);
 
         LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(profCourseId);
-        if(lectureFundamentals == null) {
+        if (lectureFundamentals == null) {
             return "redirect:/professor/classProgress/syllabus";
         }
         model.addAttribute("lectureFundamentals", lectureFundamentals);
@@ -819,13 +839,13 @@ public class ProfessorController {
     public Boolean registerGradeCourseDetail(@RequestParam int profCourseId) {
         ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(profCourseId);
-        if(lectureFundamentals == null) {
+        if (lectureFundamentals == null) {
             return false;
         }
         List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(pc.getId());
 
         boolean valid = true;
-        for(StudentCourse sc: studentCourses) {
+        for (StudentCourse sc : studentCourses) {
             boolean studentValid = true;
 
             if (sc.getScoreAssignment() > lectureFundamentals.getRateAssignment())
@@ -837,12 +857,11 @@ public class ProfessorController {
             if (sc.getScoreOptions() > lectureFundamentals.getRateOptional())
                 studentValid = false;
 
-
             int total = sc.getScoreAssignment() + sc.getScoreMid() + sc.getScoreFinal() + sc.getScoreOptions();
-            if(total > 100) {
+            if (total > 100) {
                 studentValid = false;
             }
-            if(!studentValid)
+            if (!studentValid)
                 valid = false;
 
             sc.setValid(studentValid);
@@ -878,14 +897,13 @@ public class ProfessorController {
 
     @RequestMapping("/classProgress/cqiReport/courseTable")
     public String cqiReportCourseTable(Model model,
-                                      @RequestParam(defaultValue = "0", required=false) int year,
-                                      @RequestParam(defaultValue = "0", required=false) int semester) {
-
+            @RequestParam(defaultValue = "0", required = false) int year,
+            @RequestParam(defaultValue = "0", required = false) int semester) {
 
         List<ProfessorCourse> courseList;
         ProfessorCourse firstCourse = null;
 
-        if(year == 0 && semester == 0) {
+        if (year == 0 && semester == 0) {
             courseList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
@@ -895,22 +913,20 @@ public class ProfessorController {
 
             courseList = professorCourseMapper.findBy(searchable);
 
-            for(ProfessorCourse course: courseList) {
+            for (ProfessorCourse course : courseList) {
                 firstCourse = course;
                 break;
             }
         }
-
 
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("courseList", courseList);
         return "role/professor/cqiReport/courseTable";
     }
 
-
-
     @RequestMapping("/classProgress/cqiReport/courseDetail")
-    public String cqiReportCourseDetail(Model model, @RequestParam int profCourseId, @RequestParam(defaultValue = "false", required=false) String print) {
+    public String cqiReportCourseDetail(Model model, @RequestParam int profCourseId,
+            @RequestParam(defaultValue = "false", required = false) String print) {
         MenuAccess menuAccess = menuAccessMapper.findOne();
         model.addAttribute("menuAccess", menuAccess);
 
@@ -927,10 +943,11 @@ public class ProfessorController {
         s.setOrderParam("divide");
         s.setOrderDir("asc");
         List<ProfessorCourse> professorCourseList = professorCourseMapper.findBy(s);
-        for(ProfessorCourse professorCourse: professorCourseList) {
+        for (ProfessorCourse professorCourse : professorCourseList) {
             List<Assessment> assessments = assessmentMapper.findByProfCourseId(professorCourse.getId());
             professorCourse.setAssessmentList(assessments);
-            List<StudentCourse> studentCourseList = studentCourseMapper.findByProfCourseIdValid(professorCourse.getId());
+            List<StudentCourse> studentCourseList = studentCourseMapper
+                    .findByProfCourseIdValid(professorCourse.getId());
             professorCourse.setStudentCourseList(studentCourseList);
         }
         model.addAttribute("professorCourseList", professorCourseList);
@@ -944,21 +961,21 @@ public class ProfessorController {
         model.addAttribute("averageAssignedDivideMap", averageAssignedDivideMap);
 
         Map<Integer, Cqi> cqiMap = new LinkedHashMap<>();
-        for(int i=(currentYear - 2); i<currentYear; i++) {
+        for (int i = (currentYear - 2); i < currentYear; i++) {
             Cqi cqi = cqiMapper.findByYearCourseIdDivide(i, pc.getCourseId(), pc.getDivide());
 
             if (cqi == null) {
                 cqi = new Cqi();
             }
             cqiMap.put(i, cqi);
-            if(i == currentYear - 1) {
+            if (i == currentYear - 1) {
                 model.addAttribute("prevCqi", cqi);
             }
         }
         model.addAttribute("cqiMap", cqiMap);
 
         Cqi cqi = cqiMapper.findByProfCourseId(pc.getId());
-        if(cqi == null) {
+        if (cqi == null) {
             cqi = new Cqi();
             cqi.setSemesterId(pc.getSemesterId());
             cqi.setCourseId(pc.getCourseId());
@@ -972,7 +989,7 @@ public class ProfessorController {
         List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(pc.getCourseId());
         model.addAttribute("assessmentFactors", assessmentFactors);
 
-        if(print.equals("true"))
+        if (print.equals("true"))
             return "role/common/cqi/courseDetailForPrint";
         return "role/professor/cqiReport/courseDetail";
     }
@@ -984,7 +1001,7 @@ public class ProfessorController {
         User user = User.current();
         cqi.setUserId(user.getId());
         System.out.println("cqi = " + cqi);
-        if(cqi.getId() == 0) {
+        if (cqi.getId() == 0) {
             cqiMapper.insert(cqi);
         } else {
             cqiMapper.update(cqi);
@@ -1002,12 +1019,12 @@ public class ProfessorController {
     }
 
     @RequestMapping("/classProgress/graduationResearchPlan/studentTable")
-    public String graduationResearchPlanStudentTable(Model model, @RequestParam(required=false, defaultValue = "0") int year) {
-
+    public String graduationResearchPlanStudentTable(Model model,
+            @RequestParam(required = false, defaultValue = "0") int year) {
 
         GraduationResearchPlan firstOne = null;
         List<GraduationResearchPlan> plans;
-        if(year == 0) {
+        if (year == 0) {
             plans = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
@@ -1016,13 +1033,11 @@ public class ProfessorController {
             searchable.setAdvisor(User.current().getId());
             plans = graduationResearchPlanMapper.findBySearchable(searchable);
 
-
-            for(GraduationResearchPlan graduationResearchPlan : plans) {
+            for (GraduationResearchPlan graduationResearchPlan : plans) {
                 firstOne = graduationResearchPlan;
                 break;
             }
         }
-
 
         model.addAttribute("plans", plans);
         model.addAttribute("firstOne", firstOne);
@@ -1034,7 +1049,8 @@ public class ProfessorController {
         GraduationResearchPlan graduationResearchPlan = graduationResearchPlanMapper.findOne(planId);
         model.addAttribute("stored", graduationResearchPlan);
         model.addAttribute("studentUser", graduationResearchPlan.getUser());
-        model.addAttribute("completeSemester", userService.getCompleteSemesterCount(graduationResearchPlan.getUser().getId()));
+        model.addAttribute("completeSemester",
+                userService.getCompleteSemesterCount(graduationResearchPlan.getUser().getId()));
         return "role/professor/graduationResearchPlan/planDetail";
     }
 
@@ -1055,17 +1071,15 @@ public class ProfessorController {
 
     private String checkboxToStr(String[] sArray) {
         String str = "";
-        if(sArray == null)
+        if (sArray == null)
             return str;
 
-        for(int i=0; i<sArray.length; i++) {
+        for (int i = 0; i < sArray.length; i++) {
             str += sArray[i];
             if (i < sArray.length - 1)
                 str += ",";
         }
         return str;
     }
-
-
 
 }

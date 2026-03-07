@@ -1,6 +1,104 @@
-.idea
-target
+# ============================================
+# AMS .gitignore — Enterprise Production Grade
+# ============================================
+
+# -----------------------------------------------
+# Maven Build Output
+# -----------------------------------------------
+target/
+!.mvn/wrapper/maven-wrapper.jar
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+# -----------------------------------------------
+# WAR / JAR Artifacts
+# -----------------------------------------------
+*.war
+*.jar
+*.ear
+
+# -----------------------------------------------
+# Environment-Specific Configuration (CREDENTIALS)
+# -----------------------------------------------
+src/main/resources/dev/
+src/main/resources/prod/
+# Allow template files to be committed
+!src/main/resources/prod/config.properties.example
+!src/main/resources/dev/config.properties.example
+
+# -----------------------------------------------
+# IntelliJ IDEA
+# -----------------------------------------------
+.idea/
 *.iml
-src/main/resources/dev/*
-src/main/resources/prod/*
-src/main/resources/prod/config.properties
+*.iws
+*.ipr
+out/
+
+# -----------------------------------------------
+# Eclipse
+# -----------------------------------------------
+.project
+.classpath
+.settings/
+bin/
+
+# -----------------------------------------------
+# VS Code
+# -----------------------------------------------
+.vscode/
+*.code-workspace
+
+# -----------------------------------------------
+# OS Metadata
+# -----------------------------------------------
+.DS_Store
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+
+# -----------------------------------------------
+# Logs & Crash Dumps
+# -----------------------------------------------
+*.log
+hs_err_pid*
+replay_pid*
+logs/
+
+# -----------------------------------------------
+# Compiled Classes
+# -----------------------------------------------
+*.class
+
+# -----------------------------------------------
+# Temporary Files
+# -----------------------------------------------
+*.tmp
+*.bak
+*.swp
+*.swo
+*~
+.#*
+
+# -----------------------------------------------
+# Uploads Directory (if local)
+# -----------------------------------------------
+uploads/
+Egypt_upload/
+
+# -----------------------------------------------
+# Database Dumps & Backups
+# -----------------------------------------------
+*.sql
+*.dump
+
+# -----------------------------------------------
+# Environment Files
+# -----------------------------------------------
+.env
+.env.*
+*.env
