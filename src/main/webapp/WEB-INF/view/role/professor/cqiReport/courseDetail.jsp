@@ -119,10 +119,10 @@ ${prevCqi.plan}
             }
             if(valid) {
                 $.post('${baseUrl}/professor/classProgress/cqiReport/courseDetail?profCourseId=${pc.id}', $('#cqiForm').serialize(), function() {
-                    alert("<spring:message code="common.success"/>");
+                    alert("<spring:message code="common.success" javaScriptEscape="true" />");
                 });
             } else {
-                alert("<spring:message code="professor.checkScores"/>");
+                alert("<spring:message code="professor.checkScores" javaScriptEscape="true" />");
             }
 
         });

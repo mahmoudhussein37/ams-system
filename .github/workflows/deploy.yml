@@ -1,0 +1,80 @@
+name: Deploy AMS
+
+on:
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: ams-production
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build WAR with Maven
+        run: mvn clean package -Pprod -DskipTests -q
+
+      - name: Verify WAR file
+        run: |
+          if [ ! -f target/ROOT.war ]; then
+            echo "ERROR: ROOT.war not found in target/"
+            ls -la target/
+            exit 1
+          fi
+          echo "WAR built: $(du -sh target/ROOT.war)"
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Upload WAR to server
+        run: |
+          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
+            target/ROOT.war \
+            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/tmp/ROOT.war
+
+      - name: Deploy on server
+        run: |
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
+            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
+            "sudo /opt/ams/deploy.sh /tmp/ROOT.war && rm -f /tmp/ROOT.war"
+
+      - name: Verify deployment
+        run: |
+          sleep 5
+          HTTP_CODE=$(ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
+            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
+            "curl -fsI --max-time 10 -o /dev/null -w '%{http_code}' http://localhost/signin 2>/dev/null || echo 000")
+          echo "Health check: HTTP $HTTP_CODE"
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "ERROR: Application health check failed"
+            exit 1
+          fi
+          echo "Deployment verified successfully"
+
+      - name: Cleanup SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key

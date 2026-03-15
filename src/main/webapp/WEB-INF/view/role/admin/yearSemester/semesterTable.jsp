@@ -44,7 +44,7 @@
         $('.course-editable').editable({
             success: function(response) {
                 if(response == false) {
-                    alert("<spring:message code="common.duplicated"/>");
+                    alert("<spring:message code="common.duplicated" javaScriptEscape="true" />");
                     location.reload();
                 }
 
@@ -54,7 +54,7 @@
             e.preventDefault();
             var id = $(this).attr("data-id");
             $.post("${baseUrl}/admin/systemManagement/yearSemester/deleteSemester?id=" + id, function() {
-                alert("<spring:message code="common.success"/>");
+                alert("<spring:message code="common.success" javaScriptEscape="true" />");
                 location.reload();
             });
         });
@@ -63,7 +63,7 @@
             e.preventDefault();
             var semesterId = $(this).val();
             $.post("${baseUrl}/admin/systemManagement/yearSemester/currentSemester?id=" + semesterId, function() {
-                alert("<spring:message code="common.success"/>");
+                alert("<spring:message code="common.success" javaScriptEscape="true" />");
                 location.reload();
             });
         });

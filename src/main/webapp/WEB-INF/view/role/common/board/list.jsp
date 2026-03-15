@@ -128,7 +128,7 @@
 
         $(".delete-btn").click(function(e) {
            e.preventDefault();
-            var r = confirm("<spring:message code="admin.board.confirm"/>");
+            var r = confirm("<spring:message code="admin.board.confirm" javaScriptEscape="true" />");
             if (r == true) {
                 var articleId = $(this).attr("data-article-id");
                 $.post("/board/${boardName}/delete/" + articleId, function() {

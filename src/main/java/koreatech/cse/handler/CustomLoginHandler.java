@@ -15,7 +15,6 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,16 +35,15 @@ public class CustomLoginHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
-                                        HttpServletResponse response, Authentication authentication) throws IOException {
+            HttpServletResponse response, Authentication authentication) throws IOException {
         User user = User.current();
-
 
         handle(request, response, user);
         clearAuthenticationAttributes(request);
     }
 
     protected void handle(HttpServletRequest request,
-                          HttpServletResponse response, User user) throws IOException {
+            HttpServletResponse response, User user) throws IOException {
         String targetUrl = determineTargetUrl(request, user);
 
         if (response.isCommitted()) {
@@ -54,9 +52,23 @@ public class CustomLoginHandler implements AuthenticationSuccessHandler {
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
-    /** Builds the target URL according to the logic defined in the main class Javadoc. */
+    /**
+     * Builds the target URL according to the logic defined in the main class
+     * Javadoc.
+     */
     protected String determineTargetUrl(HttpServletRequest request, User user) {
-        String referer = request.getHeader("referer");
+        String lang = null;
+        if (request.getCookies() != null) {
+            for (javax.servlet.http.Cookie c : request.getCookies()) {
+                if ("lang".equals(c.getName())) {
+                    lang = c.getValue();
+                    break;
+                }
+            }
+        }
+        if (lang != null && !lang.isEmpty()) {
+            return "/?lang=" + lang;
+        }
         return "/";
     }
 

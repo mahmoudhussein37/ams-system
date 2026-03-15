@@ -118,7 +118,7 @@
             }
         });
         <c:if test="${not empty result}">
-        alert("<spring:message code='common.success'/>");
+        alert("<spring:message code='common.success' javaScriptEscape="true" />");
         location.href="${baseUrl}/admin/profManagement/profInformation";
         </c:if>
 

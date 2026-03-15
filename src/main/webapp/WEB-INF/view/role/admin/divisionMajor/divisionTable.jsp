@@ -63,11 +63,11 @@
             var id = $(this).attr("data-id");
             $.post("${baseUrl}/admin/systemManagement/divisionMajor/deleteDivision?id=" + id, function(result) {
                 if(result == true) {
-                    alert("<spring:message code="common.success"/>");
+                    alert("<spring:message code="common.success" javaScriptEscape="true" />");
                     location.reload();
                 } else {
 
-                    alert("<spring:message code="admin.divisionDisabled"/>");
+                    alert("<spring:message code="admin.divisionDisabled" javaScriptEscape="true" />");
                     location.reload();
                 }
 
@@ -78,7 +78,7 @@
             var id = $(this).attr("data-id");
             $.post("${baseUrl}/admin/systemManagement/divisionMajor/enableDivision?id=" + id, function(result) {
                 if(result == true) {
-                    alert("<spring:message code="common.success"/>");
+                    alert("<spring:message code="common.success" javaScriptEscape="true" />");
                     location.reload();
                 }
 

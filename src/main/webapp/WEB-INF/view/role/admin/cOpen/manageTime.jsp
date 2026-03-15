@@ -163,14 +163,14 @@
 
     $(document).ready(function() {
         <c:if test="${not empty result}">
-        alert("<spring:message code='common.success'/>");
+        alert("<spring:message code='common.success' javaScriptEscape="true" />");
         location.href="${baseUrl}/admin/courseManagement/cOpen/manageTime?profCourseId=${profCourse.id}";
         </c:if>
         $("body").on("click", ".delete-row-btn", function(e) {
             e.preventDefault();
             var id = $(this).attr("data-id");
             $.post("${baseUrl}/admin/courseManagement/cOpen/manageTime/deleteTime?id=" + id, function(result) {
-                alert("<spring:message code="common.success"/>");
+                alert("<spring:message code="common.success" javaScriptEscape="true" />");
 
                 location.reload();
 

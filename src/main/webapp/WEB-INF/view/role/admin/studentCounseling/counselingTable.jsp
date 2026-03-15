@@ -60,7 +60,7 @@
         var name = $("#search-name").val().trim();
         var size = $("input[name=tableCheckbox]:checked").length;
         if (!checkedAll && size == 0) {
-            alert("<spring:message code="common.pleaseSelectItems"/>");
+            alert("<spring:message code="common.pleaseSelectItems" javaScriptEscape="true" />");
         } else {
             //openPage("${baseUrl}/admin/studentManagement/studentCounseling/counselingDetailForPrint?checkAll=" + checkedAll + "&year=" + year + "&name=" + name + "&" + parameterize("tableCheckbox"));
             location.href="${baseUrl}/admin/studentManagement/studentCounseling/counselingDetailForPrint?checkAll=" + checkedAll + "&year=" + year + "&name=" + name + "&" + parameterize("tableCheckbox");

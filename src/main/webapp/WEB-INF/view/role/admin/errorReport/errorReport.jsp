@@ -96,7 +96,7 @@
            e.preventDefault();
            var id = $(this).attr("data-id");
            $.post("${baseUrl}/admin/systemManagement/errorReport/deleteEr?id=" + id, function() {
-              alert("<spring:message code="common.success"/>");
+              alert("<spring:message code="common.success" javaScriptEscape="true" />");
               location.reload();
            });
         });

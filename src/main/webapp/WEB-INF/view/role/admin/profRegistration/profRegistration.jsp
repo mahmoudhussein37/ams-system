@@ -164,10 +164,10 @@
         <c:if test="${not empty result}">
         <c:choose>
         <c:when test="${result eq 'success'}">
-        alert("<spring:message code='common.success'/>");
+        alert("<spring:message code='common.success' javaScriptEscape="true" />");
         </c:when>
         <c:otherwise>
-        alert("<spring:message code='admin.duplicatedStudentNumber'/>");
+        alert("<spring:message code='admin.duplicatedStudentNumber' javaScriptEscape="true" />");
         </c:otherwise>
         </c:choose>
         location.href="${baseUrl}/admin/profManagement/profRegistration";

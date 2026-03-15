@@ -58,7 +58,7 @@
         var division = $("#search-division").children("option:selected").val().trim();
         var size = $("input[name=tableCheckbox]:checked").length;
         if (!checkedAll && size == 0) {
-            alert("<spring:message code="common.pleaseSelectItems"/>");
+            alert("<spring:message code="common.pleaseSelectItems" javaScriptEscape="true" />");
         } else {
             location.href="${baseUrl}/admin/studentManagement/studentProfile/studentDetailForPrint?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("tableCheckbox");
         }
@@ -84,7 +84,7 @@
             var division = $("#search-division").children("option:selected").val().trim();
             var size = $("input[name=tableCheckbox]:checked").length;
             if (!checkedAll && size == 0) {
-                alert("<spring:message code="common.pleaseSelectItems"/>");
+                alert("<spring:message code="common.pleaseSelectItems" javaScriptEscape="true" />");
             } else {
                 //openPage("${baseUrl}/admin/studentManagement/studentProfile/increaseGrade?checkAll=" + checkedAll + "&schoolYear=" + schoolYear + "&advisor=" + advisor + "&division=" + division + "&" + parameterize("tableCheckbox"));
             }

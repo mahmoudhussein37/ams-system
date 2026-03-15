@@ -290,7 +290,7 @@
             var type = $(this).attr("data-type");
             var planId = $(this).attr("data-plan-id");
             $.post("${baseUrl}/professor/classProgress/graduationResearchPlan/planDetail?planId=" + planId + "&type=" + type, function() {
-              alert("<spring:message code="common.success"/>");
+              alert("<spring:message code="common.success" javaScriptEscape="true" />");
               location.reload();
             });
 

@@ -50,7 +50,7 @@
            e.preventDefault();
            var id = $(this).attr("data-id");
            $.post("${baseUrl}/admin/studentManagement/studentProfile/deleteLangCert?langCertId=" + id, function(result) {
-              alert("<spring:message code="common.success"/>");
+              alert("<spring:message code="common.success" javaScriptEscape="true" />");
               location.reload();
            });
         });

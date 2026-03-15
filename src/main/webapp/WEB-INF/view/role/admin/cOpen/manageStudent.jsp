@@ -278,7 +278,7 @@
 
                                     // Validate both filters are selected
                                     if (!divisionId || !schoolYear) {
-                                        alert('<spring:message code="admin.selectBothFilters"/>');
+                                        alert('<spring:message code="admin.selectBothFilters" javaScriptEscape="true" />');
                                         return;
                                     }
 
@@ -286,7 +286,7 @@
                                     clearSelection();
 
                                     // Show loading state
-                                    $('#btn-load-students').prop('disabled', true).html('<i class="fa fa-spinner fa-spin mr-1"></i> <spring:message code="common.loading"/>...');
+                                    $('#btn-load-students').prop('disabled', true).html('<i class="fa fa-spinner fa-spin mr-1"></i> <spring:message code="common.loading" javaScriptEscape="true" />...');
 
                                     // Show the container
                                     $('#eligible-students-container').show();
@@ -306,8 +306,8 @@
                                             var html = '';
                                             $.each(response.students, function (index, student) {
                                                 var statusBadge = student.enabled === 1
-                                                    ? '<span class="label label-success label-inline font-weight-bold"><spring:message code="student.status.active"/></span>'
-                                                    : '<span class="label label-warning label-inline font-weight-bold"><spring:message code="student.status.pending"/></span>';
+                                                    ? '<span class="label label-success label-inline font-weight-bold"><spring:message code="student.status.active" javaScriptEscape="true" /></span>'
+                                                    : '<span class="label label-warning label-inline font-weight-bold"><spring:message code="student.status.pending" javaScriptEscape="true" /></span>';
 
                                                 html += '<tr>' +
                                                     '<td><label class="checkbox checkbox-single"><input type="checkbox" name="student-checkbox" value="' + student.userId + '"/><span></span></label></td>' +
@@ -323,7 +323,7 @@
                                                 '<tr>' +
                                                 '<td colspan="4" class="text-center text-muted py-5">' +
                                                 '<i class="fa fa-info-circle mr-2"></i>' +
-                                                '<spring:message code="admin.noEligibleStudents"/>' +
+                                                '<spring:message code="admin.noEligibleStudents" javaScriptEscape="true" />' +
                                                 '</td>' +
                                                 '</tr>'
                                             );
@@ -336,7 +336,7 @@
                                         '<tr>' +
                                         '<td colspan="4" class="text-center text-danger py-5">' +
                                         '<i class="fa fa-exclamation-triangle mr-2"></i>' +
-                                        '<spring:message code="common.error"/>' +
+                                        '<spring:message code="common.error" javaScriptEscape="true" />' +
                                         '</td>' +
                                         '</tr>'
                                     );
@@ -344,7 +344,7 @@
                                 },
                                 complete: function() {
                                     // Reset button state
-                                    $('#btn-load-students').prop('disabled', false).html('<i class="fa fa-search mr-1"></i> <spring:message code="admin.loadStudents"/>');
+                                    $('#btn-load-students').prop('disabled', false).html('<i class="fa fa-search mr-1"></i> <spring:message code="admin.loadStudents" javaScriptEscape="true" />');
                                 }
                                     });
                                 }
@@ -354,12 +354,12 @@
                                  */
                                 function registerSelectedStudents() {
                                     if (selectedStudents.length === 0) {
-                                        alert('<spring:message code="admin.selectAtLeastOne"/>');
+                                        alert('<spring:message code="admin.selectAtLeastOne" javaScriptEscape="true" />');
                                         return;
                                     }
 
                                     // Disable button and show loading
-                                    $('#btn-register-selected').prop('disabled', true).html('<i class="fa fa-spinner fa-spin mr-1"></i> <spring:message code="common.loading"/>...');
+                                    $('#btn-register-selected').prop('disabled', true).html('<i class="fa fa-spinner fa-spin mr-1"></i> <spring:message code="common.loading" javaScriptEscape="true" />...');
 
                                     // Prepare request data
                                     var requestData = {
@@ -378,23 +378,23 @@
                                     dataType: 'json',
                                     success: function (response) {
                                         if (response.success || response.status === 'success' || response.status === 'warning') {
-                                            var message = '<spring:message code="admin.registrationSuccess"/>'
+                                            var message = '<spring:message code="admin.registrationSuccess" javaScriptEscape="true" />'
                                                 .replace('{0}', response.inserted);
                                             if (response.duplicates > 0) {
-                                                message += '\n<spring:message code="admin.duplicatesSkipped"/>'.replace('{0}', response.duplicates);
+                                                message += '\n<spring:message code="admin.duplicatesSkipped" javaScriptEscape="true" />'.replace('{0}', response.duplicates);
                                             }
                                             alert(message);
                                             // Reload page to show updated registered students list
                                             location.reload();
                                         } else {
-                                            alert('<spring:message code="common.error"/>: ' + (response.message || response.error || 'Unknown error'));
-                                            $('#btn-register-selected').prop('disabled', false).html('<i class="fa fa-check mr-1"></i> <spring:message code="admin.registerSelected"/>');
+                                            alert('<spring:message code="common.error" javaScriptEscape="true" />: ' + (response.message || response.error || i18n.unknownError));
+                                            $('#btn-register-selected').prop('disabled', false).html('<i class="fa fa-check mr-1"></i> <spring:message code="admin.registerSelected" javaScriptEscape="true" />');
                                         }
                                     },
                                     error: function (xhr, status, error) {
                                         console.error('Register students error:', error, xhr.responseText);
                                         // Try to parse error response from backend
-                                        var errorMessage = '<spring:message code="common.error"/>';
+                                        var errorMessage = '<spring:message code="common.error" javaScriptEscape="true" />';
                                         try {
                                             var errorResponse = JSON.parse(xhr.responseText);
                                             if (errorResponse.message) {
@@ -404,7 +404,7 @@
                                             // Use default error message
                                         }
                                         alert(errorMessage);
-                                        $('#btn-register-selected').prop('disabled', false).html('<i class="fa fa-check mr-1"></i> <spring:message code="admin.registerSelected"/>');
+                                        $('#btn-register-selected').prop('disabled', false).html('<i class="fa fa-check mr-1"></i> <spring:message code="admin.registerSelected" javaScriptEscape="true" />');
                                     }
                                 });
                                 }
@@ -469,7 +469,7 @@
                                     $(document).on('click', '.remove-from-btn', function (e) {
                                         e.preventDefault();
                                         var id = $(this).attr('data-id');
-                                        if (confirm('<spring:message code="common.confirmAction"/>')) {
+                                        if (confirm('<spring:message code="common.confirmAction" javaScriptEscape="true" />')) {
                                             $.post('${baseUrl}/admin/courseManagement/cOpen/manageStudent/removeFromDivide?id=' + id + '&profCourseId=${profCourseId}', function (result) {
                                                 location.reload();
                                             });

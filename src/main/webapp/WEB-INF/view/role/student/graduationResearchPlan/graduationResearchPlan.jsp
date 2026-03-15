@@ -244,7 +244,7 @@
 <%@include file="/WEB-INF/view/include/footerScript.jsp" %>
 <script>
     <c:if test="${not empty result}">
-    alert("<spring:message code='common.success'/>");
+    alert("<spring:message code='common.success' javaScriptEscape="true" />");
     location.href="${baseUrl}/student/graduation/graduationResearchPlan";
     </c:if>
     var KTBootstrapDatepicker = function () {

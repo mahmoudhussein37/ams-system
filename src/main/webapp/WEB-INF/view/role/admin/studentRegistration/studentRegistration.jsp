@@ -377,29 +377,29 @@
                                         // Build invalid details string
                                         var invalidDetails = '';
                                         if (missingSN && parseInt(missingSN) > 0) {
-                                            invalidDetails += '<spring:message code="admin.import.missing.studentNumber" />: ' + missingSN;
+                                            invalidDetails += '<spring:message code="admin.import.missing.studentNumber" javaScriptEscape="true" />: ' + missingSN;
                                         }
                                         if (missingFN && parseInt(missingFN) > 0) {
                                             if (invalidDetails) invalidDetails += ', ';
-                                            invalidDetails += '<spring:message code="admin.import.missing.firstName" />: ' + missingFN;
+                                            invalidDetails += '<spring:message code="admin.import.missing.firstName" javaScriptEscape="true" />: ' + missingFN;
                                         }
                                         if (missingLN && parseInt(missingLN) > 0) {
                                             if (invalidDetails) invalidDetails += ', ';
-                                            invalidDetails += '<spring:message code="admin.import.missing.lastName" />: ' + missingLN;
+                                            invalidDetails += '<spring:message code="admin.import.missing.lastName" javaScriptEscape="true" />: ' + missingLN;
                                         }
 
 
                                         if (importResult === 'success') {
                                             alertClass = 'success';
-                                            message = '<strong><spring:message code="common.success" />!</strong> ';
-                                            message += '<spring:message code="admin.import.success" />'.replace('{0}', inserted);
+                                            message = '<strong><spring:message code="common.success" javaScriptEscape="true" />!</strong> ';
+                                            message += '<spring:message code="admin.import.success" javaScriptEscape="true" />'.replace('{0}', inserted);
                                             // Show warnings for duplicates/invalid if any
                                             var warnings = [];
                                             if (duplicates && parseInt(duplicates) > 0) {
-                                                warnings.push('<spring:message code="admin.import.duplicatesSkipped" />: ' + duplicates);
+                                                warnings.push('<spring:message code="admin.import.duplicatesSkipped" javaScriptEscape="true" />: ' + duplicates);
                                             }
                                             if (invalid && parseInt(invalid) > 0) {
-                                                var invalidMsg = '<spring:message code="admin.import.invalidRowsSkipped" />: ' + invalid;
+                                                var invalidMsg = '<spring:message code="admin.import.invalidRowsSkipped" javaScriptEscape="true" />: ' + invalid;
                                                 if (invalidDetails) {
                                                     invalidMsg += ' (' + invalidDetails + ')';
                                                 }
@@ -410,24 +410,24 @@
                                             }
                                         } else if (importResult === 'warning') {
                                             alertClass = 'warning';
-                                            message = '<strong><spring:message code="common.warning" />!</strong> ';
-                                            message += '<spring:message code="admin.import.allDuplicates" /> (' + duplicates + ')';
+                                            message = '<strong><spring:message code="common.warning" javaScriptEscape="true" />!</strong> ';
+                                            message += '<spring:message code="admin.import.allDuplicates" javaScriptEscape="true" /> (' + duplicates + ')';
                                         } else {
                                             // error
-                                            message = '<strong><spring:message code="common.error.exception" />!</strong> ';
+                                            message = '<strong><spring:message code="common.error.exception" javaScriptEscape="true" />!</strong> ';
                                             if (errorMessage === 'empty_file') {
-                                                message += '<spring:message code="admin.import.error.emptyFile" />';
+                                                message += '<spring:message code="admin.import.error.emptyFile" javaScriptEscape="true" />';
                                             } else if (errorMessage === 'invalid_format') {
-                                                message += '<spring:message code="admin.import.error.invalidFormat" />';
+                                                message += '<spring:message code="admin.import.error.invalidFormat" javaScriptEscape="true" />';
                                             } else if (errorMessage === 'no_data') {
-                                                message += '<spring:message code="admin.import.error.noData" />';
+                                                message += '<spring:message code="admin.import.error.noData" javaScriptEscape="true" />';
                                             } else if (errorMessage === 'all_invalid') {
-                                                message += '<spring:message code="admin.import.error.allInvalid" />'.replace('{0}', invalid);
+                                                message += '<spring:message code="admin.import.error.allInvalid" javaScriptEscape="true" />'.replace('{0}', invalid);
                                                 if (invalidDetails) {
                                                     message += '<br><small>' + invalidDetails + '</small>';
                                                 }
                                             } else {
-                                                message += '<spring:message code="admin.import.error.processing" />';
+                                                message += '<spring:message code="admin.import.error.processing" javaScriptEscape="true" />';
                                             }
                                         }
 
@@ -450,10 +450,10 @@
                                     < c:if test="${not empty result}" >
                                         <c:choose>
                                             <c:when test="${result eq 'success'}">
-                                                alert("<spring:message code='common.success' />");
+                                                alert("<spring:message code='common.success' javaScriptEscape="true" />");
                                             </c:when>
                                             <c:otherwise>
-                                                alert("<spring:message code='admin.duplicatedStudentNumber' />");
+                                                alert("<spring:message code='admin.duplicatedStudentNumber' javaScriptEscape="true" />");
                                             </c:otherwise>
                                         </c:choose>
                                         location.href = "${baseUrl}/admin/studentManagement/studentRegistration";

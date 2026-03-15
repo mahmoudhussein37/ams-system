@@ -70,9 +70,9 @@
             var id = $(this).attr("data-id");
             $.post("${baseUrl}/admin/systemManagement/equipment/deleteEquipment?id=" + id, function(result) {
                 if(result == false) {
-                    alert("<spring:message code="admin.usingItem"/>");
+                    alert("<spring:message code="admin.usingItem" javaScriptEscape="true" />");
                 } else {
-                    alert("<spring:message code="common.success"/>");
+                    alert("<spring:message code="common.success" javaScriptEscape="true" />");
 
                 }
                 location.reload();
@@ -84,7 +84,7 @@
             var id = $(this).attr("data-id");
             $.post("${baseUrl}/admin/systemManagement/equipment/enableEquipment?id=" + id, function(result) {
                 if(result == true) {
-                    alert("<spring:message code="common.success"/>");
+                    alert("<spring:message code="common.success" javaScriptEscape="true" />");
                     location.reload();
                 }
 

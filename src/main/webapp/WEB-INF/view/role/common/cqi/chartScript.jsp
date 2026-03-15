@@ -13,7 +13,7 @@
             ],
             datasets: [
                 {
-                    label: '<spring:message code="professor.assignedDivisionAvg"/>',
+                    label: '<spring:message code="professor.assignedDivisionAvg" javaScriptEscape="true" />',
                     data: [0, 0, ${myAvg}],
                     backgroundColor: [
                         'rgba(255, 99, 132)',
@@ -29,7 +29,7 @@
                     borderWidth: 1
                 },
                 {
-                    label: '<spring:message code="professor.divisionAvg"/>',
+                    label: '<spring:message code="professor.divisionAvg" javaScriptEscape="true" />',
                     data: [
                         <c:forEach var="entry" items="${averageAssignedMap}">
                         ${entry.value},
@@ -76,7 +76,7 @@
 
             ],
             datasets: [{
-                label: '<spring:message code="professor.divideAvg"/>',
+                label: '<spring:message code="professor.divideAvg" javaScriptEscape="true" />',
                 data: [
                     <c:forEach var="entry" items="${averageAssignedDivideMap}">
                     ${entry.value},

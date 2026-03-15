@@ -90,7 +90,7 @@
 
 <script>
     <c:if test="${not empty result}">
-    alert("<spring:message code='common.success'/>");
+    alert("<spring:message code='common.success' javaScriptEscape="true" />");
     location.href="${baseUrl}/student/classInformation/classAssessment";
     </c:if>
     function search() {

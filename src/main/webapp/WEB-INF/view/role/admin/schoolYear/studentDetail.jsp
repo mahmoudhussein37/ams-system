@@ -145,7 +145,7 @@
     $(document).ready(function() {
         KTBootstrapDatepicker.init();
         <c:if test="${not empty result}">
-        alert("<spring:message code='common.success'/>");
+        alert("<spring:message code='common.success' javaScriptEscape="true" />");
         location.href="${baseUrl}/admin/studentManagement/studentInformation";
         </c:if>
     });

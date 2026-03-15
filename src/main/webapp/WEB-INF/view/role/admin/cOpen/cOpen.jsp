@@ -139,7 +139,7 @@
 
     $(document).ready(function() {
         <c:if test="${not empty result}">
-        alert("<spring:message code='common.success'/>");
+        alert("<spring:message code='common.success' javaScriptEscape="true" />");
         location.href="${baseUrl}/admin/courseManagement/cOpen";
         </c:if>
         $(".table-div").load("${baseUrl}/admin/courseManagement/cOpen/courseTable");

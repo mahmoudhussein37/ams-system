@@ -234,9 +234,9 @@ $(document).ready(function() {
        $.post('${baseUrl}/professor/classProgress/registerGrade/courseDetail?profCourseId=${pc.id}', function(result) {
 
            if(result) {
-              alert("<spring:message code="common.success"/>");
+              alert("<spring:message code="common.success" javaScriptEscape="true" />");
            } else {
-               alert("<spring:message code="professor.checkGrades"/>");
+               alert("<spring:message code="professor.checkGrades" javaScriptEscape="true" />");
 
            }
            $(".detail-div").load("${baseUrl}/professor/classProgress/registerGrade/courseDetail?profCourseId=${pc.id}");

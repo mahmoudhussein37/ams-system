@@ -307,7 +307,7 @@
 
     $(document).ready(function() {
         <c:if test="${not empty result}">
-        alert("<spring:message code='common.success'/>");
+        alert("<spring:message code='common.success' javaScriptEscape="true" />");
         location.href="${baseUrl}/admin/courseManagement/cOpen/manageDivide?courseId=${course.id}";
         </c:if>
         $("body").on("click", ".delete-row-btn", function(e) {
@@ -315,7 +315,7 @@
             var id = $(this).attr("data-id");
             $.post("${baseUrl}/admin/courseManagement/cOpen/manageDivide/deleteDivide?id=" + id, function(result) {
                 if(result != true) {
-                    alert("<spring:message code="admin.deleteProfCourseAlert"/>");
+                    alert("<spring:message code="admin.deleteProfCourseAlert" javaScriptEscape="true" />");
                 }
 
                 location.reload();

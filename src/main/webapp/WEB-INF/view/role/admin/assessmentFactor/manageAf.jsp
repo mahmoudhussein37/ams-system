@@ -179,9 +179,9 @@
             var id = $(this).attr("data-id");
             $.post("${baseUrl}/admin/academicManagement/assessmentFactor/manageAf/deleteAf?id=" + id, function(result) {
                 if(result == false) {
-                    alert("<spring:message code="admin.usingItem"/>");
+                    alert("<spring:message code="admin.usingItem" javaScriptEscape="true" />");
                 } else {
-                    alert("<spring:message code="common.success"/>");
+                    alert("<spring:message code="common.success" javaScriptEscape="true" />");
 
                 }
                 location.reload();

@@ -63,15 +63,15 @@
                         dataType: 'json',
                         success: function (response) {
                             if (response.success) {
-                                alert("<spring:message code="common.success"/>");
+                                alert("<spring:message code="common.success" javaScriptEscape="true" />");
                             } else {
-                                alert(response.message || "An error occurred while saving.");
+                                alert(response.message || i18n.saveError);
                             }
-                            $btn.prop('disabled', false).text('<spring:message code="common.save"/>');
+                            $btn.prop('disabled', false).text('<spring:message code="common.save" javaScriptEscape="true" />');
                         },
                         error: function (xhr, status, error) {
-                            alert("Error: " + (xhr.responseText || error || "Failed to save. Please try again."));
-                            $btn.prop('disabled', false).text('<spring:message code="common.save"/>');
+                            alert(i18n.error + ": " + (xhr.responseText || error || i18n.saveError));
+                            $btn.prop('disabled', false).text('<spring:message code="common.save" javaScriptEscape="true" />');
                         }
                     });
                 });
@@ -79,13 +79,13 @@
                 $("#prof-lecture-method-save").click(function (e) {
                     e.preventDefault();
                     $.post('${baseUrl}/professor/classProgress/syllabus/courseDetail/profLectureMethod?profCourseId=${pc.id}', $('#profLectureMethodForm').serialize(), function () {
-                        alert("<spring:message code="common.success"/>");
+                        alert("<spring:message code="common.success" javaScriptEscape="true" />");
                     });
                 });
                 $("#lecture-contents-save").click(function (e) {
                     e.preventDefault();
                     $.post('${baseUrl}/professor/classProgress/syllabus/courseDetail/lectureContents?profCourseId=${pc.id}', $('#lectureContentsForm').serialize(), function () {
-                        alert("<spring:message code="common.success"/>");
+                        alert("<spring:message code="common.success" javaScriptEscape="true" />");
                     });
                 });
                 $("body").on('click', '.print', function (e) {

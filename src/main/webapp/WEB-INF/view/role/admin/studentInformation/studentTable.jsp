@@ -114,7 +114,7 @@
             $("#student-list").DataTable();
 
             // Show placeholder message initially - don't auto-load any student
-            $(".detail-div").html('<div class="alert alert-light text-center py-10"><i class="fa fa-info-circle text-muted mr-2"></i><spring:message code="admin.selectStudentToEdit"/></div>');
+            $(".detail-div").html('<div class="alert alert-light text-center py-10"><i class="fa fa-info-circle text-muted mr-2"></i><spring:message code="admin.selectStudentToEdit" javaScriptEscape="true" /></div>');
 
             // Edit button click handler - only this loads the detail form
             $(document).off('click', '.btn-edit-student').on('click', '.btn-edit-student', function (e) {
@@ -143,23 +143,23 @@
                         $("#deleteStudentModal").modal('hide');
                         if (response.success) {
                             // Show success message and refresh table
-                            alert("<spring:message code='admin.delete.success'/>");
+                            alert("<spring:message code='admin.delete.success' javaScriptEscape="true" />");
                             var number = $("#search-number").val() ? $("#search-number").val().trim() : '';
                             var name = $("#search-name").val() ? $("#search-name").val().trim() : '';
                             var division = $("#search-division").val() ? $("#search-division").val().trim() : '0';
                             $(".table-div").load("${baseUrl}/admin/studentManagement/studentInformation/studentTable?number=" + number + "&name=" + name + "&division=" + division);
                             // Reset detail view
-                            $(".detail-div").html('<div class="alert alert-light text-center py-10"><i class="fa fa-info-circle text-muted mr-2"></i><spring:message code="admin.selectStudentToEdit"/></div>');
+                            $(".detail-div").html('<div class="alert alert-light text-center py-10"><i class="fa fa-info-circle text-muted mr-2"></i><spring:message code="admin.selectStudentToEdit" javaScriptEscape="true" /></div>');
                         } else {
                             if (response.message === 'hasRelatedRecords') {
-                                alert("<spring:message code='admin.delete.error.hasRecords'/>" + " (" + response.recordCount + " <spring:message code='admin.delete.courseRecords'/>)");
+                                alert("<spring:message code='admin.delete.error.hasRecords' javaScriptEscape="true" />" + " (" + response.recordCount + " <spring:message code='admin.delete.courseRecords' javaScriptEscape="true" />)");
                             } else {
-                                alert("<spring:message code='admin.delete.error.generic'/>");
+                                alert("<spring:message code='admin.delete.error.generic' javaScriptEscape="true" />");
                             }
                         }
                     }, 'json').fail(function () {
                         $("#deleteStudentModal").modal('hide');
-                        alert("<spring:message code='admin.delete.error.generic'/>");
+                        alert("<spring:message code='admin.delete.error.generic' javaScriptEscape="true" />");
                     });
                 }
             });

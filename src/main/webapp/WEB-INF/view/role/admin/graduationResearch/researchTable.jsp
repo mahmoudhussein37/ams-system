@@ -80,7 +80,7 @@
         var number = $("#search-number").val().trim();
         var size = $("input[name=tableCheckbox]:checked").length;
         if (!checkedAll && size == 0) {
-            alert("<spring:message code="common.pleaseSelectItems"/>");
+            alert("<spring:message code="common.pleaseSelectItems" javaScriptEscape="true" />");
         } else {
             location.href="${baseUrl}/admin/profManagement/graduationResearch/planDetailForPrint?checkAll=" + checkedAll + "&year=" + year + "&division=" + division + "&advisor=" + advisor + "&name=" + name + "&number=" + number + "&" + parameterize("tableCheckbox");
         }

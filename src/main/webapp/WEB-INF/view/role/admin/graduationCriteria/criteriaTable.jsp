@@ -56,11 +56,11 @@
         var id = $(this).attr("data-id");
         $.post("${baseUrl}/admin/courseManagement/course/deleteCriteria?id=" + id, function(result) {
             if(result == true) {
-                alert("<spring:message code="common.success"/>");
+                alert("<spring:message code="common.success" javaScriptEscape="true" />");
                 location.reload();
             } else {
 
-                alert("<spring:message code="admin.graduationCriteriaNotDelete"/>");
+                alert("<spring:message code="admin.graduationCriteriaNotDelete" javaScriptEscape="true" />");
                 location.reload();
             }
 
