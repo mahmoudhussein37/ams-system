@@ -1,5 +1,8 @@
 name: Deploy AMS
 
+# Compatibility note: workflow uses v4 actions that are compatible with the
+# current GitHub-hosted runner environment and Node 24 transition.
+
 on:
   push:
     branches: [ main ]
