@@ -16,12 +16,13 @@ import org.slf4j.LoggerFactory;
 import koreatech.cse.repository.*;
 import koreatech.cse.repository.provider.CqiMapper;
 import koreatech.cse.service.AuthorityService;
+import koreatech.cse.service.AuditService;
 import koreatech.cse.service.CurriculumService;
 import koreatech.cse.service.FileService;
 import koreatech.cse.service.ProfService;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.DateHelper;
-import koreatech.cse.util.SystemUtil;
+import koreatech.cse.util.RequestIpUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -123,6 +124,8 @@ public class AdminController {
     private LangCertMapper langCertMapper;
     @Inject
     private CurriculumService curriculumService;
+    @Inject
+    private AuditService auditService;
 
     @ModelAttribute("currentPageRole")
     public String getCurrentPageRole() {
@@ -1416,14 +1419,14 @@ public class AdminController {
 
     @RequestMapping(value = "/courseManagement/courseEditable", method = RequestMethod.POST)
     @ResponseBody
-    public Boolean courseEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
+    public Boolean courseEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value,
+            HttpServletRequest request) {
         Course course = courseMapper.findOne(pk);
 
-        switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(course, name, value);
-        }
+        applyEditableCourseField(course, name, value);
         courseMapper.update(course);
+        auditService.logEvent("ADMIN_ACTION", User.current().getUsername(), RequestIpUtil.getClientIp(request),
+                "action=courseEditable entityId=" + pk + " field=" + name);
 
         return true;
     }
@@ -2433,14 +2436,14 @@ public class AdminController {
 
     @RequestMapping(value = "/academicManagement/graduationCriteria/criteriaEditable", method = RequestMethod.POST)
     @ResponseBody
-    public Boolean criteriaEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
+    public Boolean criteriaEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value,
+            HttpServletRequest request) {
         GraduationCriteria gc = graduationCriteriaMapper.findOne(pk);
 
-        switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(gc, name, value);
-        }
+        applyEditableGraduationCriteriaField(gc, name, value);
         graduationCriteriaMapper.update(gc);
+        auditService.logEvent("ADMIN_ACTION", User.current().getUsername(), RequestIpUtil.getClientIp(request),
+                "action=criteriaEditable entityId=" + pk + " field=" + name);
 
         return true;
     }
@@ -2762,13 +2765,13 @@ public class AdminController {
 
     @RequestMapping(value = "/systemManagement/yearSemester/semesterEditable", method = RequestMethod.POST)
     @ResponseBody
-    public Boolean semesterEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
+    public Boolean semesterEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value,
+            HttpServletRequest request) {
         Semester semester = semesterMapper.findOne(pk);
 
-        switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(semester, name, value);
-        }
+        applyEditableSemesterField(semester, name, value);
+        auditService.logEvent("ADMIN_ACTION", User.current().getUsername(), RequestIpUtil.getClientIp(request),
+                "action=semesterEditable entityId=" + pk + " field=" + name);
 
         Semester stored = semesterMapper.findByYearSemester(semester.getYear(), semester.getSemester());
         if (stored == null) {
@@ -2810,14 +2813,14 @@ public class AdminController {
 
     @RequestMapping(value = "/systemManagement/divisionMajor/divisionEditable", method = RequestMethod.POST)
     @ResponseBody
-    public Boolean divisionEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
+    public Boolean divisionEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value,
+            HttpServletRequest request) {
         Division division = divisionMapper.findOne(pk);
 
-        switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(division, name, value);
-        }
+        applyEditableDivisionField(division, name, value);
         divisionMapper.update(division);
+        auditService.logEvent("ADMIN_ACTION", User.current().getUsername(), RequestIpUtil.getClientIp(request),
+                "action=divisionEditable entityId=" + pk + " field=" + name);
         return true;
     }
 
@@ -2879,10 +2882,7 @@ public class AdminController {
     public Boolean lectureMethodEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
         LectureMethod lectureMethod = lectureMethodMapper.findOne(pk);
 
-        switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(lectureMethod, name, value);
-        }
+        applyEditableLectureMethodField(lectureMethod, name, value);
         lectureMethodMapper.update(lectureMethod);
         return true;
     }
@@ -2942,10 +2942,7 @@ public class AdminController {
             @RequestParam String value) {
         EvaluationMethod evaluationMethod = evaluationMethodMapper.findOne(pk);
 
-        switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(evaluationMethod, name, value);
-        }
+        applyEditableEvaluationMethodField(evaluationMethod, name, value);
         evaluationMethodMapper.update(evaluationMethod);
         return true;
     }
@@ -3004,10 +3001,7 @@ public class AdminController {
             @RequestParam String value) {
         EducationalMedium educationalMedium = educationalMediumMapper.findOne(pk);
 
-        switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(educationalMedium, name, value);
-        }
+        applyEditableEducationalMediumField(educationalMedium, name, value);
         educationalMediumMapper.update(educationalMedium);
         return true;
     }
@@ -3066,10 +3060,7 @@ public class AdminController {
     public Boolean equipmentEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
         Equipment equipment = equipmentMapper.findOne(pk);
 
-        switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(equipment, name, value);
-        }
+        applyEditableEquipmentField(equipment, name, value);
         equipmentMapper.update(equipment);
         return true;
     }
@@ -3128,12 +3119,104 @@ public class AdminController {
     public Boolean classroomEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
         Classroom classroom = classroomMapper.findOne(pk);
 
-        switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(classroom, name, value);
-        }
+        applyEditableClassroomField(classroom, name, value);
         classroomMapper.update(classroom);
         return true;
+    }
+
+    private void applyEditableCourseField(Course course, String name, String value) {
+        if ("title".equals(name)) {
+            course.setTitle(value);
+        } else if ("learningObjective".equals(name)) {
+            course.setLearningObjective(value);
+        } else if ("overview".equals(name)) {
+            course.setOverview(value);
+        } else {
+            throw new IllegalArgumentException("Invalid editable field");
+        }
+    }
+
+    private void applyEditableGraduationCriteriaField(GraduationCriteria graduationCriteria, String name,
+            String value) {
+        if ("msc".equals(name)) {
+            graduationCriteria.setMsc(parseEditableInt(name, value));
+        } else if ("liberal".equals(name)) {
+            graduationCriteria.setLiberal(parseEditableInt(name, value));
+        } else if ("major".equals(name)) {
+            graduationCriteria.setMajor(parseEditableInt(name, value));
+        } else {
+            throw new IllegalArgumentException("Invalid editable field");
+        }
+    }
+
+    private void applyEditableSemesterField(Semester semester, String name, String value) {
+        if ("year".equals(name)) {
+            semester.setYear(parseEditableInt(name, value));
+        } else if ("semester".equals(name)) {
+            semester.setSemester(parseEditableInt(name, value));
+        } else {
+            throw new IllegalArgumentException("Invalid editable field");
+        }
+    }
+
+    private void applyEditableDivisionField(Division division, String name, String value) {
+        if ("name".equals(name)) {
+            division.setName(value);
+        } else {
+            throw new IllegalArgumentException("Invalid editable field");
+        }
+    }
+
+    private void applyEditableLectureMethodField(LectureMethod lectureMethod, String name, String value) {
+        if ("name".equals(name)) {
+            lectureMethod.setName(value);
+        } else {
+            throw new IllegalArgumentException("Invalid editable field");
+        }
+    }
+
+    private void applyEditableEvaluationMethodField(EvaluationMethod evaluationMethod, String name, String value) {
+        if ("name".equals(name)) {
+            evaluationMethod.setName(value);
+        } else {
+            throw new IllegalArgumentException("Invalid editable field");
+        }
+    }
+
+    private void applyEditableEducationalMediumField(EducationalMedium educationalMedium, String name, String value) {
+        if ("name".equals(name)) {
+            educationalMedium.setName(value);
+        } else {
+            throw new IllegalArgumentException("Invalid editable field");
+        }
+    }
+
+    private void applyEditableEquipmentField(Equipment equipment, String name, String value) {
+        if ("code".equals(name)) {
+            equipment.setCode(value);
+        } else if ("name".equals(name)) {
+            equipment.setName(value);
+        } else {
+            throw new IllegalArgumentException("Invalid editable field");
+        }
+    }
+
+    private void applyEditableClassroomField(Classroom classroom, String name, String value) {
+        if ("code".equals(name)) {
+            classroom.setCode(value);
+        } else if ("name".equals(name)) {
+            classroom.setName(value);
+        } else {
+            throw new IllegalArgumentException("Invalid editable field");
+        }
+    }
+
+    private int parseEditableInt(String fieldName, String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid numeric value for field: " + fieldName, e);
+        }
     }
 
     @RequestMapping(value = "/systemManagement/classroom/deleteClassroom", method = RequestMethod.POST)

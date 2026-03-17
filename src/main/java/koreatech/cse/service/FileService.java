@@ -152,6 +152,10 @@ public class FileService {
     private static final byte[] PDF_MAGIC = { 0x25, 0x50, 0x44, 0x46, 0x2D }; // %PDF-
     private static final byte[] OLE_MAGIC = { (byte) 0xD0, (byte) 0xCF, 0x11, (byte) 0xE0 };
     private static final byte[] PK_MAGIC = { 0x50, 0x4B }; // PK
+    private static final byte[] JPEG_MAGIC = { (byte) 0xFF, (byte) 0xD8, (byte) 0xFF };
+    private static final byte[] PNG_MAGIC = { (byte) 0x89, 0x50, 0x4E, 0x47 };
+    private static final byte[] GIF87_MAGIC = { 0x47, 0x49, 0x46, 0x38, 0x37, 0x61 };
+    private static final byte[] GIF89_MAGIC = { 0x47, 0x49, 0x46, 0x38, 0x39, 0x61 };
 
     private void assertValidFileSignature(MultipartFile file) throws IOException {
         String contentType = file.getContentType();
@@ -159,7 +163,8 @@ public class FileService {
 
         boolean needsSignatureCheck = ALLOWED_CONTENT_TYPES.contains(contentType)
                 || "pdf".equals(ext) || "xls".equals(ext) || "xlsx".equals(ext)
-                || "doc".equals(ext) || "docx".equals(ext);
+                || "doc".equals(ext) || "docx".equals(ext)
+                || "jpg".equals(ext) || "jpeg".equals(ext) || "png".equals(ext) || "gif".equals(ext);
 
         if (!needsSignatureCheck) {
             return;
@@ -199,6 +204,24 @@ public class FileService {
         if ("doc".equals(ext)) {
             if (!startsWith(header, OLE_MAGIC)) {
                 throw new IllegalArgumentException("Invalid file signature: expected DOC (OLE2).");
+            }
+            return;
+        }
+        if ("jpg".equals(ext) || "jpeg".equals(ext)) {
+            if (!startsWith(header, JPEG_MAGIC)) {
+                throw new IllegalArgumentException("Invalid file signature: expected JPEG.");
+            }
+            return;
+        }
+        if ("png".equals(ext)) {
+            if (!startsWith(header, PNG_MAGIC)) {
+                throw new IllegalArgumentException("Invalid file signature: expected PNG.");
+            }
+            return;
+        }
+        if ("gif".equals(ext)) {
+            if (!startsWith(header, GIF87_MAGIC) && !startsWith(header, GIF89_MAGIC)) {
+                throw new IllegalArgumentException("Invalid file signature: expected GIF.");
             }
             return;
         }

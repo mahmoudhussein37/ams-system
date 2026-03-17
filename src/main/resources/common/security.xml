@@ -7,11 +7,21 @@
 
     <sec:global-method-security secured-annotations="enabled" pre-post-annotations="enabled" />
     <sec:http pattern="/**" use-expressions="true">
+        <sec:csrf/>
         <sec:form-login login-page="/signin" authentication-success-handler-ref="customLoginHandler" authentication-failure-handler-ref="customLoginFailureHandler"/>
+        <sec:access-denied-handler ref="auditAccessDeniedHandler"/>
 
-        <sec:logout logout-url="/signout" delete-cookies="JSESSIONID"/>
-        <sec:session-management>
-            <sec:concurrency-control max-sessions="99" expired-url="/"/>
+        <sec:headers>
+            <sec:frame-options policy="SAMEORIGIN"/>
+            <sec:content-type-options/>
+            <sec:hsts include-subdomains="true" max-age-seconds="31536000"/>
+            <sec:header name="Content-Security-Policy" value="default-src 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"/>
+            <sec:header name="Referrer-Policy" value="same-origin"/>
+        </sec:headers>
+
+        <sec:logout logout-url="/signout" invalidate-session="true" delete-cookies="JSESSIONID"/>
+        <sec:session-management session-fixation-protection="migrateSession">
+            <sec:concurrency-control max-sessions="3" error-if-maximum-exceeded="false" expired-url="/"/>
         </sec:session-management>
         <sec:intercept-url pattern="/student/**" access="hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN')" />
         <sec:intercept-url pattern="/professor/**" access="hasAnyRole('ROLE_PROFESSOR', 'ROLE_ADMIN')" />

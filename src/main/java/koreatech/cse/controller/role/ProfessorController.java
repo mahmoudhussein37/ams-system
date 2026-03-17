@@ -14,11 +14,11 @@ import koreatech.cse.repository.provider.CqiMapper;
 import koreatech.cse.service.FileService;
 import koreatech.cse.service.ProfService;
 import koreatech.cse.service.UserService;
-import koreatech.cse.util.SystemUtil;
 import koreatech.cse.view.StudentListExcelView;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.context.MessageSource;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -715,13 +715,18 @@ public class ProfessorController {
     @RequestMapping(value = "/classProgress/registerGrade/gradeEditable", method = RequestMethod.POST)
     @ResponseBody
     public String gradeEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
-        StudentCourse sc = studentCourseMapper.findOne(pk);
-        String result = Integer.toString(pk);
+        User currentUser = User.current();
+        int currentProfessorId = currentUser.getId();
 
-        switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(sc, name, value);
+        StudentCourse sc = studentCourseMapper.findOne(pk);
+        if (sc == null || sc.getProfessorCourse() == null
+                || sc.getProfessorCourse().getUserId() != currentProfessorId) {
+            throw new AccessDeniedException("Professor does not own this course");
         }
+
+        String result = Integer.toString(pk);
+        applyEditableGradeField(sc, name, value);
+
         int total = sc.getScoreAssignment() + sc.getScoreMid() + sc.getScoreFinal() + sc.getScoreOptions();
         sc.setScoreTotal(total);
 
@@ -767,6 +772,27 @@ public class ProfessorController {
         studentCourseMapper.update(sc);
 
         return result + "_" + total + "_" + grade;
+    }
+
+    private void applyEditableGradeField(StudentCourse sc, String name, String value) {
+        int scoreValue;
+        try {
+            scoreValue = Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid grade value");
+        }
+
+        if ("scoreAssignment".equals(name)) {
+            sc.setScoreAssignment(scoreValue);
+        } else if ("scoreMid".equals(name)) {
+            sc.setScoreMid(scoreValue);
+        } else if ("scoreFinal".equals(name)) {
+            sc.setScoreFinal(scoreValue);
+        } else if ("scoreOptions".equals(name)) {
+            sc.setScoreOptions(scoreValue);
+        } else {
+            throw new IllegalArgumentException("Invalid grade field");
+        }
     }
 
     @RequestMapping("/classProgress/registerGrade/courseTable")

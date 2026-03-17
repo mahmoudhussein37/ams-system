@@ -1,6 +1,7 @@
 package koreatech.cse.controller.role;
 
 import koreatech.cse.domain.Searchable;
+import koreatech.cse.domain.Contact;
 import koreatech.cse.domain.UploadedFile;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.Designation;
@@ -17,6 +18,8 @@ import koreatech.cse.service.UserService;
 import koreatech.cse.util.DateHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +38,8 @@ import java.util.*;
 @PreAuthorize("hasRole('ROLE_STUDENT')")
 @RequestMapping("/student")
 public class StudentController {
+    private static final Logger log = LoggerFactory.getLogger(StudentController.class);
+
     @Inject
     private UserMapper userMapper;
     @Inject
@@ -227,9 +232,14 @@ public class StudentController {
     public String basic(@ModelAttribute("studentUser") User studentUser, HttpServletRequest request,
             SessionStatus sessionStatus) throws IOException {
         User user = User.current();
+        int currentUserId = user.getId();
+        User persistentUser = userMapper.findOne(currentUserId);
+        if (persistentUser == null) {
+            throw new IllegalStateException("Authenticated user record not found");
+        }
         if (request instanceof MultipartHttpServletRequest) {
             MultipartFile f = ((MultipartHttpServletRequest) request).getFile("file");
-            System.out.println("f = " + f.getSize());
+            log.debug("Profile upload size={}", f == null ? 0 : f.getSize());
             if (f == null || f.getSize() == 0) {
 
             } else {
@@ -247,13 +257,42 @@ public class StudentController {
 
         }
 
-        userMapper.update(studentUser);
-        contactMapper.update(studentUser.getContact());
-        authorityService.authenticateUserAndSetSession(studentUser);
+        applyBasicProfileUpdates(persistentUser, studentUser);
+
+        userMapper.update(persistentUser);
+        if (persistentUser.getContact() != null) {
+            contactMapper.update(persistentUser.getContact());
+        }
+        authorityService.authenticateUserAndSetSession(persistentUser);
 
         sessionStatus.setComplete();
 
         return "redirect:/student/register/basic";
+    }
+
+    private void applyBasicProfileUpdates(User persistentUser, User studentUser) {
+        if (persistentUser == null) {
+            throw new IllegalStateException("Authenticated user record not found");
+        }
+
+        if (studentUser == null) {
+            return;
+        }
+
+        if (studentUser.getContact() != null && persistentUser.getContact() == null) {
+            Contact contact = new Contact();
+            contact.setUserId(persistentUser.getId());
+            persistentUser.setContact(contact);
+        }
+
+        if (persistentUser.getContact() == null || studentUser.getContact() == null) {
+            return;
+        }
+
+        persistentUser.getContact().setFirstName(studentUser.getContact().getFirstName());
+        persistentUser.getContact().setLastName(studentUser.getContact().getLastName());
+        persistentUser.getContact().setPhone(studentUser.getContact().getPhone());
+        persistentUser.getContact().setCellPhone(studentUser.getContact().getCellPhone());
     }
 
     @RequestMapping("/classInformation/syllabus")

@@ -4,6 +4,9 @@ import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.Role;
 import koreatech.cse.repository.AuthorityMapper;
 import koreatech.cse.repository.UserMapper;
+import koreatech.cse.service.AuditService;
+import koreatech.cse.service.LoginAttemptService;
+import koreatech.cse.util.RequestIpUtil;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,10 +35,17 @@ public class CustomLoginHandler implements AuthenticationSuccessHandler {
     private AuthorityMapper authorityMapper;
     @Inject
     private UserMapper userMapper;
+    @Inject
+    private LoginAttemptService loginAttemptService;
+    @Inject
+    private AuditService auditService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
             HttpServletResponse response, Authentication authentication) throws IOException {
+        String ip = RequestIpUtil.getClientIp(request);
+        loginAttemptService.loginSucceeded(authentication.getName(), ip);
+        auditService.logEvent("LOGIN_SUCCESS", authentication.getName(), ip, "authentication succeeded");
         User user = User.current();
 
         handle(request, response, user);

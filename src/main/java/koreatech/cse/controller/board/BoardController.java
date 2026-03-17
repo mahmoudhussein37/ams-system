@@ -1,6 +1,5 @@
 package koreatech.cse.controller.board;
 
-
 import koreatech.cse.datatables.DataTablesRequest;
 import koreatech.cse.datatables.DataTablesResponse;
 import koreatech.cse.domain.User;
@@ -13,18 +12,33 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
-@SessionAttributes({"article"})
+@SessionAttributes({ "article" })
 @Transactional
 @RequestMapping(value = "/board/{boardName}")
 public class BoardController {
+    private static final Map<String, String> BOARD_TABLES;
+
+    static {
+        Map<String, String> boardTables = new HashMap<String, String>();
+        boardTables.put("notice", "board_notice");
+        boardTables.put("de", "board_de");
+        boardTables.put("hire", "board_hire");
+        boardTables.put("schedule", "board_schedule");
+        BOARD_TABLES = Collections.unmodifiableMap(boardTables);
+    }
+
     @Inject
     private BoardService boardService;
     @Inject
@@ -36,9 +50,11 @@ public class BoardController {
         model.addAttribute("article", new Article());
         return "role/common/board/form";
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/form", method = RequestMethod.POST)
-    public String write(Article article, SessionStatus sessionStatus, @PathVariable String boardName) throws IOException {
+    public String write(Article article, SessionStatus sessionStatus, @PathVariable String boardName)
+            throws IOException {
         article.setUserId(User.current().getId());
         System.out.println("article = " + article);
         boardService.insert(article, getBoardTableName(boardName));
@@ -47,11 +63,10 @@ public class BoardController {
         return "redirect:/board/" + boardName + "/list";
     }
 
-
     @RequestMapping(value = "/list")
     public String list(Model model, @PathVariable String boardName, @RequestParam(required = false) boolean all) {
         List<Article> articleList;
-        if(all) {
+        if (all) {
             articleList = boardMapper.findArticleAll(getBoardTableName(boardName));
         } else {
             articleList = boardMapper.findArticleList(getBoardTableName(boardName), 50);
@@ -64,7 +79,8 @@ public class BoardController {
     @Transactional(readOnly = true)
     @RequestMapping(value = "/listAjax", method = { RequestMethod.GET, RequestMethod.POST })
     @ResponseBody
-    public DataTablesResponse getList(@RequestBody DataTablesRequest datatablesRequest, @PathVariable String boardName) {
+    public DataTablesResponse getList(@RequestBody DataTablesRequest datatablesRequest,
+            @PathVariable String boardName) {
         int recordsTotal;
         int recordsFiltered;
         Pageable pageable = PaginationHelper.pageable(datatablesRequest);
@@ -85,7 +101,6 @@ public class BoardController {
         return "role/common/board/article";
     }
 
-
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/edit/{articleId}")
     public String editForm(Model model, @PathVariable int articleId, @PathVariable String boardName) {
@@ -94,13 +109,16 @@ public class BoardController {
         model.addAttribute("boardName", boardName);
         return "role/common/board/edit";
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/edit/{articleId}", method = RequestMethod.POST)
-    public String update(@PathVariable int articleId, Article article, SessionStatus sessionStatus, @PathVariable String boardName) throws IOException {
+    public String update(@PathVariable int articleId, Article article, SessionStatus sessionStatus,
+            @PathVariable String boardName) throws IOException {
         boardService.update(article, getBoardTableName(boardName));
         sessionStatus.setComplete();
         return "redirect:/board/" + boardName + "/list";
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/delete/{articleId}", method = RequestMethod.POST)
     public String delete(@PathVariable int articleId, @PathVariable String boardName) {
@@ -109,6 +127,14 @@ public class BoardController {
     }
 
     public String getBoardTableName(String boardName) {
-        return "board_" + boardName;
+        String boardTableName = BOARD_TABLES.get(boardName);
+        if (boardTableName == null) {
+            throw new BoardNotFoundException();
+        }
+        return boardTableName;
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    private static class BoardNotFoundException extends RuntimeException {
     }
 }

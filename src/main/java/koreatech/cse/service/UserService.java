@@ -7,15 +7,20 @@ import koreatech.cse.domain.constant.Role;
 import koreatech.cse.domain.role.student.StudentCourse;
 import koreatech.cse.domain.univ.Semester;
 import koreatech.cse.repository.*;
+import koreatech.cse.util.RequestIpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -35,6 +40,10 @@ public class UserService implements UserDetailsService {
     private StudentCourseMapper studentCourseMapper;
     @Inject
     private SemesterMapper semesterMapper;
+    @Inject
+    private LoginAttemptService loginAttemptService;
+    @Inject
+    private AuditService auditService;
 
     public String signup(User user, Role role) {
 
@@ -162,6 +171,16 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        String remoteIp = getCurrentRequestIp();
+        if (loginAttemptService.isBlocked(username)) {
+            auditService.logEvent("BLOCKED_LOGIN_ATTEMPT", username, remoteIp, "reason=USER_LOCKED");
+            throw new LockedException("Too many login attempts");
+        }
+        if (loginAttemptService.isIpBlocked(remoteIp)) {
+            auditService.logEvent("BLOCKED_LOGIN_ATTEMPT", username, remoteIp, "reason=IP_BLOCKED");
+            throw new LockedException("Too many login attempts");
+        }
+
         User user = userMapper.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("Invalid username/password.");
@@ -169,6 +188,20 @@ public class UserService implements UserDetailsService {
         List<Authority> authorities = authorityMapper.findByUserId(user.getId());
         user.setAuthorities(authorities);
         return user;
+    }
+
+    private String getCurrentRequestIp() {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            return null;
+        }
+
+        HttpServletRequest request = attributes.getRequest();
+        if (request == null) {
+            return null;
+        }
+
+        return RequestIpUtil.getClientIp(request);
     }
 
     public boolean isUniqueUsername(String username) {

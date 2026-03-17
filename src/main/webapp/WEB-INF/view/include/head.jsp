@@ -95,7 +95,11 @@
             }
 
             .print-div {
-                text-align: ${isRTL ? 'left' : 'right'};
+                text-align: $ {
+                    isRTL ? 'left': 'right'
+                }
+
+                ;
             }
 
             @media print {
@@ -201,4 +205,8 @@
             Object.freeze(window.i18n);
         </script>
         <!--end::JavaScript i18n object-->
+        <!--begin::CSRF meta tags (read by AJAX setup in footerScript.jsp)-->
+        <meta name="_csrf" content="${_csrf.token}" />
+        <meta name="_csrf_header" content="${_csrf.headerName}" />
+        <!--end::CSRF meta tags-->
 </head>
