@@ -41,7 +41,7 @@ reviews:
         - Data computation
         - Direct model mutation
 
-    - path: "**/FileService*"
+    - path: "**/FileService*.java"
       instructions: |
         Critical security surface. Check:
         - MIME validation (not just extension)
@@ -52,8 +52,6 @@ reviews:
 
   tools:
     github-checks:
-      enabled: true
-    ast-grep:
       enabled: true
 
 chat:
