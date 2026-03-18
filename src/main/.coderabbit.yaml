@@ -1,0 +1,60 @@
+language: "en-US"
+tone_instructions: "Be strict, senior-level, production-focused. No sugar-coating."
+early_access: true
+
+reviews:
+  profile: "assertive"
+  request_changes_workflow: true
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+
+  path_instructions:
+    - path: "**/service/**"
+      instructions: |
+        This is the business logic layer. Enforce:
+        - All writes MUST be @Transactional
+        - No direct DB access — must go through Mapper
+        - No fileId re-querying after upload
+        - Enforce curriculum invariant: EXACTLY ONE ACTIVE per (division_id, academic_year)
+
+    - path: "**/controller/**"
+      instructions: |
+        Controllers are transport-only. Flag any:
+        - Business logic inside controller
+        - Direct Mapper calls
+        - Non-DTO responses
+        - Missing authorization checks
+
+    - path: "**/mapper/**"
+      instructions: |
+        Mappers are DB-access only. Flag any:
+        - Business logic
+        - Multiple responsibilities
+        - Missing transaction context
+
+    - path: "**/*.jsp"
+      instructions: |
+        JSP is READ-ONLY. Flag ANY:
+        - Conditional logic
+        - Data computation
+        - Direct model mutation
+
+    - path: "**/FileService*"
+      instructions: |
+        Critical security surface. Check:
+        - MIME validation (not just extension)
+        - File size enforcement
+        - Path traversal protection
+        - Sanitized storage paths
+        - No direct file path exposure
+
+  tools:
+    github-checks:
+      enabled: true
+    ast-grep:
+      enabled: true
+
+chat:
+  auto_reply: true
