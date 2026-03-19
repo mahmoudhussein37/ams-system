@@ -7,6 +7,7 @@ import org.springframework.core.convert.converter.Converter;
 
 public class StringTrimmer implements Converter<String, String> {
 
+    @Override
     public String convert(String s) {
         if (s != null) {
 

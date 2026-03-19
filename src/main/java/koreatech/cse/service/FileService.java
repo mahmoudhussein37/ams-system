@@ -40,7 +40,7 @@ public class FileService {
         String originalFilename = file.getOriginalFilename();
         if (originalFilename == null || originalFilename.trim().isEmpty())
             throw new IllegalArgumentException("Filename is required");
-        if (originalFilename != null && originalFilename.length() > 255)
+        if (originalFilename.length() > 255)
             throw new IllegalArgumentException("Filename too long");
         if (!this.isValidFileType(originalFilename))
             throw new IOException("Unsupported file type: " + sanitizeFilename(originalFilename));
@@ -63,7 +63,9 @@ public class FileService {
 
         String rName = UUID.randomUUID().toString().replace("-", "");
         File tempFile = File.createTempFile(designation.name(), rName, originDir);
-        FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(tempFile));
+        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+            FileCopyUtils.copy(file.getInputStream(), fos);
+        }
 
         String safeName = sanitizeFilename(originalFilename);
 
@@ -215,8 +217,10 @@ public class FileService {
     }
 
     /**
-     * Saves a MultipartFile to a sanitized path within the application temp directory.
-     * Validates that the resolved canonical path does not escape the temp base directory,
+     * Saves a MultipartFile to a sanitized path within the application temp
+     * directory.
+     * Validates that the resolved canonical path does not escape the temp base
+     * directory,
      * preventing path traversal attacks from malicious filenames.
      *
      * @param multipartFile the uploaded file
@@ -230,6 +234,12 @@ public class FileService {
         File tempDir = new File(tempBasePath);
         if (!tempDir.exists()) {
             tempDir.mkdirs();
+            tempDir.setReadable(false, false);
+            tempDir.setReadable(true, true);
+            tempDir.setWritable(false, false);
+            tempDir.setWritable(true, true);
+            tempDir.setExecutable(false, false);
+            tempDir.setExecutable(true, true);
         }
 
         String originalName = multipartFile.getOriginalFilename();

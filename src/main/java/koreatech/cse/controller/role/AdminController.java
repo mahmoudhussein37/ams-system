@@ -129,6 +129,13 @@ public class AdminController {
         return "admin";
     }
 
+    private String sanitizeForLog(String value) {
+        if (value == null)
+            return "null";
+        String sanitized = value.replaceAll("[\r\n\t]", "_");
+        return sanitized.substring(0, Math.min(sanitized.length(), 200));
+    }
+
     @RequestMapping(value = "/studentManagement/studentRegistration", method = RequestMethod.GET)
     public String studentRegistration(Model model, @RequestParam(required = false) String result) {
 
@@ -159,7 +166,7 @@ public class AdminController {
         // Validate required fields
         if (StringUtils.isBlank(studentNumber) || StringUtils.isBlank(firstName) || StringUtils.isBlank(lastName)) {
             logger.warn("Manual registration failed: missing required fields (number={}, firstName={}, lastName={})",
-                    studentNumber, firstName, lastName);
+                    sanitizeForLog(studentNumber), sanitizeForLog(firstName), sanitizeForLog(lastName));
             sessionStatus.setComplete();
             return "redirect:/admin/studentManagement/studentRegistration?result=validation_error";
         }
@@ -192,14 +199,15 @@ public class AdminController {
 
         // Validate file format
         if (!ext.equalsIgnoreCase("xlsx")) {
-            logger.warn("Import failed: invalid format '{}'", ext);
+            logger.warn("Import failed: invalid format '{}'", sanitizeForLog(ext));
             return "redirect:/admin/studentManagement/studentRegistration?importResult=error&errorMessage=invalid_format";
         }
 
         try {
-            // Save file to temp directory via FileService (sanitized + canonical path validated)
+            // Save file to temp directory via FileService (sanitized + canonical path
+            // validated)
             File convFile = fileService.saveMultipartToTempFile(file, request);
-            logger.debug("File saved to temp path: {}", convFile.getAbsolutePath());
+            logger.debug("File saved to temp path: {}", sanitizeForLog(convFile.getAbsolutePath()));
 
             // Process Excel and get detailed result
             StudentUploadResult result = readStudentImportExcel(convFile, divisionId, schoolYear);
@@ -248,6 +256,13 @@ public class AdminController {
         XSSFWorkbook workbook = null;
 
         try {
+            // Defense-in-depth: re-validate canonical path at point of use
+            String canonicalPath = file.getCanonicalPath();
+            String allowedBase = new File(System.getProperty("java.io.tmpdir")
+                    + File.separator + "ams_temp").getCanonicalPath();
+            if (!canonicalPath.startsWith(allowedBase)) {
+                throw new SecurityException("Path validation failed: file outside allowed directory");
+            }
             fileInputStream = new FileInputStream(file);
             workbook = new XSSFWorkbook(fileInputStream);
             XSSFSheet sheet = workbook.getSheetAt(0);
@@ -497,7 +512,6 @@ public class AdminController {
         System.out.println("studentUser = " + studentUser);
         if (request instanceof MultipartHttpServletRequest) {
             MultipartFile f = ((MultipartHttpServletRequest) request).getFile("file");
-            System.out.println("f = " + f.getSize());
             if (f == null || f.getSize() == 0) {
 
             } else {
@@ -695,7 +709,11 @@ public class AdminController {
                 String[] split = value.split(",");
                 for (String userIdString : split) {
                     if (StringUtils.isNotBlank(userIdString)) {
-                        integerIds.add(Integer.parseInt(userIdString));
+                        try {
+                            integerIds.add(Integer.parseInt(userIdString));
+                        } catch (NumberFormatException e) {
+                            logger.warn("Invalid student ID in checkbox: {}", sanitizeForLog(userIdString));
+                        }
                     }
                 }
             });
@@ -816,7 +834,11 @@ public class AdminController {
                 String[] split = value.split(",");
                 for (String userIdString : split) {
                     if (StringUtils.isNotBlank(userIdString)) {
-                        integerIds.add(Integer.parseInt(userIdString));
+                        try {
+                            integerIds.add(Integer.parseInt(userIdString));
+                        } catch (NumberFormatException e) {
+                            logger.warn("Invalid student ID in checkbox: {}", sanitizeForLog(userIdString));
+                        }
                     }
                 }
             });
@@ -856,7 +878,11 @@ public class AdminController {
                 String[] split = value.split(",");
                 for (String userIdString : split) {
                     if (StringUtils.isNotBlank(userIdString)) {
-                        integerIds.add(Integer.parseInt(userIdString));
+                        try {
+                            integerIds.add(Integer.parseInt(userIdString));
+                        } catch (NumberFormatException e) {
+                            logger.warn("Invalid student ID in checkbox: {}", sanitizeForLog(userIdString));
+                        }
                     }
                 }
             });
@@ -944,7 +970,11 @@ public class AdminController {
                 String[] split = value.split(",");
                 for (String integerIdString : split) {
                     if (StringUtils.isNotBlank(integerIdString)) {
-                        integerIds.add(Integer.parseInt(integerIdString));
+                        try {
+                            integerIds.add(Integer.parseInt(integerIdString));
+                        } catch (NumberFormatException e) {
+                            logger.warn("Invalid counseling ID in checkbox: {}", sanitizeForLog(integerIdString));
+                        }
                     }
                 }
             });
@@ -1037,9 +1067,8 @@ public class AdminController {
         Certificate certificate = certificateMapper.findByUserId(studentId);
         if (certificate == null) {
             certificate = new Certificate();
-            certificate.setRequestId(User.current().getId());
             certificate.setUserId(studentId);
-            certificateMapper.insert(certificate);
+            // Display-only — no insert in GET
         }
         model.addAttribute("certificate", certificate);
         model.addAttribute("today", DateHelper.format(new Date()));
@@ -1210,7 +1239,11 @@ public class AdminController {
                 String[] split = value.split(",");
                 for (String userIdString : split) {
                     if (StringUtils.isNotBlank(userIdString)) {
-                        integerIds.add(Integer.parseInt(userIdString));
+                        try {
+                            integerIds.add(Integer.parseInt(userIdString));
+                        } catch (NumberFormatException e) {
+                            logger.warn("Invalid plan ID in checkbox: {}", sanitizeForLog(userIdString));
+                        }
                     }
                 }
             });
@@ -1987,14 +2020,16 @@ public class AdminController {
 
             // Validate file format
             if (!ext.equalsIgnoreCase("xls") && !ext.equalsIgnoreCase("xlsx")) {
-                logger.warn("Upload failed: invalid format '{}' for profCourseId={}", ext, profCourseId);
+                logger.warn("Upload failed: invalid format '{}' for profCourseId={}", sanitizeForLog(ext),
+                        profCourseId);
                 return "redirect:/admin/courseManagement/cOpen/manageStudent?result=error&errorMsg=invalid_format&profCourseId="
                         + profCourseId;
             }
 
-            // Save file to temp directory via FileService (sanitized + canonical path validated)
+            // Save file to temp directory via FileService (sanitized + canonical path
+            // validated)
             File convFile = fileService.saveMultipartToTempFile(multipartFile, request);
-            logger.debug("File saved to temp path: {}", convFile.getAbsolutePath());
+            logger.debug("File saved to temp path: {}", sanitizeForLog(convFile.getAbsolutePath()));
 
             // Process Excel and get detailed result
             StudentUploadResult result = readStudentExcel(convFile, profCourseId);
@@ -2061,6 +2096,13 @@ public class AdminController {
         XSSFWorkbook workbook = null;
 
         try {
+            // Defense-in-depth: re-validate canonical path at point of use
+            String canonicalPath = file.getCanonicalPath();
+            String allowedBase = new File(System.getProperty("java.io.tmpdir")
+                    + File.separator + "ams_temp").getCanonicalPath();
+            if (!canonicalPath.startsWith(allowedBase)) {
+                throw new SecurityException("Path validation failed: file outside allowed directory");
+            }
             fileInputStream = new FileInputStream(file);
             workbook = new XSSFWorkbook(fileInputStream);
             XSSFSheet sheet = workbook.getSheetAt(0);
@@ -3152,7 +3194,7 @@ public class AdminController {
         MenuAccess menuAccess = menuAccessMapper.findOne();
         if (menuAccess == null) {
             menuAccess = new MenuAccess();
-            menuAccessMapper.insert(menuAccess);
+            // Display-only — no insert in GET
         }
 
         model.addAttribute("menuAccess", menuAccess);

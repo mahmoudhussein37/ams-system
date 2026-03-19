@@ -161,6 +161,7 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userMapper.findByUsername(username);
         if (user == null) {

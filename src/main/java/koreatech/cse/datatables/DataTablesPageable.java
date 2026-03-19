@@ -37,6 +37,7 @@ public class DataTablesPageable extends Pageable {
         setGlobalSearch(globalSearchValue);
     }
 
+    @Override
     public void addConditionals(String prefix, String property, Object value, Operator operator) {
         conditionals.put(property, Term.newInstance(prefix, property, value, operator));
     }

@@ -13,6 +13,7 @@ import java.io.IOException;
 
 @Component
 public class CustomLogoutHandler extends SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler {
+    @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         setDefaultTargetUrl("/");
         HttpSession session = request.getSession();

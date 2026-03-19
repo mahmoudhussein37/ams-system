@@ -281,7 +281,7 @@ public class ProfLectureMethod implements Serializable {
         try {
             String[] split = str.split(",");
             for(String s:split) {
-                Integer v = Integer.parseInt(s);
+                int v = Integer.parseInt(s);
                 if(v == id)
                     return true;
             }

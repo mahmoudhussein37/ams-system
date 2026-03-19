@@ -229,7 +229,6 @@ public class StudentController {
         User user = User.current();
         if (request instanceof MultipartHttpServletRequest) {
             MultipartFile f = ((MultipartHttpServletRequest) request).getFile("file");
-            System.out.println("f = " + f.getSize());
             if (f == null || f.getSize() == 0) {
 
             } else {
