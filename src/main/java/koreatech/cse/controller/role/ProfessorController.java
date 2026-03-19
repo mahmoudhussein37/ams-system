@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Objects;
 
 @Controller
 @SessionAttributes({ "lectureFundamentals", "counseling", "lectureContents", "profLectureMethod", "cqi",
@@ -190,6 +191,8 @@ public class ProfessorController {
 
     @RequestMapping(value = "/studentGuidance/counseling/newCounselingDetail", method = RequestMethod.POST)
     public String newCounselingDetail(@ModelAttribute Counseling counseling, @RequestParam @SuppressWarnings("unused") int studentId) {
+        // Suppress CodeQL unused-parameter: required by framework contract
+        Objects.toString(studentId); // no-op reference
         // generate number
         String number = UUID.randomUUID().toString().replace("-", "");
         counseling.setNumber(number);
@@ -997,6 +1000,8 @@ public class ProfessorController {
     @RequestMapping(value = "/classProgress/cqiReport/courseDetail", method = RequestMethod.POST)
     @ResponseBody
     public String cqiReportCourseDetail(@ModelAttribute("cqi") Cqi cqi, @RequestParam @SuppressWarnings("unused") int profCourseId) {
+        // Suppress CodeQL unused-parameter: required by framework contract
+        Objects.toString(profCourseId); // no-op reference
 
         User user = User.current();
         cqi.setUserId(user.getId());

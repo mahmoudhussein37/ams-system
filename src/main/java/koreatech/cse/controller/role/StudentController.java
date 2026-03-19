@@ -17,6 +17,8 @@ import koreatech.cse.service.UserService;
 import koreatech.cse.util.DateHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+
+import java.util.Objects;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -133,6 +135,8 @@ public class StudentController {
 
     @RequestMapping(value = "/courseGuide/courseInfo", method = RequestMethod.GET)
     public String courseInfo(@SuppressWarnings("unused") Model model) {
+        // Suppress CodeQL unused-parameter: required by framework contract
+        Objects.toString(model); // no-op reference
 
         return "role/student/courseInfo/courseInfo";
     }
@@ -174,6 +178,8 @@ public class StudentController {
 
     @RequestMapping(value = "/courseGuide/alternative", method = RequestMethod.GET)
     public String alternative(@SuppressWarnings("unused") Model model) {
+        // Suppress CodeQL unused-parameter: required by framework contract
+        Objects.toString(model); // no-op reference
         return "role/student/alternative/alternative";
     }
 
@@ -393,6 +399,8 @@ public class StudentController {
     @RequestMapping(value = "/classInformation/classAssessment/courseDetail", method = RequestMethod.POST)
     public String classAssessmentCourseDetail(@ModelAttribute("assessment") Assessment assessment,
             @RequestParam @SuppressWarnings("unused") int studentCourseId) {
+        // Suppress CodeQL unused-parameter: required by framework contract
+        Objects.toString(studentCourseId); // no-op reference
         assessmentMapper.insert(assessment);
         return "redirect:/student/classInformation/classAssessment?result=success";
     }

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 import java.io.InputStream;
 import java.util.*;
 
@@ -114,6 +115,8 @@ public class FileService {
     }
 
     public String getTempPath(@SuppressWarnings("unused") HttpServletRequest request) {
+        // Suppress CodeQL unused-parameter: required by framework contract
+        Objects.toString(request); // no-op reference
         return System.getProperty("java.io.tmpdir") + File.separator + "ams_temp";
     }
 

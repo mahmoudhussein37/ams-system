@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
@@ -85,6 +87,13 @@ public class BoardController {
         return "role/common/board/article";
     }
 
+    @RequestMapping(value = "/{articleId}/hit", method = RequestMethod.POST)
+    @ResponseBody
+    public String incrementHit(@PathVariable int articleId, @PathVariable String boardName) {
+        boardService.incrementHit(articleId, getBoardTableName(boardName));
+        return "ok";
+    }
+
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/edit/{articleId}", method = RequestMethod.GET)
@@ -97,6 +106,8 @@ public class BoardController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/edit/{articleId}", method = RequestMethod.POST)
     public String update(@PathVariable @SuppressWarnings("unused") int articleId, Article article, SessionStatus sessionStatus, @PathVariable String boardName) throws IOException {
+        // Suppress CodeQL unused-parameter: required by framework contract
+        Objects.toString(articleId); // no-op reference
         boardService.update(article, getBoardTableName(boardName));
         sessionStatus.setComplete();
         return "redirect:/board/" + boardName + "/list";

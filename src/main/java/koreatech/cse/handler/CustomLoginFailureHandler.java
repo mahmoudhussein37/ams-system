@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 @Component
 public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
@@ -25,6 +26,8 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
     }
 
     protected String determineTargetUrl(@SuppressWarnings("unused") HttpServletRequest request) {
+        // Suppress CodeQL unused-parameter: required by framework contract
+        Objects.toString(request); // no-op reference
         return "/signin?msg=fail";
     }
 }

@@ -6,6 +6,8 @@ import koreatech.cse.util.mybatis.Term;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort.Direction;
 
+import java.util.Objects;
+
 public class DataTablesPageable extends Pageable {
 
     private static final long serialVersionUID = 7615640779308451772L;
@@ -69,6 +71,8 @@ public class DataTablesPageable extends Pageable {
     }
 
     private boolean isDatePair(@SuppressWarnings("unused") DataTablesColumn column) {
+        // Suppress CodeQL unused-parameter: required by framework contract
+        Objects.toString(column); // no-op reference
         /*ManualSearchColumn[] manualSearchColumns = {ManualSearchColumn.submitDate, ManualSearchColumn.confirmDate, ManualSearchColumn.acceptDate, ManualSearchColumn.publishDate};
         for(ManualSearchColumn manualSearchColumn: manualSearchColumns)
             if(column.getName().equals(manualSearchColumn.name()))

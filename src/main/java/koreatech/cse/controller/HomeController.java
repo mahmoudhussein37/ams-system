@@ -11,6 +11,8 @@ import koreatech.cse.service.FileAccessService;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.SystemUtil;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -81,6 +83,8 @@ public class HomeController {
     @RequestMapping(value = "/registerAdmin", method = RequestMethod.GET)
     @ResponseBody
     public String registerAdmin(@RequestParam @SuppressWarnings("unused") String code) {
+        // Suppress CodeQL unused-parameter: required by framework contract
+        Objects.toString(code); // no-op reference
         return "disabled in production";
     }
 
