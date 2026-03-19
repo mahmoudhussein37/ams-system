@@ -184,7 +184,7 @@ public class AdminController {
             @RequestParam("file") MultipartFile file,
             @RequestParam("divisionId") int divisionId,
             @RequestParam("schoolYear") int schoolYear,
-            Model model) {
+            @SuppressWarnings("unused") Model model) {
 
         logger.info("Starting student import for divisionId={}, schoolYear={}", divisionId, schoolYear);
 
@@ -260,7 +260,8 @@ public class AdminController {
             String canonicalPath = file.getCanonicalPath();
             String allowedBase = new File(System.getProperty("java.io.tmpdir")
                     + File.separator + "ams_temp").getCanonicalPath();
-            if (!canonicalPath.startsWith(allowedBase)) {
+            if (!canonicalPath.startsWith(allowedBase + File.separator)
+                    && !canonicalPath.equals(allowedBase)) {
                 throw new SecurityException("Path validation failed: file outside allowed directory");
             }
             fileInputStream = new FileInputStream(file);
@@ -1181,7 +1182,7 @@ public class AdminController {
         GraduationResearchPlan firstOne = null;
         List<GraduationResearchPlan> plans;
 
-        if (year == 0 && division == 0 && advisor == 0 && StringUtils.isBlank(number) & StringUtils.isBlank(name)) {
+        if (year == 0 && division == 0 && advisor == 0 && StringUtils.isBlank(number) && StringUtils.isBlank(name)) {
             plans = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
@@ -1592,9 +1593,9 @@ public class AdminController {
 
     @RequestMapping(value = "/courseManagement/cOpen", method = RequestMethod.GET)
     public String cOpen(Model model, @RequestParam(required = false) String result,
-            @RequestParam(defaultValue = "0", required = false) int year,
-            @RequestParam(defaultValue = "0", required = false) int semester,
-            @RequestParam(defaultValue = "0", required = false) int division) {
+            @RequestParam(defaultValue = "0", required = false) @SuppressWarnings("unused") int year,
+            @RequestParam(defaultValue = "0", required = false) @SuppressWarnings("unused") int semester,
+            @RequestParam(defaultValue = "0", required = false) @SuppressWarnings("unused") int division) {
         List<Division> divisions = divisionMapper.findAll();
 
         model.addAttribute("divisions", divisions);
@@ -1717,7 +1718,7 @@ public class AdminController {
 
     @RequestMapping(value = "/courseManagement/cOpen/editDivide", method = RequestMethod.POST)
     public String editDivide(@ModelAttribute("profCourse") ProfessorCourse profCourse, SessionStatus sessionStatus,
-            @RequestParam int profCourseId) {
+            @RequestParam @SuppressWarnings("unused") int profCourseId) {
         System.out.println("profCourse = " + profCourse);
         professorCourseMapper.update(profCourse);
         sessionStatus.setComplete();
@@ -2100,7 +2101,8 @@ public class AdminController {
             String canonicalPath = file.getCanonicalPath();
             String allowedBase = new File(System.getProperty("java.io.tmpdir")
                     + File.separator + "ams_temp").getCanonicalPath();
-            if (!canonicalPath.startsWith(allowedBase)) {
+            if (!canonicalPath.startsWith(allowedBase + File.separator)
+                    && !canonicalPath.equals(allowedBase)) {
                 throw new SecurityException("Path validation failed: file outside allowed directory");
             }
             fileInputStream = new FileInputStream(file);

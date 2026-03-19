@@ -68,7 +68,7 @@ public class DataTablesPageable extends Pageable {
         }
     }
 
-    private boolean isDatePair(DataTablesColumn column) {
+    private boolean isDatePair(@SuppressWarnings("unused") DataTablesColumn column) {
         /*ManualSearchColumn[] manualSearchColumns = {ManualSearchColumn.submitDate, ManualSearchColumn.confirmDate, ManualSearchColumn.acceptDate, ManualSearchColumn.publishDate};
         for(ManualSearchColumn manualSearchColumn: manualSearchColumns)
             if(column.getName().equals(manualSearchColumn.name()))

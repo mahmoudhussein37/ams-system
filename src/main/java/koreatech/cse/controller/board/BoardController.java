@@ -96,7 +96,7 @@ public class BoardController {
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/edit/{articleId}", method = RequestMethod.POST)
-    public String update(@PathVariable int articleId, Article article, SessionStatus sessionStatus, @PathVariable String boardName) throws IOException {
+    public String update(@PathVariable @SuppressWarnings("unused") int articleId, Article article, SessionStatus sessionStatus, @PathVariable String boardName) throws IOException {
         boardService.update(article, getBoardTableName(boardName));
         sessionStatus.setComplete();
         return "redirect:/board/" + boardName + "/list";

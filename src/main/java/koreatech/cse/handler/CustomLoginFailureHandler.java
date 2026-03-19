@@ -24,7 +24,7 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
-    protected String determineTargetUrl(HttpServletRequest request) {
+    protected String determineTargetUrl(@SuppressWarnings("unused") HttpServletRequest request) {
         return "/signin?msg=fail";
     }
 }

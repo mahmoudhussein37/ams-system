@@ -189,7 +189,7 @@ public class ProfessorController {
     }
 
     @RequestMapping(value = "/studentGuidance/counseling/newCounselingDetail", method = RequestMethod.POST)
-    public String newCounselingDetail(@ModelAttribute Counseling counseling, @RequestParam int studentId) {
+    public String newCounselingDetail(@ModelAttribute Counseling counseling, @RequestParam @SuppressWarnings("unused") int studentId) {
         // generate number
         String number = UUID.randomUUID().toString().replace("-", "");
         counseling.setNumber(number);
@@ -996,7 +996,7 @@ public class ProfessorController {
 
     @RequestMapping(value = "/classProgress/cqiReport/courseDetail", method = RequestMethod.POST)
     @ResponseBody
-    public String cqiReportCourseDetail(@ModelAttribute("cqi") Cqi cqi, @RequestParam int profCourseId) {
+    public String cqiReportCourseDetail(@ModelAttribute("cqi") Cqi cqi, @RequestParam @SuppressWarnings("unused") int profCourseId) {
 
         User user = User.current();
         cqi.setUserId(user.getId());

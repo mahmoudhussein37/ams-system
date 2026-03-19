@@ -132,7 +132,7 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/courseGuide/courseInfo", method = RequestMethod.GET)
-    public String courseInfo(Model model) {
+    public String courseInfo(@SuppressWarnings("unused") Model model) {
 
         return "role/student/courseInfo/courseInfo";
     }
@@ -173,7 +173,7 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/courseGuide/alternative", method = RequestMethod.GET)
-    public String alternative(Model model) {
+    public String alternative(@SuppressWarnings("unused") Model model) {
         return "role/student/alternative/alternative";
     }
 
@@ -392,7 +392,7 @@ public class StudentController {
 
     @RequestMapping(value = "/classInformation/classAssessment/courseDetail", method = RequestMethod.POST)
     public String classAssessmentCourseDetail(@ModelAttribute("assessment") Assessment assessment,
-            @RequestParam int studentCourseId) {
+            @RequestParam @SuppressWarnings("unused") int studentCourseId) {
         assessmentMapper.insert(assessment);
         return "redirect:/student/classInformation/classAssessment?result=success";
     }
@@ -462,9 +462,7 @@ public class StudentController {
         Certificate certificate = certificateMapper.findByUserId(studentUser.getId());
         if (certificate == null) {
             certificate = new Certificate();
-            certificate.setRequestId(User.current().getId());
             certificate.setUserId(studentUser.getId());
-            certificateMapper.insert(certificate);
         }
         model.addAttribute("certificate", certificate);
         model.addAttribute("today", DateHelper.format(new Date()));

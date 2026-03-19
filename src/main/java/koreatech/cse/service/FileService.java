@@ -4,6 +4,8 @@ import koreatech.cse.domain.UploadedFile;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.Designation;
 import koreatech.cse.repository.UploadedFileMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -19,6 +21,7 @@ import java.util.*;
 
 @Service
 public class FileService {
+    private static final Logger logger = LoggerFactory.getLogger(FileService.class);
     @Value("${file.maxSize}")
     private int MAX_SIZE;
 
@@ -110,7 +113,7 @@ public class FileService {
         return fileName;
     }
 
-    public String getTempPath(HttpServletRequest request) {
+    public String getTempPath(@SuppressWarnings("unused") HttpServletRequest request) {
         return System.getProperty("java.io.tmpdir") + File.separator + "ams_temp";
     }
 
@@ -234,12 +237,24 @@ public class FileService {
         File tempDir = new File(tempBasePath);
         if (!tempDir.exists()) {
             tempDir.mkdirs();
-            tempDir.setReadable(false, false);
-            tempDir.setReadable(true, true);
-            tempDir.setWritable(false, false);
-            tempDir.setWritable(true, true);
-            tempDir.setExecutable(false, false);
-            tempDir.setExecutable(true, true);
+            if (!tempDir.setReadable(false, false)) {
+                logger.warn("Could not clear readable permission on temp directory");
+            }
+            if (!tempDir.setReadable(true, true)) {
+                logger.warn("Could not set owner-only readable on temp directory");
+            }
+            if (!tempDir.setWritable(false, false)) {
+                logger.warn("Could not clear writable permission on temp directory");
+            }
+            if (!tempDir.setWritable(true, true)) {
+                logger.warn("Could not set owner-only writable on temp directory");
+            }
+            if (!tempDir.setExecutable(false, false)) {
+                logger.warn("Could not clear executable permission on temp directory");
+            }
+            if (!tempDir.setExecutable(true, true)) {
+                logger.warn("Could not set owner-only executable on temp directory");
+            }
         }
 
         String originalName = multipartFile.getOriginalFilename();

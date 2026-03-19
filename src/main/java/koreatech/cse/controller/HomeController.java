@@ -80,7 +80,7 @@ public class HomeController {
      */
     @RequestMapping(value = "/registerAdmin", method = RequestMethod.GET)
     @ResponseBody
-    public String registerAdmin(@RequestParam String code) {
+    public String registerAdmin(@RequestParam @SuppressWarnings("unused") String code) {
         return "disabled in production";
     }
 
