@@ -96,7 +96,7 @@ public class ProfessorController {
         return "professor";
     }
 
-    @RequestMapping("/studentGuidance/studentLookup")
+    @RequestMapping(value = "/studentGuidance/studentLookup", method = RequestMethod.GET)
     public String studentLookup(Model model) {
 
         List<Division> divisions = divisionMapper.findAll();
@@ -105,7 +105,7 @@ public class ProfessorController {
         return "role/professor/studentLookup/studentLookup";
     }
 
-    @RequestMapping("/studentGuidance/studentLookup/studentTable")
+    @RequestMapping(value = "/studentGuidance/studentLookup/studentTable", method = RequestMethod.GET)
     public String studentTable(Model model, @RequestParam(required = false) String number,
             @RequestParam(required = false) String name,
             @RequestParam(defaultValue = "0", required = false) int division) {
@@ -133,7 +133,7 @@ public class ProfessorController {
         return "role/professor/studentLookup/studentTable";
     }
 
-    @RequestMapping("/studentGuidance/studentLookup/studentDetail")
+    @RequestMapping(value = "/studentGuidance/studentLookup/studentDetail", method = RequestMethod.GET)
     public String studentDetail(Model model, @RequestParam int studentId,
             @RequestParam(defaultValue = "false", required = false) String print) {
         User studentUser = userMapper.findOne(studentId);
@@ -159,14 +159,14 @@ public class ProfessorController {
         return "role/professor/studentLookup/studentDetail";
     }
 
-    @RequestMapping("/studentGuidance/counseling")
+    @RequestMapping(value = "/studentGuidance/counseling", method = RequestMethod.GET)
     public String counseling(Model model, @RequestParam(required = false) String result) {
         model.addAttribute("yearList", getYearList());
         model.addAttribute("result", result);
         return "role/professor/counseling/counseling";
     }
 
-    @RequestMapping("/studentGuidance/counseling/newCounseling")
+    @RequestMapping(value = "/studentGuidance/counseling/newCounseling", method = RequestMethod.GET)
     public String newCounseling(Model model) {
         List<Division> divisions = divisionMapper.findAll();
 
@@ -174,7 +174,7 @@ public class ProfessorController {
         return "role/professor/counseling/newCounseling";
     }
 
-    @RequestMapping("/studentGuidance/counseling/newCounselingDetail")
+    @RequestMapping(value = "/studentGuidance/counseling/newCounselingDetail", method = RequestMethod.GET)
     public String newCounselingDetail(Model model, @RequestParam int studentId) {
         User studentUser = userMapper.findOne(studentId);
         model.addAttribute("yearList", getYearList());
@@ -199,7 +199,7 @@ public class ProfessorController {
         return "redirect:/professor/studentGuidance/counseling?result=success";
     }
 
-    @RequestMapping("/studentGuidance/counseling/studentTable")
+    @RequestMapping(value = "/studentGuidance/counseling/studentTable", method = RequestMethod.GET)
     public String counselingStudentTable(Model model, @RequestParam(required = false) String number,
             @RequestParam(required = false) String name,
             @RequestParam(defaultValue = "0", required = false) int division) {
@@ -225,7 +225,7 @@ public class ProfessorController {
         return "role/professor/counseling/studentTable";
     }
 
-    @RequestMapping("/studentGuidance/counseling/counselingTable")
+    @RequestMapping(value = "/studentGuidance/counseling/counselingTable", method = RequestMethod.GET)
     public String counselingStudentTable(Model model, @RequestParam(required = false, defaultValue = "0") int year,
             @RequestParam(required = false) String name) {
         Counseling firstCounseling = null;
@@ -249,7 +249,7 @@ public class ProfessorController {
         return "role/professor/counseling/counselingTable";
     }
 
-    @RequestMapping("/studentGuidance/counseling/counselingDetail")
+    @RequestMapping(value = "/studentGuidance/counseling/counselingDetail", method = RequestMethod.GET)
     public String counselingStudentDetail(Model model, @RequestParam int counselingId,
             @RequestParam(defaultValue = "false", required = false) String print) {
         Counseling counseling = counselingMapper.findOne(counselingId);
@@ -275,7 +275,7 @@ public class ProfessorController {
         return "role/professor/counseling/counselingDetail";
     }
 
-    @RequestMapping("/classProgress/attendance")
+    @RequestMapping(value = "/classProgress/attendance", method = RequestMethod.GET)
     public String attendance(Model model) {
 
         List<Division> divisions = divisionMapper.findAll();
@@ -288,7 +288,7 @@ public class ProfessorController {
         return "role/professor/attendance/attendance";
     }
 
-    @RequestMapping("/classProgress/attendance/studentListExcel")
+    @RequestMapping(value = "/classProgress/attendance/studentListExcel", method = RequestMethod.GET)
     public ModelAndView institutionExcel(HttpServletResponse response, @RequestParam int profCourseId, Locale locale) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         sdf.setTimeZone(TimeZone.getTimeZone("Egypt"));
@@ -305,7 +305,7 @@ public class ProfessorController {
         return new ModelAndView(new StudentListExcelView(), objectMap);
     }
 
-    @RequestMapping("/classProgress/attendance/courseTable")
+    @RequestMapping(value = "/classProgress/attendance/courseTable", method = RequestMethod.GET)
     public String professorCourseTable(Model model,
             @RequestParam(defaultValue = "0", required = false) int year,
             @RequestParam(defaultValue = "0", required = false) int semester) {
@@ -333,7 +333,7 @@ public class ProfessorController {
         return "role/professor/attendance/courseTable";
     }
 
-    @RequestMapping("/classProgress/attendance/courseDetail")
+    @RequestMapping(value = "/classProgress/attendance/courseDetail", method = RequestMethod.GET)
     public String attendanceCourseDetail(Model model, @RequestParam int profCourseId) {
         ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         model.addAttribute("pc", pc);
@@ -367,14 +367,14 @@ public class ProfessorController {
         return "redirect:/professor/classProgress/attendance";
     }
 
-    @RequestMapping("/classProgress/inquiryCourse")
+    @RequestMapping(value = "/classProgress/inquiryCourse", method = RequestMethod.GET)
     public String inquiryCourse(Model model) {
 
         model.addAttribute("yearList", getYearList());
         return "role/professor/inquiryCourse/inquiryCourse";
     }
 
-    @RequestMapping("/classProgress/inquiryCourse/courseTable")
+    @RequestMapping(value = "/classProgress/inquiryCourse/courseTable", method = RequestMethod.GET)
     public String inquiryCourseTable(Model model,
             @RequestParam(defaultValue = "0", required = false) int year,
             @RequestParam(defaultValue = "0", required = false) int semester) {
@@ -400,7 +400,7 @@ public class ProfessorController {
         return "role/professor/inquiryCourse/courseTable";
     }
 
-    @RequestMapping("/classProgress/inquiryCourse/courseDetail")
+    @RequestMapping(value = "/classProgress/inquiryCourse/courseDetail", method = RequestMethod.GET)
     public String inCourseDetail(Model model, @RequestParam int profCourseId,
             @RequestParam(defaultValue = "false", required = false) String print) {
         ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
@@ -433,7 +433,7 @@ public class ProfessorController {
         return "role/professor/inquiryCourse/courseDetail";
     }
 
-    @RequestMapping("/classProgress/syllabus")
+    @RequestMapping(value = "/classProgress/syllabus", method = RequestMethod.GET)
     public String syllabus(Model model, @RequestParam(required = false) String result) {
 
         model.addAttribute("yearList", getYearList());
@@ -441,7 +441,7 @@ public class ProfessorController {
         return "role/professor/syllabus/syllabus";
     }
 
-    @RequestMapping("/classProgress/syllabus/courseDetail")
+    @RequestMapping(value = "/classProgress/syllabus/courseDetail", method = RequestMethod.GET)
     public String courseDetail(Model model, @RequestParam int profCourseId,
             @RequestParam(defaultValue = "false", required = false) String print) {
         ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
@@ -619,7 +619,7 @@ public class ProfessorController {
         return "success";
     }
 
-    @RequestMapping("/classProgress/syllabus/courseTable")
+    @RequestMapping(value = "/classProgress/syllabus/courseTable", method = RequestMethod.GET)
     public String syllabusCourseTable(Model model,
             @RequestParam(defaultValue = "0", required = false) int year,
             @RequestParam(defaultValue = "0", required = false) int semester) {
@@ -649,7 +649,7 @@ public class ProfessorController {
         return "role/professor/syllabus/courseTable";
     }
 
-    @RequestMapping("/classProgress/classAssessment")
+    @RequestMapping(value = "/classProgress/classAssessment", method = RequestMethod.GET)
     public String classAssessment(Model model) {
 
         model.addAttribute("yearList", getYearList());
@@ -657,7 +657,7 @@ public class ProfessorController {
         return "role/professor/classAssessment/classAssessment";
     }
 
-    @RequestMapping("/classProgress/classAssessment/courseTable")
+    @RequestMapping(value = "/classProgress/classAssessment/courseTable", method = RequestMethod.GET)
     public String classAssessmentCourseTable(Model model,
             @RequestParam(defaultValue = "0", required = false) int year,
             @RequestParam(defaultValue = "0", required = false) int semester) {
@@ -685,7 +685,7 @@ public class ProfessorController {
         return "role/professor/classAssessment/courseTable";
     }
 
-    @RequestMapping("/classProgress/classAssessment/courseDetail")
+    @RequestMapping(value = "/classProgress/classAssessment/courseDetail", method = RequestMethod.GET)
     public String classAssessmentCourseDetail(Model model, @RequestParam int profCourseId,
             @RequestParam(defaultValue = "false", required = false) String print) {
         ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
@@ -704,7 +704,7 @@ public class ProfessorController {
         return "role/professor/classAssessment/courseDetail";
     }
 
-    @RequestMapping("/classProgress/registerGrade")
+    @RequestMapping(value = "/classProgress/registerGrade", method = RequestMethod.GET)
     public String registerGrade(Model model) {
 
         model.addAttribute("yearList", getYearList());
@@ -769,7 +769,7 @@ public class ProfessorController {
         return result + "_" + total + "_" + grade;
     }
 
-    @RequestMapping("/classProgress/registerGrade/courseTable")
+    @RequestMapping(value = "/classProgress/registerGrade/courseTable", method = RequestMethod.GET)
     public String registerGradeCourseTable(Model model,
             @RequestParam(defaultValue = "0", required = false) int year,
             @RequestParam(defaultValue = "0", required = false) int semester) {
@@ -796,7 +796,7 @@ public class ProfessorController {
         return "role/professor/registerGrade/courseTable";
     }
 
-    @RequestMapping("/classProgress/registerGrade/courseDetail")
+    @RequestMapping(value = "/classProgress/registerGrade/courseDetail", method = RequestMethod.GET)
     public String registerGradeCourseDetail(Model model, @RequestParam int profCourseId) {
         ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         model.addAttribute("pc", pc);
@@ -817,7 +817,7 @@ public class ProfessorController {
         return "role/professor/registerGrade/courseDetail";
     }
 
-    @RequestMapping("/classProgress/registerGrade/courseDetailForPrint")
+    @RequestMapping(value = "/classProgress/registerGrade/courseDetailForPrint", method = RequestMethod.GET)
     public String registerGradeCourseDetailForPrint(Model model, @RequestParam int profCourseId) {
         ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         model.addAttribute("pc", pc);
@@ -873,7 +873,7 @@ public class ProfessorController {
         return valid;
     }
 
-    @RequestMapping("/classProgress/registerGrade/ratioDetail")
+    @RequestMapping(value = "/classProgress/registerGrade/ratioDetail", method = RequestMethod.GET)
     public String registerGradeRatioDetail(Model model, @RequestParam int profCourseId) {
         ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         model.addAttribute("pc", pc);
@@ -887,7 +887,7 @@ public class ProfessorController {
         return "role/common/grade/ratioDetail";
     }
 
-    @RequestMapping("/classProgress/cqiReport")
+    @RequestMapping(value = "/classProgress/cqiReport", method = RequestMethod.GET)
     public String cqiReport(Model model) {
 
         model.addAttribute("yearList", getYearList());
@@ -895,7 +895,7 @@ public class ProfessorController {
         return "role/professor/cqiReport/cqiReport";
     }
 
-    @RequestMapping("/classProgress/cqiReport/courseTable")
+    @RequestMapping(value = "/classProgress/cqiReport/courseTable", method = RequestMethod.GET)
     public String cqiReportCourseTable(Model model,
             @RequestParam(defaultValue = "0", required = false) int year,
             @RequestParam(defaultValue = "0", required = false) int semester) {
@@ -924,7 +924,7 @@ public class ProfessorController {
         return "role/professor/cqiReport/courseTable";
     }
 
-    @RequestMapping("/classProgress/cqiReport/courseDetail")
+    @RequestMapping(value = "/classProgress/cqiReport/courseDetail", method = RequestMethod.GET)
     public String cqiReportCourseDetail(Model model, @RequestParam int profCourseId,
             @RequestParam(defaultValue = "false", required = false) String print) {
         MenuAccess menuAccess = menuAccessMapper.findOne();
@@ -1010,7 +1010,7 @@ public class ProfessorController {
         return "true";
     }
 
-    @RequestMapping("/classProgress/graduationResearchPlan")
+    @RequestMapping(value = "/classProgress/graduationResearchPlan", method = RequestMethod.GET)
     public String graduationResearchPlan(Model model) {
 
         model.addAttribute("yearList", getYearList());
@@ -1018,7 +1018,7 @@ public class ProfessorController {
         return "role/professor/graduationResearchPlan/graduationResearchPlan";
     }
 
-    @RequestMapping("/classProgress/graduationResearchPlan/studentTable")
+    @RequestMapping(value = "/classProgress/graduationResearchPlan/studentTable", method = RequestMethod.GET)
     public String graduationResearchPlanStudentTable(Model model,
             @RequestParam(required = false, defaultValue = "0") int year) {
 
@@ -1044,7 +1044,7 @@ public class ProfessorController {
         return "role/professor/graduationResearchPlan/studentTable";
     }
 
-    @RequestMapping("/classProgress/graduationResearchPlan/planDetail")
+    @RequestMapping(value = "/classProgress/graduationResearchPlan/planDetail", method = RequestMethod.GET)
     public String graduationResearchPlanStudentDetail(Model model, @RequestParam int planId) {
         GraduationResearchPlan graduationResearchPlan = graduationResearchPlanMapper.findOne(planId);
         model.addAttribute("stored", graduationResearchPlan);

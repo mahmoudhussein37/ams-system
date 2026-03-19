@@ -31,7 +31,7 @@ public class BoardController {
     private BoardMapper boardMapper;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/form")
+    @RequestMapping(value = "/form", method = RequestMethod.GET)
     public String form(Model model) {
         model.addAttribute("article", new Article());
         return "role/common/board/form";
@@ -48,7 +48,7 @@ public class BoardController {
     }
 
 
-    @RequestMapping(value = "/list")
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(Model model, @PathVariable String boardName, @RequestParam(required = false) boolean all) {
         List<Article> articleList;
         if(all) {
@@ -79,7 +79,7 @@ public class BoardController {
         return datatablesResponse;
     }
 
-    @RequestMapping(value = "/{articleId}")
+    @RequestMapping(value = "/{articleId}", method = RequestMethod.GET)
     public String read(Model model, @PathVariable int articleId, @PathVariable String boardName) {
         model.addAttribute("article", boardService.read(articleId, getBoardTableName(boardName)));
         return "role/common/board/article";
@@ -87,7 +87,7 @@ public class BoardController {
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/edit/{articleId}")
+    @RequestMapping(value = "/edit/{articleId}", method = RequestMethod.GET)
     public String editForm(Model model, @PathVariable int articleId, @PathVariable String boardName) {
         Article article = boardMapper.findOne(getBoardTableName(boardName), articleId);
         model.addAttribute("article", article);

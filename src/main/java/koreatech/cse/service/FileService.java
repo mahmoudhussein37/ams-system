@@ -213,4 +213,40 @@ public class FileService {
         }
         return true;
     }
+
+    /**
+     * Saves a MultipartFile to a sanitized path within the application temp directory.
+     * Validates that the resolved canonical path does not escape the temp base directory,
+     * preventing path traversal attacks from malicious filenames.
+     *
+     * @param multipartFile the uploaded file
+     * @param request       the current HTTP request
+     * @return the File written to disk (guaranteed to be within the temp directory)
+     * @throws IOException       if the file cannot be written
+     * @throws SecurityException if the resolved path escapes the temp directory
+     */
+    public File saveMultipartToTempFile(MultipartFile multipartFile, HttpServletRequest request) throws IOException {
+        String tempBasePath = getTempPath(request);
+        File tempDir = new File(tempBasePath);
+        if (!tempDir.exists()) {
+            tempDir.mkdirs();
+        }
+
+        String originalName = multipartFile.getOriginalFilename();
+        String safeName = sanitizeFilename(originalName);
+
+        File targetFile = new File(tempDir, safeName);
+
+        // Canonical path validation — defense-in-depth beyond sanitizeFilename
+        String canonicalBase = tempDir.getCanonicalPath();
+        String canonicalTarget = targetFile.getCanonicalPath();
+        if (!canonicalTarget.startsWith(canonicalBase + File.separator)
+                && !canonicalTarget.equals(canonicalBase)) {
+            throw new SecurityException(
+                    "Path traversal attempt blocked: resolved path escapes temp directory");
+        }
+
+        multipartFile.transferTo(targetFile);
+        return targetFile;
+    }
 }

@@ -317,20 +317,28 @@ public class CurriculumService {
                     "Uploaded file has invalid ID. Transaction will rollback.");
         }
 
-        int updated = curriculumMapper.updateUploadedFileId(existing.getId(), newFileId);
-        if (updated == 0) {
+        int updatedRows = curriculumMapper.updateUploadedFileId(existing.getId(), newFileId);
+        if (updatedRows == 0) {
             logger.warn("updateCurriculum: ORPHAN_FILE_POSSIBLE - path={}, fileId={}, division={}, year={}, user={}",
                     orphanFilePath, orphanFileId, divisionId, academicYear, currentUser.getId());
             throw new IllegalStateException(
                     "Curriculum is no longer ACTIVE");
         }
-        existing.setUploadedFileId(newFileId);
+        // Re-fetch from DB to guarantee return value reflects committed state
+        Curriculum updated = curriculumMapper.findActiveByDivisionYear(divisionId, academicYear);
+        if (updated == null) {
+            throw new IllegalStateException(
+                    "Post-update invariant violated: no ACTIVE curriculum found after update, division="
+                    + divisionId + ", year=" + academicYear);
+        }
+        if (updated.getUploadedFileId() != newFileId) {
+            logger.warn("updateCurriculum: INV-3 WARNING - expected uploadedFileId={}, found={}, division={}, year={}",
+                    newFileId, updated.getUploadedFileId(), divisionId, academicYear);
+        }
+        logger.info("updateCurriculum: SUCCESS - division={}, year={}, curriculumId={}, newFileId={}",
+                divisionId, academicYear, updated.getId(), newFileId);
 
-        logger.info(
-                "updateCurriculum: SUCCESS - Curriculum updated (file replaced), division={}, year={}, curriculumId={}, newFileId={}",
-                divisionId, academicYear, existing.getId(), newFileId);
-
-        return existing;
+        return updated;
     }
 
     // =========================================================================

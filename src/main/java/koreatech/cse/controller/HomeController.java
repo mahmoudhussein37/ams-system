@@ -50,7 +50,7 @@ public class HomeController {
     @Inject
     private FileAccessService fileAccessService;
 
-    @RequestMapping
+    @RequestMapping(method = RequestMethod.GET)
     public String home(Model model) {
 
         String[] boardTableNames = { "notice", "de", "hire", "schedule" };
@@ -63,7 +63,7 @@ public class HomeController {
         return "index";
     }
 
-    @RequestMapping("/profList")
+    @RequestMapping(value = "/profList", method = RequestMethod.GET)
     public String profList(Model model, @RequestParam(required = false, defaultValue = "0") int divisionId,
             @RequestParam(required = false, defaultValue = "0") int defaultSelected) {
         Searchable searchable = new Searchable();
@@ -78,13 +78,13 @@ public class HomeController {
     /*
      * /registerAdmin — disabled in production
      */
-    @RequestMapping("/registerAdmin")
+    @RequestMapping(value = "/registerAdmin", method = RequestMethod.GET)
     @ResponseBody
     public String registerAdmin(@RequestParam String code) {
         return "disabled in production";
     }
 
-    @RequestMapping("/signin")
+    @RequestMapping(value = "/signin", method = RequestMethod.GET)
     public String signin(Model model, @RequestParam(required = false) String msg) {
         if (User.current() != null) {
             return "redirect:/";

@@ -97,7 +97,7 @@ public class StudentController {
         return "student";
     }
 
-    @RequestMapping("/courseGuide/yearlyCurriculum")
+    @RequestMapping(value = "/courseGuide/yearlyCurriculum", method = RequestMethod.GET)
     public String yearlyCurriculum(Model model) {
 
         List<Division> divisions = divisionMapper.findAll();
@@ -107,7 +107,7 @@ public class StudentController {
         return "role/student/yearlyCurriculum/yearlyCurriculum";
     }
 
-    @RequestMapping("/courseGuide/yearlyCurriculum/courseTable")
+    @RequestMapping(value = "/courseGuide/yearlyCurriculum/courseTable", method = RequestMethod.GET)
     public String curriculumTable(Model model,
             @RequestParam(defaultValue = "0", required = false) int year,
             @RequestParam(defaultValue = "0", required = false) int division) {
@@ -131,13 +131,13 @@ public class StudentController {
         return "role/student/yearlyCurriculum/courseTable";
     }
 
-    @RequestMapping("/courseGuide/courseInfo")
+    @RequestMapping(value = "/courseGuide/courseInfo", method = RequestMethod.GET)
     public String courseInfo(Model model) {
 
         return "role/student/courseInfo/courseInfo";
     }
 
-    @RequestMapping("/courseGuide/courseInfo/courseTable")
+    @RequestMapping(value = "/courseGuide/courseInfo/courseTable", method = RequestMethod.GET)
     public String courseInfoCourseTable(Model model,
             @RequestParam(required = false) String code,
             @RequestParam(required = false) String title) {
@@ -164,7 +164,7 @@ public class StudentController {
         return "role/student/courseInfo/courseTable";
     }
 
-    @RequestMapping("/courseGuide/courseInfo/courseDetail")
+    @RequestMapping(value = "/courseGuide/courseInfo/courseDetail", method = RequestMethod.GET)
     public String courseInfoCourseDetail(Model model, @RequestParam int courseId) {
         Course course = courseMapper.findOne(courseId);
         model.addAttribute("course", course);
@@ -172,12 +172,12 @@ public class StudentController {
         return "role/student/courseInfo/courseDetail";
     }
 
-    @RequestMapping("/courseGuide/alternative")
+    @RequestMapping(value = "/courseGuide/alternative", method = RequestMethod.GET)
     public String alternative(Model model) {
         return "role/student/alternative/alternative";
     }
 
-    @RequestMapping("/courseGuide/alternative/courseTable")
+    @RequestMapping(value = "/courseGuide/alternative/courseTable", method = RequestMethod.GET)
     public String alternativeCourseTable(Model model,
             @RequestParam(required = false) String code,
             @RequestParam(required = false) String title) {
@@ -203,7 +203,7 @@ public class StudentController {
         return "role/student/alternative/courseTable";
     }
 
-    @RequestMapping("/courseGuide/alternative/courseDetail")
+    @RequestMapping(value = "/courseGuide/alternative/courseDetail", method = RequestMethod.GET)
     public String alternativeCourseDetail(Model model, @RequestParam int courseId) {
         Course course = courseMapper.findOne(courseId);
         model.addAttribute("course", course);
@@ -212,7 +212,7 @@ public class StudentController {
         return "role/student/alternative/courseDetail";
     }
 
-    @RequestMapping("/register/basic")
+    @RequestMapping(value = "/register/basic", method = RequestMethod.GET)
     public String basic(Model model) {
 
         User studentUser = userMapper.findOne(User.current().getId());
@@ -256,7 +256,7 @@ public class StudentController {
         return "redirect:/student/register/basic";
     }
 
-    @RequestMapping("/classInformation/syllabus")
+    @RequestMapping(value = "/classInformation/syllabus", method = RequestMethod.GET)
     public String syllabus(Model model) {
 
         List<Division> divisions = divisionMapper.findAll();
@@ -266,7 +266,7 @@ public class StudentController {
         return "role/student/syllabus/syllabus";
     }
 
-    @RequestMapping("/classInformation/syllabus/courseTable")
+    @RequestMapping(value = "/classInformation/syllabus/courseTable", method = RequestMethod.GET)
     public String syllabusCourseTable(Model model,
             @RequestParam(defaultValue = "0", required = false) int year,
             @RequestParam(defaultValue = "0", required = false) int semester,
@@ -297,7 +297,7 @@ public class StudentController {
         return "role/student/syllabus/courseTable";
     }
 
-    @RequestMapping("/classInformation/syllabus/courseDetail")
+    @RequestMapping(value = "/classInformation/syllabus/courseDetail", method = RequestMethod.GET)
     public String courseDetail(Model model, @RequestParam int profCourseId) {
         ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
         model.addAttribute("pc", pc);
@@ -327,7 +327,7 @@ public class StudentController {
         return "role/student/syllabus/courseDetail";
     }
 
-    @RequestMapping("/classInformation/classAssessment")
+    @RequestMapping(value = "/classInformation/classAssessment", method = RequestMethod.GET)
     public String assessment(Model model, @RequestParam(required = false) String result) {
 
         model.addAttribute("yearList", getYearList());
@@ -335,7 +335,7 @@ public class StudentController {
         return "role/student/classAssessment/classAssessment";
     }
 
-    @RequestMapping("/classInformation/classAssessment/courseTable")
+    @RequestMapping(value = "/classInformation/classAssessment/courseTable", method = RequestMethod.GET)
     public String classAssessmentCourseTable(Model model,
             @RequestParam(defaultValue = "0", required = false) int year,
             @RequestParam(defaultValue = "0", required = false) int semester) {
@@ -364,7 +364,7 @@ public class StudentController {
         return "role/student/classAssessment/courseTable";
     }
 
-    @RequestMapping("/classInformation/classAssessment/courseDetail")
+    @RequestMapping(value = "/classInformation/classAssessment/courseDetail", method = RequestMethod.GET)
     public String classAssessmentCourseDetail(Model model, @RequestParam int studentCourseId) {
         User studentUser = User.current();
         StudentCourse sc = studentCourseMapper.findOne(studentCourseId);
@@ -398,7 +398,7 @@ public class StudentController {
         return "redirect:/student/classInformation/classAssessment?result=success";
     }
 
-    @RequestMapping("/grades/inquiryGrade")
+    @RequestMapping(value = "/grades/inquiryGrade", method = RequestMethod.GET)
     public String inquiryGrade(Model model) {
         User studentUser = User.current();
         model.addAttribute("studentUser", studentUser);
@@ -434,7 +434,7 @@ public class StudentController {
         return "role/student/inquiryGrade/inquiryGrade";
     }
 
-    @RequestMapping("/grades/inquiryGrade/gradeDetail")
+    @RequestMapping(value = "/grades/inquiryGrade/gradeDetail", method = RequestMethod.GET)
     public String inquiryGradeDetail(Model model, @RequestParam int semesterId) {
         User studentUser = User.current();
 
@@ -455,7 +455,7 @@ public class StudentController {
         return "role/student/inquiryGrade/gradeDetail";
     }
 
-    @RequestMapping("/grades/inquiryGrade/gradeDetailForPrint")
+    @RequestMapping(value = "/grades/inquiryGrade/gradeDetailForPrint", method = RequestMethod.GET)
     public String inquiryGradeDetailPrint(Model model) {
         User studentUser = User.current();
         model.addAttribute("studentUser", studentUser);
@@ -475,7 +475,7 @@ public class StudentController {
         return "role/common/grade/gradeCertForPrint";
     }
 
-    @RequestMapping("/graduation/graduationRequirements")
+    @RequestMapping(value = "/graduation/graduationRequirements", method = RequestMethod.GET)
     public String graduationRequirements(Model model) {
         User studentUser = User.current();
         User advisor = userMapper.findOne(studentUser.getAdvisorId());
@@ -494,7 +494,7 @@ public class StudentController {
         return "role/student/graduationRequirements/graduationRequirements";
     }
 
-    @RequestMapping("/graduation/graduationRequirements/gradeDetail")
+    @RequestMapping(value = "/graduation/graduationRequirements/gradeDetail", method = RequestMethod.GET)
     public String requiredGradeDetail(Model model) {
         User studentUser = User.current();
         model.addAttribute("studentUser", studentUser);
@@ -502,7 +502,7 @@ public class StudentController {
         return "role/student/graduationRequirements/gradeDetail";
     }
 
-    @RequestMapping("/graduation/graduationResearchPlan")
+    @RequestMapping(value = "/graduation/graduationResearchPlan", method = RequestMethod.GET)
     public String graduationResearchPlan(Model model, @RequestParam(required = false) String result) {
         User studentUser = User.current();
         model.addAttribute("studentUser", studentUser);
