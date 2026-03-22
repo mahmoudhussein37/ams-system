@@ -36,6 +36,7 @@ public class Authority implements GrantedAuthority, Serializable {
         this.role = role;
     }
 
+    @Override
     public String getAuthority() {
         return role.toCode();
     }

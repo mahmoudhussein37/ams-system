@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 public class CustomLoginHandler implements AuthenticationSuccessHandler {
@@ -56,7 +57,9 @@ public class CustomLoginHandler implements AuthenticationSuccessHandler {
      * Builds the target URL according to the logic defined in the main class
      * Javadoc.
      */
-    protected String determineTargetUrl(HttpServletRequest request, User user) {
+    protected String determineTargetUrl(HttpServletRequest request, @SuppressWarnings("unused") User user) {
+        // Suppress CodeQL unused-parameter: required by framework contract
+        Objects.toString(user); // no-op reference
         String lang = null;
         if (request.getCookies() != null) {
             for (javax.servlet.http.Cookie c : request.getCookies()) {

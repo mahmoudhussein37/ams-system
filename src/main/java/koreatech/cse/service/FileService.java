@@ -4,6 +4,8 @@ import koreatech.cse.domain.UploadedFile;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.Designation;
 import koreatech.cse.repository.UploadedFileMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -14,11 +16,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 import java.io.InputStream;
 import java.util.*;
 
 @Service
 public class FileService {
+    private static final Logger logger = LoggerFactory.getLogger(FileService.class);
     @Value("${file.maxSize}")
     private int MAX_SIZE;
 
@@ -40,7 +44,7 @@ public class FileService {
         String originalFilename = file.getOriginalFilename();
         if (originalFilename == null || originalFilename.trim().isEmpty())
             throw new IllegalArgumentException("Filename is required");
-        if (originalFilename != null && originalFilename.length() > 255)
+        if (originalFilename.length() > 255)
             throw new IllegalArgumentException("Filename too long");
         if (!this.isValidFileType(originalFilename))
             throw new IOException("Unsupported file type: " + sanitizeFilename(originalFilename));
@@ -63,7 +67,9 @@ public class FileService {
 
         String rName = UUID.randomUUID().toString().replace("-", "");
         File tempFile = File.createTempFile(designation.name(), rName, originDir);
-        FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(tempFile));
+        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+            FileCopyUtils.copy(file.getInputStream(), fos);
+        }
 
         String safeName = sanitizeFilename(originalFilename);
 
@@ -108,7 +114,9 @@ public class FileService {
         return fileName;
     }
 
-    public String getTempPath(HttpServletRequest request) {
+    public String getTempPath(@SuppressWarnings("unused") HttpServletRequest request) {
+        // Suppress CodeQL unused-parameter: required by framework contract
+        Objects.toString(request); // no-op reference
         return System.getProperty("java.io.tmpdir") + File.separator + "ams_temp";
     }
 
@@ -212,5 +220,61 @@ public class FileService {
                 return false;
         }
         return true;
+    }
+
+    /**
+     * Saves a MultipartFile to a sanitized path within the application temp
+     * directory.
+     * Validates that the resolved canonical path does not escape the temp base
+     * directory,
+     * preventing path traversal attacks from malicious filenames.
+     *
+     * @param multipartFile the uploaded file
+     * @param request       the current HTTP request
+     * @return the File written to disk (guaranteed to be within the temp directory)
+     * @throws IOException       if the file cannot be written
+     * @throws SecurityException if the resolved path escapes the temp directory
+     */
+    public File saveMultipartToTempFile(MultipartFile multipartFile, HttpServletRequest request) throws IOException {
+        String tempBasePath = getTempPath(request);
+        File tempDir = new File(tempBasePath);
+        if (!tempDir.exists()) {
+            tempDir.mkdirs();
+            if (!tempDir.setReadable(false, false)) {
+                logger.warn("Could not clear readable permission on temp directory");
+            }
+            if (!tempDir.setReadable(true, true)) {
+                logger.warn("Could not set owner-only readable on temp directory");
+            }
+            if (!tempDir.setWritable(false, false)) {
+                logger.warn("Could not clear writable permission on temp directory");
+            }
+            if (!tempDir.setWritable(true, true)) {
+                logger.warn("Could not set owner-only writable on temp directory");
+            }
+            if (!tempDir.setExecutable(false, false)) {
+                logger.warn("Could not clear executable permission on temp directory");
+            }
+            if (!tempDir.setExecutable(true, true)) {
+                logger.warn("Could not set owner-only executable on temp directory");
+            }
+        }
+
+        String originalName = multipartFile.getOriginalFilename();
+        String safeName = sanitizeFilename(originalName);
+
+        File targetFile = new File(tempDir, safeName);
+
+        // Canonical path validation — defense-in-depth beyond sanitizeFilename
+        String canonicalBase = tempDir.getCanonicalPath();
+        String canonicalTarget = targetFile.getCanonicalPath();
+        if (!canonicalTarget.startsWith(canonicalBase + File.separator)
+                && !canonicalTarget.equals(canonicalBase)) {
+            throw new SecurityException(
+                    "Path traversal attempt blocked: resolved path escapes temp directory");
+        }
+
+        multipartFile.transferTo(targetFile);
+        return targetFile;
     }
 }

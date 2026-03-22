@@ -15,9 +15,11 @@ public class BoardService {
     private BoardMapper boardMapper;
 
     public Article read(int articleId, String boardTableName) {
-        Article article = boardMapper.findOne(boardTableName, articleId);
+        return boardMapper.findOne(boardTableName, articleId);
+    }
+
+    public void incrementHit(int articleId, String boardTableName) {
         boardMapper.updateHit(boardTableName, articleId);
-        return article;
     }
 
     @Transactional
