@@ -70,7 +70,7 @@ jobs:
           sleep 5
           HTTP_CODE=$(ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
             ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
-            "curl -fsI --max-time 10 -o /dev/null -w '%{http_code}' http://localhost/signin 2>/dev/null || echo 000")
+            "curl -fs --max-time 10 -o /dev/null -w '%{http_code}' http://localhost/signin 2>/dev/null || echo 000")
           echo "Health check: HTTP $HTTP_CODE"
           if [ "$HTTP_CODE" != "200" ]; then
             echo "ERROR: Application health check failed"
