@@ -18,9 +18,7 @@
                                 <c:set var="testMode">
                                     <spring:eval expression="@config['super.test']" />
                                 </c:set>
-                                <c:set var="baseUrl">
-                                    <spring:eval expression="@config['super.baseUrl']" />
-                                </c:set>
+                                <c:set var="baseUrl" value="${root}" />
                                 <c:set var="resources">${req.contextPath}/resources</c:set>
                                 <c:set var="current_path"
                                     value="${requestScope['javax.servlet.forward.servlet_path']}" />
