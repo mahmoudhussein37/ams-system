@@ -49,7 +49,7 @@
                     </td>
                     <td>
                         <c:choose>
-                            <c:when test="${studentUser.username != null && studentUser.username != ''}">
+                            <c:when test="${studentUser.confirm}">
                                 <span class="label label-light-success label-inline font-weight-bold">
                                     <spring:message code="student.status.active" />
                                 </span>
