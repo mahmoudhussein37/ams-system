@@ -47,11 +47,16 @@ public class HttpsEnforcementFilter implements Filter {
                 || "0:0:0:0:0:0:0:1".equals(serverName);
 
         if (!secureRequest && !isLocalhost) {
-            String redirectUrl = "https://" + trustedRequestService.resolveHostForRedirect(httpRequest)
-                    + httpRequest.getRequestURI();
+            // Strip CR/LF to prevent HTTP response splitting via Location header injection
+            String rawUri = httpRequest.getRequestURI().replaceAll("[\r\n]", "");
+            // Block protocol-relative paths that could become open redirects
+            if (rawUri.startsWith("//") || rawUri.contains("://")) {
+                rawUri = "/";
+            }
+            String redirectUrl = "https://" + trustedRequestService.resolveHostForRedirect(httpRequest) + rawUri;
             String queryString = httpRequest.getQueryString();
             if (queryString != null) {
-                redirectUrl += "?" + queryString;
+                redirectUrl += "?" + queryString.replaceAll("[\r\n]", "");
             }
             httpResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
             httpResponse.setHeader("Location", redirectUrl);

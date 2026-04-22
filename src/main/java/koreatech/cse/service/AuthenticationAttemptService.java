@@ -359,6 +359,7 @@ public class AuthenticationAttemptService {
     }
 
     private String safeValue(String value) {
-        return value == null ? "n/a" : value;
+        if (value == null) return "n/a";
+        return value.replace('\r', '_').replace('\n', '_');
     }
 }

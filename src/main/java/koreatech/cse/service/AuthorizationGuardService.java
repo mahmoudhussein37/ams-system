@@ -353,11 +353,13 @@ public class AuthorizationGuardService {
     }
 
     private void logUnauthorized(User currentUser, String resource, int id) {
+        String safeIp = resolveClientIp();
+        if (safeIp != null) safeIp = safeIp.replace('\r', '_').replace('\n', '_');
         logger.warn("SECURITY_EVENT | type=UNAUTHORIZED_ACCESS | user={} | resource={} | id={} | ip={}",
                 currentUser == null ? "anonymous" : String.valueOf(currentUser.getId()),
                 resource == null ? "unknown" : resource,
                 id,
-                resolveClientIp());
+                safeIp);
     }
 
     private String resolveClientIp() {

@@ -49,11 +49,11 @@ public class HomeControllerTest {
         request.setRemoteAddr("127.0.0.1");
 
         when(authenticationAttemptService.checkSignupAllowed(request, null)).thenReturn(true);
-        when(userService.signup(org.mockito.Mockito.any(User.class), org.mockito.Mockito.eq(Role.student),
+        when(userService.signup(org.mockito.Mockito.any(User.class),
                 org.mockito.Mockito.eq("secret")))
                 .thenReturn(SignupResult.IDENTITY_MISMATCH);
 
-        String viewName = homeController.signup(new SignupRequest(), Role.student, "secret", new SimpleSessionStatus(), request);
+        String viewName = homeController.signup(new SignupRequest(), "secret", new SimpleSessionStatus(), request);
 
         assertEquals("redirect:/signin?msg=fail", viewName);
         verify(authenticationAttemptService).recordSignupResult(request, null, SignupResult.IDENTITY_MISMATCH);
@@ -70,10 +70,10 @@ public class HomeControllerTest {
 
         when(authenticationAttemptService.checkSignupAllowed(request, "2024001")).thenReturn(false);
 
-        String viewName = homeController.signup(signupReq, Role.student, "secret", new SimpleSessionStatus(), request);
+        String viewName = homeController.signup(signupReq, "secret", new SimpleSessionStatus(), request);
 
         assertEquals("redirect:/signin?msg=too_many_attempts", viewName);
-        verify(userService, never()).signup(org.mockito.Mockito.any(User.class), org.mockito.Mockito.any(Role.class),
+        verify(userService, never()).signup(org.mockito.Mockito.any(User.class),
                 org.mockito.Mockito.anyString());
         verify(authenticationAttemptService, never()).recordSignupResult(org.mockito.Mockito.any(javax.servlet.http.HttpServletRequest.class),
                 org.mockito.Mockito.anyString(), org.mockito.Mockito.any(SignupResult.class));

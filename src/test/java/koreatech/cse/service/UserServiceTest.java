@@ -88,7 +88,7 @@ public class UserServiceTest {
         when(authorityMapper.findByUserIdAndRole(7, Role.user.toCode())).thenReturn(null);
         when(authorityMapper.findByUserIdAndRole(7, Role.student.toCode())).thenReturn(null);
 
-        SignupResult result = userService.signup(signupUser, Role.student, "secret");
+        SignupResult result = userService.signup(signupUser, "secret");
 
         assertEquals(SignupResult.SUCCESS, result);
         assertEquals("student@example.com", storedUser.getUsername());
@@ -121,7 +121,7 @@ public class UserServiceTest {
         when(authorityMapper.findByUserIdAndRole(10, Role.user.toCode())).thenReturn(new Authority());
         when(authorityMapper.findByUserIdAndRole(10, Role.student.toCode())).thenReturn(new Authority());
 
-        SignupResult result = userService.signup(signupUser, Role.student, "secret");
+        SignupResult result = userService.signup(signupUser, "secret");
 
         assertEquals(SignupResult.SUCCESS, result);
         assertEquals("Mina", storedContact.getFirstName());
@@ -137,7 +137,7 @@ public class UserServiceTest {
         when(userMapper.findByNumber("2024001")).thenReturn(storedUser);
         when(contactMapper.findByUserId(7)).thenReturn(createContact("Alice", "Smith"));
 
-        SignupResult result = userService.signup(signupUser, Role.student, "secret");
+        SignupResult result = userService.signup(signupUser, "secret");
 
         assertEquals(SignupResult.IDENTITY_MISMATCH, result);
         verify(userMapper, never()).updateFromSignup(any(User.class));
@@ -153,7 +153,7 @@ public class UserServiceTest {
         when(contactMapper.findByUserId(7)).thenReturn(createContact("Alice", "Smith"));
         when(userMapper.findByUsername("student@example.com")).thenReturn(null);
 
-        SignupResult result = userService.signup(signupUser, Role.student, "secret");
+        SignupResult result = userService.signup(signupUser, "secret");
 
         assertEquals(SignupResult.ALREADY_ACTIVE, result);
         verify(userMapper, never()).updateFromSignup(any(User.class));
@@ -170,7 +170,7 @@ public class UserServiceTest {
         when(contactMapper.findByUserId(7)).thenReturn(createContact("Alice", "Smith"));
         when(userMapper.findByUsername("student@example.com")).thenReturn(otherUser);
 
-        SignupResult result = userService.signup(signupUser, Role.student, "secret");
+        SignupResult result = userService.signup(signupUser, "secret");
 
         assertEquals(SignupResult.USERNAME_TAKEN, result);
         verify(userMapper, never()).updateFromSignup(any(User.class));
@@ -180,7 +180,7 @@ public class UserServiceTest {
     public void signupRejectsPasswordConfirmationMismatch() {
         User signupUser = createSignupUser("2024001", "student@example.com", "secret", "Alice", "Smith");
 
-        SignupResult result = userService.signup(signupUser, Role.student, "different-secret");
+        SignupResult result = userService.signup(signupUser, "different-secret");
 
         assertEquals(SignupResult.INVALID_INPUT, result);
         verifyNoInteractions(userMapper, contactMapper, authorityMapper, passwordEncoder);
@@ -193,7 +193,7 @@ public class UserServiceTest {
         signupUser.setUsername("student@example.com");
         signupUser.setPassword("secret");
 
-        SignupResult result = userService.signup(signupUser, Role.student, "secret");
+        SignupResult result = userService.signup(signupUser, "secret");
 
         assertEquals(SignupResult.INVALID_INPUT, result);
         verifyNoInteractions(userMapper, contactMapper, authorityMapper, passwordEncoder);
@@ -203,7 +203,7 @@ public class UserServiceTest {
     public void signupRejectsWhitespaceOnlyIdentityFieldsSafely() {
         User signupUser = createSignupUser("   ", "   ", "secret", "   ", "   ");
 
-        SignupResult result = userService.signup(signupUser, Role.student, "secret");
+        SignupResult result = userService.signup(signupUser, "secret");
 
         assertEquals(SignupResult.INVALID_INPUT, result);
         verifyNoInteractions(userMapper, contactMapper, authorityMapper, passwordEncoder);
@@ -211,7 +211,7 @@ public class UserServiceTest {
 
     @Test
     public void signupMethodIsTransactional() throws Exception {
-        Method signupMethod = UserService.class.getMethod("signup", User.class, Role.class, String.class);
+        Method signupMethod = UserService.class.getMethod("signup", User.class, String.class);
         Transactional transactional = signupMethod.getAnnotation(Transactional.class);
 
         assertTrue(signupMethod.isAnnotationPresent(Transactional.class));

@@ -60,10 +60,10 @@ public class UserService implements UserDetailsService {
     private GraduationResearchPlanMapper graduationResearchPlanMapper;
 
     @Transactional(rollbackFor = Exception.class)
-    public SignupResult signup(User user, Role role, String confirmPassword) {
+    public SignupResult signup(User user, String confirmPassword) {
         UUID requestId = UUID.randomUUID();
         String number = user != null ? StringUtils.trimToNull(user.getNumber()) : null;
-        logger.info("[{}] Signup attempt number={}", requestId, number);
+        logger.info("[{}] Signup attempt number={}", requestId, sanitizeForLog(number));
 
         try {
             if (user == null) {
@@ -76,7 +76,7 @@ public class UserService implements UserDetailsService {
             String passwordConfirmation = StringUtils.trimToNull(confirmPassword);
             Contact requestedContact = user.getContact();
             if (requestedContact == null) {
-                logger.error("[{}] Signup failed: missing request contact number={}", requestId, number);
+                logger.error("[{}] Signup failed: missing request contact number={}", requestId, sanitizeForLog(number));
                 return SignupResult.INVALID_INPUT;
             }
 
@@ -93,7 +93,7 @@ public class UserService implements UserDetailsService {
             String lastName = StringUtils.trimToNull(rawLastName);
 
             if (number == null || username == null || StringUtils.isBlank(password) || passwordConfirmation == null
-                    || role == null || firstName == null || lastName == null) {
+                    || firstName == null || lastName == null) {
                 return SignupResult.INVALID_INPUT;
             }
 
@@ -103,18 +103,18 @@ public class UserService implements UserDetailsService {
 
             User stored = userMapper.findByNumber(number);
             if (stored == null) {
-                logger.warn("[{}] Signup failed: student not found number={}", requestId, number);
+                logger.warn("[{}] Signup failed: student not found number={}", requestId, sanitizeForLog(number));
                 return SignupResult.STUDENT_NOT_FOUND;
             }
 
             Contact storedContact = contactMapper.findByUserId(stored.getId());
             if (storedContact == null) {
-                logger.error("[{}] Signup failed: registered contact missing number={}", requestId, number);
+                logger.error("[{}] Signup failed: registered contact missing number={}", requestId, sanitizeForLog(number));
                 return SignupResult.IDENTITY_MISMATCH;
             }
 
             if (!matchesRegisteredIdentity(storedContact, firstName, lastName)) {
-                logger.warn("[{}] Signup failed: identity mismatch number={}", requestId, number);
+                logger.warn("[{}] Signup failed: identity mismatch number={}", requestId, sanitizeForLog(number));
                 return SignupResult.IDENTITY_MISMATCH;
             }
 
@@ -125,7 +125,7 @@ public class UserService implements UserDetailsService {
 
             AccountState storedAccountState = stored.getAccountState();
             if (storedAccountState != AccountState.PENDING) {
-                logger.warn("[{}] Signup blocked: already active number={} state={}", requestId, number,
+                logger.warn("[{}] Signup blocked: already active number={} state={}", requestId, sanitizeForLog(number),
                         storedAccountState);
                 return SignupResult.ALREADY_ACTIVE;
             }
@@ -136,12 +136,12 @@ public class UserService implements UserDetailsService {
 
             userMapper.updateFromSignup(stored);
             ensureAuthority(stored.getId(), Role.user);
-            ensureAuthority(stored.getId(), role);
+            ensureAuthority(stored.getId(), Role.student);
 
-            logger.info("[{}] User activated successfully number={}", requestId, number);
+            logger.info("[{}] User activated successfully number={}", requestId, sanitizeForLog(number));
             return SignupResult.SUCCESS;
         } catch (Exception e) {
-            logger.error("[{}] Signup unexpected error number={}", requestId, number, e);
+            logger.error("[{}] Signup unexpected error number={}", requestId, sanitizeForLog(number), e);
             if (e instanceof RuntimeException) {
                 throw (RuntimeException) e;
             }
@@ -222,7 +222,7 @@ public class UserService implements UserDetailsService {
         if (role == Role.professor) {
             User duplicateProfessor = userMapper.findByNumber(number);
             if (duplicateProfessor != null) {
-                logger.warn("Professor registration rejected: duplicated professor number={}", number);
+                logger.warn("Professor registration rejected: duplicated professor number={}", sanitizeForLog(number));
                 return false;
             }
         }
@@ -515,6 +515,11 @@ public class UserService implements UserDetailsService {
 
     private boolean isEmptyInput(String value) {
         return value == null || value.trim().isEmpty();
+    }
+
+    private String sanitizeForLog(String value) {
+        if (value == null) return "n/a";
+        return value.replace('\r', '_').replace('\n', '_');
     }
 
     private String normalizeUsername(String username) {

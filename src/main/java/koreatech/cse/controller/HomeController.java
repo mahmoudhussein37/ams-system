@@ -117,7 +117,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signup(@ModelAttribute SignupRequest req, @RequestParam Role role,
+    public String signup(@ModelAttribute SignupRequest req,
             @RequestParam(value = "signupUser.passwordConfirm", required = false) String confirmPassword,
             SessionStatus status, HttpServletRequest request) {
         String number = StringUtils.trimToNull(req.getNumber());
@@ -136,7 +136,7 @@ public class HomeController {
         contact.setLastName(req.getContact() != null ? req.getContact().getLastName() : null);
         signupUser.setContact(contact);
 
-        SignupResult result = userService.signup(signupUser, role, confirmPassword);
+        SignupResult result = userService.signup(signupUser, confirmPassword);
         authenticationAttemptService.recordSignupResult(request, number, result);
         authenticationAuditService.log(result == SignupResult.SUCCESS ? SecurityEventType.SIGNUP_SUCCESS : SecurityEventType.SIGNUP_FAILED,
                 number, request, result.name());

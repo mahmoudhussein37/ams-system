@@ -1150,7 +1150,7 @@ public class AdminController {
         }
 
         if (adminService.findUserByNumber(normalizedProfessorNumber) != null) {
-            logger.warn("Professor registration rejected: duplicated professor number={}", normalizedProfessorNumber);
+            logger.warn("Professor registration rejected: duplicated professor number={}", normalizedProfessorNumber.replace('\r', '_').replace('\n', '_'));
             sessionStatus.setComplete();
             return "redirect:/admin/profManagement/profRegistration?result=duplicate_professor";
         }
