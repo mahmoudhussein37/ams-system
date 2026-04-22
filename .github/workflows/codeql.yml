@@ -2,7 +2,7 @@ name: AMS Security Audit — CodeQL Analysis
 
 on:
   push:
-    branches: [ "audit/codeql-scan" ]
+    branches: [ "audit/codeql-scan", "main" ]
   workflow_dispatch:
 
 jobs:
