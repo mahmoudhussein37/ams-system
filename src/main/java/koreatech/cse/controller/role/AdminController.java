@@ -54,6 +54,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Controller
@@ -254,23 +256,13 @@ public class AdminController {
         XSSFWorkbook workbook = null;
 
         try {
-            // Complete taint break: extract path string, validate, create new File from string only
-            String rawPath = file.getAbsolutePath();
-            String allowedBase = new File(
-                System.getProperty("java.io.tmpdir") + File.separator + "ams_temp"
-            ).getCanonicalPath();
-
-            File resolvedFile = new File(rawPath).getCanonicalFile();
-            String resolvedPath = resolvedFile.getCanonicalPath();
-
-            if (!resolvedPath.startsWith(allowedBase + File.separator)
-                    && !resolvedPath.equals(allowedBase)) {
-                throw new SecurityException(
-                    "Path validation failed: resolved path escapes temp directory");
+            Path filePath = file.toPath().toAbsolutePath().normalize();
+            Path allowedBase = Paths.get(System.getProperty("java.io.tmpdir"), "ams_temp").toAbsolutePath().normalize();
+            if (!filePath.startsWith(allowedBase)) {
+                throw new SecurityException("Path validation failed: path escapes temp directory");
             }
 
-            // Create FileInputStream from path string only — breaks CodeQL taint chain
-            fileInputStream = new FileInputStream(resolvedPath);
+            fileInputStream = new FileInputStream(file);
             workbook = new XSSFWorkbook(fileInputStream);
             XSSFSheet sheet = workbook.getSheetAt(0);
             int rows = sheet.getPhysicalNumberOfRows();
@@ -2237,23 +2229,13 @@ public class AdminController {
         XSSFWorkbook workbook = null;
 
         try {
-            // Complete taint break: extract path string, validate, create new File from string only
-            String rawPath = file.getAbsolutePath();
-            String allowedBase = new File(
-                System.getProperty("java.io.tmpdir") + File.separator + "ams_temp"
-            ).getCanonicalPath();
-
-            File resolvedFile = new File(rawPath).getCanonicalFile();
-            String resolvedPath = resolvedFile.getCanonicalPath();
-
-            if (!resolvedPath.startsWith(allowedBase + File.separator)
-                    && !resolvedPath.equals(allowedBase)) {
-                throw new SecurityException(
-                    "Path validation failed: resolved path escapes temp directory");
+            Path filePath = file.toPath().toAbsolutePath().normalize();
+            Path allowedBase = Paths.get(System.getProperty("java.io.tmpdir"), "ams_temp").toAbsolutePath().normalize();
+            if (!filePath.startsWith(allowedBase)) {
+                throw new SecurityException("Path validation failed: path escapes temp directory");
             }
 
-            // Create FileInputStream from path string only — breaks CodeQL taint chain
-            fileInputStream = new FileInputStream(resolvedPath);
+            fileInputStream = new FileInputStream(file);
             workbook = new XSSFWorkbook(fileInputStream);
             XSSFSheet sheet = workbook.getSheetAt(0);
             int rows = sheet.getPhysicalNumberOfRows();

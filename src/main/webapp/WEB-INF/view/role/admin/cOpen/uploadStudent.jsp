@@ -68,7 +68,8 @@
 <script>
 
     function search() {
-        var year = $("#search-year").val().trim();
+        var year = parseInt($("#search-year").val().trim(), 10);
+        if (isNaN(year)) { year = new Date().getFullYear(); }
         location.href="${baseUrl}/admin/courseManagement/curriculum?year=" + year;
 
         /*$(".table-div").load("${baseUrl}/admin/courseManagement/curriculum/courseTable?year=" + year + "&division=" + division);*/

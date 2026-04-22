@@ -275,10 +275,10 @@ public class FileService {
             }
         }
 
-        String originalName = multipartFile.getOriginalFilename();
-        String safeName = sanitizeFilename(originalName);
-
-        File targetFile = new File(tempDir, safeName);
+        // Use server-generated UUID name — no user-supplied filename in the path.
+        // The extension .tmp is sufficient; XSSFWorkbook reads by content, not by name.
+        String serverGenName = UUID.randomUUID().toString().replace("-", "") + ".tmp";
+        File targetFile = new File(tempDir, serverGenName);
 
         // Canonical path validation — defense-in-depth beyond sanitizeFilename
         String canonicalBase = tempDir.getCanonicalPath();
