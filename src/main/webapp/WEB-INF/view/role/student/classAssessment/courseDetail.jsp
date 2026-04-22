@@ -1,5 +1,6 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <form:form class="form" modelAttribute="assessment" id="assessmentForm" action="${baseUrl}/student/classInformation/classAssessment/courseDetail?studentCourseId=${sc.id}" method="post">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <form:hidden path="id"/>
 <div class="card-body">
 

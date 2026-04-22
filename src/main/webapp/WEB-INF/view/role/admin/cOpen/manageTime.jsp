@@ -77,6 +77,7 @@
                             <div class="separator separator-solid my-5"></div>
                             <br/><br/>
                             <form:form modelAttribute="classTime" action="${baseUrl}/admin/courseManagement/cOpen/manageTime?profCourseId=${profCourse.id}" method="post" class="form">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <form:hidden path="profCourseId" value="${profCourse.id}"/>
                                 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.createTime"/></h3>
                                 <div class="row">

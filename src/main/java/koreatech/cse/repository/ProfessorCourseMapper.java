@@ -33,6 +33,12 @@ public interface ProfessorCourseMapper {
     ProfessorCourse findOne(@Param("id") int id);
 
     @ResultMap("findOne-int")
+    @Select("SELECT pc.* FROM professor_course pc " +
+            "JOIN course c ON pc.course_id = c.id " +
+            "WHERE pc.id = #{id} AND c.division_id = #{divisionId} LIMIT 1")
+    ProfessorCourse findOneByIdAndDivision(@Param("id") int id, @Param("divisionId") int divisionId);
+
+    @ResultMap("findOne-int")
     @Select("SELECT * FROM professor_course where user_id = #{userId}")
     List<ProfessorCourse> findByUserId(@Param("userId") int userId);
 
@@ -63,6 +69,65 @@ public interface ProfessorCourseMapper {
             + "</script>")
         //@formatter on
     List<ProfessorCourse> findBy(Searchable searchable);
+
+        // Lightweight variant for analytical views where nested relations are not required.
+        //@formatter off
+        @Select("<script>"
+                        + "SELECT pc.* FROM professor_course pc join course c on pc.course_id=c.id join semester s on pc.semester_id = s.id where 1=1 "
+                        + "<if test='year != 0'> and s.year = #{year}</if>"
+                        + "<if test='semester != 0'> and s.semester = #{semester}</if>"
+                        + "<if test='division != 0'> and c.division_id = #{division}</if>"
+                        + "<if test='courseId != 0'> and c.id = #{courseId}</if>"
+                        + "<if test='code != null'> and c.code LIKE CONCAT('%', #{code}, '%')</if>"
+                        + "<if test='title != null'> and c.title LIKE CONCAT('%', #{title}, '%')</if>"
+                        + "<if test='advisor != 0'> and pc.user_id = #{advisor}</if>"
+                        + "<if test='enabled == true'> and pc.enabled = 1</if>"
+                        + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
+                        + "</script>")
+        //@formatter on
+        List<ProfessorCourse> findByFlat(Searchable searchable);
+
+        @Results({
+                    @Result(column = "prof_course_id", property = "id"),
+                    @Result(column = "prof_course_user_id", property = "userId"),
+                    @Result(column = "prof_course_course_id", property = "courseId"),
+                    @Result(column = "prof_course_divide", property = "divide"),
+                    @Result(column = "prof_course_semester_id", property = "semesterId"),
+                    @Result(column = "prof_course_limit_student", property = "limitStudent"),
+                    @Result(column = "course_id", property = "course.id"),
+                    @Result(column = "course_code", property = "course.code"),
+                    @Result(column = "course_title", property = "course.title"),
+                    @Result(column = "course_subj_category", property = "course.subjCategory"),
+                    @Result(column = "course_enabled", property = "course.enabled"),
+                    @Result(column = "course_division_id", property = "course.division.id"),
+                    @Result(column = "course_division_name", property = "course.division.name"),
+                    @Result(column = "professor_user_id", property = "professorUser.id"),
+                    @Result(column = "professor_first_name", property = "professorUser.contact.firstName"),
+                    @Result(column = "professor_last_name", property = "professorUser.contact.lastName"),
+            })
+            //@formatter off
+            @Select("<script>"
+                    + "SELECT pc.id AS prof_course_id, pc.user_id AS prof_course_user_id, pc.course_id AS prof_course_course_id, "
+                    + "pc.divide AS prof_course_divide, pc.semester_id AS prof_course_semester_id, pc.limit_student AS prof_course_limit_student, "
+                    + "c.id AS course_id, c.code AS course_code, c.title AS course_title, c.subj_category AS course_subj_category, "
+                    + "c.enabled AS course_enabled, c.division_id AS course_division_id, d.name AS course_division_name, "
+                    + "pu.id AS professor_user_id, pct.first_name AS professor_first_name, pct.last_name AS professor_last_name "
+                    + "FROM professor_course pc "
+                    + "JOIN course c ON pc.course_id = c.id "
+                    + "JOIN semester s ON pc.semester_id = s.id "
+                    + "LEFT JOIN division d ON c.division_id = d.id "
+                    + "LEFT JOIN `user` pu ON pc.user_id = pu.id "
+                    + "LEFT JOIN contact pct ON pu.id = pct.user_id "
+                    + "WHERE 1=1 "
+                    + "<if test='year != 0'> and s.year = #{year}</if>"
+                    + "<if test='semester != 0'> and s.semester = #{semester}</if>"
+                    + "<if test='division != 0'> and c.division_id = #{division}</if>"
+                    + "<if test='title != null'> and c.title LIKE CONCAT('%', #{title}, '%')</if>"
+                    + "<if test='enabled == true'> and pc.enabled = 1</if>"
+                    + "ORDER BY s.year DESC, s.semester DESC, c.code ASC"
+                    + "</script>")
+            //@formatter on
+            List<ProfessorCourse> findSyllabusForStudent(Searchable searchable);
 
 
     @Update("UPDATE `professor_course` SET "+

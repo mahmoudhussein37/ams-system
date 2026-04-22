@@ -1,6 +1,8 @@
 package koreatech.cse.domain.role.professor;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.List;
 
 public class LectureFundamentals implements Serializable {
     private static final long serialVersionUID = 4343219L;
+    private static final Logger logger = LoggerFactory.getLogger(LectureFundamentals.class);
 
 
     private int id;
@@ -486,7 +489,7 @@ public class LectureFundamentals implements Serializable {
                 splitList.add(s);
             }
         } catch(Exception e) {
-            e.printStackTrace();;
+            logger.error("String parse error", e);
         }
         return splitList;
     }
@@ -499,7 +502,7 @@ public class LectureFundamentals implements Serializable {
                     return true;
             }
         } catch(Exception e) {
-            e.printStackTrace();;
+            logger.error("String parse error", e);
         }
         return false;
     }

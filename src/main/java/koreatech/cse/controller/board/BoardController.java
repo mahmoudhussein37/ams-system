@@ -5,7 +5,6 @@ import koreatech.cse.datatables.DataTablesRequest;
 import koreatech.cse.datatables.DataTablesResponse;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.univ.Article;
-import koreatech.cse.repository.BoardMapper;
 import koreatech.cse.service.board.BoardService;
 import koreatech.cse.util.mybatis.Pageable;
 import koreatech.cse.util.mybatis.PaginationHelper;
@@ -29,8 +28,6 @@ import java.util.List;
 public class BoardController {
     @Inject
     private BoardService boardService;
-    @Inject
-    private BoardMapper boardMapper;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/form", method = RequestMethod.GET)
@@ -42,7 +39,6 @@ public class BoardController {
     @RequestMapping(value = "/form", method = RequestMethod.POST)
     public String write(Article article, SessionStatus sessionStatus, @PathVariable String boardName) throws IOException {
         article.setUserId(User.current().getId());
-        System.out.println("article = " + article);
         boardService.insert(article, getBoardTableName(boardName));
         sessionStatus.setComplete();
 
@@ -54,9 +50,9 @@ public class BoardController {
     public String list(Model model, @PathVariable String boardName, @RequestParam(required = false) boolean all) {
         List<Article> articleList;
         if(all) {
-            articleList = boardMapper.findArticleAll(getBoardTableName(boardName));
+            articleList = boardService.findArticleAll(getBoardTableName(boardName));
         } else {
-            articleList = boardMapper.findArticleList(getBoardTableName(boardName), 50);
+            articleList = boardService.findArticleList(getBoardTableName(boardName), 50);
         }
 
         model.addAttribute("articleList", articleList);
@@ -71,8 +67,8 @@ public class BoardController {
         int recordsFiltered;
         Pageable pageable = PaginationHelper.pageable(datatablesRequest);
         pageable.setTableName(getBoardTableName(boardName));
-        List<Article> articleList = boardMapper.findArticleListAjax(pageable);
-        recordsTotal = recordsFiltered = boardMapper.countArticleListAjax(pageable);
+        List<Article> articleList = boardService.findArticleListAjax(pageable);
+        recordsTotal = recordsFiltered = boardService.countArticleListAjax(pageable);
         DataTablesResponse datatablesResponse = new DataTablesResponse();
         datatablesResponse.setDraw(datatablesRequest.getDraw());
         datatablesResponse.setRecordsTotal(recordsTotal);
@@ -98,7 +94,7 @@ public class BoardController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/edit/{articleId}", method = RequestMethod.GET)
     public String editForm(Model model, @PathVariable int articleId, @PathVariable String boardName) {
-        Article article = boardMapper.findOne(getBoardTableName(boardName), articleId);
+        Article article = boardService.read(articleId, getBoardTableName(boardName));
         model.addAttribute("article", article);
         model.addAttribute("boardName", boardName);
         return "role/common/board/edit";
@@ -115,7 +111,7 @@ public class BoardController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/delete/{articleId}", method = RequestMethod.POST)
     public String delete(@PathVariable int articleId, @PathVariable String boardName) {
-        boardMapper.delete(getBoardTableName(boardName), articleId);
+        boardService.delete(articleId, getBoardTableName(boardName));
         return "redirect:/board/" + boardName + "/list";
     }
 

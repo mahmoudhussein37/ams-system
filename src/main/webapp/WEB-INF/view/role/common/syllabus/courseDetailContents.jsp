@@ -1,4 +1,5 @@
 <form:form class="form" modelAttribute="lectureContents" id="lectureContentsForm" method="post">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <div class="card-body">
             <%--<div class="row">
                 <div class="col-md-10">

@@ -21,6 +21,7 @@
                                 <%@include file="/WEB-INF/view/role/common/cqi/chartDiv.jsp" %>
 
                                 <form:form class="form" modelAttribute="cqi" id="cqiForm" action="${baseUrl}/professor/classProgress/cqiReport/courseDetail?profCourseId=${pc.id}" method="post">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                     <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="professor.courseLearningObjectives"/></h3>
                                     <div class="row">
                                         <div class="col-md-12">

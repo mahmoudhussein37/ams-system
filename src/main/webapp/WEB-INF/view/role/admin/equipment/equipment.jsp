@@ -28,6 +28,7 @@
                             <div class="separator separator-solid my-5"></div>
                             <br/><br/>
                             <form:form modelAttribute="equipment" action="${baseUrl}/admin/systemManagement/equipment" method="post">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.createEquipmentAndTools"/></h3>
                                 <div class="row">
                                     <div class="col-md-3">

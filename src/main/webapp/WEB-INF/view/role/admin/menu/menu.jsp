@@ -22,6 +22,7 @@
                         <div class="card-body">
                             <div class="table-div">
 <form:form modelAttribute="menuAccess" action="${baseUrl}/admin/systemManagement/menu" method="post" class="form">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <table class="table table-head-custom table-vertical-center" id="course-list">
                                     <thead>
                                     <tr class="table-secondary text-center">

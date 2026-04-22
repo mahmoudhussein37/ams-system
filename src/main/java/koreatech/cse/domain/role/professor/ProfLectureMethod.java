@@ -1,11 +1,15 @@
 package koreatech.cse.domain.role.professor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProfLectureMethod implements Serializable {
     private static final long serialVersionUID = 43432179L;
+    private static final Logger logger = LoggerFactory.getLogger(ProfLectureMethod.class);
 
     private int id;
     private int profCourseId;
@@ -272,7 +276,7 @@ public class ProfLectureMethod implements Serializable {
                 splitList.add(s);
             }
         } catch(Exception e) {
-            e.printStackTrace();;
+            logger.error("String parse error", e);
         }
         return splitList;
     }
@@ -286,7 +290,7 @@ public class ProfLectureMethod implements Serializable {
                     return true;
             }
         } catch(Exception e) {
-            e.printStackTrace();;
+            logger.error("String parse error", e);
         }
         return false;
     }

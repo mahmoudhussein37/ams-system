@@ -18,7 +18,7 @@ public class Searchable {
     private String code;
     private String title;
     private boolean enabled;
-    private String accountStatus; // "active" or "pending" for filtering
+    private String accountStatus; // "active", "pending", or "disabled" for filtering
 
     private String orderParam;
     private String orderDir;

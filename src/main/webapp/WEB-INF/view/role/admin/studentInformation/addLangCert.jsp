@@ -25,6 +25,7 @@
                         <div class="card-body">
 
                             <form:form modelAttribute="langCert" action="${baseUrl}/admin/studentManagement/studentInformation/addLangCert?studentId=${studentUser.id}" method="post" class="form">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                     <form:hidden path="userId" value="${studentUser.id}"/>
 
                                     <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.addLangCert"/></h3>

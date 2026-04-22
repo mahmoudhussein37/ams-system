@@ -102,3 +102,7 @@ Egypt_upload/
 .env
 .env.*
 *.env
+# -----------------------------------------------
+# Claude Code local settings (not production code)
+# -----------------------------------------------
+.claude/

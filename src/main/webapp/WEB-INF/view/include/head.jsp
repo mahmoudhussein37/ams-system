@@ -201,4 +201,75 @@
             Object.freeze(window.i18n);
         </script>
         <!--end::JavaScript i18n object-->
+
+        <!--begin::Global CSRF Support-->
+        <script>
+            (function () {
+                var csrfParameterName = '${_csrf.parameterName}';
+                var csrfHeaderName = '${_csrf.headerName}';
+                var csrfToken = '${_csrf.token}';
+
+                if (!csrfParameterName || !csrfToken) {
+                    return;
+                }
+
+                function appendCsrfInput(form) {
+                    if (!form || form.tagName !== 'FORM') {
+                        return;
+                    }
+
+                    var method = (form.getAttribute('method') || 'get').toLowerCase();
+                    if (method !== 'post') {
+                        return;
+                    }
+
+                    if (form.querySelector('input[name="' + csrfParameterName + '"]')) {
+                        console.warn('[CSRF] Form already has server-rendered _csrf token; skipping JS injection.', form);
+                        return;
+                    }
+
+                    var input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = csrfParameterName;
+                    input.value = csrfToken;
+                    form.appendChild(input);
+                }
+
+                function ensurePostFormsHaveCsrf() {
+                    var forms = document.querySelectorAll('form');
+                    for (var i = 0; i < forms.length; i++) {
+                        appendCsrfInput(forms[i]);
+                    }
+                }
+
+                document.addEventListener('submit', function (event) {
+                    appendCsrfInput(event.target);
+                }, true);
+
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', ensurePostFormsHaveCsrf);
+                } else {
+                    ensurePostFormsHaveCsrf();
+                }
+
+                function setupAjaxCsrf() {
+                    if (!window.jQuery || !csrfHeaderName) {
+                        return false;
+                    }
+
+                    window.jQuery.ajaxSetup({
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader(csrfHeaderName, csrfToken);
+                        }
+                    });
+
+                    return true;
+                }
+
+                if (!setupAjaxCsrf()) {
+                    document.addEventListener('DOMContentLoaded', setupAjaxCsrf);
+                }
+            })();
+        </script>
+        <!--end::Global CSRF Support-->
 </head>

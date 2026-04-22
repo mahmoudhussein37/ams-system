@@ -38,7 +38,14 @@
                     ${plan.user.division.name}
             </td>
             <td>
-                    ${plan.user.advisor.getFullName()}
+                <c:choose>
+                    <c:when test="${plan.user.advisorId gt 0 and not empty plan.user.advisor}">
+                        ${plan.user.advisor.getFullName()}
+                    </c:when>
+                    <c:otherwise>
+                        <spring:message code="common.notAssigned"/>
+                    </c:otherwise>
+                </c:choose>
             </td>
             <td>
                 <c:choose>

@@ -1,6 +1,7 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <h3 class="card-title font-weight-bolder"><spring:message code="menu.professor.sub1_2_2"/></h3>
 <form:form class="form" modelAttribute="counseling" action="${baseUrl}/professor/studentGuidance/counseling/newCounselingDetail?studentId=${studentId}" method="post">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <div class="card-body">
 
         <div class="row">

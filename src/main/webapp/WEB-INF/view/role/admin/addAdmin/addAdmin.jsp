@@ -27,6 +27,7 @@
                             <br/><br/>
 
                             <form:form modelAttribute="adminUser" method="post" id="signup-form">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.information"/></h3>
                                 <div class="row">
                                     <div class="col-md-3">

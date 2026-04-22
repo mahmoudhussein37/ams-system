@@ -1,5 +1,6 @@
 package koreatech.cse.domain;
 
+import koreatech.cse.domain.constant.AccountState;
 import koreatech.cse.domain.constant.Role;
 import koreatech.cse.domain.role.student.StudentCourse;
 import koreatech.cse.domain.univ.Course;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 public class User implements UserDetails {
     private int id;
     private String name;
@@ -109,7 +111,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return getAccountState() == AccountState.ACTIVE;
     }
 
     @Override
@@ -119,17 +121,51 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return getAccountState() == AccountState.ACTIVE;
     }
 
     public boolean isConfirm() {
         return confirm;
     }
 
+    public AccountState getAccountState() {
+        if (!confirm) {
+            return AccountState.PENDING;
+        }
+        if (enabled) {
+            return AccountState.ACTIVE;
+        }
+        return AccountState.DISABLED;
+    }
+
+    public void setAccountState(AccountState state) {
+        AccountState nonNullState = Objects.requireNonNull(state, "state must not be null");
+        switch (nonNullState) {
+            case PENDING:
+                this.confirm = false;
+                this.enabled = false;
+                break;
+            case ACTIVE:
+                this.confirm = true;
+                this.enabled = true;
+                break;
+            case DISABLED:
+                this.confirm = true;
+                this.enabled = false;
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported account state: " + nonNullState);
+        }
+    }
+
+    // DO NOT USE in business logic; use setAccountState(AccountState) instead.
+    @Deprecated
     public void setConfirm(boolean confirm) {
         this.confirm = confirm;
     }
 
+    // DO NOT USE in business logic; use setAccountState(AccountState) instead.
+    @Deprecated
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
@@ -248,7 +284,7 @@ public class User implements UserDetails {
     }
 
     public String getFullName() {
-        return this.contact.getFullName();
+        return this.contact == null ? "Unknown" : this.contact.getFullName();
     }
 
     @Override

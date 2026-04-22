@@ -76,6 +76,7 @@
                             <br/><br/>
                             <div class="detail-div">
                                 <form:form modelAttribute="graduationCriteria" action="${baseUrl}/admin/academicManagement/graduationCriteria" method="post" class="assessment-factor-form">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                     <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.createGraduationCriteria"/></h3>
                                     <div class="row">
                                         <div class="col-md-3">

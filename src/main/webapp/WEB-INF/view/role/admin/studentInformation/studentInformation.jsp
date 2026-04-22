@@ -84,6 +84,9 @@
                                                         <option value="pending">
                                                             <spring:message code="student.status.pending" />
                                                         </option>
+                                                        <option value="disabled">
+                                                            <spring:message code="student.status.disabled" />
+                                                        </option>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-6 d-flex justify-content-end">
@@ -149,7 +152,13 @@
                                     var schoolYear = $("#search-schoolYear").children("option:selected").val().trim();
                                     var accountStatus = $("#search-accountStatus").children("option:selected").val().trim();
 
-                                    $(".table-div").load("${baseUrl}/admin/studentManagement/studentInformation/studentTable?number=" + number + "&name=" + name + "&division=" + division + "&schoolYear=" + schoolYear + "&accountStatus=" + accountStatus);
+                                    var tableUrl = "${baseUrl}/admin/studentManagement/studentInformation/studentTable"
+                                        + "?number=" + encodeURIComponent(number)
+                                        + "&name=" + encodeURIComponent(name)
+                                        + "&division=" + encodeURIComponent(division)
+                                        + "&schoolYear=" + encodeURIComponent(schoolYear)
+                                        + "&accountStatus=" + encodeURIComponent(accountStatus);
+                                    $(".table-div").load(tableUrl);
                                 }
 
 

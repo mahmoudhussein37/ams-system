@@ -33,7 +33,7 @@
 
                                     <div class="col-md-4">
                                         <spring:message code="common.department"/><br/>
-                                        <select id="search-division" class="form-control" style="margin-top:10px;"><option value="0">-</option>
+                                        <select id="search-division" class="form-control" style="margin-top:10px;" disabled="disabled">
                                         <c:forEach var="division" items="${divisions}">
                                             <option value="${division.id}">${division.name} <c:if test="${not division.enabled}">(<spring:message code="common.closed"/>)</c:if></option>
                                         </c:forEach>

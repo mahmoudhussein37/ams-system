@@ -266,6 +266,7 @@
                                                                             </label>
                                                                             <form:select path="advisorId"
                                                                                 class="form-control">
+                                                                                <form:option value="0">-- Select Advisor --</form:option>
                                                                                 <c:forEach var="s"
                                                                                     items="${professors}">
                                                                                     <option value="${s.id}">

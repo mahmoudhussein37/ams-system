@@ -57,6 +57,37 @@ public interface CqiMapper {
     Cqi findByYearCourseIdDivide(@Param("year") int year, @Param("courseId") int courseId, @Param("divide") int divide);
 
     @ResultMap("findOne-int")
+    @Select("<script>"
+            + "SELECT c.* FROM cqi c "
+            + "JOIN semester s ON c.semester_id = s.id "
+            + "WHERE c.course_id = #{courseId} "
+            + "AND c.divide = #{divide} "
+            + "AND s.year IN "
+            + "<foreach item='year' collection='years' open='(' separator=',' close=')'>"
+            + "#{year}"
+            + "</foreach>"
+            + " ORDER BY s.year DESC, s.semester DESC, c.id DESC "
+            + "</script>")
+    List<Cqi> findByYearsCourseIdDivide(@Param("years") List<Integer> years,
+            @Param("courseId") int courseId,
+            @Param("divide") int divide);
+
+    @Select("<script>"
+            + "SELECT c.* FROM cqi c "
+            + "JOIN semester s ON c.semester_id = s.id "
+            + "WHERE c.course_id = #{courseId} "
+            + "AND c.divide = #{divide} "
+            + "AND s.year IN "
+            + "<foreach item='year' collection='years' open='(' separator=',' close=')'>"
+            + "#{year}"
+            + "</foreach>"
+            + " ORDER BY s.year DESC, s.semester DESC, c.id DESC "
+            + "</script>")
+    List<Cqi> findFlatByYearsCourseIdDivide(@Param("years") List<Integer> years,
+            @Param("courseId") int courseId,
+            @Param("divide") int divide);
+
+    @ResultMap("findOne-int")
     @Select("SELECT * FROM cqi where prof_course_id=#{profCourseId} limit 1")
     Cqi findByProfCourseId(@Param("profCourseId") int profCourseId);
 

@@ -49,9 +49,14 @@
                     </td>
                     <td>
                         <c:choose>
-                            <c:when test="${studentUser.confirm}">
+                            <c:when test="${studentUser.accountState == 'ACTIVE'}">
                                 <span class="label label-light-success label-inline font-weight-bold">
                                     <spring:message code="student.status.active" />
+                                </span>
+                            </c:when>
+                            <c:when test="${studentUser.accountState == 'DISABLED'}">
+                                <span class="label label-light-danger label-inline font-weight-bold">
+                                    <spring:message code="student.status.disabled" />
                                 </span>
                             </c:when>
                             <c:otherwise>
@@ -147,7 +152,15 @@
                             var number = $("#search-number").val() ? $("#search-number").val().trim() : '';
                             var name = $("#search-name").val() ? $("#search-name").val().trim() : '';
                             var division = $("#search-division").val() ? $("#search-division").val().trim() : '0';
-                            $(".table-div").load("${baseUrl}/admin/studentManagement/studentInformation/studentTable?number=" + number + "&name=" + name + "&division=" + division);
+                            var schoolYear = $("#search-schoolYear").val() ? $("#search-schoolYear").val().trim() : '0';
+                            var accountStatus = $("#search-accountStatus").val() ? $("#search-accountStatus").val().trim() : '';
+                            var tableUrl = "${baseUrl}/admin/studentManagement/studentInformation/studentTable"
+                                + "?number=" + encodeURIComponent(number)
+                                + "&name=" + encodeURIComponent(name)
+                                + "&division=" + encodeURIComponent(division)
+                                + "&schoolYear=" + encodeURIComponent(schoolYear)
+                                + "&accountStatus=" + encodeURIComponent(accountStatus);
+                            $(".table-div").load(tableUrl);
                             // Reset detail view
                             $(".detail-div").html('<div class="alert alert-light text-center py-10"><i class="fa fa-info-circle text-muted mr-2"></i><spring:message code="admin.selectStudentToEdit" javaScriptEscape="true" /></div>');
                         } else {

@@ -1,6 +1,7 @@
 <form:form class="form" modelAttribute="lectureContents" id="lectureContentsForm"
     action="${baseUrl}/professor/classProgress/syllabus/courseDetail/lectureContents?profCourseId=${pc.id}"
     method="post">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <div class="card-body">
         <%--<div class="row">
             <div class="col-md-10">

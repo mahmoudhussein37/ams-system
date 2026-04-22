@@ -13,6 +13,7 @@ import koreatech.cse.repository.UploadedFileMapper;
 import koreatech.cse.repository.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -70,6 +71,29 @@ public class CurriculumService {
     public Curriculum getActiveCurriculum(int divisionId, int academicYear) {
         validateCurriculumParams(divisionId, academicYear);
         return curriculumMapper.findActiveByDivisionYear(divisionId, academicYear);
+    }
+
+    /**
+     * Defensive student-only accessor that enforces the student's division boundary
+     * even when a crafted division parameter is provided by the client.
+     */
+    public Curriculum getActiveCurriculumForStudent(User studentUser, int requestedDivisionId, int academicYear) {
+        if (studentUser == null || studentUser.getId() <= 0) {
+            throw new AccessDeniedException("Access denied.");
+        }
+
+        int studentDivisionId = studentUser.getDivisionId();
+        if (studentDivisionId <= 0) {
+            throw new AccessDeniedException("Access denied.");
+        }
+
+        if (requestedDivisionId > 0 && requestedDivisionId != studentDivisionId) {
+            logger.warn("Denied cross-division curriculum access: userId={}, studentDivisionId={}, requestedDivisionId={}",
+                    studentUser.getId(), studentDivisionId, requestedDivisionId);
+            throw new AccessDeniedException("Access denied.");
+        }
+
+        return getActiveCurriculum(studentDivisionId, academicYear);
     }
 
     /**

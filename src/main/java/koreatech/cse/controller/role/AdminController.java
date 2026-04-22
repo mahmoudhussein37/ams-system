@@ -3,9 +3,18 @@ package koreatech.cse.controller.role;
 import koreatech.cse.domain.*;
 import koreatech.cse.domain.constant.CompCategory;
 import koreatech.cse.domain.constant.Designation;
+import koreatech.cse.domain.constant.AccountState;
+import koreatech.cse.domain.constant.Role;
 import koreatech.cse.domain.constant.StudentStatus;
 import koreatech.cse.domain.constant.SubjCategory;
+import koreatech.cse.domain.dto.AdminCreateRequest;
+import koreatech.cse.domain.dto.AdminProfessorProfileUpdateDTO;
+import koreatech.cse.domain.dto.AdminProfessorRegistrationRequest;
+import koreatech.cse.domain.dto.AdminStudentProfileUpdateDTO;
+import koreatech.cse.domain.dto.AdminStudentRegistrationRequest;
+import koreatech.cse.domain.dto.AdminUpdateRequest;
 import koreatech.cse.domain.dto.CurriculumRowDTO;
+import koreatech.cse.domain.dto.MenuSettingsRequest;
 import koreatech.cse.domain.dto.StudentUploadResult;
 import koreatech.cse.domain.role.professor.*;
 import koreatech.cse.domain.role.student.GraduationResearchPlan;
@@ -13,15 +22,13 @@ import koreatech.cse.domain.role.student.StudentCourse;
 import koreatech.cse.domain.univ.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import koreatech.cse.repository.*;
-import koreatech.cse.repository.provider.CqiMapper;
+import koreatech.cse.service.AdminService;
 import koreatech.cse.service.AuthorityService;
 import koreatech.cse.service.CurriculumService;
 import koreatech.cse.service.FileService;
 import koreatech.cse.service.ProfService;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.DateHelper;
-import koreatech.cse.util.SystemUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -50,81 +57,26 @@ import java.io.IOException;
 import java.util.*;
 
 @Controller
-@SessionAttributes({ "studentUser", "profUser", "adminUser", "course", "division", "semester", "menuAccess",
-        "assessmentFactor", "profCourse", "graduationCriteria", "cqi" })
+@SessionAttributes({ "studentUser", "profUser", "adminUser", "menuAccess" })
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
     @Inject
-    private UserMapper userMapper;
-    @Inject
-    private UploadedFileMapper uploadedFileMapper;
-    @Inject
-    private DivisionMapper divisionMapper;
-    @Inject
     private UserService userService;
-    @Inject
-    private CourseMapper courseMapper;
-    @Inject
-    private ProfessorCourseMapper professorCourseMapper;
-    @Inject
-    private ContactMapper contactMapper;
     @Inject
     private AuthorityService authorityService;
     @Inject
-    private CounselingMapper counselingMapper;
-    @Inject
-    private SemesterMapper semesterMapper;
-    @Inject
-    private LectureMethodMapper lectureMethodMapper;
-    @Inject
-    private LectureFundamentalsMapper lectureFundamentalsMapper;
-    @Inject
-    private EvaluationMethodMapper evaluationMethodMapper;
-    @Inject
-    private EducationalMediumMapper educationalMediumMapper;
-    @Inject
-    private EquipmentMapper equipmentMapper;
-    @Inject
-    private ClassroomMapper classroomMapper;
-    @Inject
-    private MenuAccessMapper menuAccessMapper;
-    @Inject
     private PasswordEncoder passwordEncoder;
-    @Inject
-    private FeedbackMapper feedbackMapper;
-    @Inject
-    private AltCourseMapper altCourseMapper;
     @Inject
     private FileService fileService;
     @Inject
-    private AssessmentFactorMapper assessmentFactorMapper;
-    @Inject
-    private StudentCourseMapper studentCourseMapper;
-    @Inject
-    private GraduationResearchPlanMapper graduationResearchPlanMapper;
-    @Inject
-    private AssessmentMapper assessmentMapper;
-    @Inject
-    private GraduationCriteriaMapper graduationCriteriaMapper;
-    @Inject
-    private ProfLectureMethodMapper profLectureMethodMapper;
-    @Inject
-    private LectureContentsMapper lectureContentsMapper;
-    @Inject
-    private CqiMapper cqiMapper;
-    @Inject
-    private ClassTimeMapper classTimeMapper;
-    @Inject
     private ProfService profService;
     @Inject
-    private CertificateMapper certificateMapper;
-    @Inject
-    private LangCertMapper langCertMapper;
-    @Inject
     private CurriculumService curriculumService;
+    @Inject
+    private AdminService adminService;
 
     @ModelAttribute("currentPageRole")
     public String getCurrentPageRole() {
@@ -138,43 +90,86 @@ public class AdminController {
         return sanitized.substring(0, Math.min(sanitized.length(), 200));
     }
 
+    private User resolveAdvisor(int advisorId) {
+        if (advisorId <= 0) {
+            return null;
+        }
+        return adminService.findUserById(advisorId);
+    }
+
+    private void normalizeStudentAdvisorAssignment(User studentUser) {
+        if (studentUser == null) {
+            return;
+        }
+
+        int advisorId = studentUser.getAdvisorId();
+        if (advisorId <= 0) {
+            studentUser.setAdvisorId(0);
+            return;
+        }
+
+        User advisor = resolveAdvisor(advisorId);
+        if (advisor == null || adminService.findAuthorityByUserIdAndRole(advisorId, Role.professor.toCode()) == null) {
+            logger.warn("Invalid advisor assignment normalized to unassigned: advisorId={}", advisorId);
+            studentUser.setAdvisorId(0);
+            return;
+        }
+
+        int studentDivisionId = studentUser.getDivisionId();
+        int advisorDivisionId = advisor.getDivisionId();
+        if (studentDivisionId > 0 && advisorDivisionId > 0 && studentDivisionId != advisorDivisionId) {
+            logger.warn("Invalid cross-division advisor assignment normalized to unassigned: studentDivision={} advisorDivision={} advisorId={}",
+                    studentDivisionId, advisorDivisionId, advisorId);
+            studentUser.setAdvisorId(0);
+        }
+    }
+
     @RequestMapping(value = "/studentManagement/studentRegistration", method = RequestMethod.GET)
     public String studentRegistration(Model model, @RequestParam(required = false) String result) {
 
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
         User studentUser = new User();
         Contact contact = new Contact();
         studentUser.setContact(contact);
+        studentUser.setAdvisorId(0);
         model.addAttribute("studentUser", studentUser);
         model.addAttribute("result", result);
         model.addAttribute("statusList", StudentStatus.values());
 
-        List<User> professors = userMapper.findAllProfessors();
+        List<User> professors = adminService.findAllProfessors();
         model.addAttribute("professors", professors);
         return "role/admin/studentRegistration/studentRegistration";
     }
 
     @RequestMapping(value = "/studentManagement/studentRegistration", method = RequestMethod.POST)
-    public String basic(@ModelAttribute("studentUser") User studentUser, SessionStatus sessionStatus) {
+    public String basic(@ModelAttribute AdminStudentRegistrationRequest req, SessionStatus sessionStatus) {
 
-        // Server-side validation for required fields
-        String studentNumber = studentUser.getNumber();
-        Contact contact = studentUser.getContact();
-        String firstName = (contact != null) ? contact.getFirstName() : null;
-        String lastName = (contact != null) ? contact.getLastName() : null;
+        String studentNumber = StringUtils.trimToNull(req.getNumber());
+        String firstName = StringUtils.trimToNull(req.getFirstName());
+        String lastName = StringUtils.trimToNull(req.getLastName());
 
-        // Validate required fields
         if (StringUtils.isBlank(studentNumber) || StringUtils.isBlank(firstName) || StringUtils.isBlank(lastName)) {
             logger.warn("Manual registration failed: missing required fields in registration request");
             sessionStatus.setComplete();
             return "redirect:/admin/studentManagement/studentRegistration?result=validation_error";
         }
 
-        studentUser.setEnabled(false);
-        studentUser.setConfirm(false);
-        boolean result = userService.register(studentUser);
+        User studentUser = new User();
+        studentUser.setNumber(studentNumber);
+        Contact contact = new Contact();
+        contact.setFirstName(firstName);
+        contact.setLastName(lastName);
+        studentUser.setContact(contact);
+        studentUser.setDivisionId(req.getDivisionId());
+        studentUser.setAdvisorId(req.getAdvisorId());
+        studentUser.setSchoolYear(req.getSchoolYear());
+        studentUser.setStatus(req.getStatus());
+
+        normalizeStudentAdvisorAssignment(studentUser);
+        studentUser.setAccountState(AccountState.PENDING);
+        boolean result = userService.register(studentUser, Role.student);
         sessionStatus.setComplete();
 
         return "redirect:/admin/studentManagement/studentRegistration?result=" + (result ? "success" : "fail");
@@ -353,7 +348,7 @@ public class AdminController {
                     }
 
                     // Check for duplicate student number
-                    User existingUser = userMapper.findByNumber(studentNumber);
+                    User existingUser = adminService.findUserByNumber(studentNumber);
                     if (existingUser != null) {
                         result.incrementSkippedDuplicate();
                         logger.debug("Student number already exists: {}", studentNumber);
@@ -366,8 +361,7 @@ public class AdminController {
                     newStudent.setUsername(username);
                     newStudent.setDivisionId(divisionId);
                     newStudent.setSchoolYear(schoolYear);
-                    newStudent.setEnabled(false); // Pending - not activated
-                    newStudent.setConfirm(false);
+                    newStudent.setAccountState(AccountState.PENDING); // Pending - not activated
                     newStudent.setStatus(StudentStatus.registered.name());
 
                     // Create contact with name info
@@ -383,7 +377,7 @@ public class AdminController {
                     newStudent.setContact(contact);
 
                     // Register the student
-                    boolean registered = userService.register(newStudent);
+                    boolean registered = userService.register(newStudent, Role.student);
                     if (registered) {
                         result.incrementInserted();
                         logger.debug("Inserted student: {} ({} {})", studentNumber, firstName, lastName);
@@ -438,10 +432,18 @@ public class AdminController {
             @RequestParam(defaultValue = "0", required = false) int division,
             @RequestParam(defaultValue = "0", required = false) int schoolYear,
             @RequestParam(required = false) String accountStatus) {
+        String normalizedAccountStatus = StringUtils.lowerCase(StringUtils.trimToNull(accountStatus));
+        if (normalizedAccountStatus != null
+                && !"active".equals(normalizedAccountStatus)
+                && !"pending".equals(normalizedAccountStatus)
+                && !"disabled".equals(normalizedAccountStatus)) {
+            normalizedAccountStatus = null;
+        }
+
         User firstUser = null;
         List<User> userList;
         if (StringUtils.isBlank(number) && StringUtils.isBlank(name) && division == 0
-                && schoolYear == 0 && StringUtils.isBlank(accountStatus)) {
+                && schoolYear == 0 && StringUtils.isBlank(normalizedAccountStatus)) {
             userList = new ArrayList<>();
         } else {
             Searchable searchable = new Searchable();
@@ -449,8 +451,8 @@ public class AdminController {
             searchable.setName(name);
             searchable.setDivision(division);
             searchable.setSchoolYear(schoolYear);
-            searchable.setAccountStatus(accountStatus);
-            userList = userMapper.findStudentBy(searchable);
+            searchable.setAccountStatus(normalizedAccountStatus);
+            userList = adminService.findStudentBy(searchable);
 
             for (User user : userList) {
                 firstUser = user;
@@ -465,84 +467,104 @@ public class AdminController {
 
     @RequestMapping(value = "/studentManagement/studentInformation/studentDetail", method = RequestMethod.GET)
     public String studentDetail(Model model, @RequestParam int studentId) {
-        User studentUser = userMapper.findOne(studentId);
+        User studentUser = adminService.findUserById(studentId);
         model.addAttribute("studentUser", studentUser);
         model.addAttribute("statusList", StudentStatus.values());
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
 
-        User advisor = userMapper.findOne(studentUser.getAdvisorId());
+        User advisor = resolveAdvisor(studentUser.getAdvisorId());
+        studentUser.setAdvisor(advisor);
         model.addAttribute("advisor", advisor);
-        List<User> professors = userMapper.findAllProfessors();
+        List<User> professors = adminService.findAllProfessors();
         model.addAttribute("professors", professors);
         int admissionYear = studentUser.getContact().getAdmissionYear();
         int divisionId = studentUser.getDivisionId();
 
-        GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear,
+        GraduationCriteria graduationCriteria = adminService.findGraduationCriteriaByYearDivision(admissionYear,
                 divisionId);
         studentUser.setGraduationCriteria(graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
-        List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(studentId);
+        List<StudentCourse> studentCourses = adminService.findStudentCoursesByUserIdValid(studentId);
         studentUser.setStudentCourses(studentCourses);
 
-        List<LangCert> langCerts = langCertMapper.findByUserId(studentId);
+        List<LangCert> langCerts = adminService.findLangCertsByUserId(studentId);
         model.addAttribute("langCerts", langCerts);
         return "role/admin/studentInformation/studentDetail";
     }
 
     @RequestMapping(value = "/studentManagement/studentInformation/studentDetailForPrint", method = RequestMethod.GET)
     public String studentDetailForPrint(Model model, @RequestParam int studentId) {
-        System.out.println("studentId = " + studentId);
-        User studentUser = userMapper.findOne(studentId);
+        User studentUser = adminService.findUserById(studentId);
         model.addAttribute("studentUser", studentUser);
         model.addAttribute("statusList", StudentStatus.values());
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
 
-        User advisor = userMapper.findOne(studentUser.getAdvisorId());
+        User advisor = resolveAdvisor(studentUser.getAdvisorId());
+        studentUser.setAdvisor(advisor);
         model.addAttribute("advisor", advisor);
-        List<User> professors = userMapper.findAllProfessors();
+        List<User> professors = adminService.findAllProfessors();
         model.addAttribute("professors", professors);
         int admissionYear = studentUser.getContact().getAdmissionYear();
         int divisionId = studentUser.getDivisionId();
 
-        GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear,
+        GraduationCriteria graduationCriteria = adminService.findGraduationCriteriaByYearDivision(admissionYear,
                 divisionId);
         studentUser.setGraduationCriteria(graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
-        List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(studentId);
+        List<StudentCourse> studentCourses = adminService.findStudentCoursesByUserIdValid(studentId);
         studentUser.setStudentCourses(studentCourses);
 
-        List<LangCert> langCerts = langCertMapper.findByUserId(studentId);
+        List<LangCert> langCerts = adminService.findLangCertsByUserId(studentId);
         model.addAttribute("langCerts", langCerts);
         return "role/admin/studentInformation/studentDetailForPrint";
     }
 
     @RequestMapping(value = "/studentManagement/studentInformation/studentDetail", method = RequestMethod.POST)
-    public String studentDetail(@ModelAttribute("studentUser") User studentUser, SessionStatus sessionStatus,
+    public String studentDetail(@ModelAttribute AdminStudentProfileUpdateDTO req, SessionStatus sessionStatus,
             HttpServletRequest request) throws IOException {
-        System.out.println("studentUser = " + studentUser);
+        User studentUser = adminService.findUserById(req.getId());
+        if (studentUser == null) {
+            sessionStatus.setComplete();
+            return "redirect:/admin/studentManagement/studentInformation?result=fail";
+        }
+
         if (request instanceof MultipartHttpServletRequest) {
             MultipartFile f = ((MultipartHttpServletRequest) request).getFile("file");
-            if (f == null || f.getSize() == 0) {
-
-            } else {
+            if (f != null && f.getSize() > 0) {
                 String fileName = f.getOriginalFilename();
                 String ext = fileService.getExtension(fileName);
                 if (ext.equalsIgnoreCase("png") || ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg")
                         || ext.equalsIgnoreCase("gif")) {
-                    uploadedFileMapper.deleteProfileByUser(studentUser);
+                    adminService.deleteProfileByUser(studentUser);
                     DateTime dt = new DateTime();
                     fileService.processUploadedFile(f, studentUser, Designation.profile, 0, 0, dt.getYear());
                 }
-
             }
-
         }
 
-        userMapper.update(studentUser);
-        userMapper.updateFromSignup(studentUser);
-        contactMapper.update(studentUser.getContact());
+        studentUser.setDivisionId(req.getDivisionId());
+        studentUser.setAdvisorId(req.getAdvisorId());
+        studentUser.setSchoolYear(req.getSchoolYear());
+        studentUser.setStatus(req.getStatus());
+
+        if (req.getContact() != null && studentUser.getContact() != null) {
+            Contact c = studentUser.getContact();
+            c.setFirstName(req.getContact().getFirstName());
+            c.setLastName(req.getContact().getLastName());
+            c.setGradYear(req.getContact().getGradYear());
+            c.setGradSemester(req.getContact().getGradSemester());
+            c.setGradDate(req.getContact().getGradDate());
+            c.setGradDegree(req.getContact().getGradDegree());
+            c.setDegreeNumber(req.getContact().getDegreeNumber());
+            c.setCertNumber(req.getContact().getCertNumber());
+        }
+
+        normalizeStudentAdvisorAssignment(studentUser);
+        adminService.updateUser(studentUser);
+        adminService.updateUserFromSignup(studentUser);
+        adminService.updateContact(studentUser.getContact());
         sessionStatus.setComplete();
 
         return "redirect:/admin/studentManagement/studentInformation?result=success";
@@ -550,7 +572,7 @@ public class AdminController {
 
     @RequestMapping(value = "/studentManagement/studentInformation", method = RequestMethod.GET)
     public String studentInformation(Model model, @RequestParam(required = false) String result) {
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("result", result);
@@ -560,9 +582,10 @@ public class AdminController {
 
     @RequestMapping(value = "/studentManagement/studentInformation/addLangCert", method = RequestMethod.GET)
     public String addLangCert(Model model, @RequestParam int studentId) {
-        User studentUser = userMapper.findOne(studentId);
+        User studentUser = adminService.findUserById(studentId);
         model.addAttribute("studentUser", studentUser);
-        User advisor = userMapper.findOne(studentUser.getAdvisorId());
+        User advisor = resolveAdvisor(studentUser.getAdvisorId());
+        studentUser.setAdvisor(advisor);
         model.addAttribute("advisor", advisor);
 
         LangCert langCert = new LangCert();
@@ -577,7 +600,7 @@ public class AdminController {
             SessionStatus sessionStatus) {
         langCert.setUserId(studentId);
         langCert.setApprove(true);
-        langCertMapper.insert(langCert);
+        adminService.insertLangCert(langCert);
         sessionStatus.setComplete();
 
         return "redirect:/admin/studentManagement/studentInformation";
@@ -585,8 +608,8 @@ public class AdminController {
 
     @RequestMapping(value = "/studentManagement/studentInformation/deleteLangCert", method = RequestMethod.POST)
     public String deleteLangCert(@RequestParam int langCertId) {
-        LangCert langCert = langCertMapper.findOne(langCertId);
-        langCertMapper.delete(langCert);
+        LangCert langCert = adminService.findLangCertById(langCertId);
+        adminService.deleteLangCert(langCert);
         return "redirect:/admin/studentManagement/studentInformation";
     }
 
@@ -602,7 +625,7 @@ public class AdminController {
 
         try {
             // Find the student
-            User student = userMapper.findOne(studentId);
+            User student = adminService.findUserById(studentId);
             if (student == null) {
                 logger.warn("Delete failed: student not found with id={}", studentId);
                 response.put("success", false);
@@ -611,8 +634,7 @@ public class AdminController {
             }
 
             // Check for related records in student_course
-            List<koreatech.cse.domain.role.student.StudentCourse> courseRecords = studentCourseMapper
-                    .findByUserId(studentId);
+            List<koreatech.cse.domain.role.student.StudentCourse> courseRecords = adminService.findStudentCoursesByUserId(studentId);
             if (courseRecords != null && !courseRecords.isEmpty()) {
                 logger.info("Delete prevented: student {} has {} course registrations", student.getNumber(),
                         courseRecords.size());
@@ -625,7 +647,7 @@ public class AdminController {
             // Safe to delete - no related records
             logger.info("Deleting student: {} ({})", student.getNumber(),
                     student.getContact() != null ? student.getContact().getFullName() : "N/A");
-            userMapper.delete(student);
+            adminService.deleteUser(student);
 
             response.put("success", true);
             response.put("message", "deleted");
@@ -642,10 +664,10 @@ public class AdminController {
     @RequestMapping(value = "/studentManagement/studentProfile", method = RequestMethod.GET)
     public String studentProfile(Model model) {
 
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
-        List<User> professors = userMapper.findAllProfessors();
+        List<User> professors = adminService.findAllProfessors();
         model.addAttribute("professors", professors);
         return "role/admin/studentProfile/studentProfile";
     }
@@ -665,7 +687,7 @@ public class AdminController {
             searchable.setAdvisor(advisor);
             searchable.setSchoolYear(schoolYear);
             searchable.setDivision(division);
-            userList = userMapper.findStudentBy(searchable);
+            userList = adminService.findStudentBy(searchable);
 
             for (User user : userList) {
                 firstUser = user;
@@ -680,20 +702,21 @@ public class AdminController {
 
     @RequestMapping(value = "/studentManagement/studentProfile/studentDetail", method = RequestMethod.GET)
     public String studentProfileStudentDetail(Model model, @RequestParam int studentId) {
-        User studentUser = userMapper.findOne(studentId);
+        User studentUser = adminService.findUserById(studentId);
         model.addAttribute("studentUser", studentUser);
-        User advisor = userMapper.findOne(studentUser.getAdvisorId());
+        User advisor = resolveAdvisor(studentUser.getAdvisorId());
+        studentUser.setAdvisor(advisor);
         model.addAttribute("advisor", advisor);
         int admissionYear = studentUser.getContact().getAdmissionYear();
         int divisionId = studentUser.getDivisionId();
 
-        GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear,
+        GraduationCriteria graduationCriteria = adminService.findGraduationCriteriaByYearDivision(admissionYear,
                 divisionId);
         studentUser.setGraduationCriteria(graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
-        List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(studentId);
+        List<StudentCourse> studentCourses = adminService.findStudentCoursesByUserIdValid(studentId);
         studentUser.setStudentCourses(studentCourses);
 
-        List<LangCert> langCerts = langCertMapper.findByUserId(studentId);
+        List<LangCert> langCerts = adminService.findLangCertsByUserId(studentId);
         model.addAttribute("langCerts", langCerts);
 
         return "role/admin/studentProfile/studentDetail";
@@ -713,7 +736,7 @@ public class AdminController {
             searchable.setAdvisor(advisor);
             searchable.setSchoolYear(schoolYear);
             searchable.setDivision(division);
-            studentList = userMapper.findStudentBy(searchable);
+            studentList = adminService.findStudentBy(searchable);
 
         } else {
             params.entrySet().stream().filter(entry -> entry.getKey().equals("tableCheckbox")).forEach(entry -> {
@@ -732,21 +755,21 @@ public class AdminController {
             if (CollectionUtils.isEmpty(integerIds))
                 studentList = new ArrayList<>();
             else
-                studentList = userMapper.findByUserIds(integerIds);
+                studentList = adminService.findUsersByIds(integerIds);
         }
 
         for (User u : studentList) {
-            User advisorUser = userMapper.findOne(u.getAdvisorId());
+            User advisorUser = resolveAdvisor(u.getAdvisorId());
             u.setAdvisor(advisorUser);
 
             int admissionYear = u.getContact().getAdmissionYear();
             int divisionId = u.getDivisionId();
 
-            GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear,
+            GraduationCriteria graduationCriteria = adminService.findGraduationCriteriaByYearDivision(admissionYear,
                     divisionId);
             u.setGraduationCriteria(graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
 
-            List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(u.getId());
+            List<StudentCourse> studentCourses = adminService.findStudentCoursesByUserIdValid(u.getId());
             u.setStudentCourses(studentCourses);
         }
 
@@ -757,10 +780,10 @@ public class AdminController {
     @RequestMapping(value = "/studentManagement/schoolYear", method = RequestMethod.GET)
     public String schoolYear(Model model, @RequestParam(required = false) String result) {
 
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
-        List<User> professors = userMapper.findAllProfessors();
+        List<User> professors = adminService.findAllProfessors();
         model.addAttribute("professors", professors);
         model.addAttribute("result", result);
         return "role/admin/schoolYear/schoolYear";
@@ -781,7 +804,7 @@ public class AdminController {
             searchable.setAdvisor(advisor);
             searchable.setSchoolYear(schoolYear);
             searchable.setDivision(division);
-            userList = userMapper.findStudentBy(searchable);
+            userList = adminService.findStudentBy(searchable);
 
             for (User user : userList) {
                 firstUser = user;
@@ -796,28 +819,51 @@ public class AdminController {
 
     @RequestMapping(value = "/studentManagement/schoolYear/studentDetail", method = RequestMethod.GET)
     public String schoolYearStudentDetail(Model model, @RequestParam int studentId) {
-        User studentUser = userMapper.findOne(studentId);
+        User studentUser = adminService.findUserById(studentId);
         model.addAttribute("studentUser", studentUser);
         model.addAttribute("statusList", StudentStatus.values());
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
 
-        User advisor = userMapper.findOne(studentUser.getAdvisorId());
+        User advisor = resolveAdvisor(studentUser.getAdvisorId());
+        studentUser.setAdvisor(advisor);
         model.addAttribute("advisor", advisor);
-        List<User> professors = userMapper.findAllProfessors();
+        List<User> professors = adminService.findAllProfessors();
         model.addAttribute("professors", professors);
         return "role/admin/schoolYear/studentDetail";
     }
 
     @RequestMapping(value = "/studentManagement/schoolYear/studentDetail", method = RequestMethod.POST)
-    public String schoolYearStudentDetail(@ModelAttribute("studentUser") User studentUser,
+    public String schoolYearStudentDetail(@ModelAttribute AdminStudentProfileUpdateDTO req,
             SessionStatus sessionStatus) {
-        System.out.println("studentUser = " + studentUser);
+        User studentUser = adminService.findUserById(req.getId());
+        if (studentUser == null) {
+            sessionStatus.setComplete();
+            return "redirect:/admin/studentManagement/schoolYear?result=fail";
+        }
 
-        userMapper.update(studentUser);
-        userMapper.updateFromSignup(studentUser);
-        contactMapper.update(studentUser.getContact());
+        studentUser.setDivisionId(req.getDivisionId());
+        studentUser.setAdvisorId(req.getAdvisorId());
+        studentUser.setSchoolYear(req.getSchoolYear());
+        studentUser.setStatus(req.getStatus());
+
+        if (req.getContact() != null && studentUser.getContact() != null) {
+            Contact c = studentUser.getContact();
+            c.setFirstName(req.getContact().getFirstName());
+            c.setLastName(req.getContact().getLastName());
+            c.setGradYear(req.getContact().getGradYear());
+            c.setGradSemester(req.getContact().getGradSemester());
+            c.setGradDate(req.getContact().getGradDate());
+            c.setGradDegree(req.getContact().getGradDegree());
+            c.setDegreeNumber(req.getContact().getDegreeNumber());
+            c.setCertNumber(req.getContact().getCertNumber());
+        }
+
+        normalizeStudentAdvisorAssignment(studentUser);
+        adminService.updateUser(studentUser);
+        adminService.updateUserFromSignup(studentUser);
+        adminService.updateContact(studentUser.getContact());
         sessionStatus.setComplete();
 
         return "redirect:/admin/studentManagement/schoolYear?result=success";
@@ -830,7 +876,6 @@ public class AdminController {
             @RequestParam(defaultValue = "0", required = false) int advisor,
             @RequestParam(defaultValue = "0", required = false) int division,
             @RequestParam Map<String, String> params) {
-        System.out.println("checkAll = " + checkAll);
         List<Integer> integerIds = new ArrayList<>();
         List<User> studentList;
         if (checkAll) {
@@ -838,7 +883,7 @@ public class AdminController {
             searchable.setAdvisor(advisor);
             searchable.setSchoolYear(schoolYear);
             searchable.setDivision(division);
-            studentList = userMapper.findStudentBy(searchable);
+            studentList = adminService.findStudentBy(searchable);
 
         } else {
             params.entrySet().stream().filter(entry -> entry.getKey().equals("tableCheckbox")).forEach(entry -> {
@@ -857,12 +902,12 @@ public class AdminController {
             if (CollectionUtils.isEmpty(integerIds))
                 studentList = new ArrayList<>();
             else
-                studentList = userMapper.findByUserIds(integerIds);
+                studentList = adminService.findUsersByIds(integerIds);
         }
 
         for (User u : studentList) {
             u.setSchoolYear(u.getSchoolYear() + 1);
-            userMapper.update(u);
+            adminService.updateUser(u);
         }
 
         return true;
@@ -882,7 +927,7 @@ public class AdminController {
             searchable.setAdvisor(advisor);
             searchable.setSchoolYear(schoolYear);
             searchable.setDivision(division);
-            studentList = userMapper.findStudentBy(searchable);
+            studentList = adminService.findStudentBy(searchable);
 
         } else {
             params.entrySet().stream().filter(entry -> entry.getKey().equals("tableCheckbox")).forEach(entry -> {
@@ -901,21 +946,21 @@ public class AdminController {
             if (CollectionUtils.isEmpty(integerIds))
                 studentList = new ArrayList<>();
             else
-                studentList = userMapper.findByUserIds(integerIds);
+                studentList = adminService.findUsersByIds(integerIds);
         }
 
         for (User u : studentList) {
-            User advisorUser = userMapper.findOne(u.getAdvisorId());
+            User advisorUser = resolveAdvisor(u.getAdvisorId());
             u.setAdvisor(advisorUser);
 
             int admissionYear = u.getContact().getAdmissionYear();
             int divisionId = u.getDivisionId();
 
-            GraduationCriteria graduationCriteria = graduationCriteriaMapper.findOneByYearDivision(admissionYear,
+            GraduationCriteria graduationCriteria = adminService.findGraduationCriteriaByYearDivision(admissionYear,
                     divisionId);
             u.setGraduationCriteria(graduationCriteria == null ? new GraduationCriteria() : graduationCriteria);
 
-            List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdValid(u.getId());
+            List<StudentCourse> studentCourses = adminService.findStudentCoursesByUserIdValid(u.getId());
             u.setStudentCourses(studentCourses);
         }
 
@@ -941,10 +986,9 @@ public class AdminController {
             Searchable searchable = new Searchable();
             searchable.setYear(year);
             searchable.setName(name);
-            counselingList = counselingMapper.findByCounseling(searchable);
+            counselingList = adminService.findCounselingBy(searchable);
 
             for (Counseling counseling : counselingList) {
-                System.out.println("counseling = " + counseling);
                 firstCounseling = counseling;
                 break;
             }
@@ -957,7 +1001,7 @@ public class AdminController {
 
     @RequestMapping(value = "/studentManagement/studentCounseling/counselingDetail", method = RequestMethod.GET)
     public String counselingStudentDetail(Model model, @RequestParam int counselingId) {
-        Counseling counseling = counselingMapper.findOne(counselingId);
+        Counseling counseling = adminService.findCounselingById(counselingId);
         model.addAttribute("counseling", counseling);
         return "role/admin/studentCounseling/counselingDetail";
     }
@@ -967,14 +1011,13 @@ public class AdminController {
             @RequestParam boolean checkAll,
             @RequestParam(required = false, defaultValue = "0") int year,
             @RequestParam(required = false) String name, @RequestParam Map<String, String> params) {
-        System.out.println("checkAll = " + checkAll);
         List<Counseling> counselingList;
 
         if (checkAll) {
             Searchable searchable = new Searchable();
             searchable.setYear(year);
             searchable.setName(name);
-            counselingList = counselingMapper.findByCounseling(searchable);
+            counselingList = adminService.findCounselingBy(searchable);
         } else {
             List<Integer> integerIds = new ArrayList<>();
             params.entrySet().stream().filter(entry -> entry.getKey().equals("tableCheckbox")).forEach(entry -> {
@@ -993,7 +1036,7 @@ public class AdminController {
             if (CollectionUtils.isEmpty(integerIds))
                 counselingList = new ArrayList<>();
             else
-                counselingList = counselingMapper.findByIds(integerIds);
+                counselingList = adminService.findCounselingsByIds(integerIds);
         }
         model.addAttribute("counselingList", counselingList);
         return "role/admin/studentCounseling/counselingDetailForPrint";
@@ -1001,7 +1044,7 @@ public class AdminController {
 
     @RequestMapping(value = "/studentManagement/inquiryGrade", method = RequestMethod.GET)
     public String inquiryGrade(Model model) {
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
 
@@ -1021,7 +1064,7 @@ public class AdminController {
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            userList = userMapper.findStudentBy(searchable);
+            userList = adminService.findStudentBy(searchable);
 
             for (User user : userList) {
                 firstUser = user;
@@ -1036,23 +1079,23 @@ public class AdminController {
 
     @RequestMapping(value = "/studentManagement/inquiryGrade/studentDetail", method = RequestMethod.GET)
     public String inquiryGradeStudentDetail(Model model, @RequestParam int studentId) {
-        User studentUser = userMapper.findOne(studentId);
+        User studentUser = adminService.findUserById(studentId);
         model.addAttribute("studentUser", studentUser);
         Semester firstSemester = null;
-        LinkedHashSet<Integer> semesterSet = studentCourseMapper.findSemesterIdByUserIdValid(studentUser.getId());
+        LinkedHashSet<Integer> semesterSet = adminService.findSemesterIdsByUserIdValid(studentUser.getId());
         for (Integer semesterId : semesterSet) {
-            firstSemester = semesterMapper.findOne(semesterId);
+            firstSemester = adminService.findSemesterById(semesterId);
             break;
         }
         model.addAttribute("firstSemester", firstSemester);
         Map<Semester, List<StudentCourse>> map = new HashMap<>();
         for (Integer semesterId : semesterSet) {
-            Semester semester = semesterMapper.findOne(semesterId);
+            Semester semester = adminService.findSemesterById(semesterId);
             Searchable searchable = new Searchable();
             searchable.setYear(semester.getYear());
             searchable.setSemester(semester.getSemester());
             searchable.setUserId(studentUser.getId());
-            List<StudentCourse> courses = studentCourseMapper.findByUserIdYearSemester(searchable);
+            List<StudentCourse> courses = adminService.findStudentCoursesByUserIdYearSemester(searchable);
             map.put(semester, courses);
         }
 
@@ -1062,9 +1105,9 @@ public class AdminController {
 
     @RequestMapping(value = "/studentManagement/inquiryGrade/gradeDetail", method = RequestMethod.GET)
     public String inquiryGradeDetail(Model model, @RequestParam int studentId, @RequestParam int semesterId) {
-        User studentUser = userMapper.findOne(studentId);
+        User studentUser = adminService.findUserById(studentId);
 
-        List<StudentCourse> studentCourses = studentCourseMapper.findByUserIdSemesterIdValid(studentUser.getId(),
+        List<StudentCourse> studentCourses = adminService.findStudentCoursesByUserIdSemesterIdValid(studentUser.getId(),
                 semesterId);
         model.addAttribute("studentUser", studentUser);
         model.addAttribute("studentCourses", studentCourses);
@@ -1073,10 +1116,10 @@ public class AdminController {
 
     @RequestMapping(value = "/studentManagement/inquiryGrade/gradeDetailForPrint", method = RequestMethod.GET)
     public String inquiryGradeDetailPrint(Model model, @RequestParam int studentId) {
-        User studentUser = userMapper.findOne(studentId);
+        User studentUser = adminService.findUserById(studentId);
         model.addAttribute("studentUser", studentUser);
 
-        Certificate certificate = certificateMapper.findByUserId(studentId);
+        Certificate certificate = adminService.findCertificateByUserId(studentId);
         if (certificate == null) {
             certificate = new Certificate();
             certificate.setUserId(studentId);
@@ -1092,7 +1135,7 @@ public class AdminController {
 
     @RequestMapping(value = "/profManagement/profRegistration", method = RequestMethod.GET)
     public String profRegistration(Model model, @RequestParam(required = false) String result) {
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
         model.addAttribute("divisions", divisions);
         User profUser = new User();
         Contact contact = new Contact();
@@ -1103,18 +1146,44 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/profManagement/profRegistration", method = RequestMethod.POST)
-    public String profRegistration(@ModelAttribute("profUser") User profUser, SessionStatus sessionStatus) {
-        profUser.setEnabled(false);
-        profUser.setConfirm(false);
-        boolean result = userService.register(profUser);
+    public String profRegistration(@ModelAttribute AdminProfessorRegistrationRequest req, SessionStatus sessionStatus) {
+        String firstName = StringUtils.trimToNull(req.getFirstName());
+        String lastName = StringUtils.trimToNull(req.getLastName());
+        String normalizedProfessorNumber = StringUtils.trimToNull(req.getNumber());
+
+        if (StringUtils.isBlank(firstName) || StringUtils.isBlank(lastName)
+                || normalizedProfessorNumber == null || req.getDivisionId() <= 0) {
+            sessionStatus.setComplete();
+            return "redirect:/admin/profManagement/profRegistration?result=validation_error";
+        }
+
+        if (adminService.findUserByNumber(normalizedProfessorNumber) != null) {
+            logger.warn("Professor registration rejected: duplicated professor number={}", normalizedProfessorNumber);
+            sessionStatus.setComplete();
+            return "redirect:/admin/profManagement/profRegistration?result=duplicate_professor";
+        }
+
+        User profUser = new User();
+        profUser.setNumber(normalizedProfessorNumber);
+        profUser.setDivisionId(req.getDivisionId());
+        Contact contact = new Contact();
+        contact.setFirstName(firstName);
+        contact.setLastName(lastName);
+        profUser.setContact(contact);
+
+        profUser.setAccountState(AccountState.PENDING);
+        boolean result = userService.register(profUser, Role.professor);
         sessionStatus.setComplete();
+        if (!result && adminService.findUserByNumber(normalizedProfessorNumber) != null) {
+            return "redirect:/admin/profManagement/profRegistration?result=duplicate_professor";
+        }
         return "redirect:/admin/profManagement/profRegistration?result=" + (result ? "success" : "fail");
     }
 
     @RequestMapping(value = "/profManagement/profInformation", method = RequestMethod.GET)
     public String profInformation(Model model, @RequestParam(required = false) String result) {
 
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("result", result);
@@ -1134,7 +1203,7 @@ public class AdminController {
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            userList = userMapper.findProfessorBy(searchable);
+            userList = adminService.findProfessorBy(searchable);
 
             for (User user : userList) {
                 firstUser = user;
@@ -1149,10 +1218,10 @@ public class AdminController {
 
     @RequestMapping(value = "/profManagement/profInformation/profDetail", method = RequestMethod.GET)
     public String profDetail(Model model, @RequestParam int profId) {
-        User profUser = userMapper.findOne(profId);
+        User profUser = adminService.findUserById(profId);
         model.addAttribute("profUser", profUser);
         model.addAttribute("statusList", StudentStatus.values());
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
 
@@ -1160,11 +1229,29 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/profManagement/profInformation/profDetail", method = RequestMethod.POST)
-    public String profDetail(@ModelAttribute("profUser") User profUser, SessionStatus sessionStatus) {
+    public String profDetail(@ModelAttribute AdminProfessorProfileUpdateDTO req, SessionStatus sessionStatus) {
+        User profUser = adminService.findUserById(req.getId());
+        if (profUser == null) {
+            sessionStatus.setComplete();
+            return "redirect:/admin/profManagement/profInformation?result=fail";
+        }
 
-        userMapper.update(profUser);
-        userMapper.updateFromSignup(profUser);
-        contactMapper.update(profUser.getContact());
+        profUser.setDivisionId(req.getDivisionId());
+        if (req.isEnabled()) {
+            profUser.setAccountState(AccountState.ACTIVE);
+        } else {
+            AccountState currentState = profUser.getAccountState();
+            profUser.setAccountState(currentState == AccountState.PENDING ? AccountState.PENDING : AccountState.DISABLED);
+        }
+
+        if (req.getContact() != null && profUser.getContact() != null) {
+            profUser.getContact().setFirstName(req.getContact().getFirstName());
+            profUser.getContact().setLastName(req.getContact().getLastName());
+        }
+
+        adminService.updateUser(profUser);
+        adminService.updateUserFromSignup(profUser);
+        adminService.updateContact(profUser.getContact());
         sessionStatus.setComplete();
 
         return "redirect:/admin/profManagement/profInformation?result=success";
@@ -1174,9 +1261,9 @@ public class AdminController {
     public String graduationResearch(Model model) {
 
         model.addAttribute("yearList", getYearList());
-        List<User> professors = userMapper.findAllProfessors();
+        List<User> professors = adminService.findAllProfessors();
         model.addAttribute("professors", professors);
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
 
@@ -1203,7 +1290,7 @@ public class AdminController {
             searchable.setAdvisor(advisor);
             searchable.setNumber(number);
             searchable.setName(name);
-            plans = graduationResearchPlanMapper.findBySearchable(searchable);
+            plans = adminService.findGraduationResearchPlansBySearchable(searchable);
 
             for (GraduationResearchPlan graduationResearchPlan : plans) {
                 firstOne = graduationResearchPlan;
@@ -1218,7 +1305,7 @@ public class AdminController {
 
     @RequestMapping(value = "/profManagement/graduationResearch/planDetail", method = RequestMethod.GET)
     public String graduationResearchPlanDetail(Model model, @RequestParam int planId) {
-        GraduationResearchPlan graduationResearchPlan = graduationResearchPlanMapper.findOne(planId);
+        GraduationResearchPlan graduationResearchPlan = adminService.findGraduationResearchPlanById(planId);
         model.addAttribute("stored", graduationResearchPlan);
         model.addAttribute("studentUser", graduationResearchPlan.getUser());
         model.addAttribute("completeSemester",
@@ -1234,7 +1321,6 @@ public class AdminController {
             @RequestParam(defaultValue = "0", required = false) int advisor,
             @RequestParam(required = false) String number,
             @RequestParam(required = false) String name, @RequestParam Map<String, String> params) {
-        System.out.println("checkAll = " + checkAll);
         List<Integer> integerIds = new ArrayList<>();
         List<GraduationResearchPlan> planList = null;
         if (checkAll) {
@@ -1244,7 +1330,7 @@ public class AdminController {
             searchable.setAdvisor(advisor);
             searchable.setNumber(number);
             searchable.setName(name);
-            planList = graduationResearchPlanMapper.findBySearchable(searchable);
+            planList = adminService.findGraduationResearchPlansBySearchable(searchable);
         } else {
             params.entrySet().stream().filter(entry -> entry.getKey().equals("tableCheckbox")).forEach(entry -> {
                 String value = entry.getValue();
@@ -1262,7 +1348,7 @@ public class AdminController {
             if (CollectionUtils.isEmpty(integerIds))
                 planList = new ArrayList<>();
             else
-                planList = graduationResearchPlanMapper.findByIds(integerIds);
+                planList = adminService.findGraduationResearchPlansByIds(integerIds);
         }
 
         for (GraduationResearchPlan graduationResearchPlan : planList) {
@@ -1286,7 +1372,7 @@ public class AdminController {
         model.addAttribute("year", year);
         model.addAttribute("yearList", yearList);
 
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
         List<koreatech.cse.domain.dto.CurriculumRowDTO> curriculumRows = curriculumService
                 .buildCurriculumRows(divisions, year);
 
@@ -1384,7 +1470,7 @@ public class AdminController {
 
     @RequestMapping(value = "/courseManagement/course", method = RequestMethod.GET)
     public String course(Model model, @RequestParam(required = false) String result) {
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("course", new Course());
@@ -1396,7 +1482,7 @@ public class AdminController {
     @RequestMapping(value = "/courseManagement/course", method = RequestMethod.POST)
     public String course(@ModelAttribute("course") Course course, SessionStatus sessionStatus) {
 
-        courseMapper.insert(course);
+        adminService.insertCourse(course);
 
         sessionStatus.setComplete();
 
@@ -1405,23 +1491,42 @@ public class AdminController {
 
     @RequestMapping(value = "/courseManagement/course/editCourse", method = RequestMethod.GET)
     public String editCourse(Model model, @RequestParam int id) {
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("course", new Course());
         model.addAttribute("subjCategoryList", SubjCategory.values());
-        Course course = courseMapper.findOne(id);
+        Course course = adminService.findCourseById(id);
         model.addAttribute("course", course);
         return "role/admin/course/editCourse";
     }
 
     @RequestMapping(value = "/courseManagement/course/editCourse", method = RequestMethod.POST)
-    public String editCourse(@ModelAttribute("course") Course course, SessionStatus sessionStatus) {
-
-        courseMapper.update(course);
-
+    public String editCourse(@ModelAttribute("course") Course courseForm, SessionStatus sessionStatus) {
+        Course course = adminService.findCourseById(courseForm.getId());
+        course.setCode(courseForm.getCode());
+        course.setTitle(courseForm.getTitle());
+        course.setSubjCategory(courseForm.getSubjCategory());
+        course.setDivisionId(courseForm.getDivisionId());
+        course.setOverview(courseForm.getOverview());
+        course.setLearningObjective(courseForm.getLearningObjective());
+        course.setCredit(courseForm.getCredit());
+        course.setLec(courseForm.getLec());
+        course.setTut(courseForm.getTut());
+        course.setLab(courseForm.getLab());
+        course.setWs(courseForm.getWs());
+        course.setSchoolYear(courseForm.getSchoolYear());
+        course.setAchieve1(courseForm.isAchieve1());
+        course.setAchieve2(courseForm.isAchieve2());
+        course.setAchieve3(courseForm.isAchieve3());
+        course.setAchieve4(courseForm.isAchieve4());
+        course.setAchieve5(courseForm.isAchieve5());
+        course.setAchieve6(courseForm.isAchieve6());
+        course.setAchieve7(courseForm.isAchieve7());
+        course.setAchieve8(courseForm.isAchieve8());
+        course.setAchieve9(courseForm.isAchieve9());
+        adminService.updateCourse(course);
         sessionStatus.setComplete();
-
         return "redirect:/admin/courseManagement/course?result=success";
     }
 
@@ -1440,7 +1545,7 @@ public class AdminController {
             searchable.setTitle(title);
             searchable.setDivision(division);
 
-            courseList = courseMapper.findBy(searchable);
+            courseList = adminService.findCoursesBy(searchable);
             for (Course course : courseList) {
                 firstCourse = course;
                 break;
@@ -1455,29 +1560,45 @@ public class AdminController {
     @RequestMapping(value = "/courseManagement/courseEditable", method = RequestMethod.POST)
     @ResponseBody
     public Boolean courseEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
-        Course course = courseMapper.findOne(pk);
-
         switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(course, name, value);
+            case "title":             adminService.updateCourseTitle(pk, value);                                    break;
+            case "code":              adminService.updateCourseCode(pk, value);                                     break;
+            case "subjCategory":      adminService.updateCourseSubjCategory(pk, value);                             break;
+            case "overview":          adminService.updateCourseOverview(pk, value);                                 break;
+            case "learningObjective": adminService.updateCourseLearningObjective(pk, value);                        break;
+            case "credit":            adminService.updateCourseCredit(pk, Integer.parseInt(value));                 break;
+            case "lec":               adminService.updateCourseLec(pk, Integer.parseInt(value));                    break;
+            case "tut":               adminService.updateCourseTut(pk, Integer.parseInt(value));                    break;
+            case "lab":               adminService.updateCourseLab(pk, Integer.parseInt(value));                    break;
+            case "ws":                adminService.updateCourseWs(pk, Integer.parseInt(value));                     break;
+            case "schoolYear":        adminService.updateCourseSchoolYear(pk, Integer.parseInt(value));             break;
+            case "achieve1":          adminService.updateCourseAchieve(pk, 1,  Boolean.parseBoolean(value));        break;
+            case "achieve2":          adminService.updateCourseAchieve(pk, 2,  Boolean.parseBoolean(value));        break;
+            case "achieve3":          adminService.updateCourseAchieve(pk, 3,  Boolean.parseBoolean(value));        break;
+            case "achieve4":          adminService.updateCourseAchieve(pk, 4,  Boolean.parseBoolean(value));        break;
+            case "achieve5":          adminService.updateCourseAchieve(pk, 5,  Boolean.parseBoolean(value));        break;
+            case "achieve6":          adminService.updateCourseAchieve(pk, 6,  Boolean.parseBoolean(value));        break;
+            case "achieve7":          adminService.updateCourseAchieve(pk, 7,  Boolean.parseBoolean(value));        break;
+            case "achieve8":          adminService.updateCourseAchieve(pk, 8,  Boolean.parseBoolean(value));        break;
+            case "achieve9":          adminService.updateCourseAchieve(pk, 9,  Boolean.parseBoolean(value));        break;
+            case "achieve10":         adminService.updateCourseAchieve(pk, 10, Boolean.parseBoolean(value));        break;
+            default: throw new IllegalArgumentException("Unknown course field: " + name);
         }
-        courseMapper.update(course);
-
         return true;
     }
 
     @RequestMapping(value = "/courseManagement/course/deleteCourse", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteCourse(@RequestParam int id) {
-        Course course = courseMapper.findOne(id);
+        Course course = adminService.findCourseById(id);
 
-        int num = professorCourseMapper.countByCourseId(course.getId());
+        int num = adminService.countProfessorCoursesByCourseId(course.getId());
         if (num == 0) {
-            courseMapper.delete(course);
+            adminService.deleteCourse(course);
             return true;
         } else {
             course.setEnabled(false);
-            courseMapper.update(course);
+            adminService.updateCourse(course);
             return false;
         }
     }
@@ -1485,16 +1606,16 @@ public class AdminController {
     @RequestMapping(value = "/courseManagement/course/changeStatus", method = RequestMethod.POST)
     @ResponseBody
     public Boolean changeCourseStatus(@RequestParam int id, @RequestParam boolean status) {
-        Course course = courseMapper.findOne(id);
+        Course course = adminService.findCourseById(id);
         course.setEnabled(status);
-        courseMapper.update(course);
+        adminService.updateCourse(course);
         return true;
     }
 
     @RequestMapping(value = "/courseManagement/alternative", method = RequestMethod.GET)
     public String alternative(Model model, @RequestParam(required = false) String result) {
 
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("subjCategoryList", SubjCategory.values());
@@ -1504,14 +1625,14 @@ public class AdminController {
 
     @RequestMapping(value = "/courseManagement/alternative/manageCourse", method = RequestMethod.GET)
     public String manageCourse(Model model, @RequestParam int id) {
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("subjCategoryList", SubjCategory.values());
-        Course course = courseMapper.findOne(id);
+        Course course = adminService.findCourseById(id);
         model.addAttribute("course", course);
 
-        List<AltCourse> altCourses = altCourseMapper.findByTargetCourseId(id);
+        List<AltCourse> altCourses = adminService.findAltCoursesByTargetCourseId(id);
         model.addAttribute("altCourses", altCourses);
         return "role/admin/alternative/manageCourse";
     }
@@ -1532,7 +1653,7 @@ public class AdminController {
             searchable.setTitle(title);
             searchable.setDivision(division);
 
-            courseList = courseMapper.findBy(searchable);
+            courseList = adminService.findCoursesBy(searchable);
 
             for (Course course : courseList) {
                 firstCourse = course;
@@ -1562,7 +1683,7 @@ public class AdminController {
             searchable.setTitle(title);
             searchable.setDivision(division);
 
-            courseList = courseMapper.findBy(searchable);
+            courseList = adminService.findCoursesBy(searchable);
 
             for (Course course : courseList) {
                 firstCourse = course;
@@ -1580,13 +1701,13 @@ public class AdminController {
     @ResponseBody
     public Boolean addToAlt(@RequestParam int id, @RequestParam int targetCourseId, @RequestParam String type) {
 
-        AltCourse stored = altCourseMapper.findByCourseIdTargetCourseIdType(id, targetCourseId, type);
+        AltCourse stored = adminService.findAltCourseByCourseIdTargetCourseIdType(id, targetCourseId, type);
         if (stored == null && id != targetCourseId) {
             AltCourse altCourse = new AltCourse();
             altCourse.setCourseId(id);
             altCourse.setTargetCourseId(targetCourseId);
             altCourse.setType(type);
-            altCourseMapper.insert(altCourse);
+            adminService.insertAltCourse(altCourse);
         }
 
         return true;
@@ -1596,8 +1717,8 @@ public class AdminController {
     @ResponseBody
     public Boolean deleteAlt(@RequestParam int id) {
 
-        AltCourse stored = altCourseMapper.findOne(id);
-        altCourseMapper.delete(stored);
+        AltCourse stored = adminService.findAltCourseById(id);
+        adminService.deleteAltCourse(stored);
 
         return true;
     }
@@ -1609,7 +1730,7 @@ public class AdminController {
             @RequestParam(defaultValue = "0", required = false) @SuppressWarnings("unused") int division) {
         // Suppress CodeQL unused-parameter: required by framework contract
         Objects.toString(year); Objects.toString(semester); Objects.toString(division); // no-op references
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
@@ -1638,7 +1759,7 @@ public class AdminController {
             searchable.setDivision(division);
             searchable.setEnabled(true);
 
-            courseList = courseMapper.findBy(searchable);
+            courseList = adminService.findCoursesBy(searchable);
             for (Course course : courseList) {
                 firstCourse = course;
                 break;
@@ -1653,11 +1774,11 @@ public class AdminController {
     @RequestMapping(value = "/courseManagement/cOpen/manageTime", method = RequestMethod.GET)
     public String manageTime(Model model, @RequestParam int profCourseId,
             @RequestParam(required = false) String result) {
-        ProfessorCourse profCourse = professorCourseMapper.findOne(profCourseId);
+        ProfessorCourse profCourse = adminService.findProfessorCourseById(profCourseId);
         Course course = profCourse.getCourse();
         model.addAttribute("course", course);
         model.addAttribute("profCourse", profCourse);
-        List<ClassTime> classTimes = classTimeMapper.findByProfCourseId(profCourseId);
+        List<ClassTime> classTimes = adminService.findClassTimesByProfCourseId(profCourseId);
         model.addAttribute("classTimes", classTimes);
         model.addAttribute("classTime", new ClassTime());
         model.addAttribute("result", result);
@@ -1667,37 +1788,35 @@ public class AdminController {
     @RequestMapping(value = "/courseManagement/cOpen/manageTime", method = RequestMethod.POST)
     public String manageTime(@ModelAttribute ClassTime classTime,
             @RequestParam int profCourseId) {
-        System.out.println("profCourseId = " + profCourseId);
-
         if (classTime.getE() > classTime.getS())
-            classTimeMapper.insert(classTime);
+            adminService.insertClassTime(classTime);
         return "redirect:/admin/courseManagement/cOpen/manageTime?profCourseId=" + profCourseId + "&result=success";
     }
 
     @RequestMapping(value = "/courseManagement/cOpen/manageTime/deleteTime", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteTime(@RequestParam int id) {
-        ClassTime classTime = classTimeMapper.findOne(id);
-        classTimeMapper.delete(classTime);
+        ClassTime classTime = adminService.findClassTimeById(id);
+        adminService.deleteClassTime(classTime);
         return true;
     }
 
     @RequestMapping(value = "/courseManagement/cOpen/manageDivide", method = RequestMethod.GET)
     public String manageDivide(Model model, @RequestParam int courseId, @RequestParam(required = false) String result) {
-        Course course = courseMapper.findOne(courseId);
+        Course course = adminService.findCourseById(courseId);
         model.addAttribute("course", course);
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
         model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
         model.addAttribute("subjCategoryList", SubjCategory.values());
-        List<Semester> semesters = semesterMapper.findAll();
+        List<Semester> semesters = adminService.findAllSemesters();
         model.addAttribute("semesters", semesters);
-        List<User> professors = userMapper.findProfessorsByDivision(course.getDivisionId());
+        List<User> professors = adminService.findProfessorsByDivision(course.getDivisionId());
         model.addAttribute("professors", professors);
-        List<ProfessorCourse> professorCourseList = professorCourseMapper.findByCourseId(courseId);
+        List<ProfessorCourse> professorCourseList = adminService.findProfessorCoursesByCourseId(courseId);
         model.addAttribute("professorCourseList", professorCourseList);
         model.addAttribute("profCourse", new ProfessorCourse());
-        List<Classroom> classroomList = classroomMapper.findAllEnabled();
+        List<Classroom> classroomList = adminService.findAllEnabledClassrooms();
         model.addAttribute("classroomList", classroomList);
         model.addAttribute("result", result);
         return "role/admin/cOpen/manageDivide";
@@ -1706,36 +1825,42 @@ public class AdminController {
     @RequestMapping(value = "/courseManagement/cOpen/manageDivide", method = RequestMethod.POST)
     public String manageDivide(@ModelAttribute ProfessorCourse professorCourse,
             @RequestParam int courseId) {
-        professorCourseMapper.insert(professorCourse);
+        adminService.insertProfessorCourse(professorCourse);
         return "redirect:/admin/courseManagement/cOpen/manageDivide?courseId=" + courseId + "&result=success";
     }
 
     @RequestMapping(value = "/courseManagement/cOpen/editDivide", method = RequestMethod.GET)
     public String editDivide(Model model, @RequestParam int profCourseId,
             @RequestParam(required = false) String result) {
-        ProfessorCourse professorCourse = professorCourseMapper.findOne(profCourseId);
+        ProfessorCourse professorCourse = adminService.findProfessorCourseById(profCourseId);
         model.addAttribute("profCourse", professorCourse);
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
         model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
         model.addAttribute("subjCategoryList", SubjCategory.values());
-        List<Semester> semesters = semesterMapper.findAll();
+        List<Semester> semesters = adminService.findAllSemesters();
         model.addAttribute("semesters", semesters);
-        List<User> professors = userMapper.findProfessorsByDivision(professorCourse.getCourse().getDivisionId());
+        List<User> professors = adminService.findProfessorsByDivision(professorCourse.getCourse().getDivisionId());
         model.addAttribute("professors", professors);
-        List<Classroom> classroomList = classroomMapper.findAllEnabled();
+        List<Classroom> classroomList = adminService.findAllEnabledClassrooms();
         model.addAttribute("classroomList", classroomList);
         model.addAttribute("result", result);
         return "role/admin/cOpen/editDivide";
     }
 
     @RequestMapping(value = "/courseManagement/cOpen/editDivide", method = RequestMethod.POST)
-    public String editDivide(@ModelAttribute("profCourse") ProfessorCourse profCourse, SessionStatus sessionStatus,
-            @RequestParam @SuppressWarnings("unused") int profCourseId) {
-        // Suppress CodeQL unused-parameter: required by framework contract
-        Objects.toString(profCourseId); // no-op reference
-        System.out.println("profCourse = " + profCourse);
-        professorCourseMapper.update(profCourse);
+    public String editDivide(@ModelAttribute("profCourse") ProfessorCourse profCourseForm, SessionStatus sessionStatus,
+            @RequestParam int profCourseId) {
+        ProfessorCourse profCourse = adminService.findProfessorCourseById(profCourseId);
+        profCourse.setSemesterId(profCourseForm.getSemesterId());
+        profCourse.setDivide(profCourseForm.getDivide());
+        profCourse.setUserId(profCourseForm.getUserId());
+        profCourse.setSchoolYear(profCourseForm.getSchoolYear());
+        profCourse.setLimitStudent(profCourseForm.getLimitStudent());
+        profCourse.setClassroom(profCourseForm.getClassroom());
+        profCourse.setLanguage(profCourseForm.getLanguage());
+        profCourse.setEngAccreditation(profCourseForm.isEngAccreditation());
+        adminService.updateProfessorCourse(profCourse);
         sessionStatus.setComplete();
         return "redirect:/admin/courseManagement/cOpen/manageDivide?courseId=" + profCourse.getCourseId()
                 + "&result=success";
@@ -1744,15 +1869,15 @@ public class AdminController {
     @RequestMapping(value = "/courseManagement/cOpen/manageDivide/deleteDivide", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteDivide(@RequestParam int id) {
-        ProfessorCourse professorCourse = professorCourseMapper.findOne(id);
+        ProfessorCourse professorCourse = adminService.findProfessorCourseById(id);
 
-        int num = studentCourseMapper.countByProfCourseId(professorCourse.getId());
+        int num = adminService.countStudentCoursesByProfCourseId(professorCourse.getId());
         if (num == 0) {
-            professorCourseMapper.delete(professorCourse);
+            adminService.deleteProfessorCourse(professorCourse);
             return true;
         } else {
             professorCourse.setEnabled(false);
-            professorCourseMapper.update(professorCourse);
+            adminService.updateProfessorCourse(professorCourse);
             return false;
         }
     }
@@ -1760,19 +1885,18 @@ public class AdminController {
     @RequestMapping(value = "/courseManagement/cOpen/manageDivide/changeStatus", method = RequestMethod.POST)
     @ResponseBody
     public Boolean changeDivideStatus(@RequestParam int id, @RequestParam boolean status) {
-        System.out.println("id = " + id);
-        ProfessorCourse professorCourse = professorCourseMapper.findOne(id);
+        ProfessorCourse professorCourse = adminService.findProfessorCourseById(id);
         professorCourse.setEnabled(status);
-        professorCourseMapper.update(professorCourse);
+        adminService.updateProfessorCourse(professorCourse);
         return true;
     }
 
     @RequestMapping(value = "/courseManagement/cOpen/manageStudent", method = RequestMethod.GET)
     public String manageStudent(Model model, @RequestParam int profCourseId,
             @RequestParam(required = false) String result) {
-        ProfessorCourse professorCourse = professorCourseMapper.findOne(profCourseId);
+        ProfessorCourse professorCourse = adminService.findProfessorCourseById(profCourseId);
         model.addAttribute("profCourse", professorCourse);
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("result", result);
@@ -1781,7 +1905,7 @@ public class AdminController {
         UploadedFile uploadedFile = new UploadedFile();
         model.addAttribute("uploadedFile", uploadedFile);
 
-        List<StudentCourse> studentCourseList = studentCourseMapper.findByProfCourseId(profCourseId);
+        List<StudentCourse> studentCourseList = adminService.findStudentCoursesByProfCourseId(profCourseId);
         model.addAttribute("studentCourseList", studentCourseList);
         return "role/admin/cOpen/manageStudent";
     }
@@ -1799,10 +1923,10 @@ public class AdminController {
             searchable.setNumber(number);
             searchable.setName(name);
             searchable.setDivision(division);
-            ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
-            List<Integer> userIds = studentCourseMapper.findUserIdsByCourseId(pc.getCourseId());
+            ProfessorCourse pc = adminService.findProfessorCourseById(profCourseId);
+            List<Integer> userIds = adminService.findStudentUserIdsByCourseId(pc.getCourseId());
             searchable.setUserIds(userIds);
-            userList = userMapper.findStudentsByAdvisorSchoolYearDivisionExceptRegistered(userIds, number, name,
+            userList = adminService.findStudentsByAdvisorSchoolYearDivisionExceptRegistered(userIds, number, name,
                     division);
         }
 
@@ -1815,14 +1939,14 @@ public class AdminController {
     @ResponseBody
     public Boolean addToDivide(@RequestParam int id, @RequestParam int profCourseId) {
         StudentCourse studentCourse = new StudentCourse();
-        ProfessorCourse professorCourse = professorCourseMapper.findOne(profCourseId);
+        ProfessorCourse professorCourse = adminService.findProfessorCourseById(profCourseId);
         studentCourse.setCourseId(professorCourse.getCourseId());
         studentCourse.setProfCourseId(professorCourse.getId());
         studentCourse.setUserId(id);
-        studentCourseMapper.insert(studentCourse);
-        int num = studentCourseMapper.countByProfCourseId(profCourseId);
+        adminService.insertStudentCourse(studentCourse);
+        int num = adminService.countStudentCoursesByProfCourseId(profCourseId);
         professorCourse.setNumStudent(num);
-        professorCourseMapper.update(professorCourse);
+        adminService.updateProfessorCourse(professorCourse);
 
         return true;
     }
@@ -1830,12 +1954,12 @@ public class AdminController {
     @RequestMapping(value = "/courseManagement/cOpen/manageStudent/removeFromDivide", method = RequestMethod.POST)
     @ResponseBody
     public Boolean removeFromDivide(@RequestParam int id, @RequestParam int profCourseId) {
-        ProfessorCourse professorCourse = professorCourseMapper.findOne(profCourseId);
-        StudentCourse studentCourse = studentCourseMapper.findByUserIdProfCourseId(id, profCourseId);
-        studentCourseMapper.delete(studentCourse);
-        int num = studentCourseMapper.countByProfCourseId(profCourseId);
+        ProfessorCourse professorCourse = adminService.findProfessorCourseById(profCourseId);
+        StudentCourse studentCourse = adminService.findStudentCourseByUserIdProfCourseId(id, profCourseId);
+        adminService.deleteStudentCourse(studentCourse);
+        int num = adminService.countStudentCoursesByProfCourseId(profCourseId);
         professorCourse.setNumStudent(num);
-        professorCourseMapper.update(professorCourse);
+        adminService.updateProfessorCourse(professorCourse);
 
         return true;
     }
@@ -1863,7 +1987,7 @@ public class AdminController {
             }
 
             // Get eligible students
-            List<User> eligibleUsers = userMapper.findEligibleStudentsForCourseRegistration(
+            List<User> eligibleUsers = adminService.findEligibleStudentsForCourseRegistration(
                     divisionId, schoolYear, profCourseId);
 
             // Transform to simple JSON-friendly format
@@ -1877,7 +2001,9 @@ public class AdminController {
                     fullName = user.getContact().getFullName();
                 }
                 studentData.put("name", fullName);
-                studentData.put("enabled", user.isConfirm() ? 1 : 0); // 1=Active, 0=Pending
+                AccountState accountState = user.getAccountState();
+                studentData.put("accountState", accountState.name());
+                studentData.put("enabled", accountState == AccountState.ACTIVE ? 1 : 0); // 1=Active, 0=Non-active
                 students.add(studentData);
             }
 
@@ -1928,7 +2054,7 @@ public class AdminController {
             }
 
             // Get professor course for validation and capacity check
-            ProfessorCourse professorCourse = professorCourseMapper.findOne(profCourseId);
+            ProfessorCourse professorCourse = adminService.findProfessorCourseById(profCourseId);
             if (professorCourse == null) {
                 response.put("status", "error");
                 response.put("message", "Course not found");
@@ -1941,7 +2067,7 @@ public class AdminController {
             }
 
             // Capacity check: get current count and limit
-            int currentCount = studentCourseMapper.countByProfCourseId(profCourseId);
+            int currentCount = adminService.countStudentCoursesByProfCourseId(profCourseId);
             int limitStudent = professorCourse.getLimitStudent();
 
             // Filter out duplicates first to get accurate new student count
@@ -1952,7 +2078,7 @@ public class AdminController {
                     continue;
                 }
                 // Use faster exists check
-                if (studentCourseMapper.existsByUserIdAndProfCourseId(studentId, profCourseId)) {
+                if (adminService.existsStudentCourseByUserIdAndProfCourseId(studentId, profCourseId)) {
                     duplicates++;
                 } else {
                     newStudentIds.add(studentId);
@@ -1982,15 +2108,15 @@ public class AdminController {
                 }
                 // Leave other fields null/default as per schema defaults
 
-                studentCourseMapper.insert(studentCourse);
+                adminService.insertStudentCourse(studentCourse);
                 inserted++;
                 logger.debug("Inserted: userId={} for profCourseId={}", studentId, profCourseId);
             }
 
             // Update student count on professor course
-            int totalCount = studentCourseMapper.countByProfCourseId(profCourseId);
+            int totalCount = adminService.countStudentCoursesByProfCourseId(profCourseId);
             professorCourse.setNumStudent(totalCount);
-            professorCourseMapper.update(professorCourse);
+            adminService.updateProfessorCourse(professorCourse);
 
             // Build response
             response.put("status", duplicates > 0 ? "warning" : "success");
@@ -2133,7 +2259,7 @@ public class AdminController {
             int rows = sheet.getPhysicalNumberOfRows();
             final int RESERVED_SKIP = 1; // Skip header row
 
-            ProfessorCourse professorCourse = professorCourseMapper.findOne(profCourseId);
+            ProfessorCourse professorCourse = adminService.findProfessorCourseById(profCourseId);
             if (professorCourse == null) {
                 logger.error("ProfessorCourse not found for id={}", profCourseId);
                 return result;
@@ -2147,7 +2273,7 @@ public class AdminController {
                 result.incrementTotalRows();
 
                 // Check if we've reached the student limit
-                int currentCount = studentCourseMapper.countByProfCourseId(profCourseId);
+                int currentCount = adminService.countStudentCoursesByProfCourseId(profCourseId);
                 if (currentCount >= limitStudent) {
                     logger.warn("Student limit {} reached for profCourseId={}, stopping at row {}",
                             limitStudent, profCourseId, rowIndex);
@@ -2189,7 +2315,7 @@ public class AdminController {
                     studentNumber = studentNumber.trim();
 
                     // Find student by number
-                    User studentUser = userMapper.findStudentByNumber(studentNumber);
+                    User studentUser = adminService.findStudentByNumber(studentNumber);
 
                     if (studentUser == null) {
                         result.incrementSkippedNotFound();
@@ -2198,7 +2324,7 @@ public class AdminController {
                     }
 
                     // Check for duplicate registration
-                    StudentCourse existing = studentCourseMapper.findByUserIdProfCourseId(
+                    StudentCourse existing = adminService.findStudentCourseByUserIdProfCourseId(
                             studentUser.getId(), profCourseId);
 
                     if (existing != null) {
@@ -2213,7 +2339,7 @@ public class AdminController {
                     studentCourse.setProfCourseId(professorCourse.getId());
                     studentCourse.setUserId(studentUser.getId());
                     studentCourse.setSchoolYear(studentUser.getSchoolYear());
-                    studentCourseMapper.insert(studentCourse);
+                    adminService.insertStudentCourse(studentCourse);
                     result.incrementInserted();
                     logger.debug("Inserted student: {} (userId={}) into profCourseId={}",
                             studentNumber, studentUser.getId(), profCourseId);
@@ -2225,9 +2351,9 @@ public class AdminController {
             }
 
             // Update the student count on the professor course
-            int finalCount = studentCourseMapper.countByProfCourseId(profCourseId);
+            int finalCount = adminService.countStudentCoursesByProfCourseId(profCourseId);
             professorCourse.setNumStudent(finalCount);
-            professorCourseMapper.update(professorCourse);
+            adminService.updateProfessorCourse(professorCourse);
             logger.debug("Updated profCourseId={} numStudent to {}", profCourseId, finalCount);
 
         } catch (Exception e) {
@@ -2250,7 +2376,7 @@ public class AdminController {
     @RequestMapping(value = "/courseManagement/attendance", method = RequestMethod.GET)
     public String attendance(Model model, @RequestParam(required = false) String result) {
 
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
@@ -2275,7 +2401,7 @@ public class AdminController {
             searchable.setYear(year);
             searchable.setSemester(semester);
             searchable.setDivision(division);
-            courseList = professorCourseMapper.findBy(searchable);
+            courseList = adminService.findProfessorCoursesBy(searchable);
 
             for (ProfessorCourse course : courseList) {
                 firstCourse = course;
@@ -2290,7 +2416,7 @@ public class AdminController {
 
     @RequestMapping(value = "/courseManagement/syllabus", method = RequestMethod.GET)
     public String syllabus(Model model) {
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
@@ -2300,28 +2426,28 @@ public class AdminController {
     @RequestMapping(value = "/courseManagement/syllabus/courseDetail", method = RequestMethod.GET)
     public String courseDetail(Model model, @RequestParam int profCourseId,
             @RequestParam(defaultValue = "false", required = false) String print) {
-        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
+        ProfessorCourse pc = adminService.findProfessorCourseById(profCourseId);
         model.addAttribute("pc", pc);
-        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(pc.getId());
+        LectureFundamentals lectureFundamentals = adminService.findLectureFundamentalsByProfCourseId(pc.getId());
         if (lectureFundamentals == null)
             return "role/common/syllabus/requiredSyllabus";
         model.addAttribute("lectureFundamentals", lectureFundamentals);
-        ProfLectureMethod profLectureMethod = profLectureMethodMapper.findByProfCourseId(pc.getId());
+        ProfLectureMethod profLectureMethod = adminService.findProfLectureMethodByProfCourseId(pc.getId());
         model.addAttribute("profLectureMethod",
                 profLectureMethod == null ? new ProfLectureMethod() : profLectureMethod);
-        LectureContents lectureContents = lectureContentsMapper.findByProfCourseId(pc.getId());
+        LectureContents lectureContents = adminService.findLectureContentsByProfCourseId(pc.getId());
         model.addAttribute("lectureContents", lectureContents == null ? new LectureContents() : lectureContents);
 
-        List<LectureMethod> lectureMethods = lectureMethodMapper.findAll();
+        List<LectureMethod> lectureMethods = adminService.findAllLectureMethods();
         model.addAttribute("lectureMethods", lectureMethods);
 
-        List<EducationalMedium> educationalMediums = educationalMediumMapper.findAll();
+        List<EducationalMedium> educationalMediums = adminService.findAllEducationalMediums();
         model.addAttribute("educationalMediums", educationalMediums);
 
-        List<EvaluationMethod> evaluationMethods = evaluationMethodMapper.findAll();
+        List<EvaluationMethod> evaluationMethods = adminService.findAllEvaluationMethods();
         model.addAttribute("evaluationMethods", evaluationMethods);
 
-        List<Equipment> equipments = equipmentMapper.findAll();
+        List<Equipment> equipments = adminService.findAllEquipments();
         model.addAttribute("equipments", equipments);
         if (print.equals("true"))
             return "role/common/syllabus/courseDetailForPrint";
@@ -2348,7 +2474,7 @@ public class AdminController {
             searchable.setTitle(title);
             searchable.setDivision(division);
 
-            courseList = professorCourseMapper.findBy(searchable);
+            courseList = adminService.findProfessorCoursesBy(searchable);
 
             for (ProfessorCourse course : courseList) {
                 firstCourse = course;
@@ -2364,7 +2490,7 @@ public class AdminController {
     @RequestMapping(value = "/academicManagement/studentGrade", method = RequestMethod.GET)
     public String studentGrade(Model model) {
         model.addAttribute("yearList", getYearList());
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
         return "role/admin/studentGrade/studentGrade";
@@ -2386,7 +2512,7 @@ public class AdminController {
             Searchable searchable = new Searchable();
             searchable.setYear(year);
             searchable.setSemester(semester);
-            courseList = professorCourseMapper.findBy(searchable);
+            courseList = adminService.findProfessorCoursesBy(searchable);
             for (ProfessorCourse pc : courseList) {
                 firstCourse = pc;
                 break;
@@ -2400,13 +2526,13 @@ public class AdminController {
 
     @RequestMapping(value = "/academicManagement/studentGrade/courseDetail", method = RequestMethod.GET)
     public String academicManagementCourseDetail(Model model, @RequestParam int profCourseId) {
-        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
+        ProfessorCourse pc = adminService.findProfessorCourseById(profCourseId);
         model.addAttribute("pc", pc);
 
-        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(profCourseId);
+        LectureFundamentals lectureFundamentals = adminService.findLectureFundamentalsByProfCourseId(profCourseId);
         model.addAttribute("lectureFundamentals", lectureFundamentals);
 
-        List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(profCourseId);
+        List<StudentCourse> studentCourses = adminService.findStudentCoursesByProfCourseId(profCourseId);
         model.addAttribute("studentCourses", studentCourses);
 
         return "role/admin/studentGrade/courseDetail";
@@ -2414,13 +2540,13 @@ public class AdminController {
 
     @RequestMapping(value = "/academicManagement/studentGrade/ratioDetail", method = RequestMethod.GET)
     public String academicManagementRatioDetail(Model model, @RequestParam int profCourseId) {
-        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
+        ProfessorCourse pc = adminService.findProfessorCourseById(profCourseId);
         model.addAttribute("pc", pc);
 
-        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(profCourseId);
+        LectureFundamentals lectureFundamentals = adminService.findLectureFundamentalsByProfCourseId(profCourseId);
         model.addAttribute("lectureFundamentals", lectureFundamentals);
 
-        List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(pc.getId());
+        List<StudentCourse> studentCourses = adminService.findStudentCoursesByProfCourseId(pc.getId());
         model.addAttribute("studentCourses", studentCourses);
 
         return "role/common/grade/ratioDetail";
@@ -2428,13 +2554,13 @@ public class AdminController {
 
     @RequestMapping(value = "/academicManagement/studentGrade/courseDetailForPrint", method = RequestMethod.GET)
     public String registerGradeCourseDetailForPrint(Model model, @RequestParam int profCourseId) {
-        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
+        ProfessorCourse pc = adminService.findProfessorCourseById(profCourseId);
         model.addAttribute("pc", pc);
 
-        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(profCourseId);
+        LectureFundamentals lectureFundamentals = adminService.findLectureFundamentalsByProfCourseId(profCourseId);
         model.addAttribute("lectureFundamentals", lectureFundamentals);
 
-        List<StudentCourse> studentCourses = studentCourseMapper.findByProfCourseId(profCourseId);
+        List<StudentCourse> studentCourses = adminService.findStudentCoursesByProfCourseId(profCourseId);
         model.addAttribute("studentCourses", studentCourses);
 
         return "role/common/grade/courseDetailForPrint";
@@ -2443,7 +2569,7 @@ public class AdminController {
     @RequestMapping(value = "/academicManagement/graduationCriteria", method = RequestMethod.GET)
     public String graduationCriteria(Model model, @RequestParam(required = false) String result) {
         model.addAttribute("yearList", getYearList());
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
         model.addAttribute("divisions", divisions);
         GraduationCriteria graduationCriteria = new GraduationCriteria();
         model.addAttribute("graduationCriteria", graduationCriteria);
@@ -2453,7 +2579,7 @@ public class AdminController {
 
     @RequestMapping(value = "/academicManagement/graduationCriteria", method = RequestMethod.POST)
     public String graduationCriteria(@ModelAttribute GraduationCriteria graduationCriteria) {
-        graduationCriteriaMapper.insert(graduationCriteria);
+        adminService.insertGraduationCriteria(graduationCriteria);
         return "redirect:/admin/academicManagement/graduationCriteria?result=success";
     }
 
@@ -2470,7 +2596,7 @@ public class AdminController {
             searchable.setYear(year);
             searchable.setDivision(division);
 
-            list = graduationCriteriaMapper.findByYearDivision(searchable);
+            list = adminService.findGraduationCriteriaListByYearDivision(searchable);
 
             for (GraduationCriteria gc : list) {
                 firstOne = gc;
@@ -2486,35 +2612,34 @@ public class AdminController {
     @RequestMapping(value = "/academicManagement/graduationCriteria/criteriaEditable", method = RequestMethod.POST)
     @ResponseBody
     public Boolean criteriaEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
-        GraduationCriteria gc = graduationCriteriaMapper.findOne(pk);
-
         switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(gc, name, value);
+            case "year":    adminService.updateGraduationCriteriaYear(pk,    Integer.parseInt(value)); break;
+            case "msc":     adminService.updateGraduationCriteriaMsc(pk,     Integer.parseInt(value)); break;
+            case "liberal": adminService.updateGraduationCriteriaLiberal(pk, Integer.parseInt(value)); break;
+            case "major":   adminService.updateGraduationCriteriaMajor(pk,   Integer.parseInt(value)); break;
+            default: throw new IllegalArgumentException("Unknown graduationCriteria field: " + name);
         }
-        graduationCriteriaMapper.update(gc);
-
         return true;
     }
 
     @RequestMapping(value = "/courseManagement/course/deleteCriteria", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteCriteria(@RequestParam int id) {
-        GraduationCriteria gc = graduationCriteriaMapper.findOne(id);
+        GraduationCriteria gc = adminService.findGraduationCriteriaById(id);
         Searchable searchable = new Searchable();
         searchable.setYear(gc.getYear());
         searchable.setDivision(gc.getDivisionId());
-        List<GraduationCriteria> gcList = graduationCriteriaMapper.findByYearDivision(searchable);
+        List<GraduationCriteria> gcList = adminService.findGraduationCriteriaListByYearDivision(searchable);
         if (!CollectionUtils.isEmpty(gcList) && gcList.size() == 1)
             return false;
 
-        graduationCriteriaMapper.delete(gc);
+        adminService.deleteGraduationCriteria(gc);
         return true;
     }
 
     @RequestMapping(value = "/academicManagement/assessmentFactor", method = RequestMethod.GET)
     public String assessmentFactor(Model model) {
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
@@ -2538,7 +2663,7 @@ public class AdminController {
             searchable.setTitle(title);
             searchable.setDivision(division);
 
-            courseList = courseMapper.findBy(searchable);
+            courseList = adminService.findCoursesBy(searchable);
 
             for (Course course : courseList) {
                 firstCourse = course;
@@ -2553,12 +2678,12 @@ public class AdminController {
 
     @RequestMapping(value = "/academicManagement/assessmentFactor/manageAf", method = RequestMethod.GET)
     public String assessmentFactorCourseDetail(Model model, @RequestParam int courseId) {
-        Course course = courseMapper.findOne(courseId);
+        Course course = adminService.findCourseById(courseId);
         model.addAttribute("course", course);
         AssessmentFactor assessmentFactor = new AssessmentFactor();
         assessmentFactor.setCourseId(courseId);
         model.addAttribute("assessmentFactor", assessmentFactor);
-        List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(courseId);
+        List<AssessmentFactor> assessmentFactors = adminService.findAssessmentFactorsByCourseId(courseId);
         model.addAttribute("assessmentFactors", assessmentFactors);
 
         return "role/admin/assessmentFactor/manageAf";
@@ -2568,22 +2693,22 @@ public class AdminController {
     public String assessmentFactorCourseDetail(@ModelAttribute AssessmentFactor assessmentFactor,
             @RequestParam int courseId) {
         assessmentFactor.setEnabled(true);
-        assessmentFactorMapper.insert(assessmentFactor);
+        adminService.insertAssessmentFactor(assessmentFactor);
         return "redirect:/admin/academicManagement/assessmentFactor/manageAf?courseId=" + courseId;
     }
 
     @RequestMapping(value = "/academicManagement/assessmentFactor/manageAf/deleteAf", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteAf(@RequestParam int id) {
-        AssessmentFactor assessmentFactor = assessmentFactorMapper.findOne(id);
+        AssessmentFactor assessmentFactor = adminService.findAssessmentFactorById(id);
 
-        List<Assessment> assessments = assessmentMapper.findByAssessmentFactorId(id);
+        List<Assessment> assessments = adminService.findAssessmentsByAssessmentFactorId(id);
         if (CollectionUtils.isEmpty(assessments)) {
-            assessmentFactorMapper.delete(assessmentFactor);
+            adminService.deleteAssessmentFactor(assessmentFactor);
             return true;
         } else {
             assessmentFactor.setEnabled(false);
-            assessmentFactorMapper.update(assessmentFactor);
+            adminService.updateAssessmentFactor(assessmentFactor);
             return false;
         }
     }
@@ -2591,19 +2716,19 @@ public class AdminController {
     @RequestMapping(value = "/academicManagement/assessmentFactor/manageAf/changeStatus", method = RequestMethod.POST)
     @ResponseBody
     public Boolean changeAfStatus(@RequestParam int id, @RequestParam boolean status) {
-        AssessmentFactor assessmentFactor = assessmentFactorMapper.findOne(id);
+        AssessmentFactor assessmentFactor = adminService.findAssessmentFactorById(id);
         assessmentFactor.setEnabled(status);
-        assessmentFactorMapper.update(assessmentFactor);
+        adminService.updateAssessmentFactor(assessmentFactor);
         return true;
     }
 
     @RequestMapping(value = "/academicManagement/assessmentResult", method = RequestMethod.GET)
     public String assessmentResult(Model model) {
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
-        List<User> professors = userMapper.findAllProfessors();
+        List<User> professors = adminService.findAllProfessors();
         model.addAttribute("professors", professors);
         return "role/admin/assessmentResult/assessmentResult";
     }
@@ -2625,7 +2750,7 @@ public class AdminController {
             searchable.setSemester(semester);
             searchable.setDivision(division);
             searchable.setAdvisor(advisor);
-            courseList = professorCourseMapper.findBy(searchable);
+            courseList = adminService.findProfessorCoursesBy(searchable);
 
             for (ProfessorCourse course : courseList) {
                 firstCourse = course;
@@ -2641,11 +2766,11 @@ public class AdminController {
     @RequestMapping(value = "/academicManagement/assessmentResult/courseDetail", method = RequestMethod.GET)
     public String assessmentResultCourseDetail(Model model, @RequestParam int profCourseId,
             @RequestParam(defaultValue = "false", required = false) String print) {
-        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
+        ProfessorCourse pc = adminService.findProfessorCourseById(profCourseId);
         model.addAttribute("pc", pc);
-        List<Assessment> assessments = assessmentMapper.findByProfCourseId(profCourseId);
+        List<Assessment> assessments = adminService.findAssessmentsByProfCourseId(profCourseId);
         model.addAttribute("assessments", assessments);
-        List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(pc.getCourseId());
+        List<AssessmentFactor> assessmentFactors = adminService.findAssessmentFactorsByCourseId(pc.getCourseId());
         model.addAttribute("assessmentFactors", assessmentFactors);
         if (print.equals("true"))
             return "role/common/assessment/courseDetailForPrint";
@@ -2654,7 +2779,7 @@ public class AdminController {
 
     @RequestMapping(value = "/academicManagement/cqi", method = RequestMethod.GET)
     public String cqi(Model model) {
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
         model.addAttribute("yearList", getYearList());
@@ -2681,7 +2806,7 @@ public class AdminController {
             searchable.setTitle(title);
             searchable.setDivision(division);
 
-            courseList = professorCourseMapper.findBy(searchable);
+            courseList = adminService.findProfessorCoursesBy(searchable);
 
             for (ProfessorCourse course : courseList) {
                 firstCourse = course;
@@ -2697,7 +2822,7 @@ public class AdminController {
     @RequestMapping(value = "/academicManagement/cqi/courseDetail", method = RequestMethod.GET)
     public String cqiReportCourseDetail(Model model, @RequestParam int profCourseId,
             @RequestParam(defaultValue = "false", required = false) String print) {
-        ProfessorCourse pc = professorCourseMapper.findOne(profCourseId);
+        ProfessorCourse pc = adminService.findProfessorCourseById(profCourseId);
 
         model.addAttribute("myAvg", profService.getAssignedAvg(pc));
         model.addAttribute("pc", pc);
@@ -2707,19 +2832,18 @@ public class AdminController {
         s.setEnabled(true);
         s.setOrderParam("divide");
         s.setOrderDir("asc");
-        List<ProfessorCourse> professorCourseList = professorCourseMapper.findBy(s);
+        List<ProfessorCourse> professorCourseList = adminService.findProfessorCoursesBy(s);
         for (ProfessorCourse professorCourse : professorCourseList) {
-            List<Assessment> assessments = assessmentMapper.findByProfCourseId(professorCourse.getId());
+            List<Assessment> assessments = adminService.findAssessmentsByProfCourseId(professorCourse.getId());
             professorCourse.setAssessmentList(assessments);
-            List<StudentCourse> studentCourseList = studentCourseMapper
-                    .findByProfCourseIdValid(professorCourse.getId());
+            List<StudentCourse> studentCourseList = adminService.findStudentCoursesByProfCourseIdValid(professorCourse.getId());
             professorCourse.setStudentCourseList(studentCourseList);
         }
         model.addAttribute("professorCourseList", professorCourseList);
 
         int currentYear = pc.getSemester().getYear();
         model.addAttribute("currentYear", currentYear);
-        LectureFundamentals lectureFundamentals = lectureFundamentalsMapper.findByProfCourseId(pc.getId());
+        LectureFundamentals lectureFundamentals = adminService.findLectureFundamentalsByProfCourseId(pc.getId());
         model.addAttribute("lectureFundamentals", lectureFundamentals);
 
         Map<Integer, Double> averageAssignedDivideMap = profService.getAverageAssignedDivideMap(professorCourseList);
@@ -2727,7 +2851,7 @@ public class AdminController {
 
         Map<Integer, Cqi> cqiMap = new LinkedHashMap<>();
         for (int i = (currentYear - 2); i < currentYear; i++) {
-            Cqi cqi = cqiMapper.findByYearCourseIdDivide(i, pc.getCourseId(), pc.getDivide());
+            Cqi cqi = adminService.findCqiByYearCourseIdDivide(i, pc.getCourseId(), pc.getDivide());
 
             if (cqi == null) {
                 cqi = new Cqi();
@@ -2739,7 +2863,7 @@ public class AdminController {
         }
         model.addAttribute("cqiMap", cqiMap);
 
-        Cqi cqi = cqiMapper.findByProfCourseId(pc.getId());
+        Cqi cqi = adminService.findCqiByProfCourseId(pc.getId());
         if (cqi == null) {
             cqi = new Cqi();
             cqi.setSemesterId(pc.getSemesterId());
@@ -2750,7 +2874,7 @@ public class AdminController {
         model.addAttribute("cqi", cqi);
         Map<Integer, Double> averageAssignedMap = profService.getAverageAssignedMap(pc.getCourseId(), currentYear);
         model.addAttribute("averageAssignedMap", averageAssignedMap);
-        List<AssessmentFactor> assessmentFactors = assessmentFactorMapper.findByCourseId(pc.getCourseId());
+        List<AssessmentFactor> assessmentFactors = adminService.findAssessmentFactorsByCourseId(pc.getCourseId());
         model.addAttribute("assessmentFactors", assessmentFactors);
 
         if (print.equals("true")) {
@@ -2772,15 +2896,15 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/yearSemester", method = RequestMethod.POST)
     public String yearSemester(@ModelAttribute("semester") Semester semester, SessionStatus sessionStatus) {
 
-        Semester exist = semesterMapper.findByYearSemester(semester.getYear(), semester.getSemester());
+        Semester exist = adminService.findSemesterByYearSemester(semester.getYear(), semester.getSemester());
         if (exist == null) {
-            List<Semester> semesterAll = semesterMapper.findAll();
+            List<Semester> semesterAll = adminService.findAllSemesters();
             for (Semester s : semesterAll) {
                 s.setCurrent(false);
-                semesterMapper.update(s);
+                adminService.updateSemesterDirect(s);
             }
             semester.setCurrent(true);
-            semesterMapper.insert(semester);
+            adminService.insertSemester(semester);
         }
 
         sessionStatus.setComplete();
@@ -2791,8 +2915,8 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/yearSemester/deleteSemester", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteSemester(@RequestParam int id) {
-        Semester exist = semesterMapper.findOne(id);
-        semesterMapper.delete(exist);
+        Semester exist = adminService.findSemesterById(id);
+        adminService.deleteSemester(exist);
 
         return true;
     }
@@ -2800,14 +2924,14 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/yearSemester/currentSemester", method = RequestMethod.POST)
     @ResponseBody
     public Boolean currentSemester(@RequestParam int id) {
-        List<Semester> semesterAll = semesterMapper.findAll();
+        List<Semester> semesterAll = adminService.findAllSemesters();
         for (Semester s : semesterAll) {
             s.setCurrent(false);
-            semesterMapper.update(s);
+            adminService.updateSemesterDirect(s);
         }
-        Semester exist = semesterMapper.findOne(id);
+        Semester exist = adminService.findSemesterById(id);
         exist.setCurrent(true);
-        semesterMapper.update(exist);
+        adminService.updateSemesterDirect(exist);
 
         return true;
     }
@@ -2815,26 +2939,17 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/yearSemester/semesterEditable", method = RequestMethod.POST)
     @ResponseBody
     public Boolean semesterEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
-        Semester semester = semesterMapper.findOne(pk);
-
         switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(semester, name, value);
+            case "year":     return adminService.updateSemesterYear(pk,   Integer.parseInt(value));
+            case "semester": return adminService.updateSemesterNumber(pk, Integer.parseInt(value));
+            default: throw new IllegalArgumentException("Unknown semester field: " + name);
         }
-
-        Semester stored = semesterMapper.findByYearSemester(semester.getYear(), semester.getSemester());
-        if (stored == null) {
-
-            semesterMapper.update(semester);
-            return true;
-        } else
-            return false;
     }
 
     @RequestMapping(value = "/systemManagement/yearSemester/semesterTable", method = RequestMethod.GET)
     public String semesterTable(Model model) {
 
-        List<Semester> semesterList = semesterMapper.findAll();
+        List<Semester> semesterList = adminService.findAllSemesters();
 
         model.addAttribute("semesterList", semesterList);
         return "role/admin/yearSemester/semesterTable";
@@ -2843,7 +2958,7 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/divisionMajor", method = RequestMethod.GET)
     public String divisionMajor(Model model, @RequestParam(required = false) String result) {
         Division division = new Division();
-        List<Division> divisions = divisionMapper.findAll();
+        List<Division> divisions = adminService.findAllDivisions();
         model.addAttribute("divisions", divisions);
         model.addAttribute("division", division);
         model.addAttribute("result", result);
@@ -2854,7 +2969,7 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/divisionMajor/divisionTable", method = RequestMethod.GET)
     public String divisionTable(Model model) {
 
-        List<Division> divisionList = divisionMapper.findAll();
+        List<Division> divisionList = adminService.findAllDivisions();
 
         model.addAttribute("divisionList", divisionList);
         return "role/admin/divisionMajor/divisionTable";
@@ -2863,27 +2978,24 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/divisionMajor/divisionEditable", method = RequestMethod.POST)
     @ResponseBody
     public Boolean divisionEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
-        Division division = divisionMapper.findOne(pk);
-
         switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(division, name, value);
+            case "name": adminService.updateDivisionName(pk, value); break;
+            default: throw new IllegalArgumentException("Unknown division field: " + name);
         }
-        divisionMapper.update(division);
         return true;
     }
 
     @RequestMapping(value = "/systemManagement/divisionMajor/deleteDivision", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteDivision(@RequestParam int id) {
-        Division division = divisionMapper.findOne(id);
-        List<Course> courses = courseMapper.findByDivision(id);
+        Division division = adminService.findDivisionById(id);
+        List<Course> courses = adminService.findCoursesByDivision(id);
         if (CollectionUtils.isEmpty(courses)) {
-            divisionMapper.delete(division);
+            adminService.deleteDivision(division);
             return true;
         } else {
             division.setEnabled(false);
-            divisionMapper.update(division);
+            adminService.updateDivision(division);
             return false;
         }
     }
@@ -2891,15 +3003,15 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/divisionMajor/enableDivision", method = RequestMethod.POST)
     @ResponseBody
     public Boolean enableDivision(@RequestParam int id) {
-        Division division = divisionMapper.findOne(id);
+        Division division = adminService.findDivisionById(id);
         division.setEnabled(true);
-        divisionMapper.update(division);
+        adminService.updateDivision(division);
         return true;
     }
 
     @RequestMapping(value = "/systemManagement/createDivision", method = RequestMethod.POST)
     public String createDivision(@ModelAttribute Division division) {
-        divisionMapper.insert(division);
+        adminService.insertDivision(division);
         return "redirect:/admin/systemManagement/divisionMajor?result=success";
     }
 
@@ -2913,14 +3025,14 @@ public class AdminController {
 
     @RequestMapping(value = "/systemManagement/lectureMethod", method = RequestMethod.POST)
     public String lectureMethod(@ModelAttribute LectureMethod lectureMethod) {
-        lectureMethodMapper.insert(lectureMethod);
+        adminService.insertLectureMethod(lectureMethod);
         return "redirect:/admin/systemManagement/lectureMethod?result=success";
     }
 
     @RequestMapping(value = "/systemManagement/lectureMethod/lectureMethodTable", method = RequestMethod.GET)
     public String lectureMethodTable(Model model) {
 
-        List<LectureMethod> lectureMethodList = lectureMethodMapper.findAll();
+        List<LectureMethod> lectureMethodList = adminService.findAllLectureMethods();
 
         model.addAttribute("lectureMethodList", lectureMethodList);
         return "role/admin/lectureMethod/lectureMethodTable";
@@ -2929,29 +3041,26 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/lectureMethod/lectureMethodEditable", method = RequestMethod.POST)
     @ResponseBody
     public Boolean lectureMethodEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
-        LectureMethod lectureMethod = lectureMethodMapper.findOne(pk);
-
         switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(lectureMethod, name, value);
+            case "name": adminService.updateLectureMethodName(pk, value); break;
+            default: throw new IllegalArgumentException("Unknown lectureMethod field: " + name);
         }
-        lectureMethodMapper.update(lectureMethod);
         return true;
     }
 
     @RequestMapping(value = "/systemManagement/lectureMethod/deleteLectureMethod", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteLectureMethod(@RequestParam int id) {
-        LectureMethod lectureMethod = lectureMethodMapper.findOne(id);
+        LectureMethod lectureMethod = adminService.findLectureMethodById(id);
 
-        ProfLectureMethod stored = profLectureMethodMapper.findByLectureMethodId(Integer.toString(id));
+        ProfLectureMethod stored = adminService.findProfLectureMethodByLectureMethodId(Integer.toString(id));
 
         if (stored == null) {
-            lectureMethodMapper.delete(lectureMethod);
+            adminService.deleteLectureMethod(lectureMethod);
             return true;
         } else {
             lectureMethod.setEnabled(false);
-            lectureMethodMapper.update(lectureMethod);
+            adminService.updateLectureMethod(lectureMethod);
             return false;
         }
     }
@@ -2959,9 +3068,9 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/lectureMethod/enableLectureMethod", method = RequestMethod.POST)
     @ResponseBody
     public Boolean enableLectureMethod(@RequestParam int id) {
-        LectureMethod lectureMethod = lectureMethodMapper.findOne(id);
+        LectureMethod lectureMethod = adminService.findLectureMethodById(id);
         lectureMethod.setEnabled(true);
-        lectureMethodMapper.update(lectureMethod);
+        adminService.updateLectureMethod(lectureMethod);
         return true;
     }
 
@@ -2975,14 +3084,14 @@ public class AdminController {
 
     @RequestMapping(value = "/systemManagement/evaluationMethod", method = RequestMethod.POST)
     public String evaluationMethod(@ModelAttribute EvaluationMethod evaluationMethod) {
-        evaluationMethodMapper.insert(evaluationMethod);
+        adminService.insertEvaluationMethod(evaluationMethod);
         return "redirect:/admin/systemManagement/evaluationMethod?result=success";
     }
 
     @RequestMapping(value = "/systemManagement/evaluationMethod/evaluationMethodTable", method = RequestMethod.GET)
     public String evaluationMethodTable(Model model) {
 
-        List<EvaluationMethod> evaluationMethodList = evaluationMethodMapper.findAll();
+        List<EvaluationMethod> evaluationMethodList = adminService.findAllEvaluationMethods();
 
         model.addAttribute("evaluationMethodList", evaluationMethodList);
         return "role/admin/evaluationMethod/evaluationMethodTable";
@@ -2992,29 +3101,26 @@ public class AdminController {
     @ResponseBody
     public Boolean evaluationMethodEditable(@RequestParam int pk, @RequestParam String name,
             @RequestParam String value) {
-        EvaluationMethod evaluationMethod = evaluationMethodMapper.findOne(pk);
-
         switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(evaluationMethod, name, value);
+            case "name": adminService.updateEvaluationMethodName(pk, value); break;
+            default: throw new IllegalArgumentException("Unknown evaluationMethod field: " + name);
         }
-        evaluationMethodMapper.update(evaluationMethod);
         return true;
     }
 
     @RequestMapping(value = "/systemManagement/evaluationMethod/deleteEvaluationMethod", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteEvaluationMethod(@RequestParam int id) {
-        EvaluationMethod evaluationMethod = evaluationMethodMapper.findOne(id);
+        EvaluationMethod evaluationMethod = adminService.findEvaluationMethodById(id);
 
-        ProfLectureMethod stored = profLectureMethodMapper.findByEvaluationMethodId(Integer.toString(id));
-        evaluationMethodMapper.delete(evaluationMethod);
+        ProfLectureMethod stored = adminService.findProfLectureMethodByEvaluationMethodId(Integer.toString(id));
+        adminService.deleteEvaluationMethod(evaluationMethod);
         if (stored == null) {
-            evaluationMethodMapper.delete(evaluationMethod);
+            adminService.deleteEvaluationMethod(evaluationMethod);
             return true;
         } else {
             evaluationMethod.setEnabled(false);
-            evaluationMethodMapper.update(evaluationMethod);
+            adminService.updateEvaluationMethod(evaluationMethod);
             return false;
         }
     }
@@ -3022,9 +3128,9 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/evaluationMethod/enableEvaluationMethod", method = RequestMethod.POST)
     @ResponseBody
     public Boolean enableEvaluationMethod(@RequestParam int id) {
-        EvaluationMethod evaluationMethod = evaluationMethodMapper.findOne(id);
+        EvaluationMethod evaluationMethod = adminService.findEvaluationMethodById(id);
         evaluationMethod.setEnabled(true);
-        evaluationMethodMapper.update(evaluationMethod);
+        adminService.updateEvaluationMethod(evaluationMethod);
         return true;
     }
 
@@ -3037,14 +3143,14 @@ public class AdminController {
 
     @RequestMapping(value = "/systemManagement/educationalMedium", method = RequestMethod.POST)
     public String educationalMedium(@ModelAttribute EducationalMedium educationalMedium) {
-        educationalMediumMapper.insert(educationalMedium);
+        adminService.insertEducationalMedium(educationalMedium);
         return "redirect:/admin/systemManagement/educationalMedium?result=success";
     }
 
     @RequestMapping(value = "/systemManagement/educationalMedium/educationalMediumTable", method = RequestMethod.GET)
     public String educationalMediumTable(Model model) {
 
-        List<EducationalMedium> educationalMediumList = educationalMediumMapper.findAll();
+        List<EducationalMedium> educationalMediumList = adminService.findAllEducationalMediums();
 
         model.addAttribute("educationalMediumList", educationalMediumList);
         return "role/admin/educationalMedium/educationalMediumTable";
@@ -3054,29 +3160,26 @@ public class AdminController {
     @ResponseBody
     public Boolean educationalMediumEditable(@RequestParam int pk, @RequestParam String name,
             @RequestParam String value) {
-        EducationalMedium educationalMedium = educationalMediumMapper.findOne(pk);
-
         switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(educationalMedium, name, value);
+            case "name": adminService.updateEducationalMediumName(pk, value); break;
+            default: throw new IllegalArgumentException("Unknown educationalMedium field: " + name);
         }
-        educationalMediumMapper.update(educationalMedium);
         return true;
     }
 
     @RequestMapping(value = "/systemManagement/educationalMedium/deleteEducationalMedium", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteEducationalMedium(@RequestParam int id) {
-        EducationalMedium educationalMedium = educationalMediumMapper.findOne(id);
+        EducationalMedium educationalMedium = adminService.findEducationalMediumById(id);
 
-        ProfLectureMethod stored = profLectureMethodMapper.findByEducationalMediumId(Integer.toString(id));
+        ProfLectureMethod stored = adminService.findProfLectureMethodByEducationalMediumId(Integer.toString(id));
 
         if (stored == null) {
-            educationalMediumMapper.delete(educationalMedium);
+            adminService.deleteEducationalMedium(educationalMedium);
             return true;
         } else {
             educationalMedium.setEnabled(false);
-            educationalMediumMapper.update(educationalMedium);
+            adminService.updateEducationalMedium(educationalMedium);
             return false;
         }
     }
@@ -3084,9 +3187,9 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/educationalMedium/enableEducationalMedium", method = RequestMethod.POST)
     @ResponseBody
     public Boolean enableEducationalMedium(@RequestParam int id) {
-        EducationalMedium educationalMedium = educationalMediumMapper.findOne(id);
+        EducationalMedium educationalMedium = adminService.findEducationalMediumById(id);
         educationalMedium.setEnabled(true);
-        educationalMediumMapper.update(educationalMedium);
+        adminService.updateEducationalMedium(educationalMedium);
         return true;
     }
 
@@ -3100,14 +3203,14 @@ public class AdminController {
 
     @RequestMapping(value = "/systemManagement/equipment", method = RequestMethod.POST)
     public String equipment(@ModelAttribute Equipment equipment) {
-        equipmentMapper.insert(equipment);
+        adminService.insertEquipment(equipment);
         return "redirect:/admin/systemManagement/equipment?result=success";
     }
 
     @RequestMapping(value = "/systemManagement/equipment/equipmentTable", method = RequestMethod.GET)
     public String equipmentTable(Model model) {
 
-        List<Equipment> equipmentList = equipmentMapper.findAll();
+        List<Equipment> equipmentList = adminService.findAllEquipments();
 
         model.addAttribute("equipmentList", equipmentList);
         return "role/admin/equipment/equipmentTable";
@@ -3116,29 +3219,27 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/equipment/equipmentEditable", method = RequestMethod.POST)
     @ResponseBody
     public Boolean equipmentEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
-        Equipment equipment = equipmentMapper.findOne(pk);
-
         switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(equipment, name, value);
+            case "name": adminService.updateEquipmentName(pk, value); break;
+            case "code": adminService.updateEquipmentCode(pk, value); break;
+            default: throw new IllegalArgumentException("Unknown equipment field: " + name);
         }
-        equipmentMapper.update(equipment);
         return true;
     }
 
     @RequestMapping(value = "/systemManagement/equipment/deleteEquipment", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteEquipment(@RequestParam int id) {
-        Equipment equipment = equipmentMapper.findOne(id);
+        Equipment equipment = adminService.findEquipmentById(id);
 
-        ProfLectureMethod stored = profLectureMethodMapper.findByEquipmentId(Integer.toString(id));
+        ProfLectureMethod stored = adminService.findProfLectureMethodByEquipmentId(Integer.toString(id));
 
         if (stored == null) {
-            equipmentMapper.delete(equipment);
+            adminService.deleteEquipment(equipment);
             return true;
         } else {
             equipment.setEnabled(false);
-            equipmentMapper.update(equipment);
+            adminService.updateEquipment(equipment);
             return false;
         }
     }
@@ -3146,9 +3247,9 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/equipment/enableEquipment", method = RequestMethod.POST)
     @ResponseBody
     public Boolean enableEquipment(@RequestParam int id) {
-        Equipment equipment = equipmentMapper.findOne(id);
+        Equipment equipment = adminService.findEquipmentById(id);
         equipment.setEnabled(true);
-        equipmentMapper.update(equipment);
+        adminService.updateEquipment(equipment);
         return true;
     }
 
@@ -3161,15 +3262,18 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/systemManagement/classroom", method = RequestMethod.POST)
-    public String classroom(@ModelAttribute Classroom classroom) {
-        classroomMapper.insert(classroom);
+    public String classroom(@ModelAttribute koreatech.cse.domain.dto.ClassroomCreateRequest req) {
+        Classroom classroom = new Classroom();
+        classroom.setCode(req.getCode());
+        classroom.setName(req.getName());
+        adminService.insertClassroom(classroom);
         return "redirect:/admin/systemManagement/classroom?result=success";
     }
 
     @RequestMapping(value = "/systemManagement/classroom/classroomTable", method = RequestMethod.GET)
     public String classroomTable(Model model) {
 
-        List<Classroom> classroomList = classroomMapper.findAll();
+        List<Classroom> classroomList = adminService.findAllClassrooms();
 
         model.addAttribute("classroomList", classroomList);
         return "role/admin/classroom/classroomTable";
@@ -3178,28 +3282,26 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/classroom/classroomEditable", method = RequestMethod.POST)
     @ResponseBody
     public Boolean classroomEditable(@RequestParam int pk, @RequestParam String name, @RequestParam String value) {
-        Classroom classroom = classroomMapper.findOne(pk);
-
         switch (name) {
-            default:
-                SystemUtil.setObjectFieldValue(classroom, name, value);
+            case "name": adminService.updateClassroomName(pk, value); break;
+            case "code": adminService.updateClassroomCode(pk, value); break;
+            default: throw new IllegalArgumentException("Unknown classroom field: " + name);
         }
-        classroomMapper.update(classroom);
         return true;
     }
 
     @RequestMapping(value = "/systemManagement/classroom/deleteClassroom", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteClassroom(@RequestParam int id) {
-        Classroom classroom = classroomMapper.findOne(id);
+        Classroom classroom = adminService.findClassroomById(id);
 
-        List<ProfessorCourse> stored = professorCourseMapper.findByClassroomId(id);
+        List<ProfessorCourse> stored = adminService.findProfessorCoursesByClassroomId(id);
 
         if (CollectionUtils.isEmpty(stored)) {
-            classroomMapper.delete(classroom);
+            adminService.deleteClassroom(classroom);
         } else {
             classroom.setEnabled(false);
-            classroomMapper.update(classroom);
+            adminService.updateClassroom(classroom);
         }
         return true;
     }
@@ -3207,15 +3309,15 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/classroom/changeStatus", method = RequestMethod.POST)
     @ResponseBody
     public Boolean changeClassroomStatus(@RequestParam int id, @RequestParam boolean status) {
-        Classroom classroom = classroomMapper.findOne(id);
+        Classroom classroom = adminService.findClassroomById(id);
         classroom.setEnabled(status);
-        classroomMapper.update(classroom);
+        adminService.updateClassroom(classroom);
         return true;
     }
 
     @RequestMapping(value = "/systemManagement/menu", method = RequestMethod.GET)
     public String menu(Model model, @RequestParam(required = false) String result) {
-        MenuAccess menuAccess = menuAccessMapper.findOne();
+        MenuAccess menuAccess = adminService.findMenuAccess();
         if (menuAccess == null) {
             menuAccess = new MenuAccess();
             // Display-only — no insert in GET
@@ -3227,8 +3329,16 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/systemManagement/menu", method = RequestMethod.POST)
-    public String menu(@ModelAttribute MenuAccess menuAccess) {
-        menuAccessMapper.update(menuAccess);
+    public String menu(@ModelAttribute MenuSettingsRequest req) {
+        MenuAccess menuAccess = adminService.findMenuAccess();
+        if (menuAccess == null) {
+            menuAccess = new MenuAccess();
+        }
+        menuAccess.setAssessment(req.isAssessment());
+        menuAccess.setGrade(req.isGrade());
+        menuAccess.setSyllabus(req.isSyllabus());
+        menuAccess.setCqi(req.isCqi());
+        adminService.updateMenuAccess(menuAccess);
         return "redirect:/admin/systemManagement/menu?result=success";
     }
 
@@ -3246,17 +3356,15 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/editAdmin", method = RequestMethod.GET)
     public String editAdmin(Model model, @RequestParam int id) {
 
-        User adminUser = userMapper.findOne(id);
+        User adminUser = adminService.findUserById(id);
         model.addAttribute("adminUser", adminUser);
         return "role/admin/addAdmin/editAdmin";
     }
 
     @RequestMapping(value = "/systemManagement/addAdmin", method = RequestMethod.POST)
-    public String addAdmin(@ModelAttribute("adminUser") User adminUser, SessionStatus sessionStatus) {
+    public String addAdmin(@ModelAttribute AdminCreateRequest req, SessionStatus sessionStatus) {
 
-        adminUser.setEnabled(true);
-        adminUser.setConfirm(true);
-        userService.signupAdmin(adminUser);
+        userService.signupAdmin(req);
         sessionStatus.setComplete();
 
         return "redirect:/admin/systemManagement/addAdmin?result=success";
@@ -3265,10 +3373,10 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/deleteAdmin", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteAdmin(@RequestParam int id) {
-        List<User> admins = userMapper.findAllAdmins();
+        List<User> admins = adminService.findAllAdmins();
         if (admins.size() > 1) {
-            User adminUser = userMapper.findOne(id);
-            userMapper.delete(adminUser);
+            User adminUser = adminService.findUserById(id);
+            adminService.deleteUser(adminUser);
             return true;
         } else
             return false;
@@ -3276,10 +3384,21 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/systemManagement/editAdmin", method = RequestMethod.POST)
-    public String editAdmin(@ModelAttribute("adminUser") User adminUser, SessionStatus sessionStatus) {
-        adminUser.setPassword(passwordEncoder.encode(adminUser.getPassword()));
-        userMapper.updateFromSignup(adminUser);
-        contactMapper.update(adminUser.getContact());
+    public String editAdmin(@ModelAttribute AdminUpdateRequest req, SessionStatus sessionStatus) {
+        User adminUser = adminService.findUserById(req.getId());
+        if (adminUser == null) {
+            sessionStatus.setComplete();
+            return "redirect:/admin/systemManagement/addAdmin?result=fail";
+        }
+        if (StringUtils.isNotBlank(req.getPassword())) {
+            adminUser.setPassword(passwordEncoder.encode(req.getPassword()));
+        }
+        if (adminUser.getContact() != null) {
+            adminUser.getContact().setFirstName(req.getFirstName());
+            adminUser.getContact().setLastName(req.getLastName());
+        }
+        adminService.updateUserFromSignup(adminUser);
+        adminService.updateContact(adminUser.getContact());
         sessionStatus.setComplete();
 
         return "redirect:/admin/systemManagement/addAdmin?result=success";
@@ -3287,14 +3406,14 @@ public class AdminController {
 
     @RequestMapping(value = "/systemManagement/addAdmin/adminTable", method = RequestMethod.GET)
     public String adminTable(Model model) {
-        List<User> adminList = userMapper.findAllAdmins();
+        List<User> adminList = adminService.findAllAdmins();
         model.addAttribute("adminList", adminList);
         return "role/admin/addAdmin/adminTable";
     }
 
     @RequestMapping(value = "/systemManagement/errorReport", method = RequestMethod.GET)
     public String errorReport(Model model) {
-        List<Feedback> feedbackList = feedbackMapper.findRecent();
+        List<Feedback> feedbackList = adminService.findRecentFeedback();
         model.addAttribute("feedbackList", feedbackList);
         return "role/admin/errorReport/errorReport";
     }
@@ -3302,25 +3421,25 @@ public class AdminController {
     @RequestMapping(value = "/systemManagement/errorReport/deleteEr", method = RequestMethod.POST)
     @ResponseBody
     public String deleteEr(@RequestParam int id) {
-        Feedback feedback = feedbackMapper.findOne(id);
-        feedbackMapper.delete(feedback);
+        Feedback feedback = adminService.findFeedbackById(id);
+        adminService.deleteFeedback(feedback);
         return "success";
     }
 
     @RequestMapping(value = "/deleteFile", method = RequestMethod.POST)
     @ResponseBody
     public Boolean deleteFile(@RequestParam int uploadedFileId) throws IOException {
-        UploadedFile uploadedFile = uploadedFileMapper.findOne(uploadedFileId);
+        UploadedFile uploadedFile = adminService.findUploadedFileById(uploadedFileId);
         if (uploadedFile != null) {
             File file = new File(uploadedFile.getPath());
             boolean delete = file.delete();
-            uploadedFileMapper.delete(uploadedFile);
+            adminService.deleteUploadedFile(uploadedFile);
             return delete;
         }
         return false;
     }
 
     private List<Integer> getYearList() {
-        return semesterMapper.findYears();
+        return adminService.findSemesterYears();
     }
 }

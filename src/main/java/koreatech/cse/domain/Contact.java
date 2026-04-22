@@ -78,11 +78,19 @@ public class Contact implements Serializable  {
     }
 
     public String getFullName() {
-        try {
-            return firstName + " " + lastName;
-        } catch(Exception e) {
-            return "";
+        String normalizedFirstName = StringUtils.trimToNull(firstName);
+        String normalizedLastName = StringUtils.trimToNull(lastName);
+
+        if (normalizedFirstName == null && normalizedLastName == null) {
+            return "Unknown";
         }
+        if (normalizedFirstName == null) {
+            return normalizedLastName;
+        }
+        if (normalizedLastName == null) {
+            return normalizedFirstName;
+        }
+        return normalizedFirstName + " " + normalizedLastName;
     }
 
     public String getCellPhone() {

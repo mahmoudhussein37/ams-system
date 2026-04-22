@@ -131,9 +131,22 @@
     }
 
     function logout() {
-        $.post("${baseUrl}/logout", function () {
-            location.href = "${baseUrl}";
-        });
+        var form = document.createElement("form");
+        form.method = "post";
+        form.action = "${baseUrl}/signout";
+
+        var csrfParameterName = "${_csrf.parameterName}";
+        var csrfToken = "${_csrf.token}";
+        if (csrfParameterName && csrfToken) {
+            var csrfInput = document.createElement("input");
+            csrfInput.type = "hidden";
+            csrfInput.name = csrfParameterName;
+            csrfInput.value = csrfToken;
+            form.appendChild(csrfInput);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
     }
     $(".country-select").click(function (e) {
         e.preventDefault();
