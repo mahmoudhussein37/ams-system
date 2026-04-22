@@ -3,9 +3,11 @@ package koreatech.cse.service;
 import koreatech.cse.domain.UploadedFile;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.Designation;
+import koreatech.cse.domain.role.professor.ProfessorCourse;
 import koreatech.cse.repository.UploadedFileMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -31,9 +33,22 @@ public class FileService {
 
     @Inject
     private UploadedFileMapper uploadedFileMapper;
+    @Inject
+    private AuthorizationGuardService authorizationGuardService;
 
     public UploadedFile processUploadedFile(MultipartFile file, User uploader, Designation designation, int divisionId,
             int profCourseId, int year) throws IOException {
+        if (designation == Designation.attendance) {
+            if (uploader == null) {
+                throw new AccessDeniedException("Access denied.");
+            }
+            ProfessorCourse ownedCourse = authorizationGuardService.requireOwnedProfessorCourse(profCourseId, uploader,
+                    "attendance-file-upload-service");
+            if (ownedCourse.getSemesterId() != year) {
+                throw new AccessDeniedException("Access denied.");
+            }
+        }
+
         if (file.isEmpty())
             throw new IllegalArgumentException("Empty file upload");
         if (file.getSize() < 1024)
@@ -260,10 +275,10 @@ public class FileService {
             }
         }
 
-        String originalName = multipartFile.getOriginalFilename();
-        String safeName = sanitizeFilename(originalName);
-
-        File targetFile = new File(tempDir, safeName);
+        // Use server-generated UUID name — no user-supplied filename in the path.
+        // The extension .tmp is sufficient; XSSFWorkbook reads by content, not by name.
+        String serverGenName = UUID.randomUUID().toString().replace("-", "") + ".tmp";
+        File targetFile = new File(tempDir, serverGenName);
 
         // Canonical path validation — defense-in-depth beyond sanitizeFilename
         String canonicalBase = tempDir.getCanonicalPath();

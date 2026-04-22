@@ -48,7 +48,17 @@
     <div class="col-md-3">
         <div class="form-group">
             <label><spring:message code="common.advisor"/></label>
-            <input type="text" class="form-control"  value="${studentUser.advisor.getFullName()}" disabled/>
+            <c:choose>
+                <c:when test="${studentUser.advisorId gt 0 and not empty studentUser.advisor}">
+                    <input type="text" class="form-control" value="${studentUser.advisor.getFullName()}" disabled/>
+                </c:when>
+                <c:when test="${studentUser.advisorId gt 0 and not empty advisor}">
+                    <input type="text" class="form-control" value="${advisor.getFullName()}" disabled/>
+                </c:when>
+                <c:otherwise>
+                    <input type="text" class="form-control" value="Not Assigned" disabled/>
+                </c:otherwise>
+            </c:choose>
             <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
         </div>
 

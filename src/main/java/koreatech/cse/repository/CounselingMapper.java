@@ -60,12 +60,17 @@ public interface CounselingMapper {
 
 
     @ResultMap("findOne-int")
+        @Select("SELECT * FROM `counseling` where id=#{id} and prof_user_id=#{profUserId} limit 1")
+        Counseling findOneByIdAndProfessorUserId(@Param("id") int id, @Param("profUserId") int profUserId);
+
+        @ResultMap("findOne-int")
     //@formatter off
     @Select("<script>"
             + "SELECT * FROM counseling co join contact c on co.student_user_id = c.user_id where 1=1 "
 
             + "<if test='year != 0'> and co.year = #{year}</if>"
             + "<if test='name != null'> and (c.last_name LIKE CONCAT('%', #{name}, '%') or c.first_name LIKE CONCAT('%', #{name}, '%'))</if>"
+                        + "<if test='advisor != 0'> and co.prof_user_id = #{advisor}</if>"
             + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
             + "</script>")
         //@formatter on

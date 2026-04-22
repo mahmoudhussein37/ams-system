@@ -21,6 +21,7 @@
                         </div>
                         <div class="card-body">
                             <form:form modelAttribute="adminUser" action="${baseUrl}/admin/systemManagement/editAdmin" id="signup-form" method="post">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <%--<form:hidden path="id" value="${adminUser.id}"/>--%>
                                 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.information"/></h3>
                                 <div class="row">

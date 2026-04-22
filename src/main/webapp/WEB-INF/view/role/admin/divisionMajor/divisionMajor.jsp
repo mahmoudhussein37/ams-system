@@ -26,6 +26,7 @@
                             <div class="separator separator-solid my-5"></div>
                             <br/><br/>
                             <form:form modelAttribute="division" action="${baseUrl}/admin/systemManagement/createDivision" method="post">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.createDivision"/></h3>
                                 <div class="row">
                                     <div class="col-md-3">

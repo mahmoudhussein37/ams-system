@@ -19,6 +19,15 @@ public interface SemesterMapper {
     @Select("SELECT * FROM semester where id=#{id}")
     Semester findOne(@Param("id") int id);
 
+        @Select("<script>"
+            + "SELECT * FROM semester "
+            + "WHERE id IN "
+            + "<foreach item='id' collection='ids' open='(' separator=',' close=')'>"
+            + "#{id}"
+            + "</foreach>"
+            + "</script>")
+        List<Semester> findByIds(@Param("ids") List<Integer> ids);
+
     @Select("SELECT * FROM semester where year=#{year} and semester=#{semester} limit 1")
     Semester findByYearSemester(@Param("year") int year, @Param("semester") int semester);
 

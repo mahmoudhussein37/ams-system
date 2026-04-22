@@ -1,4 +1,5 @@
 <form:form class="form" modelAttribute="lectureFundamentals" id="lectureFundamentalsForm" method="post">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <form:hidden path="courseId" value="${course.id}"/>
     <div class="card-body">
         <%@include file="/WEB-INF/view/role/professor/inquiryCourse/courseDetailBasicInfo.jsp" %>

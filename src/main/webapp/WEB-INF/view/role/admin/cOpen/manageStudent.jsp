@@ -204,11 +204,19 @@
                                                                             <td>
                                                                                 <c:choose>
                                                                                     <c:when
-                                                                                        test="${stCourse.studentUser.confirm}">
+                                                                                        test="${stCourse.studentUser.accountState == 'ACTIVE'}">
                                                                                         <span
                                                                                             class="label label-success label-inline font-weight-bold">
                                                                                             <spring:message
                                                                                                 code="student.status.active" />
+                                                                                        </span>
+                                                                                    </c:when>
+                                                                                    <c:when
+                                                                                        test="${stCourse.studentUser.accountState == 'DISABLED'}">
+                                                                                        <span
+                                                                                            class="label label-danger label-inline font-weight-bold">
+                                                                                            <spring:message
+                                                                                                code="student.status.disabled" />
                                                                                         </span>
                                                                                     </c:when>
                                                                                     <c:otherwise>
@@ -305,9 +313,14 @@
                                         if (response.success && response.students && response.students.length > 0) {
                                             var html = '';
                                             $.each(response.students, function (index, student) {
-                                                var statusBadge = student.enabled === 1
-                                                    ? '<span class="label label-success label-inline font-weight-bold"><spring:message code="student.status.active" javaScriptEscape="true" /></span>'
-                                                    : '<span class="label label-warning label-inline font-weight-bold"><spring:message code="student.status.pending" javaScriptEscape="true" /></span>';
+                                                var statusBadge;
+                                                if (student.accountState === 'ACTIVE') {
+                                                    statusBadge = '<span class="label label-success label-inline font-weight-bold"><spring:message code="student.status.active" javaScriptEscape="true" /></span>';
+                                                } else if (student.accountState === 'DISABLED') {
+                                                    statusBadge = '<span class="label label-danger label-inline font-weight-bold"><spring:message code="student.status.disabled" javaScriptEscape="true" /></span>';
+                                                } else {
+                                                    statusBadge = '<span class="label label-warning label-inline font-weight-bold"><spring:message code="student.status.pending" javaScriptEscape="true" /></span>';
+                                                }
 
                                                 html += '<tr>' +
                                                     '<td><label class="checkbox checkbox-single"><input type="checkbox" name="student-checkbox" value="' + student.userId + '"/><span></span></label></td>' +

@@ -25,7 +25,7 @@
                     ${sc.course.division.name}
             </td>
             <td>
-                <a href="#" class="course-detail" data-course-id="${sc.course.id}">
+                <a href="#" class="course-detail" data-student-course-id="${sc.id}">
                     ${sc.course.code}
                 </a>
 
@@ -61,8 +61,8 @@
     </c:if>
     $("body").on('click', '.course-detail', function (e) {
         e.preventDefault();
-        var courseId = $(this).attr("data-course-id");
-        $(".detail-div").load("${baseUrl}/student/classInformation/classAssessment/courseDetail?studentCourseId=" + courseId);
+        var studentCourseId = $(this).attr("data-student-course-id");
+        $(".detail-div").load("${baseUrl}/student/classInformation/classAssessment/courseDetail?studentCourseId=" + studentCourseId);
 
     });
 </script>

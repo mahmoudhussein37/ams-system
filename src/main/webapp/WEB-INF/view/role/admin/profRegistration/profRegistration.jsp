@@ -21,13 +21,26 @@
                         </div>
                         <div class="card-body">
                             <form:form modelAttribute="profUser" method="post">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.information"/></h3>
                                 <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label><spring:message code="common.firstName"/></label>
+                                            <form:input type="text" path="contact.firstName" class="form-control" required="required"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label><spring:message code="common.lastName"/></label>
+                                            <form:input type="text" path="contact.lastName" class="form-control" required="required"/>
+                                        </div>
+                                    </div>
                                     <div class="col-md-3">
 
                                         <div class="form-group">
                                             <label><spring:message code="common.profNumber"/></label>
-                                            <form:input type="text" path="number" class="form-control"/>
+                                            <form:input type="text" path="number" class="form-control" required="required"/>
                                                 <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                         </div>
                                     </div>
@@ -35,7 +48,7 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label><spring:message code="common.department"/></label>
-                                            <form:select id="search-division" path="divisionId" class="form-control" >
+                                            <form:select id="search-division" path="divisionId" class="form-control" required="required">
                                                 <c:forEach var="division" items="${divisions}">
                                                     <option value="${division.id}">${division.name}</option>
                                                 </c:forEach>
@@ -165,6 +178,12 @@
         <c:choose>
         <c:when test="${result eq 'success'}">
         alert("<spring:message code='common.success' javaScriptEscape="true" />");
+        </c:when>
+        <c:when test="${result eq 'validation_error'}">
+        alert("<spring:message code='common.signin.invalid_input' javaScriptEscape="true" />");
+        </c:when>
+        <c:when test="${result eq 'duplicate_professor'}">
+        alert("<spring:message code='admin.duplicatedProfessorNumber' javaScriptEscape="true" />");
         </c:when>
         <c:otherwise>
         alert("<spring:message code='admin.duplicatedStudentNumber' javaScriptEscape="true" />");

@@ -1,4 +1,5 @@
 <form:form modelAttribute="studentUser" action="${baseUrl}/student/register/basic" method="post" class="form" enctype="multipart/form-data">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <div class="card-body">
         <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.personalInfo"/></h3>
         <div class="row">

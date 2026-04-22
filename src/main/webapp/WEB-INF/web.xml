@@ -29,6 +29,15 @@
     </filter-mapping>
 
     <filter>
+        <filter-name>securityHeadersFilter</filter-name>
+        <filter-class>koreatech.cse.filter.SecurityHeadersFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>securityHeadersFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
         <filter-name>encodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
         <init-param>
@@ -42,6 +51,18 @@
     </filter>
     <filter-mapping>
         <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>multipartFilter</filter-name>
+        <filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class>
+        <init-param>
+            <param-name>multipartResolverBeanName</param-name>
+            <param-value>multipartResolver</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>multipartFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <!--<filter>
@@ -98,5 +119,13 @@
             <page-encoding>UTF-8</page-encoding>
         </jsp-property-group>
     </jsp-config>
+
+    <session-config>
+        <session-timeout>60</session-timeout>
+        <tracking-mode>COOKIE</tracking-mode>
+        <cookie-config>
+            <http-only>true</http-only>
+        </cookie-config>
+    </session-config>
 
 </web-app>

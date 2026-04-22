@@ -19,6 +19,7 @@
                             <h3 class="card-title font-weight-bolder"><spring:message code="menu.student.sub5_2"/></h3>
                         </div>
                         <form:form modelAttribute="graduationResearchPlan" action="${baseUrl}/student/graduation/graduationResearchPlan" method="post" class="form">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                         <div class="card-body">
 
                             <div class="row">
@@ -72,7 +73,14 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label><spring:message code="common.advisor"/></label>
-                                        <input type="text" class="form-control" value="${studentUser.advisor.getFullName()}" disabled/>
+                                        <c:choose>
+                                            <c:when test="${studentUser.advisorId gt 0 and not empty studentUser.advisor}">
+                                                <input type="text" class="form-control" value="${studentUser.advisor.getFullName()}" disabled/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="text" class="form-control" value="<spring:message code="common.notAssigned"/>" disabled/>
+                                            </c:otherwise>
+                                        </c:choose>
                                             <%--<span class="form-text text-muted">Please enter your full name</span>--%>
                                     </div>
                                 </div>

@@ -1,5 +1,6 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 <form:form modelAttribute="course" action="${baseUrl}/admin/courseManagement/courseDetail" method="post" class="form">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.editCourse"/></h3>
     <div class="row">
         <div class="col-md-3">

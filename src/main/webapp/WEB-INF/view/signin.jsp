@@ -80,6 +80,7 @@
                                 <!--begin::Form-->
                                 <form class="form" novalidate="novalidate" id="kt_login_signin_form"
                                     action="j_spring_security_check" method="post">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                     <!--begin::Title-->
                                     <div class="pb-13 pt-lg-0 pt-5">
                                         <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">
@@ -90,6 +91,43 @@
                                                 class="text-primary font-weight-bolder">Create an Account</a></span>--%>
                                     </div>
                                     <!--begin::Title-->
+
+                                    <c:if test="${not empty msgKey}">
+                                        <c:set var="isAuthFailure" value="${fn:startsWith(msgKey, 'auth.failure.')}" />
+                                        <c:set var="hintKey" value="" />
+                                        <c:if test="${msgKey eq 'auth.failure.blocked'}">
+                                            <c:set var="hintKey" value="auth.failure.blocked.hint" />
+                                        </c:if>
+                                        <c:if test="${msgKey eq 'auth.failure.generic' or msgKey eq 'auth.failure.assistance'}">
+                                            <c:set var="hintKey" value="auth.failure.shared.hint" />
+                                        </c:if>
+                                        <c:if test="${not empty hintKey}">
+                                            <spring:message code="${hintKey}" text="" var="msgHint" />
+                                        </c:if>
+                                        <div class="alert alert-custom rounded-lg d-flex align-items-start p-5 mb-8 ${isAuthFailure ? 'alert-light-warning' : 'alert-light-success'}"
+                                            role="alert">
+                                            <span
+                                                class="svg-icon svg-icon-2x ${isAuthFailure ? 'svg-icon-warning' : 'svg-icon-success'} ${isRTL ? 'ml-4' : 'mr-4'} mt-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none">
+                                                    <path
+                                                        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                                                        fill="currentColor" opacity="0.3" />
+                                                    <path
+                                                        d="M11 10H13V17H11V10ZM11 7H13V9H11V7Z"
+                                                        fill="currentColor" />
+                                                </svg>
+                                            </span>
+                                            <div class="d-flex flex-column">
+                                                <div class="font-weight-bolder text-dark">
+                                                    <spring:message code="${msgKey}" />
+                                                </div>
+                                                <c:if test="${not empty msgHint}">
+                                                    <div class="text-muted font-size-sm mt-1">${msgHint}</div>
+                                                </c:if>
+                                            </div>
+                                        </div>
+                                    </c:if>
 
                                     <!--begin::Form group-->
                                     <div class="form-group">
@@ -271,13 +309,6 @@
             <%--<script src="${resources}/vendor/metronic_assets_7/assets/js/pages/custom/login/login-general.js">
                 </script>--%>
                 <!--end::Page Scripts-->
-                <script>
-                    <c:if test="${not empty msg}">
-                        alert('<spring:message code="common.signin.${msg}" javaScriptEscape="true" />');
-                    </c:if>
-
-
-                </script>
         </body>
         <!--end::Body-->
 

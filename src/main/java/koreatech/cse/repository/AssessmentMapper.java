@@ -110,6 +110,26 @@ public interface AssessmentMapper {
     @Select("SELECT * FROM `assessment` where user_id = #{userId} and prof_course_id=#{profCourseId} limit 1")
     Assessment findByUserIdProfCourseId(@Param("userId") int userId, @Param("profCourseId") int profCourseId);
 
+    @Select("<script>"
+            + "SELECT * FROM `assessment` "
+            + "WHERE user_id = #{userId} "
+            + "AND prof_course_id IN "
+            + "<foreach item='profCourseId' collection='profCourseIds' open='(' separator=',' close=')'>"
+            + "#{profCourseId}"
+            + "</foreach>"
+            + "</script>")
+    List<Assessment> findByUserIdAndProfCourseIds(@Param("userId") int userId,
+            @Param("profCourseIds") List<Integer> profCourseIds);
+
+    @Select("<script>"
+            + "SELECT * FROM `assessment` "
+            + "WHERE prof_course_id IN "
+            + "<foreach item='profCourseId' collection='profCourseIds' open='(' separator=',' close=')'>"
+            + "#{profCourseId}"
+            + "</foreach>"
+            + "</script>")
+    List<Assessment> findByProfCourseIds(@Param("profCourseIds") List<Integer> profCourseIds);
+
     @Select("SELECT * FROM `assessment` where (" +
             "item1=#{assessmentFactorId} or " +
             "item2=#{assessmentFactorId} or " +

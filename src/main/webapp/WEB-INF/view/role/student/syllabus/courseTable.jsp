@@ -50,7 +50,7 @@
                     ${pc.course.enabled ? 'Y' : 'N'}
             </td>
             <td>
-                <a href="#" class="course-detail" data-course-id="${pc.course.id}">
+                <a href="#" class="course-detail" data-prof-course-id="${pc.id}">
                     <i class="far fa-file-alt"></i>
                 </a>
             </td>
@@ -68,8 +68,8 @@
     </c:if>
     $("body").on('click', '.course-detail', function (e) {
         e.preventDefault();
-        var courseId = $(this).attr("data-course-id");
-        $(".detail-div").load("${baseUrl}/student/classInformation/syllabus/courseDetail?profCourseId=" + courseId);
+        var profCourseId = $(this).attr("data-prof-course-id");
+        $(".detail-div").load("${baseUrl}/student/classInformation/syllabus/courseDetail?profCourseId=" + profCourseId);
 
     });
 </script>

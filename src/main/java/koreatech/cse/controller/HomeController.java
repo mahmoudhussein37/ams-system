@@ -2,11 +2,15 @@ package koreatech.cse.controller;
 
 import koreatech.cse.domain.*;
 import koreatech.cse.domain.constant.Role;
+import koreatech.cse.domain.dto.SignupRequest;
+import koreatech.cse.domain.constant.SecurityEventType;
+import koreatech.cse.domain.constant.SigninMessage;
+import koreatech.cse.domain.constant.SignupResult;
 import koreatech.cse.domain.univ.Article;
-import koreatech.cse.repository.BoardMapper;
-import koreatech.cse.repository.FeedbackMapper;
-import koreatech.cse.repository.UploadedFileMapper;
-import koreatech.cse.repository.UserMapper;
+import koreatech.cse.service.AdminService;
+import koreatech.cse.service.AuthenticationAttemptService;
+import koreatech.cse.service.board.BoardService;
+import koreatech.cse.service.AuthenticationAuditService;
 import koreatech.cse.service.FileAccessService;
 import koreatech.cse.service.UserService;
 import koreatech.cse.util.SystemUtil;
@@ -42,22 +46,22 @@ public class HomeController {
     @Inject
     private UserService userService;
     @Inject
-    private UserMapper userMapper;
+    private AuthenticationAttemptService authenticationAttemptService;
     @Inject
-    private FeedbackMapper feedbackMapper;
-    @Inject
-    private UploadedFileMapper uploadedFileMapper;
-    @Inject
-    private BoardMapper boardMapper;
+    private AuthenticationAuditService authenticationAuditService;
     @Inject
     private FileAccessService fileAccessService;
+    @Inject
+    private AdminService adminService;
+    @Inject
+    private BoardService boardService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String home(Model model) {
 
         String[] boardTableNames = { "notice", "de", "hire", "schedule" };
         for (String b : boardTableNames) {
-            List<Article> articleList = boardMapper.findArticleList("board_" + b, 6);
+            List<Article> articleList = boardService.findArticleList("board_" + b, 6);
             model.addAttribute(b + "List", articleList);
         }
         model.addAttribute("home", true);
@@ -71,7 +75,7 @@ public class HomeController {
         Searchable searchable = new Searchable();
         searchable.setDivision(divisionId);
 
-        model.addAttribute("profList", userMapper.findProfessorBy(searchable));
+        model.addAttribute("profList", adminService.findProfessorBy(searchable));
         model.addAttribute("defaultSelected", defaultSelected);
 
         return "include/profOptions";
@@ -93,10 +97,10 @@ public class HomeController {
         if (User.current() != null) {
             return "redirect:/";
         }
-        String m = StringUtils.isBlank(msg) ? "" : msg;
-        if (StringUtils.isBlank(m) || m.equals("success") || m.equals("error") || m.equals("number") || m.equals("info")
-                || m.equals("fail") || m.equals("activated"))
-            model.addAttribute("msg", m);
+        SigninMessage signinMessage = SigninMessage.fromCode(StringUtils.trimToNull(msg));
+        if (signinMessage != null) {
+            model.addAttribute("msgKey", signinMessage.getSafeMessageKey());
+        }
 
         return "signin";
     }
@@ -113,12 +117,42 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signup(@ModelAttribute User signupUser, @RequestParam Role role, SessionStatus status) {
+    public String signup(@ModelAttribute SignupRequest req, @RequestParam Role role,
+            @RequestParam(value = "signupUser.passwordConfirm", required = false) String confirmPassword,
+            SessionStatus status, HttpServletRequest request) {
+        String number = StringUtils.trimToNull(req.getNumber());
 
-        String result = userService.signup(signupUser, role);
+        if (!authenticationAttemptService.checkSignupAllowed(request, number)) {
+            status.setComplete();
+            return "redirect:/signin?msg=" + SignupResult.TOO_MANY_ATTEMPTS.getCode();
+        }
+
+        User signupUser = new User();
+        signupUser.setNumber(req.getNumber());
+        signupUser.setUsername(req.getUsername());
+        signupUser.setPassword(req.getPassword());
+        Contact contact = new Contact();
+        contact.setFirstName(req.getContact() != null ? req.getContact().getFirstName() : null);
+        contact.setLastName(req.getContact() != null ? req.getContact().getLastName() : null);
+        signupUser.setContact(contact);
+
+        SignupResult result = userService.signup(signupUser, role, confirmPassword);
+        authenticationAttemptService.recordSignupResult(request, number, result);
+        authenticationAuditService.log(result == SignupResult.SUCCESS ? SecurityEventType.SIGNUP_SUCCESS : SecurityEventType.SIGNUP_FAILED,
+                number, request, result.name());
         status.setComplete();
 
-        return "redirect:/signin?msg=" + result;
+        return "redirect:/signin?msg=" + toSafeSigninMessageCode(result);
+    }
+
+    private String toSafeSigninMessageCode(SignupResult result) {
+        if (result == SignupResult.SUCCESS) {
+            return SignupResult.SUCCESS.getCode();
+        }
+        if (result == SignupResult.TOO_MANY_ATTEMPTS) {
+            return SignupResult.TOO_MANY_ATTEMPTS.getCode();
+        }
+        return SigninMessage.LOGIN_FAILED_GENERIC.getCode();
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -133,7 +167,7 @@ public class HomeController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/feedback", method = RequestMethod.POST)
     public String feedback(@ModelAttribute Feedback feedback, SessionStatus status) {
-        feedbackMapper.insert(feedback);
+        adminService.insertFeedback(feedback);
         status.setComplete();
 
         return "redirect:/";
@@ -144,7 +178,7 @@ public class HomeController {
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public void download(HttpServletRequest request, HttpServletResponse response, @RequestParam int uploadedFileId)
             throws IOException {
-        UploadedFile uploadedFile = uploadedFileMapper.findOne(uploadedFileId);
+        UploadedFile uploadedFile = adminService.findUploadedFileById(uploadedFileId);
         if (uploadedFile != null) {
             fileAccessService.assertUserCanAccessFile(User.current(), uploadedFile);
             File file = new File(uploadedFile.getPath());
@@ -178,7 +212,7 @@ public class HomeController {
             FileCopyUtils.copy(fis, out);
             out.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("DOWNLOAD FAILED - error streaming file | filename={}", downloadFileName, e);
         } finally {
             if (fis != null) {
                 try {
@@ -191,9 +225,7 @@ public class HomeController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public String logout(HttpSession session) {
-        session.invalidate();
-
-        return "redirect:/";
+        return "redirect:/signout";
     }
 
 }

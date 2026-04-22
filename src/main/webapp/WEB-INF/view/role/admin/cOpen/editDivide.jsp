@@ -29,6 +29,7 @@
 
 
                             <form:form modelAttribute="profCourse" action="${baseUrl}/admin/courseManagement/cOpen/editDivide?profCourseId=${profCourse.id}" method="post" class="form">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <form:hidden path="id" value="${profCourse.id}"/>
                                 <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="admin.editDivide"/></h3>
                                     <div class="row">

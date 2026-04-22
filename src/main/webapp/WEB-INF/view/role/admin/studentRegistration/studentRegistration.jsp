@@ -266,6 +266,7 @@
                                                                             </label>
                                                                             <form:select path="advisorId"
                                                                                 class="form-control">
+                                                                                <form:option value="0">-- Select Advisor --</form:option>
                                                                                 <c:forEach var="s"
                                                                                     items="${professors}">
                                                                                     <option value="${s.id}">
@@ -361,14 +362,14 @@
                                     // Handle import result from URL parameters
                                     var urlParams = new URLSearchParams(window.location.search);
                                     var importResult = urlParams.get('importResult');
-                                    var inserted = urlParams.get('inserted');
-                                    var duplicates = urlParams.get('duplicates');
-                                    var invalid = urlParams.get('invalid');
+                                    var inserted = parseInt(urlParams.get('inserted'), 10) || 0;
+                                    var duplicates = parseInt(urlParams.get('duplicates'), 10) || 0;
+                                    var invalid = parseInt(urlParams.get('invalid'), 10) || 0;
                                     var errorMessage = urlParams.get('errorMessage');
-                                    // Detailed invalid reasons
-                                    var missingSN = urlParams.get('sn');
-                                    var missingFN = urlParams.get('fn');
-                                    var missingLN = urlParams.get('ln');
+                                    // Detailed invalid reasons — parsed as integers to prevent XSS via html()
+                                    var missingSN = parseInt(urlParams.get('sn'), 10) || 0;
+                                    var missingFN = parseInt(urlParams.get('fn'), 10) || 0;
+                                    var missingLN = parseInt(urlParams.get('ln'), 10) || 0;
 
                                     if (importResult) {
                                         var alertClass = 'danger';
@@ -376,14 +377,14 @@
 
                                         // Build invalid details string
                                         var invalidDetails = '';
-                                        if (missingSN && parseInt(missingSN) > 0) {
+                                        if (missingSN > 0) {
                                             invalidDetails += '<spring:message code="admin.import.missing.studentNumber" javaScriptEscape="true" />: ' + missingSN;
                                         }
-                                        if (missingFN && parseInt(missingFN) > 0) {
+                                        if (missingFN > 0) {
                                             if (invalidDetails) invalidDetails += ', ';
                                             invalidDetails += '<spring:message code="admin.import.missing.firstName" javaScriptEscape="true" />: ' + missingFN;
                                         }
-                                        if (missingLN && parseInt(missingLN) > 0) {
+                                        if (missingLN > 0) {
                                             if (invalidDetails) invalidDetails += ', ';
                                             invalidDetails += '<spring:message code="admin.import.missing.lastName" javaScriptEscape="true" />: ' + missingLN;
                                         }
@@ -395,10 +396,10 @@
                                             message += '<spring:message code="admin.import.success" javaScriptEscape="true" />'.replace('{0}', inserted);
                                             // Show warnings for duplicates/invalid if any
                                             var warnings = [];
-                                            if (duplicates && parseInt(duplicates) > 0) {
+                                            if (duplicates > 0) {
                                                 warnings.push('<spring:message code="admin.import.duplicatesSkipped" javaScriptEscape="true" />: ' + duplicates);
                                             }
-                                            if (invalid && parseInt(invalid) > 0) {
+                                            if (invalid > 0) {
                                                 var invalidMsg = '<spring:message code="admin.import.invalidRowsSkipped" javaScriptEscape="true" />: ' + invalid;
                                                 if (invalidDetails) {
                                                     invalidMsg += ' (' + invalidDetails + ')';

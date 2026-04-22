@@ -1,5 +1,7 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
-<form:form modelAttribute="profUser" action="${baseUrl}/admin/profManagement/profInformation/profDetail" method="post" class="form">
+<form:form modelAttribute="profProfileForm" action="${baseUrl}/admin/profManagement/profInformation/profDetail" method="post" class="form">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+    <form:hidden path="id"/>
     <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.information"/></h3>
     <div class="row">
         <div class="col-md-3">
@@ -13,7 +15,7 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.username"/></label>
-                <form:input type="text" class="form-control"  path="username"/>
+                <input type="text" class="form-control" value="${profUser.username}" disabled/>
                     <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
             </div>
 

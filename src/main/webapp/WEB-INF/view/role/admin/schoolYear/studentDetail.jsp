@@ -1,7 +1,9 @@
 <%@include file="/WEB-INF/view/include/topTag.jsp" %>
 
 
-<form:form modelAttribute="studentUser" action="${baseUrl}/admin/studentManagement/schoolYear/studentDetail" method="post" class="form">
+<form:form modelAttribute="studentSchoolYearForm" action="${baseUrl}/admin/studentManagement/schoolYear/studentDetail" method="post" class="form">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+    <form:hidden path="id"/>
     <div id="print-area">
     <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.information"/></h3>
     <div class="row">
@@ -16,7 +18,7 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.username"/></label>
-                <form:input type="text" class="form-control"  path="username" disabled="true"/>
+                <input type="text" class="form-control" value="${studentUser.username}" disabled/>
                     <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
             </div>
 
@@ -24,7 +26,7 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.firstName"/></label>
-                <form:input type="text" class="form-control"  path="contact.firstName" disabled="true"/>
+                <input type="text" class="form-control" value="${studentUser.contact.firstName}" disabled/>
                     <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
             </div>
 
@@ -32,7 +34,7 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.lastName"/></label>
-                <form:input type="text" class="form-control"  path="contact.lastName" disabled="true"/>
+                <input type="text" class="form-control" value="${studentUser.contact.lastName}" disabled/>
                     <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
             </div>
 
@@ -44,11 +46,11 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.department"/></label>
-                <form:select path="divisionId" class="form-control"  disabled="true">
+                <select class="form-control" disabled>
                     <c:forEach var="division" items="${divisions}">
-                        <form:option value="${division.id}">${division.name}</form:option>
+                        <option value="${division.id}" ${division.id eq studentUser.divisionId ? 'selected' : ''}>${division.name}</option>
                     </c:forEach>
-                </form:select>
+                </select>
                     <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
             </div>
 
@@ -57,12 +59,12 @@
 
             <div class="form-group">
                 <label><spring:message code="common.status"/></label>
-                <form:select path="status" class="form-control" disabled="true">
+                <select class="form-control" disabled>
                     <c:forEach var="s" items="${statusList}">
-                        <form:option value="${s.name()}"><spring:message code="student.status.${s.name()}"/></form:option>
+                        <option value="${s.name()}" ${s.name() eq studentUser.status ? 'selected' : ''}><spring:message code="student.status.${s.name()}"/></option>
                     </c:forEach>
 
-                </form:select>
+                </select>
                     <%--<input type="text" class="form-control" value="${studentUser.status}" disabled/>--%>
                     <%--<span class="form-text text-muted">Please enter your full name</span>--%>
             </div>
@@ -70,19 +72,20 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.advisor"/></label>
-                <form:select path="advisorId" class="form-control"  disabled="true">
+                <select class="form-control" disabled>
+                    <option value="0">Not Assigned</option>
                     <c:forEach var="s" items="${professors}">
-                        <form:option value="${s.id}">${s.contact.getFullName()} (${s.division.name})</form:option>
+                        <option value="${s.id}" ${s.id eq studentUser.advisorId ? 'selected' : ''}>${s.contact.getFullName()} (${s.division.name})</option>
                     </c:forEach>
-                </form:select>
+                </select>
                     <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
             </div>
 
         </div>
         <div class="col-md-3">
-            <div class="form-group">
-                <label><spring:message code="common.schoolYear"/></label>
-                <form:select path="schoolYear" class="form-control" >
+                <div class="form-group">
+                    <label><spring:message code="common.schoolYear"/></label>
+                    <form:select path="schoolYear" class="form-control" >
                     <c:forEach var="s" begin="1" end="4">
                         <form:option value="${s}">${s}</form:option>
                     </c:forEach>

@@ -7,10 +7,12 @@
 
     <sec:global-method-security secured-annotations="enabled" pre-post-annotations="enabled" />
     <sec:http pattern="/**" use-expressions="true">
+        <sec:custom-filter before="FORM_LOGIN_FILTER" ref="loginRateLimitFilter" />
         <sec:form-login login-page="/signin" authentication-success-handler-ref="customLoginHandler" authentication-failure-handler-ref="customLoginFailureHandler"/>
+        <sec:csrf />
 
         <sec:logout logout-url="/signout" delete-cookies="JSESSIONID"/>
-        <sec:session-management>
+        <sec:session-management session-fixation-protection="migrateSession">
             <sec:concurrency-control max-sessions="99" expired-url="/"/>
         </sec:session-management>
         <sec:intercept-url pattern="/student/**" access="hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN')" />

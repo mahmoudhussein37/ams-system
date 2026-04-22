@@ -134,7 +134,7 @@
                                     </div>
                                     <div
                                         class="btn btn-icon btn-hover-transparent-white w-lg-auto d-flex align-items-center btn-lg px-2">
-                                        <a id="logout-link" onclick="logout()">
+                                        <a href="#" id="logout-link" onclick="logout(); return false;">
                                             <span class="symbol symbol-sm-30">
                                                 <span
                                                     class="symbol-label font-size-h5 font-weight-bold text-white bg-white-o-30"><i

@@ -55,6 +55,12 @@ public interface UserMapper {
                         "WHERE `id` = #{id}")
         void updateFromSignup(User user);
 
+        @Update("UPDATE `user` SET" +
+                        "`enabled` = #{enabled}," +
+                        "`confirm` = #{confirm} " +
+                        "WHERE `id` = #{id}")
+        void updateAccountState(User user);
+
         @Results({
                         @Result(column = "id", property = "id"),
                         @Result(column = "division_id", property = "divisionId"),
@@ -115,8 +121,7 @@ public interface UserMapper {
                         + "<if test='division != 0'> and u.division_id = #{division}</if>"
                         + "<if test='advisor != 0'> and u.advisor_id = #{advisor}</if>"
                         + "<if test='schoolYear != 0'> and u.school_year = #{schoolYear}</if>"
-                        + "<if test='accountStatus != null and accountStatus == \"active\"'> and u.confirm = 1</if>"
-                        + "<if test='accountStatus != null and accountStatus == \"pending\"'> and u.confirm = 0</if>"
+                        + "<if test='accountStatus != null'> and (CASE WHEN u.confirm = 0 THEN 'pending' WHEN u.enabled = 1 THEN 'active' ELSE 'disabled' END) = #{accountStatus}</if>"
                         + "<if test='orderParam != null and orderDir != null'> ORDER BY ${orderParam} ${orderDir}</if>"
                         + "</script>")
         // @formatter on
