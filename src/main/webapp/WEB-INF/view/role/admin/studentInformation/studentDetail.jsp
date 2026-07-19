@@ -91,6 +91,7 @@
                 <div class="form-group">
                     <label><spring:message code="common.advisor"/></label>
                     <form:select path="advisorId" class="form-control" >
+                        <form:option value="0">Not Assigned</form:option>
                         <c:forEach var="s" items="${professors}">
                             <form:option value="${s.id}">${s.contact.getFullName()} (${s.division.name})</form:option>
                         </c:forEach>

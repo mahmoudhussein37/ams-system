@@ -242,14 +242,49 @@
                     }
                 }
 
+                function watchDynamicForms() {
+                    if (!window.MutationObserver || !document.documentElement) {
+                        return;
+                    }
+
+                    var observer = new MutationObserver(function (mutations) {
+                        for (var i = 0; i < mutations.length; i++) {
+                            var addedNodes = mutations[i].addedNodes;
+                            for (var j = 0; j < addedNodes.length; j++) {
+                                var node = addedNodes[j];
+                                if (!node || node.nodeType !== 1) {
+                                    continue;
+                                }
+
+                                if (node.tagName === 'FORM') {
+                                    appendCsrfInput(node);
+                                }
+
+                                if (node.querySelectorAll) {
+                                    var nestedForms = node.querySelectorAll('form');
+                                    for (var k = 0; k < nestedForms.length; k++) {
+                                        appendCsrfInput(nestedForms[k]);
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    observer.observe(document.documentElement, { childList: true, subtree: true });
+                }
+
                 document.addEventListener('submit', function (event) {
                     appendCsrfInput(event.target);
                 }, true);
 
                 if (document.readyState === 'loading') {
-                    document.addEventListener('DOMContentLoaded', ensurePostFormsHaveCsrf);
+                    document.addEventListener('DOMContentLoaded', function () {
+                        ensurePostFormsHaveCsrf();
+                        watchDynamicForms();
+                    });
                 } else {
                     ensurePostFormsHaveCsrf();
+                    watchDynamicForms();
                 }
 
                 function setupAjaxCsrf() {
@@ -267,7 +302,18 @@
                 }
 
                 if (!setupAjaxCsrf()) {
-                    document.addEventListener('DOMContentLoaded', setupAjaxCsrf);
+                    var remainingAjaxSetupAttempts = 20;
+                    var retryAjaxCsrfSetup = function () {
+                        if (setupAjaxCsrf() || remainingAjaxSetupAttempts <= 0) {
+                            return;
+                        }
+
+                        remainingAjaxSetupAttempts--;
+                        window.setTimeout(retryAjaxCsrfSetup, 250);
+                    };
+
+                    document.addEventListener('DOMContentLoaded', retryAjaxCsrfSetup);
+                    window.addEventListener('load', retryAjaxCsrfSetup);
                 }
             })();
         </script>

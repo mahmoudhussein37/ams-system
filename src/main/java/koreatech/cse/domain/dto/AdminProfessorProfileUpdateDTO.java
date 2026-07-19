@@ -8,6 +8,7 @@ public class AdminProfessorProfileUpdateDTO {
     private int id;
     private int divisionId;
     private boolean enabled;
+    private String username;
     private Contact contact = new Contact();
 
     public static AdminProfessorProfileUpdateDTO fromUser(User user) {
@@ -19,6 +20,7 @@ public class AdminProfessorProfileUpdateDTO {
         dto.setId(user.getId());
         dto.setDivisionId(user.getDivisionId());
         dto.setEnabled(user.getAccountState() == AccountState.ACTIVE);
+        dto.setUsername(user.getUsername());
 
         Contact contact = new Contact();
         if (user.getContact() != null) {
@@ -27,6 +29,14 @@ public class AdminProfessorProfileUpdateDTO {
         }
         dto.setContact(contact);
         return dto;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public int getId() {

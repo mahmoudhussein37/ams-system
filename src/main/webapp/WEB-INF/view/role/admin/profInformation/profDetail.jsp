@@ -15,7 +15,7 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label><spring:message code="common.username"/></label>
-                <input type="text" class="form-control" value="${profUser.username}" disabled/>
+                <form:input type="text" class="form-control"  path="username"/>
                     <%--<span class="form-text text-muted">We'll never share your email with anyone else</span>--%>
             </div>
 

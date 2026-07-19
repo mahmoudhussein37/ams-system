@@ -500,6 +500,11 @@ public class UserService implements UserDetailsService {
         return userMapper.findByUsername(username) == null;
     }
 
+    public boolean isUsernameAvailableForUser(String username, int userId) {
+        User existing = userMapper.findByUsername(username);
+        return existing == null || existing.getId() == userId;
+    }
+
     private boolean matchesRegisteredIdentity(Contact storedContact, String firstName, String lastName) {
         if (storedContact == null) {
             return false;

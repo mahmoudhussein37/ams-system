@@ -9,6 +9,7 @@
     <sec:http pattern="/**" use-expressions="true">
         <sec:custom-filter before="FORM_LOGIN_FILTER" ref="loginRateLimitFilter" />
         <sec:form-login login-page="/signin" authentication-success-handler-ref="customLoginHandler" authentication-failure-handler-ref="customLoginFailureHandler"/>
+        <sec:access-denied-handler ref="auditAccessDeniedHandler" />
         <sec:csrf />
 
         <sec:logout logout-url="/signout" delete-cookies="JSESSIONID"/>

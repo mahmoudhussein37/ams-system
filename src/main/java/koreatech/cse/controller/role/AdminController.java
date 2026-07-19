@@ -1216,17 +1216,30 @@ public class AdminController {
         List<Division> divisions = adminService.findAllDivisions();
 
         model.addAttribute("divisions", divisions);
+        model.addAttribute("profProfileForm", AdminProfessorProfileUpdateDTO.fromUser(profUser));
 
         return "role/admin/profInformation/profDetail";
     }
 
     @RequestMapping(value = "/profManagement/profInformation/profDetail", method = RequestMethod.POST)
-    public String profDetail(@ModelAttribute AdminProfessorProfileUpdateDTO req, SessionStatus sessionStatus) {
+    public String profDetail(@ModelAttribute("profProfileForm") AdminProfessorProfileUpdateDTO req, SessionStatus sessionStatus) {
         User profUser = adminService.findUserById(req.getId());
         if (profUser == null) {
             sessionStatus.setComplete();
             return "redirect:/admin/profManagement/profInformation?result=fail";
         }
+
+        String requestedUsername = StringUtils.trimToNull(req.getUsername());
+        if (requestedUsername == null) {
+            sessionStatus.setComplete();
+            return "redirect:/admin/profManagement/profInformation?result=fail";
+        }
+        if (!requestedUsername.equals(profUser.getUsername())
+                && !userService.isUsernameAvailableForUser(requestedUsername, profUser.getId())) {
+            sessionStatus.setComplete();
+            return "redirect:/admin/profManagement/profInformation?result=fail";
+        }
+        profUser.setUsername(requestedUsername);
 
         profUser.setDivisionId(req.getDivisionId());
         if (req.isEnabled()) {

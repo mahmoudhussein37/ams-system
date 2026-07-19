@@ -4,6 +4,20 @@
         <h3 class="font-size-lg text-dark font-weight-bold mb-6"><spring:message code="common.personalInfo"/></h3>
         <div class="row">
             <div class="col-md-3">
+                <div class="form-group">
+                    <label><spring:message code="common.firstName"/></label>
+                    <input type="text" class="form-control" name="firstName" value="<c:out value='${studentUser.contact.firstName}'/>" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label><spring:message code="common.lastName"/></label>
+                    <input type="text" class="form-control" name="lastName" value="<c:out value='${studentUser.contact.lastName}'/>" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
 
                 <div class="form-group">
                     <label><spring:message code="common.cellPhone"/></label>

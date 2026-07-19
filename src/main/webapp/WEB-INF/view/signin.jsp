@@ -2,6 +2,26 @@
     <%@include file="/WEB-INF/view/include/head.jsp" %>
         <link href="${resources}/vendor/metronic_assets_7/assets/css/pages/login/login-1.css" rel="stylesheet"
             type="text/css" />
+        <style>
+            .login-form.login-signin {
+                width: 100%;
+                max-width: 430px;
+            }
+
+            .login-form.login-signin .form {
+                width: 100%;
+            }
+
+            .login-form.login-signin .signin-alert {
+                width: 100%;
+                padding: 1.25rem 1.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .login-form.login-signin .signin-alert__body {
+                flex: 1 1 auto;
+            }
+        </style>
 
 
         <!--begin::Body-->
@@ -104,21 +124,36 @@
                                         <c:if test="${not empty hintKey}">
                                             <spring:message code="${hintKey}" text="" var="msgHint" />
                                         </c:if>
-                                        <div class="alert alert-custom rounded-lg d-flex align-items-start p-5 mb-8 ${isAuthFailure ? 'alert-light-warning' : 'alert-light-success'}"
+                                        <div class="alert alert-custom rounded-lg d-flex align-items-start signin-alert ${isAuthFailure ? 'alert-light-warning' : 'alert-light-success'}"
                                             role="alert">
                                             <span
                                                 class="svg-icon svg-icon-2x ${isAuthFailure ? 'svg-icon-warning' : 'svg-icon-success'} ${isRTL ? 'ml-4' : 'mr-4'} mt-1">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none">
-                                                    <path
-                                                        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                                                        fill="currentColor" opacity="0.3" />
-                                                    <path
-                                                        d="M11 10H13V17H11V10ZM11 7H13V9H11V7Z"
-                                                        fill="currentColor" />
-                                                </svg>
+                                                <c:choose>
+                                                    <c:when test="${isAuthFailure}">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            viewBox="0 0 24 24" fill="none">
+                                                            <path
+                                                                d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                                                                fill="currentColor" opacity="0.3" />
+                                                            <path
+                                                                d="M11 10H13V17H11V10ZM11 7H13V9H11V7Z"
+                                                                fill="currentColor" />
+                                                        </svg>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            viewBox="0 0 24 24" fill="none">
+                                                            <path
+                                                                d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                                                                fill="currentColor" opacity="0.3" />
+                                                            <path
+                                                                d="M10.5806 15.5806L7.99479 12.9948L6.58057 14.409L10.5806 18.409L18.409 10.5806L16.9948 9.16636L10.5806 15.5806Z"
+                                                                fill="currentColor" />
+                                                        </svg>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </span>
-                                            <div class="d-flex flex-column">
+                                            <div class="d-flex flex-column signin-alert__body">
                                                 <div class="font-weight-bolder text-dark">
                                                     <spring:message code="${msgKey}" />
                                                 </div>
