@@ -178,11 +178,35 @@ public class AdminControllerPhase2CHardeningTest {
             int divisionId) {
         AdminStudentRegistrationRequest req = new AdminStudentRegistrationRequest();
         req.setNumber(number);
-        req.setFirstName(firstName);
-        req.setLastName(lastName);
+        Contact contact = new Contact();
+        contact.setFirstName(firstName);
+        contact.setLastName(lastName);
+        req.setContact(contact);
         req.setDivisionId(divisionId);
         req.setSchoolYear(1);
         return req;
+    }
+
+    @Test
+    public void studentRegistrationBindsNestedContactFieldsCorrectly() {
+        // Regression test: b876125 replaced a working User-bound handler with
+        // AdminStudentRegistrationRequest (flat firstName/lastName), but the JSP
+        // still submits contact.firstName/contact.lastName (unchanged by b876125),
+        // so submitted names never bound. Verifies the fix's round-trip.
+        AdminStudentRegistrationRequest req = createStudentRequest("20249001", "Salma", "Adel", 2);
+
+        when(userService.register(any(User.class), eq(Role.student))).thenReturn(true);
+
+        String viewName = adminController.basic(req, new SimpleSessionStatus());
+
+        assertEquals("redirect:/admin/studentManagement/studentRegistration?result=success", viewName);
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userService).register(userCaptor.capture(), eq(Role.student));
+        User submittedUser = userCaptor.getValue();
+        assertEquals("20249001", submittedUser.getNumber());
+        assertNotNull(submittedUser.getContact());
+        assertEquals("Salma", submittedUser.getContact().getFirstName());
+        assertEquals("Adel", submittedUser.getContact().getLastName());
     }
 
     private File createStudentImportWorkbook(String studentNumber, String firstName, String lastName) throws IOException {

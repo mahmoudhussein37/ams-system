@@ -149,8 +149,8 @@ public class AdminController {
     public String basic(@ModelAttribute AdminStudentRegistrationRequest req, SessionStatus sessionStatus) {
 
         String studentNumber = StringUtils.trimToNull(req.getNumber());
-        String firstName = StringUtils.trimToNull(req.getFirstName());
-        String lastName = StringUtils.trimToNull(req.getLastName());
+        String firstName = req.getContact() == null ? null : StringUtils.trimToNull(req.getContact().getFirstName());
+        String lastName = req.getContact() == null ? null : StringUtils.trimToNull(req.getContact().getLastName());
 
         if (StringUtils.isBlank(studentNumber) || StringUtils.isBlank(firstName) || StringUtils.isBlank(lastName)) {
             logger.warn("Manual registration failed: missing required fields in registration request");
