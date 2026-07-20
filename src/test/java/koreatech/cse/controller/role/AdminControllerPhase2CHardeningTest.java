@@ -1,5 +1,6 @@
 package koreatech.cse.controller.role;
 
+import koreatech.cse.domain.Contact;
 import koreatech.cse.domain.User;
 import koreatech.cse.domain.constant.AccountState;
 import koreatech.cse.domain.constant.Role;
@@ -56,14 +57,47 @@ public class AdminControllerPhase2CHardeningTest {
         AdminProfessorRegistrationRequest req = new AdminProfessorRegistrationRequest();
         req.setNumber("P1001");
         req.setDivisionId(1);
-        req.setFirstName(" ");
-        req.setLastName("Hassan");
+        Contact contact = new Contact();
+        contact.setFirstName(" ");
+        contact.setLastName("Hassan");
+        req.setContact(contact);
 
         String viewName = adminController.profRegistration(req, new SimpleSessionStatus());
 
         assertEquals("redirect:/admin/profManagement/profRegistration?result=validation_error", viewName);
         verify(userService, never()).register(any(User.class), eq(Role.professor));
         verifyNoInteractions(adminService);
+    }
+
+    @Test
+    public void profRegistrationBindsNestedContactFieldsCorrectly() {
+        // Regression test: b876125 introduced contact.firstName/contact.lastName
+        // JSP field paths bound against a DTO that only had flat firstName/lastName
+        // properties, so submitted names never bound and registration always failed
+        // validation. This verifies the DTO's contact-based structure round-trips
+        // into the User/Contact object actually passed to userService.register().
+        AdminProfessorRegistrationRequest req = new AdminProfessorRegistrationRequest();
+        req.setNumber("P2002");
+        req.setDivisionId(3);
+        Contact contact = new Contact();
+        contact.setFirstName("Youssef");
+        contact.setLastName("Farid");
+        req.setContact(contact);
+
+        when(adminService.findUserByNumber("P2002")).thenReturn(null);
+        when(userService.register(any(User.class), eq(Role.professor))).thenReturn(true);
+
+        String viewName = adminController.profRegistration(req, new SimpleSessionStatus());
+
+        assertEquals("redirect:/admin/profManagement/profRegistration?result=success", viewName);
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userService).register(userCaptor.capture(), eq(Role.professor));
+        User submittedUser = userCaptor.getValue();
+        assertEquals("P2002", submittedUser.getNumber());
+        assertEquals(3, submittedUser.getDivisionId());
+        assertNotNull(submittedUser.getContact());
+        assertEquals("Youssef", submittedUser.getContact().getFirstName());
+        assertEquals("Farid", submittedUser.getContact().getLastName());
     }
 
     @Test

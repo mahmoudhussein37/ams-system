@@ -1139,8 +1139,8 @@ public class AdminController {
 
     @RequestMapping(value = "/profManagement/profRegistration", method = RequestMethod.POST)
     public String profRegistration(@ModelAttribute AdminProfessorRegistrationRequest req, SessionStatus sessionStatus) {
-        String firstName = StringUtils.trimToNull(req.getFirstName());
-        String lastName = StringUtils.trimToNull(req.getLastName());
+        String firstName = req.getContact() == null ? null : StringUtils.trimToNull(req.getContact().getFirstName());
+        String lastName = req.getContact() == null ? null : StringUtils.trimToNull(req.getContact().getLastName());
         String normalizedProfessorNumber = StringUtils.trimToNull(req.getNumber());
 
         if (StringUtils.isBlank(firstName) || StringUtils.isBlank(lastName)
